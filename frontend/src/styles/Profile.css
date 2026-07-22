@@ -1,0 +1,30 @@
+.page-layout {
+  display: flex;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
+}
+
+.page-content {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-primary);
+}
+
+.profile-card {
+  max-width: 600px;
+  padding: var(--spacing-xl);
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}

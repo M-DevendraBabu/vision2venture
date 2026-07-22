@@ -1,0 +1,148 @@
+.stat-card {
+  padding: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.stat-icon-wrapper {
+  background: rgba(102, 126, 234, 0.1);
+  color: var(--primary-color);
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.stat-trend {
+  font-size: 0.85rem;
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.trend-up span:first-child { color: var(--success); }
+.trend-down span:first-child { color: var(--danger); }
+.trend-label { color: var(--text-secondary); }
+
+/* Competitor Card */
+.competitor-card {
+  padding: var(--spacing-lg);
+}
+
+.comp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.similarity-badge {
+  background: rgba(102, 126, 234, 0.15);
+  color: var(--primary-color);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.comp-progress {
+  height: 6px;
+  background: var(--glass-bg);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.comp-progress .progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+}
+
+.comp-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+.comp-details h4 {
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+}
+
+.comp-strengths ul, .comp-weaknesses ul {
+  padding-left: var(--spacing-md);
+  font-size: 0.85rem;
+  list-style-type: disc;
+}
+
+.comp-strengths li { color: var(--success); }
+.comp-weaknesses li { color: var(--danger); }
+
+/* Risk Card */
+.risk-card {
+  padding: var(--spacing-lg);
+}
+
+.risk-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.risk-level {
+  padding: 4px 8px;
+  border: 1px solid;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.risk-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.risk-gauge {
+  margin-top: auto;
+}
+
+.gauge-label {
+  font-size: 0.8rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-secondary);
+}
+
+.gauge-bar {
+  height: 8px;
+  background: var(--glass-bg);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.gauge-fill {
+  height: 100%;
+}

@@ -1,0 +1,51 @@
+{
+  "ai/ml": {
+    "avg_funding": 438502000.0,
+    "avg_revenue": 107641145.34179103,
+    "avg_valuation": 2443772997.6832514,
+    "avg_team_size": 511,
+    "sample_count": 7241
+  },
+  "blockchain": {
+    "avg_funding": 447442000.0,
+    "avg_revenue": 108918097.30755106,
+    "avg_valuation": 2451622546.762368,
+    "avg_team_size": 495,
+    "sample_count": 7090
+  },
+  "e-commerce": {
+    "avg_funding": 439716000.0,
+    "avg_revenue": 109376885.06896263,
+    "avg_valuation": 2463611965.1838937,
+    "avg_team_size": 503,
+    "sample_count": 7155
+  },
+  "fintech": {
+    "avg_funding": 439327000.0,
+    "avg_revenue": 105416934.29249188,
+    "avg_valuation": 2429601983.669596,
+    "avg_team_size": 503,
+    "sample_count": 7259
+  },
+  "healthcare": {
+    "avg_funding": 440593000.0,
+    "avg_revenue": 105059705.600448,
+    "avg_valuation": 2397506145.9322333,
+    "avg_team_size": 501,
+    "sample_count": 7029
+  },
+  "logistics": {
+    "avg_funding": 439277500.0,
+    "avg_revenue": 106454568.61938557,
+    "avg_valuation": 2447744001.135538,
+    "avg_team_size": 501,
+    "sample_count": 7086
+  },
+  "saas": {
+    "avg_funding": 438273500.0,
+    "avg_revenue": 106203998.24024287,
+    "avg_valuation": 2455177488.9322357,
+    "avg_team_size": 503,
+    "sample_count": 7140
+  }
+}
