@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   FaPaperPlane, FaRobot, FaUser, FaTrash, FaLightbulb, 
   FaRocket, FaChartLine, FaShieldAlt, FaQuestionCircle,
-  FaMagic, FaCopy, FaCheck
+  FaMagic, FaCopy, FaCheck, FaArrowLeft
 } from 'react-icons/fa';
 import axios from 'axios';
 import '../styles/Assistant.css';
@@ -17,6 +18,7 @@ const QUICK_PROMPTS = [
 ];
 
 const AssistantPage = () => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([
     { 
       id: 1, 
@@ -111,14 +113,41 @@ const AssistantPage = () => {
         
         {/* Sidebar Panel */}
         <aside className="assistant-sidebar">
-          <div className="assistant-brand">
-            <div className="avatar-ring">
-              <FaRobot className="avatar-icon" />
-              <span className="online-indicator"></span>
-            </div>
-            <div className="brand-info">
-              <h2>V2V Assistant</h2>
-              <span className="model-tag"><FaMagic className="sparkle-icon" /> Groq Llama 3.3 70B</span>
+          <div>
+            <button 
+              onClick={() => navigate('/dashboard')} 
+              className="back-nav-btn mb-md flex align-center gap-xs"
+              type="button"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                color: '#cbd5e1',
+                padding: '8px 14px',
+                borderRadius: '10px',
+                fontSize: '0.82rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                marginBottom: '16px'
+              }}
+            >
+              <FaArrowLeft size={12} /> Back to Dashboard
+            </button>
+
+            <div className="assistant-brand">
+              <div className="avatar-ring">
+                <FaRobot className="avatar-icon" />
+                <span className="online-indicator"></span>
+              </div>
+              <div className="brand-info">
+                <h2>V2V Assistant</h2>
+                <span className="model-tag"><FaMagic className="sparkle-icon" /> Groq Llama 3.3 70B</span>
+              </div>
             </div>
           </div>
 
@@ -152,7 +181,7 @@ const AssistantPage = () => {
         <main className="assistant-main-chat">
           
           {/* Header Bar */}
-          <header className="chat-header-bar">
+          <header className="chat-header-bar flex-between align-center">
             <div className="chat-header-left">
               <div className="header-status-badge">
                 <span className="status-dot"></span>
@@ -160,6 +189,28 @@ const AssistantPage = () => {
               </div>
               <p className="header-subtitle">Ask questions about market size, business plans, financial models, or risk factors</p>
             </div>
+            <button 
+              onClick={() => navigate('/dashboard')} 
+              className="chat-back-btn"
+              type="button"
+              style={{
+                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%)',
+                border: '1px solid rgba(99, 102, 241, 0.3)',
+                color: '#a5b4fc',
+                padding: '8px 16px',
+                borderRadius: '8px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease',
+                flexShrink: 0
+              }}
+            >
+              <FaArrowLeft size={12} /> Back to Dashboard
+            </button>
           </header>
 
           {/* Messages Stream */}

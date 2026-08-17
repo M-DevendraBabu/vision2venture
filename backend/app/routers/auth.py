@@ -3,8 +3,10 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from app.database.connection import get_db
 from app.models.user import User, UserSession
-from app.schemas.auth import UserCreate, UserLogin, UserResponse, TokenResponse
+import random
+from app.schemas.auth import UserCreate, UserLogin, UserResponse, TokenResponse, ForgotPasswordRequest, VerifyResetOTPRequest
 from app.utils.security import hash_password, verify_password, create_access_token, get_current_user
+from app.services.email_service import send_reset_otp_email
 from app.config import settings
 import uuid
 import json
@@ -133,10 +135,58 @@ def google_auth(data: dict, db: Session = Depends(get_db)):
 def get_profile(current_user: User = Depends(get_current_user)):
     return current_user
 
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
+
 @router.post("/forgot-password")
-def forgot_password(email: str, db: Session = Depends(get_db)):
-    return {"status": "success", "message": "Password reset link sent if email exists."}
+def request_password_reset_otp(req: ForgotPasswordRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="No registered account found with this email address")
+    
+    # Generate 6-digit OTP code
+    otp_code = f"{random.randint(100000, 999999)}"
+    user.reset_token = otp_code
+    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=15)
+    db.commit()
+
+    # Dispatch email send to background task (non-blocking for high multi-user traffic)
+    background_tasks.add_task(send_reset_otp_email, to_email=user.email, otp_code=otp_code, user_name=user.name)
+
+    return {
+        "status": "success",
+        "message": f"A 6-digit verification code has been sent to {user.email}. Please check your inbox."
+    }
 
 @router.post("/reset-password")
-def reset_password(token: str, new_password: str, db: Session = Depends(get_db)):
-    return {"status": "success", "message": "Password updated successfully."}
+def verify_otp_and_reset_password(req: VerifyResetOTPRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="No account found with this email address")
+    
+    if not user.reset_token or user.reset_token != req.otp_code.strip():
+        raise HTTPException(status_code=400, detail="Invalid verification code. Please check the OTP and try again.")
+    
+    if not user.reset_token_expires or user.reset_token_expires < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Verification code has expired. Please request a new OTP.")
+
+    password = req.new_password
+    if len(password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
+    if not any(c.isupper() for c in password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one uppercase letter")
+    if not any(c.islower() for c in password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one lowercase letter")
+    if not any(c.isdigit() for c in password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one digit")
+    if not any(c in "!@#$%^&*" for c in password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one special character (!@#$%^&*)")
+
+    user.password_hash = hash_password(password)
+    user.reset_token = None
+    user.reset_token_expires = None
+    
+    # Revoke existing sessions
+    db.query(UserSession).filter(UserSession.user_id == user.id).delete()
+    db.commit()
+
+    return {"message": "Verification successful! Your password has been updated. Please log in with your new password."}

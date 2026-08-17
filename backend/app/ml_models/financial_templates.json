@@ -1,0 +1,82 @@
+{
+  "ai": {
+    "mrr_estimate": 43333333.333333336,
+    "cac_estimate": 2420.0,
+    "ltv_estimate": 24200.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "e-commerce": {
+    "mrr_estimate": 38833333.333333336,
+    "cac_estimate": 2467.0,
+    "ltv_estimate": 24670.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "edtech": {
+    "mrr_estimate": 39625000.0,
+    "cac_estimate": 2430.5,
+    "ltv_estimate": 24305.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "energy": {
+    "mrr_estimate": 39708333.333333336,
+    "cac_estimate": 2666.0,
+    "ltv_estimate": 26660.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "fintech": {
+    "mrr_estimate": 42416666.666666664,
+    "cac_estimate": 2485.0,
+    "ltv_estimate": 24850.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "foodtech": {
+    "mrr_estimate": 45583333.333333336,
+    "cac_estimate": 2564.0,
+    "ltv_estimate": 25640.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "gaming": {
+    "mrr_estimate": 39333333.333333336,
+    "cac_estimate": 2546.0,
+    "ltv_estimate": 25460.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "healthcare": {
+    "mrr_estimate": 41666666.666666664,
+    "cac_estimate": 2667.5,
+    "ltv_estimate": 26675.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "logistics": {
+    "mrr_estimate": 42416666.666666664,
+    "cac_estimate": 2489.0,
+    "ltv_estimate": 24890.0,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  },
+  "tech": {
+    "mrr_estimate": 41000000.0,
+    "cac_estimate": 2631.5,
+    "ltv_estimate": 26314.999999999996,
+    "churn_estimate": 0.05,
+    "roi_estimate": 2.5,
+    "break_even_months": 24
+  }
+}

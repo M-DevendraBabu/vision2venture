@@ -1,7 +1,9 @@
-import React from 'react';
-import { FaBuilding, FaTable, FaProjectDiagram, FaCheckCircle, FaExclamationTriangle, FaLightbulb, FaShieldAlt } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaBuilding, FaTable, FaProjectDiagram, FaCheckCircle, FaExclamationTriangle, FaLightbulb, FaShieldAlt, FaCoins, FaHandshake } from 'react-icons/fa';
 
 const BusinessTab = ({ data }) => {
+  const [activeSubTab, setActiveSubTab] = useState('canvas');
+
   if (!data) return <div className="text-center p-8 animate-fade-in">Loading business model...</div>;
 
   const bm = data.business_model || data || {};
@@ -11,7 +13,6 @@ const BusinessTab = ({ data }) => {
     if (!val) return [];
     if (Array.isArray(val)) return val;
     if (typeof val === 'string') {
-      // Split by newline, semicolon, or period if long text
       const split = val.split(/(?:\r?\n|;|\. (?=[A-Z]))/).map(s => s.trim()).filter(Boolean);
       return split.length > 0 ? split : [val];
     }
@@ -37,67 +38,144 @@ const BusinessTab = ({ data }) => {
 
   return (
     <div className="business-tab animate-fade-in">
-      <div className="section-heading mb-md"><FaBuilding /> Business Strategy</div>
+      <div className="section-heading mb-md"><FaBuilding /> Business Model Canvas & Strategic SWOT</div>
       
-      <div className="explanation-box mb-xl">
-        <strong>AI Strategy Assessment:</strong> {bm.detailed_explanation || swot.overall_assessment || 'Your business model Canvas below maps out exactly how your venture will create, deliver, and capture value.'}
+      <div className="explanation-box mb-xl" style={{ borderLeft: '4px solid #6366f1' }}>
+        <strong>AI Business Strategy:</strong> {bm.detailed_explanation || swot.overall_assessment || 'Comprehensive business model strategy detailing value creation, revenue streams, cost structures, and strategic position.'}
       </div>
 
-      <h3 className="section-heading mt-xl mb-lg"><FaTable /> Business Model Canvas</h3>
-      <div className="bmc-grid mb-2xl" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px' }}>
-        <div className="bmc-cell glass-card p-lg stagger-1" style={{ borderTop: '3px solid #6366f1' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Key Partners</h4>
-          {renderContentList(bm.key_partners)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-2" style={{ borderTop: '3px solid #8b5cf6' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Key Activities</h4>
-          {renderContentList(bm.key_activities)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-3" style={{ background: 'rgba(99, 102, 241, 0.08)', borderTop: '3px solid #06b6d4', borderColor: 'rgba(99, 102, 241, 0.3)' }}>
-          <h4 className="text-accent mb-sm" style={{ fontSize: '1.05rem', fontWeight: 700 }}>Value Proposition</h4>
-          {renderContentList(bm.value_proposition)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-4" style={{ borderTop: '3px solid #10b981' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Channels & Acquisition</h4>
-          {renderContentList(bm.channels)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-5" style={{ borderTop: '3px solid #f59e0b' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Customer Segments</h4>
-          {renderContentList(bm.customer_segments)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-6" style={{ borderTop: '3px solid #ec4899' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Key Resources</h4>
-          {renderContentList(bm.key_resources)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-7" style={{ borderTop: '3px solid #ef4444' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Cost Structure</h4>
-          {renderContentList(bm.cost_structure)}
-        </div>
-        <div className="bmc-cell glass-card p-lg stagger-8" style={{ borderTop: '3px solid #14b8a6' }}>
-          <h4 className="text-primary mb-sm" style={{ fontSize: '1.05rem', fontWeight: 600 }}>Revenue Streams</h4>
-          {renderContentList(bm.revenue_streams)}
-        </div>
+      {/* Sub-Tab Navigation Bar */}
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.75rem' }}>
+        <button
+          onClick={() => setActiveSubTab('canvas')}
+          style={{
+            padding: '0.6rem 1.2rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: activeSubTab === 'canvas' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.05)',
+            color: '#fff',
+            cursor: 'pointer',
+            fontWeight: activeSubTab === 'canvas' ? '600' : '400',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          <FaTable /> 1. Lean Business Canvas (8 Cells)
+        </button>
+
+        <button
+          onClick={() => setActiveSubTab('swot')}
+          style={{
+            padding: '0.6rem 1.2rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: activeSubTab === 'swot' ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' : 'rgba(255,255,255,0.05)',
+            color: '#fff',
+            cursor: 'pointer',
+            fontWeight: activeSubTab === 'swot' ? '600' : '400',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          <FaProjectDiagram /> 2. 4-Quadrant SWOT Matrix
+        </button>
+
+        <button
+          onClick={() => setActiveSubTab('drivers')}
+          style={{
+            padding: '0.6rem 1.2rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: activeSubTab === 'drivers' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
+            color: '#fff',
+            cursor: 'pointer',
+            fontWeight: activeSubTab === 'drivers' ? '600' : '400',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          <FaCoins /> 3. Revenue Models & Key Partners
+        </button>
       </div>
 
-      <h3 className="section-heading mt-xl mb-lg"><FaProjectDiagram /> SWOT Matrix</h3>
-      <div className="swot-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px' }}>
-        <div className="swot-card glass-card p-lg strengths stagger-1" style={{ borderLeft: '4px solid #10b981' }}>
-          <h4 className="text-success mb-sm flex align-center gap-xs"><FaCheckCircle /> Strengths (Internal)</h4>
-          {renderContentList(swot.strengths)}
+      {/* SUB-TAB 1: LEAN BUSINESS CANVAS */}
+      {activeSubTab === 'canvas' && (
+        <div className="animate-fade-in">
+          <div className="bmc-grid mb-2xl" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px' }}>
+            <div className="bmc-cell glass-card p-lg" style={{ borderTop: '3px solid #6366f1' }}>
+              <h4 className="text-primary mb-sm font-semibold">Key Strategic Partners</h4>
+              {renderContentList(bm.key_partners)}
+            </div>
+            <div className="bmc-cell glass-card p-lg" style={{ borderTop: '3px solid #8b5cf6' }}>
+              <h4 className="text-primary mb-sm font-semibold">Key Core Activities</h4>
+              {renderContentList(bm.key_activities)}
+            </div>
+            <div className="bmc-cell glass-card p-lg" style={{ background: 'rgba(99, 102, 241, 0.08)', borderTop: '3px solid #06b6d4' }}>
+              <h4 className="text-accent mb-sm font-bold">Unique Value Proposition</h4>
+              {renderContentList(bm.value_proposition)}
+            </div>
+            <div className="bmc-cell glass-card p-lg" style={{ borderTop: '3px solid #10b981' }}>
+              <h4 className="text-primary mb-sm font-semibold">Channels & Acquisition</h4>
+              {renderContentList(bm.channels)}
+            </div>
+            <div className="bmc-cell glass-card p-lg" style={{ borderTop: '3px solid #f59e0b' }}>
+              <h4 className="text-primary mb-sm font-semibold">Target Customer Segments</h4>
+              {renderContentList(bm.customer_segments)}
+            </div>
+            <div className="bmc-cell glass-card p-lg" style={{ borderTop: '3px solid #ec4899' }}>
+              <h4 className="text-primary mb-sm font-semibold">Key Resources & Assets</h4>
+              {renderContentList(bm.key_resources)}
+            </div>
+          </div>
         </div>
-        <div className="swot-card glass-card p-lg weaknesses stagger-2" style={{ borderLeft: '4px solid #ef4444' }}>
-          <h4 className="text-danger mb-sm flex align-center gap-xs"><FaExclamationTriangle /> Weaknesses (Internal)</h4>
-          {renderContentList(swot.weaknesses)}
+      )}
+
+      {/* SUB-TAB 2: SWOT MATRIX */}
+      {activeSubTab === 'swot' && (
+        <div className="animate-fade-in">
+          <div className="swot-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '18px' }}>
+            <div className="swot-card glass-card p-lg strengths" style={{ borderLeft: '4px solid #10b981' }}>
+              <h4 className="text-success mb-sm flex align-center gap-xs"><FaCheckCircle /> Internal Strengths</h4>
+              {renderContentList(swot.strengths)}
+            </div>
+            <div className="swot-card glass-card p-lg weaknesses" style={{ borderLeft: '4px solid #ef4444' }}>
+              <h4 className="text-danger mb-sm flex align-center gap-xs"><FaExclamationTriangle /> Internal Weaknesses</h4>
+              {renderContentList(swot.weaknesses)}
+            </div>
+            <div className="swot-card glass-card p-lg opportunities" style={{ borderLeft: '4px solid #06b6d4' }}>
+              <h4 className="text-info mb-sm flex align-center gap-xs"><FaLightbulb /> External Opportunities</h4>
+              {renderContentList(swot.opportunities)}
+            </div>
+            <div className="swot-card glass-card p-lg threats" style={{ borderLeft: '4px solid #f59e0b' }}>
+              <h4 className="text-warning mb-sm flex align-center gap-xs"><FaShieldAlt /> External Threats</h4>
+              {renderContentList(swot.threats)}
+            </div>
+          </div>
         </div>
-        <div className="swot-card glass-card p-lg opportunities stagger-3" style={{ borderLeft: '4px solid #06b6d4' }}>
-          <h4 className="text-info mb-sm flex align-center gap-xs"><FaLightbulb /> Opportunities (External)</h4>
-          {renderContentList(swot.opportunities)}
+      )}
+
+      {/* SUB-TAB 3: REVENUE MODELS & PARTNERS */}
+      {activeSubTab === 'drivers' && (
+        <div className="animate-fade-in">
+          <div className="metrics-grid mb-2xl">
+            <div className="metric-card glass-card-accent" style={{ borderLeft: '4px solid #10b981' }}>
+              <h4 className="text-success mb-sm font-semibold flex align-center gap-xs"><FaCoins /> Revenue Streams & Monetization</h4>
+              {renderContentList(bm.revenue_streams)}
+            </div>
+            <div className="metric-card glass-card-accent" style={{ borderLeft: '4px solid #ef4444' }}>
+              <h4 className="text-danger mb-sm font-semibold flex align-center gap-xs"><FaBuilding /> Main Cost Structure Drivers</h4>
+              {renderContentList(bm.cost_structure)}
+            </div>
+            <div className="metric-card glass-card-accent" style={{ borderLeft: '4px solid #6366f1' }}>
+              <h4 className="text-primary mb-sm font-semibold flex align-center gap-xs"><FaHandshake /> Key Ecosystem Partners</h4>
+              {renderContentList(bm.key_partners)}
+            </div>
+          </div>
         </div>
-        <div className="swot-card glass-card p-lg threats stagger-4" style={{ borderLeft: '4px solid #f59e0b' }}>
-          <h4 className="text-warning mb-sm flex align-center gap-xs"><FaShieldAlt /> Threats (External)</h4>
-          {renderContentList(swot.threats)}
-        </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,35 @@
+{
+  "feature_cols": [
+    "funding_rounds",
+    "founder_experience_years",
+    "team_size",
+    "market_size_billion",
+    "product_traction_users",
+    "burn_rate_million",
+    "revenue_million",
+    "sector_encoded",
+    "investor_encoded",
+    "founder_encoded",
+    "funding_efficiency",
+    "revenue_per_user",
+    "burn_ratio",
+    "traction_per_team",
+    "market_capture_ratio",
+    "experience_x_rounds",
+    "burn_per_team",
+    "funding_per_round",
+    "revenue_efficiency",
+    "market_per_employee"
+  ],
+  "categories": {
+    "sector": [
+      "AI",
+      "Climate",
+      "Crypto",
+      "Ecommerce",
+      "Fintech",
+      "Health",
+      "SaaS"
+    ]
+  }
+}

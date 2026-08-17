@@ -18,8 +18,19 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GROQ_API_KEY: str = ""
 
+    # SMTP Configuration for sending OTP emails
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = ""
+
+    # Google OAuth Configuration
+    VITE_GOOGLE_CLIENT_ID: str = ""
+
     class Config:
         env_file = str(_ENV_FILE)
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 settings = Settings()

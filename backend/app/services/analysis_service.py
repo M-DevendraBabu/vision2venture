@@ -80,9 +80,15 @@ class AnalysisService:
         # ============ 1. OVERVIEW / NLP ============
         try:
             print(f"[Analysis] 1/9 Running NLP overview...")
-            keywords = NLPService.extract_keywords(idea.description)
+            keywords = NLPService.extract_keywords(
+                text=idea.description,
+                title=idea.title,
+                industry=idea.industry,
+                sector=idea.sector or 'online'
+            )
             domain = NLPService.identify_domain(idea.description, idea.industry)
             ps = NLPService.parse_problem_solution(idea.description)
+            summary = NLPService.summarize(idea.description, max_sentences=3)
             
             s_analysis = StartupAnalysis(
                 idea_id=idea.id,
@@ -92,7 +98,7 @@ class AnalysisService:
                 solution=ps.get('solution', idea.description),
                 keywords=keywords or [idea.industry, sector, "Startup"],
                 business_category=idea.business_type or sector,
-                summary=idea.description[:500],
+                summary=summary or idea.description[:500],
                 overall_score=85.0
             )
             db.add(s_analysis)
@@ -101,11 +107,11 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Overview: {e}")
             db.rollback()
 
-        # ============ 2. MARKET ANALYSIS ============
+        # ============ 2. MARKET ANALYSIS (ML/DATASET DRIVEN) ============
         market_data = {}
         try:
-            print(f"[Analysis] 2/9 Running Market Analysis...")
-            market_data = AIService.run_market_analysis(context) or {}
+            print(f"[Analysis] 2/9 Running Market Analysis (ML/Dataset)...")
+            market_data = MLService.calculate_market_analysis(context) or {}
             m_analysis = MarketAnalysis(
                 idea_id=idea.id,
                 market_size=str(market_data.get('market_size') or f'Estimated for {idea.industry} in {idea.country}'),
@@ -130,16 +136,13 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Market Analysis: {e}")
             db.rollback()
 
-        # ============ 3. COMPETITOR ANALYSIS (YC DATASET ENRICHED) ============
+        # ============ 3. COMPETITOR ANALYSIS (PURE YC DATASET) ============
         try:
-            print(f"[Analysis] 3/9 Running Competitor Analysis (YC Dataset Matched)...")
+            print(f"[Analysis] 3/9 Running Competitor Analysis (YC Dataset)...")
             yc_matches = MLService.search_yc_competitors(idea.industry, idea.title)
             
-            comp_data = AIService.run_competitor_analysis(context) or {}
-            ai_comps = comp_data.get('competitors', [])
-            
-            # Combine YC real dataset competitors with AI competitors
-            all_comps = yc_matches + ai_comps
+            # YC dataset now auto-generates strengths/weaknesses — no AI call needed
+            all_comps = yc_matches
             if not all_comps:
                 all_comps = [
                     {
@@ -168,13 +171,13 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Competitor Analysis: {e}")
             db.rollback()
 
-        # ============ 4. TECHNOLOGY RECOMMENDATIONS (STACK OVERFLOW SURVEY ENRICHED) ============
+        # ============ 4. TECHNOLOGY RECOMMENDATIONS (DATASET DRIVEN) ============
         try:
-            print(f"[Analysis] 4/9 Running Technology Recommendations...")
-            tech_bench = MLService.get_popular_tech_stack()
-            tech_data = AIService.run_technology_recommendations(context) or {}
+            print(f"[Analysis] 4/9 Running Technology Recommendations (Dataset)...")
+            tech_data = MLService.recommend_tech_stack(context) or {}
             
             if not tech_data or not tech_data.get('frontend'):
+                tech_bench = MLService.get_popular_tech_stack()
                 if sector == 'offline':
                     tech_data = {
                         'frontend': 'POS System & Customer Kiosk UI',
@@ -195,7 +198,7 @@ class AnalysisService:
                         'cloud_platform': 'AWS / Vercel Cloud Architecture',
                         'ai_framework': 'Groq Llama-3 / OpenAI API Integration',
                         'deployment': 'Docker Containers on AWS ECS with CI/CD',
-                        'reasoning': f'Stack Overflow 64,461 developer survey benchmarks combined with modern cloud architecture for {idea.industry}.'
+                        'reasoning': f'Stack Overflow 64,461 developer survey benchmarks for {idea.industry}.'
                     }
             db.add(TechnologyRecommendation(
                 idea_id=idea.id,
@@ -268,10 +271,10 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Roadmap: {e}")
             db.rollback()
 
-        # ============ 8. FINANCIAL ANALYSIS ============
+        # ============ 8. FINANCIAL ANALYSIS (ML/BENCHMARK DRIVEN) ============
         try:
-            print(f"[Analysis] 8/9 Running Financial Analysis...")
-            fin_data = AIService.run_financial_analysis(context) or {}
+            print(f"[Analysis] 8/9 Running Financial Analysis (ML/Benchmarks)...")
+            fin_data = MLService.calculate_financial_projections(context) or {}
             rev_goal = safe_float(idea.revenue_goal, 50000)
             db.add(FinancialAnalysis(
                 idea_id=idea.id,
@@ -345,14 +348,24 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Risk & Feasibility: {e}")
             db.rollback()
 
-        # Update overall V2V score in StartupAnalysis
+        # Update overall V2V score in StartupAnalysis dynamically from all modules
         try:
             s_record = db.query(StartupAnalysis).filter(StartupAnalysis.idea_id == idea.id).first()
+            m_record = db.query(MarketAnalysis).filter(MarketAnalysis.idea_id == idea.id).first()
             if s_record:
                 feasibility_score = safe_float(feas_data.get('overall_feasibility'), 80.0)
-                market_fit_score = safe_float(market_data.get('opportunity_score'), 82.0)
+                market_fit_score = safe_float(m_record.opportunity_score if m_record else 82.0, 82.0)
                 risk_score = safe_float(risk_data.get('overall_risk'), 35.0)
-                s_record.overall_score = round((feasibility_score + market_fit_score + max(0, 100 - risk_score)) / 3, 2)
+                inv_score = safe_float(inv_data.get('investor_score'), 80.0)
+
+                # Dynamic weighted overall score formula
+                s_record.overall_score = round(
+                    (feasibility_score * 0.3) + 
+                    (market_fit_score * 0.3) + 
+                    (inv_score * 0.25) + 
+                    (max(0, 100 - risk_score) * 0.15), 
+                    1
+                )
                 db.commit()
         except Exception as e:
             print(f"[Analysis] Score calculation update notice: {e}")

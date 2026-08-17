@@ -35,9 +35,8 @@ ChartJS.register(
   Filler
 );
 
-// Google OAuth Client ID - uses Google's own test client ID
-// For production, replace with your own from https://console.cloud.google.com
-const GOOGLE_CLIENT_ID = '1098456045540-vkn7hbbs8o9t1l0bickle6sdj7d6bpga.apps.googleusercontent.com';
+// Google OAuth Client ID
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '920361690736-ickkac7nov2ekat1mqkfb7stlr5g3fl3.apps.googleusercontent.com';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

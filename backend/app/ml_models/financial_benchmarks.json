@@ -1,0 +1,72 @@
+{
+  "AI": {
+    "funding": 272.0,
+    "revenue": 520.0,
+    "valuation": 24200.0
+  },
+  "AI/ML": {
+    "funding": 438.502,
+    "revenue": 107.64114534179103,
+    "valuation": 2443.7729976832516
+  },
+  "Blockchain": {
+    "funding": 447.442,
+    "revenue": 108.91809730755107,
+    "valuation": 2451.622546762368
+  },
+  "E-commerce": {
+    "funding": 414.376,
+    "revenue": 117.04199602000432,
+    "valuation": 2734.419221005628
+  },
+  "EdTech": {
+    "funding": 252.0,
+    "revenue": 475.5,
+    "valuation": 24305.0
+  },
+  "Energy": {
+    "funding": 266.0,
+    "revenue": 476.5,
+    "valuation": 26660.0
+  },
+  "FinTech": {
+    "funding": 245.0,
+    "revenue": 509.0,
+    "valuation": 24850.0
+  },
+  "Fintech": {
+    "funding": 439.327,
+    "revenue": 105.41693429249189,
+    "valuation": 2429.6019836695964
+  },
+  "FoodTech": {
+    "funding": 241.0,
+    "revenue": 547.0,
+    "valuation": 25640.0
+  },
+  "Gaming": {
+    "funding": 235.5,
+    "revenue": 472.0,
+    "valuation": 25460.0
+  },
+  "Healthcare": {
+    "funding": 412.372,
+    "revenue": 113.44142235174516,
+    "valuation": 2635.8423615718366
+  },
+  "Logistics": {
+    "funding": 415.469,
+    "revenue": 115.38675453146818,
+    "valuation": 2695.0162559658997
+  },
+  "SaaS": {
+    "funding": 438.2735,
+    "revenue": 106.20399824024287,
+    "valuation": 2455.177488932236
+  },
+  "Tech": {
+    "funding": 275.5,
+    "revenue": 492.0,
+    "valuation": 26315.0
+  }
+}

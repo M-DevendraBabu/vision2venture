@@ -1,0 +1,222 @@
+{
+  "Healthcare": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "node.js",
+      "spring"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 474 startups in Healthcare."
+  },
+  "Energy": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "node.js",
+      "spring"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 510 startups in Energy."
+  },
+  "FinTech": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "spring",
+      "node.js"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 496 startups in FinTech."
+  },
+  "Gaming": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "node.js",
+      "spring"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 520 startups in Gaming."
+  },
+  "EdTech": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "node.js",
+      "spring"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 518 startups in EdTech."
+  },
+  "E-commerce": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "node.js",
+      "spring"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 483 startups in E-commerce."
+  },
+  "AI": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "node.js",
+      "spring"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 501 startups in AI."
+  },
+  "FoodTech": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "spring",
+      "node.js"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 465 startups in FoodTech."
+  },
+  "Logistics": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "spring",
+      "node.js"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 509 startups in Logistics."
+  },
+  "Tech": {
+    "frontend": [
+      "react"
+    ],
+    "backend": [
+      "spring",
+      "node.js"
+    ],
+    "database": [
+      "Not specified"
+    ],
+    "cloud": [
+      "Not specified"
+    ],
+    "ai_framework": [
+      "Not specified"
+    ],
+    "deployment": [
+      "Not specified"
+    ],
+    "reasoning": "Based on analysis of 524 startups in Tech."
+  }
+}
