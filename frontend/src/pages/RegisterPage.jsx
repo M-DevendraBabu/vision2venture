@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
-import { FaCheck, FaTimes, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useGoogleLogin } from '@react-oauth/google';
+import { FaCheck, FaTimes, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import '../styles/Auth.css';
@@ -57,19 +57,25 @@ const RegisterPage = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      await googleLogin(credentialResponse.credential);
-      toast.success('Google Sign-In successful! 🎉');
-      navigate('/dashboard');
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Google Sign-In failed');
-    }
-  };
-
-  const handleGoogleError = () => {
-    toast.error('Google Sign-In was cancelled or failed.');
-  };
+  const handleGoogleLogin = useGoogleLogin({
+    flow: 'implicit',
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const userInfo = await res.json();
+        await googleLogin(tokenResponse.access_token, userInfo);
+        toast.success('Google Sign-In successful! 🎉');
+        navigate('/dashboard');
+      } catch (error) {
+        toast.error(error.response?.data?.detail || 'Google Sign-In failed');
+      }
+    },
+    onError: () => {
+      toast.error('Google Sign-In was cancelled or failed.');
+    },
+  });
 
   const PasswordCheck = ({ passed, label }) => (
     <div className="pw-check-item" style={{ color: passed ? '#10b981' : '#6b7280' }}>
@@ -85,15 +91,10 @@ const RegisterPage = () => {
         <p className="auth-subtitle">Start analyzing your startup ideas</p>
 
         <div className="google-btn-wrapper">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            theme="filled_black"
-            size="large"
-            width="100%"
-            text="signup_with"
-            shape="rectangular"
-          />
+          <button className="custom-google-btn" onClick={() => handleGoogleLogin()}>
+            <FaGoogle className="google-icon" />
+            <span>Sign up with Google</span>
+          </button>
         </div>
 
         <div className="auth-divider">

@@ -67,37 +67,41 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 @router.post("/google")
 def google_auth(data: dict, db: Session = Depends(get_db)):
     """
-    Handle Google Sign-In. Receives a Google credential (ID token) from the frontend,
+    Handle Google Sign-In. Receives an access_token + user info from the frontend,
     verifies it with Google, and creates/logs in the user.
     """
-    credential = data.get("credential")
-    if not credential:
-        raise HTTPException(status_code=400, detail="No credential provided")
+    access_token = data.get("access_token")
+    email = data.get("email")
+    name = data.get("name", "User")
     
-    # Verify the Google ID token by calling Google's tokeninfo endpoint
+    if not access_token or not email:
+        raise HTTPException(status_code=400, detail="Missing access_token or email")
+    
+    # Verify the access token by calling Google's userinfo endpoint
     try:
-        url = f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}"
-        req = urllib.request.Request(url)
+        url = "https://www.googleapis.com/oauth2/v3/userinfo"
+        req = urllib.request.Request(url, headers={"Authorization": f"Bearer {access_token}"})
         with urllib.request.urlopen(req, timeout=10) as response:
             google_data = json.loads(response.read().decode())
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Invalid Google token: {str(e)}")
     
-    email = google_data.get("email")
-    name = google_data.get("name", google_data.get("given_name", "User"))
+    # Use verified email from Google response
+    verified_email = google_data.get("email", email)
+    verified_name = google_data.get("name", name)
     
-    if not email:
+    if not verified_email:
         raise HTTPException(status_code=400, detail="Could not get email from Google")
     
     # Check if user exists
-    db_user = db.query(User).filter(User.email == email).first()
+    db_user = db.query(User).filter(User.email == verified_email).first()
     
     if not db_user:
         # Create new user with a random password (they'll use Google to login)
         random_pass = str(uuid.uuid4())
         db_user = User(
-            name=name,
-            email=email,
+            name=verified_name,
+            email=verified_email,
             password_hash=hash_password(random_pass)
         )
         db.add(db_user)

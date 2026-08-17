@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
+import { FaGoogle } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import '../styles/Auth.css';
@@ -26,19 +27,27 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      await googleLogin(credentialResponse.credential);
-      toast.success('Google Sign-In successful! 🎉');
-      navigate('/dashboard');
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Google Sign-In failed');
-    }
-  };
-
-  const handleGoogleError = () => {
-    toast.error('Google Sign-In was cancelled or failed. Please try again.');
-  };
+  const handleGoogleLogin = useGoogleLogin({
+    flow: 'implicit',
+    onSuccess: async (tokenResponse) => {
+      try {
+        // Get user info from Google using the access token
+        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        });
+        const userInfo = await res.json();
+        // Use the email to create/login the user via our backend
+        await googleLogin(tokenResponse.access_token, userInfo);
+        toast.success('Google Sign-In successful! 🎉');
+        navigate('/dashboard');
+      } catch (error) {
+        toast.error(error.response?.data?.detail || 'Google Sign-In failed');
+      }
+    },
+    onError: () => {
+      toast.error('Google Sign-In was cancelled or failed. Please try again.');
+    },
+  });
 
   return (
     <div className="auth-page">
@@ -47,15 +56,10 @@ const LoginPage = () => {
         <p className="auth-subtitle">Login to continue your analysis</p>
 
         <div className="google-btn-wrapper">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            theme="filled_black"
-            size="large"
-            width="100%"
-            text="signin_with"
-            shape="rectangular"
-          />
+          <button className="custom-google-btn" onClick={() => handleGoogleLogin()}>
+            <FaGoogle className="google-icon" />
+            <span>Sign in with Google</span>
+          </button>
         </div>
 
         <div className="auth-divider">
