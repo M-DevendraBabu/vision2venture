@@ -12,6 +12,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [agreedTerms, setAgreedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   
   const { register, googleLogin } = useAuth();
@@ -151,7 +152,17 @@ const RegisterPage = () => {
               <span className="auth-error">Passwords do not match</span>
             )}
           </div>
-          <button type="submit" className="btn-primary" disabled={loading || !allPasswordValid}>
+          <div className="terms-checkbox">
+            <label className="checkbox-label">
+              <input 
+                type="checkbox" 
+                checked={agreedTerms} 
+                onChange={(e) => setAgreedTerms(e.target.checked)} 
+              />
+              <span>I agree to the <Link to="/terms" target="_blank">Terms & Conditions</Link> and <Link to="/privacy-policy" target="_blank">Privacy Policy</Link></span>
+            </label>
+          </div>
+          <button type="submit" className="btn-primary" disabled={loading || !allPasswordValid || !agreedTerms}>
             {loading ? 'Creating Account...' : 'Register'}
           </button>
         </form>

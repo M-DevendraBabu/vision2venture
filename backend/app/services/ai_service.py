@@ -4,39 +4,43 @@ import re
 import time
 
 # --- AI Client Setup ---
+_nvidia_client = None
 _groq_client = None
-_gemini_client = None
 
 def _init_clients():
-    global _groq_client, _gemini_client
+    global _nvidia_client, _groq_client
     
+    # NVIDIA as primary
+    if settings.NVIDIA_API_KEY:
+        try:
+            from openai import OpenAI
+            _nvidia_client = OpenAI(
+                base_url="https://integrate.api.nvidia.com/v1",
+                api_key=settings.NVIDIA_API_KEY
+            )
+            print("[AI] OK - NVIDIA API initialized (primary)")
+        except Exception as e:
+            print(f"[AI] NVIDIA init failed: {e}")
+
+    # Groq as fallback
     if settings.GROQ_API_KEY:
         try:
             from groq import Groq
             _groq_client = Groq(api_key=settings.GROQ_API_KEY)
-            print("[AI] OK - Groq API initialized (llama-3.3-70b-versatile)")
+            print("[AI] OK - Groq API initialized (fallback)")
         except Exception as e:
             print(f"[AI] Groq init failed: {e}")
-
-    if settings.GEMINI_API_KEY:
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            _gemini_client = genai.GenerativeModel('gemini-2.0-flash')
-            print("[AI] OK - Gemini API initialized (gemini-2.0-flash)")
-        except Exception as e:
-            print(f"[AI] Gemini init failed: {e}")
 
 _init_clients()
 
 
 def _call_llm(prompt: str) -> str:
-    """Call Groq first, with automatic failover to Gemini if Groq encounters rate limits or errors."""
-    # 1. Try Groq
-    if _groq_client is not None:
+    """Call NVIDIA first, with automatic failover to Groq."""
+    # 1. Try NVIDIA (primary)
+    if _nvidia_client is not None:
         try:
-            completion = _groq_client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+            completion = _nvidia_client.chat.completions.create(
+                model="meta/llama-3.1-70b-instruct",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
                 max_tokens=2500,
@@ -45,17 +49,26 @@ def _call_llm(prompt: str) -> str:
             if text:
                 return text
         except Exception as e:
-            print(f"[AI] Groq call notice ({e}). Trying Gemini failover...")
+            print(f"[AI] NVIDIA call notice ({e}). Trying Groq failover...")
 
-    # 2. Try Gemini Failover
-    if _gemini_client is not None:
+    # 2. Try Groq Failover
+    if _groq_client is not None:
         try:
-            response = _gemini_client.generate_content(prompt)
-            if response and response.text:
-                print("[AI] Gemini Failover SUCCESS!")
-                return response.text
+            completion = _groq_client.chat.completions.create(
+                model="qwen/qwen3.6-27b",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7,
+                max_tokens=2500,
+            )
+            text = completion.choices[0].message.content
+            if text:
+                # Remove thinking tags if present
+                import re
+                text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+                print("[AI] Groq Failover SUCCESS!")
+                return text
         except Exception as e:
-            print(f"[AI] Gemini call notice: {e}")
+            print(f"[AI] Groq call notice: {e}")
 
     return ""
 

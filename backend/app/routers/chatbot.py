@@ -18,6 +18,20 @@ _chat_provider = None
 
 def _init_chat():
     global _chat_client, _chat_provider
+    # Try NVIDIA first (primary)
+    if settings.NVIDIA_API_KEY:
+        try:
+            from openai import OpenAI
+            _chat_client = OpenAI(
+                base_url="https://integrate.api.nvidia.com/v1",
+                api_key=settings.NVIDIA_API_KEY
+            )
+            _chat_provider = "nvidia"
+            print("[Chatbot] OK - Using NVIDIA")
+            return
+        except Exception as e:
+            print(f"[Chatbot] NVIDIA failed: {e}")
+    # Groq fallback
     if settings.GROQ_API_KEY:
         try:
             from groq import Groq
@@ -27,16 +41,6 @@ def _init_chat():
             return
         except Exception as e:
             print(f"[Chatbot] Groq failed: {e}")
-    if settings.GEMINI_API_KEY:
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-            _chat_client = genai.GenerativeModel('gemini-2.0-flash', system_instruction=SYSTEM_PROMPT)
-            _chat_provider = "gemini"
-            print("[Chatbot] OK - Using Gemini")
-            return
-        except Exception as e:
-            print(f"[Chatbot] Gemini failed: {e}")
     print("[Chatbot] WARNING - No API key configured")
 
 _init_chat()
@@ -47,12 +51,12 @@ async def chat_message(payload: ChatMessage) -> Dict[str, str]:
         return {"reply": "Please type a message."}
     
     if _chat_client is None:
-        return {"reply": "AI assistant is not configured. Please set GROQ_API_KEY in the .env file."}
+        return {"reply": "AI assistant is not configured. Please set NVIDIA_API_KEY or GROQ_API_KEY in the .env file."}
     
     try:
-        if _chat_provider == "groq":
+        if _chat_provider == "nvidia":
             completion = _chat_client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model="meta/llama-3.1-70b-instruct",
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
                     {"role": "user", "content": payload.message}
@@ -61,9 +65,21 @@ async def chat_message(payload: ChatMessage) -> Dict[str, str]:
                 max_tokens=500,
             )
             return {"reply": completion.choices[0].message.content.strip()}
-        elif _chat_provider == "gemini":
-            response = _chat_client.generate_content(payload.message)
-            return {"reply": response.text.strip()}
+        elif _chat_provider == "groq":
+            completion = _chat_client.chat.completions.create(
+                model="qwen/qwen3.6-27b",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": payload.message}
+                ],
+                temperature=0.7,
+                max_tokens=500,
+            )
+            reply = completion.choices[0].message.content.strip()
+            # Remove thinking tags if present
+            import re
+            reply = re.sub(r'<think>.*?</think>', '', reply, flags=re.DOTALL).strip()
+            return {"reply": reply}
     except Exception as e:
         print(f"[Chatbot] Error: {e}")
         return {"reply": "Sorry, I encountered an error. Please try again."}

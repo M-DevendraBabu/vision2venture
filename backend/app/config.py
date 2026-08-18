@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     
     GEMINI_API_KEY: str = ""
     GROQ_API_KEY: str = ""
+    NVIDIA_API_KEY: str = ""
 
     # SMTP Configuration for sending OTP emails
     SMTP_HOST: str = "smtp.gmail.com"
