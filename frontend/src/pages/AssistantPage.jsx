@@ -5,10 +5,8 @@ import {
   FaRocket, FaChartLine, FaShieldAlt, FaQuestionCircle,
   FaMagic, FaCopy, FaCheck, FaArrowLeft
 } from 'react-icons/fa';
-import axios from 'axios';
+import api from '../services/api';
 import '../styles/Assistant.css';
-
-const api = axios.create({ baseURL: '/api' });
 
 const QUICK_PROMPTS = [
   { icon: <FaRocket />, text: "How do I validate a new startup idea?" },

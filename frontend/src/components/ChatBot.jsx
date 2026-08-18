@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { FaComments, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa';
-import axios from 'axios';
+import api from '../services/api';
 import './ChatBot.css';
-
-const api = axios.create({ baseURL: '/api' });
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
