@@ -143,28 +143,37 @@ from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 
 @router.post("/forgot-password")
 def request_password_reset_otp(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == req.email.strip()).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="No registered account found with this email address")
-    
-    # Generate 6-digit OTP code
-    otp_code = f"{random.randint(100000, 999999)}"
-    user.reset_token = otp_code
-    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=10)
-    db.commit()
+    import traceback
+    try:
+        clean_email = req.email.strip().lower()
+        user = db.query(User).filter(User.email == clean_email).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="No registered account found with this email address")
+        
+        # Generate 6-digit OTP code
+        otp_code = f"{random.randint(100000, 999999)}"
+        user.reset_token = otp_code
+        user.reset_token_expires = datetime.utcnow() + timedelta(minutes=15)
+        db.commit()
 
-    # Send email immediately via direct Port 465 SSL
-    sent, err_msg = send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
-    if not sent:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to dispatch verification email to {user.email}. {err_msg}"
-        )
+        # Send email via direct SSL
+        sent, err_msg = send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
+        if not sent:
+            print(f"[AUTH] Email delivery failed for {user.email}: {err_msg}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Email delivery notice: {err_msg}"
+            )
 
-    return {
-        "status": "success",
-        "message": f"A 6-digit verification code has been sent to {user.email}. Please check your inbox."
-    }
+        return {
+            "status": "success",
+            "message": f"A 6-digit verification code has been sent to {user.email}. Please check your inbox."
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
 
 @router.post("/reset-password")
 def verify_otp_and_reset_password(req: VerifyResetOTPRequest, db: Session = Depends(get_db)):
