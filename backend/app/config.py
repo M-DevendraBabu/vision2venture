@@ -22,9 +22,9 @@ class Settings(BaseSettings):
     # SMTP Configuration for sending OTP emails
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str = ""
-    SMTP_PASSWORD: str = ""
-    SMTP_FROM_EMAIL: str = ""
+    SMTP_USER: str = "devendrababumotupalli@gmail.com"
+    SMTP_PASSWORD: str = "qhuvnrvgfdhuhlyn"
+    SMTP_FROM_EMAIL: str = "devendrababumotupalli@gmail.com"
 
     # Google OAuth Configuration
     VITE_GOOGLE_CLIENT_ID: str = ""

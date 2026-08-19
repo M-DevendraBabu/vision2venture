@@ -40,7 +40,7 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
                 <div class="otp-code">{otp_code}</div>
             </div>
             
-            <p style="font-size: 13px; color: #94a3b8;">This code is valid for <strong>15 minutes</strong>. If you did not request a password reset, please ignore this email or secure your account.</p>
+            <p style="font-size: 13px; color: #94a3b8;">This code is valid for <strong>10 minutes</strong>. If you did not request a password reset, please ignore this email or secure your account.</p>
             
             <div class="footer">
                 <p>&copy; 2026 Vision2Venture AI. All rights reserved.</p>

@@ -150,7 +150,7 @@ def request_password_reset_otp(req: ForgotPasswordRequest, background_tasks: Bac
     # Generate 6-digit OTP code
     otp_code = f"{random.randint(100000, 999999)}"
     user.reset_token = otp_code
-    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=15)
+    user.reset_token_expires = datetime.utcnow() + timedelta(minutes=10)
     db.commit()
 
     # Dispatch email send to background task (non-blocking for high multi-user traffic)
