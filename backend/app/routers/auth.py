@@ -163,11 +163,14 @@ def request_password_reset_otp(req: ForgotPasswordRequest, db: Session = Depends
 
 @router.post("/reset-password")
 def verify_otp_and_reset_password(req: VerifyResetOTPRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == req.email).first()
+    clean_email = req.email.strip().lower()
+    clean_otp = str(req.otp_code).strip()
+
+    user = db.query(User).filter(User.email == clean_email).first()
     if not user:
         raise HTTPException(status_code=404, detail="No account found with this email address")
     
-    if not user.reset_token or user.reset_token != req.otp_code.strip():
+    if not user.reset_token or str(user.reset_token).strip() != clean_otp:
         raise HTTPException(status_code=400, detail="Invalid verification code. Please check the OTP and try again.")
     
     if not user.reset_token_expires or user.reset_token_expires < datetime.utcnow():
