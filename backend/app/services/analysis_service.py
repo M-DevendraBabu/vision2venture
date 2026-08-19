@@ -1,4 +1,5 @@
 import re
+import concurrent.futures
 from sqlalchemy.orm import Session
 from app.models.startup_idea import StartupIdea
 from app.models.analysis import (
@@ -215,10 +216,34 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Technology Recommendations: {e}")
             db.rollback()
 
-        # ============ 5. BUSINESS MODEL ============
+        # ============ 5, 6, 7. AI MODULES (PARALLEL CONCURRENT EXECUTION) ============
+        bm_data, swot_data, road_data = {}, {}, {}
         try:
-            print(f"[Analysis] 5/9 Running Business Model...")
-            bm_data = AIService.run_business_model(context) or {}
+            print(f"[Analysis] 5,6,7/9 Running Business Model, SWOT & Roadmap in parallel...")
+            with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+                future_bm = executor.submit(AIService.run_business_model, context)
+                future_swot = executor.submit(AIService.run_swot_analysis, context)
+                future_road = executor.submit(AIService.run_roadmap, context)
+
+                try:
+                    bm_data = future_bm.result(timeout=15.0) or {}
+                except Exception as e:
+                    print(f"[Analysis] BM timeout/fallback: {e}")
+                
+                try:
+                    swot_data = future_swot.result(timeout=15.0) or {}
+                except Exception as e:
+                    print(f"[Analysis] SWOT timeout/fallback: {e}")
+                
+                try:
+                    road_data = future_road.result(timeout=15.0) or {}
+                except Exception as e:
+                    print(f"[Analysis] Roadmap timeout/fallback: {e}")
+        except Exception as e:
+            print(f"[Analysis] Parallel executor notice: {e}")
+
+        # Save Business Model
+        try:
             db.add(BusinessModel(
                 idea_id=idea.id,
                 customer_segments=str(bm_data.get('customer_segments') or f'Primary: Users seeking {idea.industry} solutions'),
@@ -233,13 +258,11 @@ class AnalysisService:
             ))
             db.commit()
         except Exception as e:
-            print(f"[Analysis] ERROR in Business Model: {e}")
+            print(f"[Analysis] ERROR in Business Model save: {e}")
             db.rollback()
 
-        # ============ 6. SWOT ANALYSIS ============
+        # Save SWOT Analysis
         try:
-            print(f"[Analysis] 6/9 Running SWOT Analysis...")
-            swot_data = AIService.run_swot_analysis(context) or {}
             db.add(SwotAnalysis(
                 idea_id=idea.id,
                 strengths=swot_data.get('strengths') or [f'Innovative approach in {idea.industry}', f'Targeted {sector} execution'],
@@ -250,13 +273,11 @@ class AnalysisService:
             ))
             db.commit()
         except Exception as e:
-            print(f"[Analysis] ERROR in SWOT: {e}")
+            print(f"[Analysis] ERROR in SWOT save: {e}")
             db.rollback()
 
-        # ============ 7. ROADMAP ============
+        # Save Roadmap
         try:
-            print(f"[Analysis] 7/9 Running Roadmap Generation...")
-            road_data = AIService.run_roadmap(context) or {}
             db.add(ImplementationRoadmap(
                 idea_id=idea.id,
                 phase_1=road_data.get('phase_1') or {'name': 'Phase 1: Validation & Design', 'duration': 'Months 1-2', 'tasks': ['Market validation', 'UI Wireframes', 'Customer Survey'], 'milestones': ['50 user interviews'], 'success_metrics': ['80% positive feedback'], 'estimated_cost': f'~${budget*0.15:,.0f}'},
@@ -268,7 +289,7 @@ class AnalysisService:
             ))
             db.commit()
         except Exception as e:
-            print(f"[Analysis] ERROR in Roadmap: {e}")
+            print(f"[Analysis] ERROR in Roadmap save: {e}")
             db.rollback()
 
         # ============ 8. FINANCIAL ANALYSIS (ML/BENCHMARK DRIVEN) ============

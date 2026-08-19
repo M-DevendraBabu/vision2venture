@@ -30,6 +30,15 @@ def _run_analysis_with_new_session(idea_id: str):
     db = SessionLocal()
     try:
         AnalysisService.run_full_analysis(idea_id, db)
+    except Exception as e:
+        print(f"[Analysis] Background task fatal error: {e}")
+        try:
+            idea = db.query(StartupIdea).filter(StartupIdea.id == idea_id).first()
+            if idea and idea.analysis_status == 'running':
+                idea.analysis_status = 'failed'
+                db.commit()
+        except Exception as inner_e:
+            print(f"[Analysis] Failed to update status to failed: {inner_e}")
     finally:
         db.close()
 

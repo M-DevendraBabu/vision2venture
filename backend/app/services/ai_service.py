@@ -16,7 +16,8 @@ def _init_clients():
             from openai import OpenAI
             _nvidia_client = OpenAI(
                 base_url="https://integrate.api.nvidia.com/v1",
-                api_key=settings.NVIDIA_API_KEY
+                api_key=settings.NVIDIA_API_KEY,
+                timeout=8.0
             )
             print("[AI] OK - NVIDIA API initialized (primary)")
         except Exception as e:
@@ -34,16 +35,16 @@ def _init_clients():
 _init_clients()
 
 
-def _call_llm(prompt: str) -> str:
+def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 6.0) -> str:
     """Call NVIDIA first, with automatic failover to Groq."""
-    # 1. Try NVIDIA (primary)
+    # 1. Try NVIDIA (primary - fast 8b model)
     if _nvidia_client is not None:
         try:
             completion = _nvidia_client.chat.completions.create(
-                model="meta/llama-3.1-70b-instruct",
+                model="meta/llama-3.1-8b-instruct",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
-                max_tokens=2500,
+                max_tokens=max_tokens,
             )
             text = completion.choices[0].message.content
             if text:
@@ -51,14 +52,15 @@ def _call_llm(prompt: str) -> str:
         except Exception as e:
             print(f"[AI] NVIDIA call notice ({e}). Trying Groq failover...")
 
-    # 2. Try Groq Failover
+    # 2. Try Groq Failover (groq/compound-mini)
     if _groq_client is not None:
         try:
             completion = _groq_client.chat.completions.create(
-                model="qwen/qwen3.6-27b",
+                model="groq/compound-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
-                max_tokens=2500,
+                max_tokens=max_tokens,
+                timeout=timeout,
             )
             text = completion.choices[0].message.content
             if text:
@@ -77,23 +79,29 @@ def _parse_json(text: str) -> dict:
     """Extract JSON from LLM response text."""
     if not text:
         return {}
+    
+    # Strip thinking tags if returned by reasoning models
+    clean_text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+    if not clean_text:
+        clean_text = text
+
     try:
-        match = re.search(r'```(?:json)?\s*(.*?)```', text, re.DOTALL)
+        match = re.search(r'```(?:json)?\s*(.*?)```', clean_text, re.DOTALL)
         if match:
             return json.loads(match.group(1).strip())
-        brace_match = re.search(r'\{.*\}', text, re.DOTALL)
+        brace_match = re.search(r'\{.*\}', clean_text, re.DOTALL)
         if brace_match:
             return json.loads(brace_match.group(0))
-        return json.loads(text.strip())
+        return json.loads(clean_text.strip())
     except json.JSONDecodeError as e:
-        print(f"[AI] JSON parse error: {e}")
+        print(f"[AI] JSON parse notice: {e}")
         return {}
 
 
 class AIService:
     @staticmethod
-    def _generate(prompt: str) -> dict:
-        text = _call_llm(prompt)
+    def _generate(prompt: str, max_tokens: int = 700) -> dict:
+        text = _call_llm(prompt, max_tokens=max_tokens, timeout=5.0)
         result = _parse_json(text)
         return result
 
