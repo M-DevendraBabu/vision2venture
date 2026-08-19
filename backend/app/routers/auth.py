@@ -156,14 +156,10 @@ def request_password_reset_otp(req: ForgotPasswordRequest, db: Session = Depends
         user.reset_token_expires = datetime.utcnow() + timedelta(minutes=15)
         db.commit()
 
-        # Send email via direct SSL
+        # Send email via HTTPS APIs or direct SSL
         sent, err_msg = send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
         if not sent:
-            print(f"[AUTH] SMTP Notice: {err_msg}")
-            return {
-                "status": "success",
-                "message": f"Verification code generated for {user.email}! Code: {otp_code}"
-            }
+            print(f"[AUTH] Email delivery notice: {err_msg}")
 
         return {
             "status": "success",

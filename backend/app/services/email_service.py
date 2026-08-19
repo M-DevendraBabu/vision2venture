@@ -1,5 +1,7 @@
 import smtplib
 import ssl
+import json
+import urllib.request
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -10,8 +12,8 @@ logger = logging.getLogger(__name__)
 def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") -> tuple[bool, str]:
     """
     Sends a confidential 6-digit OTP code to the user's email address.
-    Tries Direct SSL (Port 465) and STARTTLS (Port 587).
-    Gracefully handles cloud container firewall restrictions without crashing.
+    Supports HTTPS REST APIs (Resend, Brevo - unblocked on cloud containers)
+    and direct SMTP (Port 465 / 587).
     """
     subject = "Vision2Venture — Password Reset Verification Code"
     
@@ -51,12 +53,63 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     </html>
     """
 
-    smtp_host = "smtp.gmail.com"
+    # 1. Try Resend HTTPS API (Port 443 - 100% unblocked on Render)
+    resend_key = settings.RESEND_API_KEY.strip() if settings.RESEND_API_KEY else ""
+    if resend_key:
+        try:
+            req_data = json.dumps({
+                "from": "Vision2Venture <onboarding@resend.dev>",
+                "to": [to_email],
+                "subject": subject,
+                "html": html_content
+            }).encode('utf-8')
+            req = urllib.request.Request(
+                "https://api.resend.com/emails",
+                data=req_data,
+                headers={
+                    "Authorization": f"Bearer {resend_key}",
+                    "Content-Type": "application/json"
+                }
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                if resp.status in (200, 201):
+                    print(f"[EMAIL SERVICE] [OK] OTP email sent via Resend HTTPS API to {to_email}!")
+                    return (True, "")
+        except Exception as e_resend:
+            print(f"[EMAIL SERVICE] Resend API notice: {e_resend}. Trying Brevo / SMTP...")
+
+    # 2. Try Brevo HTTPS API (Port 443)
+    brevo_key = settings.BREVO_API_KEY.strip() if settings.BREVO_API_KEY else ""
+    if brevo_key:
+        try:
+            from_email = settings.SMTP_FROM_EMAIL or "devendrababumotupalli@gmail.com"
+            req_data = json.dumps({
+                "sender": {"name": "Vision2Venture Security", "email": from_email},
+                "to": [{"email": to_email}],
+                "subject": subject,
+                "htmlContent": html_content
+            }).encode('utf-8')
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=req_data,
+                headers={
+                    "api-key": brevo_key,
+                    "Content-Type": "application/json"
+                }
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                if resp.status in (200, 201):
+                    print(f"[EMAIL SERVICE] [OK] OTP email sent via Brevo HTTPS API to {to_email}!")
+                    return (True, "")
+        except Exception as e_brevo:
+            print(f"[EMAIL SERVICE] Brevo API notice: {e_brevo}. Trying SMTP...")
+
+    # 3. Try Direct SMTP (Port 465 SSL / Port 587 STARTTLS)
+    smtp_host = settings.SMTP_HOST or "smtp.gmail.com"
     smtp_user = (settings.SMTP_USER.strip() if settings.SMTP_USER else "") or "devendrababumotupalli@gmail.com"
     smtp_pass = (settings.SMTP_PASSWORD.strip() if settings.SMTP_PASSWORD else "") or "qhuvnrvgfdhuhlyn"
     from_email = (settings.SMTP_FROM_EMAIL.strip() if settings.SMTP_FROM_EMAIL else "") or smtp_user
 
-    # Prepare MIME message
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject
     msg['From'] = f"Vision2Venture Security <{from_email}>"
@@ -64,10 +117,7 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     msg.attach(MIMEText(html_content, 'html'))
     msg_str = msg.as_string()
 
-    e_ssl_err = ""
-    e_tls_err = ""
-
-    # 1. Primary Strategy: Direct Port 465 SSL with SSLContext
+    # Port 465 SSL
     try:
         ctx = ssl.create_default_context()
         with smtplib.SMTP_SSL(smtp_host, 465, context=ctx, timeout=6) as server:
@@ -76,10 +126,9 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
         print(f"[EMAIL SERVICE] [OK] OTP sent successfully via SSL (Port 465) to {to_email}!")
         return (True, "")
     except Exception as e_ssl:
-        e_ssl_err = str(e_ssl)
-        print(f"[EMAIL SERVICE] Port 465 notice: {e_ssl_err}. Trying Port 587 STARTTLS...")
+        print(f"[EMAIL SERVICE] Port 465 notice: {e_ssl}. Trying Port 587 STARTTLS...")
 
-    # 2. Fallback Strategy: Port 587 STARTTLS
+    # Port 587 TLS
     try:
         with smtplib.SMTP(smtp_host, 587, timeout=6) as server:
             server.starttls()
@@ -88,9 +137,7 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
         print(f"[EMAIL SERVICE] [OK] OTP sent successfully via TLS (Port 587) to {to_email}!")
         return (True, "")
     except Exception as e_tls:
-        e_tls_err = str(e_tls)
-        print(f"[EMAIL SERVICE] Port 587 notice: {e_tls_err}")
+        print(f"[EMAIL SERVICE] Port 587 notice: {e_tls}")
 
-    # Fallback log for environments where outbound SMTP is blocked
     print(f"\n[CONFIDENTIAL OTP DISPATCH] To: {to_email} | OTP Code: {otp_code} (Valid 10 mins)\n")
-    return (False, f"Render Cloud SMTP restricted. Active OTP: {otp_code}")
+    return (False, f"Render Cloud SMTP restricted. Please configure RESEND_API_KEY in Render environment variables for HTTPS delivery.")

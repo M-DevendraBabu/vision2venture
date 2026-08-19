@@ -29,6 +29,10 @@ class Settings(BaseSettings):
     # Google OAuth Configuration
     VITE_GOOGLE_CLIENT_ID: str = ""
 
+    # Cloud HTTPS Email APIs (Unblocked on Render free tier)
+    RESEND_API_KEY: str = ""
+    BREVO_API_KEY: str = ""
+
     class Config:
         env_file = str(_ENV_FILE)
         env_file_encoding = "utf-8"
