@@ -68,7 +68,8 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
                 data=req_data,
                 headers={
                     "Authorization": f"Bearer {resend_key}",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "User-Agent": "Vision2Venture/1.0"
                 }
             )
             with urllib.request.urlopen(req, timeout=8) as resp:
