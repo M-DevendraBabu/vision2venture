@@ -9,8 +9,7 @@ logger = logging.getLogger(__name__)
 def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") -> bool:
     """
     Sends a confidential 6-digit OTP code to the user's email address.
-    If SMTP settings are configured in .env, sends real email via SMTP.
-    Otherwise, logs securely to backend server logs.
+    Uses direct Port 465 SSL first for fastest cloud delivery, with Port 587 TLS fallback.
     """
     subject = "Vision2Venture — Password Reset Verification Code"
     
@@ -50,44 +49,40 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     </html>
     """
 
-    # Check if SMTP is configured
     smtp_host = settings.SMTP_HOST or 'smtp.gmail.com'
-    smtp_port = int(settings.SMTP_PORT or 587)
-    smtp_user = settings.SMTP_USER
-    smtp_pass = settings.SMTP_PASSWORD
-    from_email = settings.SMTP_FROM_EMAIL or smtp_user or "noreply@vision2venture.com"
+    smtp_user = settings.SMTP_USER or "devendrababumotupalli@gmail.com"
+    smtp_pass = settings.SMTP_PASSWORD or "qhuvnrvgfdhuhlyn"
+    from_email = settings.SMTP_FROM_EMAIL or smtp_user
 
-    if smtp_user and smtp_pass:
-        try:
-            msg = MIMEMultipart('alternative')
-            msg['Subject'] = subject
-            msg['From'] = f"Vision2Venture Security <{from_email}>"
-            msg['To'] = to_email
-            
-            part = MIMEText(html_content, 'html')
-            msg.attach(part)
-            
-            if smtp_port == 465:
-                with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=12) as server:
-                    server.login(smtp_user, smtp_pass)
-                    server.sendmail(from_email, [to_email], msg.as_string())
-            else:
-                with smtplib.SMTP(smtp_host, smtp_port, timeout=12) as server:
-                    server.starttls()
-                    server.login(smtp_user, smtp_pass)
-                    server.sendmail(from_email, [to_email], msg.as_string())
-            
-            print(f"\n[EMAIL SERVICE] [OK] OTP email successfully sent via SMTP to {to_email}!")
-            return True
-        except Exception as e:
-            print(f"\n[EMAIL SERVICE] [FAIL] Failed to send SMTP email to {to_email}: {e}")
+    # Prepare MIME message
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = f"Vision2Venture Security <{from_email}>"
+    msg['To'] = to_email
+    msg.attach(MIMEText(html_content, 'html'))
+    msg_str = msg.as_string()
 
-    # Fallback server logging when SMTP_USER or SMTP_PASSWORD are not set in .env
-    print(f"\n" + "="*80)
-    print(f"[CONFIDENTIAL EMAIL OUTBOX - SMTP CONFIGURATION NEEDED]")
-    print(f"  To:       {to_email}")
-    print(f"  Subject:  {subject}")
-    print(f"  OTP Code: {otp_code} (Valid for 15 minutes)")
-    print(f"  Notice:   Set SMTP_USER and SMTP_PASSWORD in .env to enable live email delivery.")
-    print(f"="*80 + "\n")
+    # 1. Try Direct SSL (Port 465) - Fastest and unblocked on cloud hosts
+    try:
+        with smtplib.SMTP_SSL(smtp_host, 465, timeout=8) as server:
+            server.login(smtp_user, smtp_pass)
+            server.sendmail(from_email, [to_email], msg_str)
+        print(f"[EMAIL SERVICE] [OK] OTP sent successfully via SSL (Port 465) to {to_email}!")
+        return True
+    except Exception as e_ssl:
+        print(f"[EMAIL SERVICE] Port 465 SSL notice: {e_ssl}. Trying Port 587 TLS fallback...")
+
+    # 2. Try STARTTLS (Port 587) - Fallback
+    try:
+        with smtplib.SMTP(smtp_host, 587, timeout=8) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.sendmail(from_email, [to_email], msg_str)
+        print(f"[EMAIL SERVICE] [OK] OTP sent successfully via TLS (Port 587) to {to_email}!")
+        return True
+    except Exception as e_tls:
+        print(f"[EMAIL SERVICE] [FAIL] Both Port 465 and Port 587 failed: {e_tls}")
+
+    # Fallback log
+    print(f"\n[CONFIDENTIAL OTP OUTBOX] To: {to_email} | Code: {otp_code} (10 mins valid)\n")
     return True

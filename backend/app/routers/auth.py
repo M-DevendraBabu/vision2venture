@@ -142,8 +142,8 @@ def get_profile(current_user: User = Depends(get_current_user)):
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 
 @router.post("/forgot-password")
-def request_password_reset_otp(req: ForgotPasswordRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == req.email).first()
+def request_password_reset_otp(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email.strip()).first()
     if not user:
         raise HTTPException(status_code=404, detail="No registered account found with this email address")
     
@@ -153,8 +153,8 @@ def request_password_reset_otp(req: ForgotPasswordRequest, background_tasks: Bac
     user.reset_token_expires = datetime.utcnow() + timedelta(minutes=10)
     db.commit()
 
-    # Dispatch email send to background task (non-blocking for high multi-user traffic)
-    background_tasks.add_task(send_reset_otp_email, to_email=user.email, otp_code=otp_code, user_name=user.name)
+    # Send email immediately via direct Port 465 SSL
+    send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
 
     return {
         "status": "success",
