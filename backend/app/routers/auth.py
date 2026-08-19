@@ -154,7 +154,12 @@ def request_password_reset_otp(req: ForgotPasswordRequest, db: Session = Depends
     db.commit()
 
     # Send email immediately via direct Port 465 SSL
-    send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
+    sent, err_msg = send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
+    if not sent:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to dispatch verification email to {user.email}. {err_msg}"
+        )
 
     return {
         "status": "success",

@@ -1,4 +1,5 @@
 import smtplib
+import ssl
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -6,10 +7,10 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
-def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") -> bool:
+def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") -> tuple[bool, str]:
     """
     Sends a confidential 6-digit OTP code to the user's email address.
-    Uses direct Port 465 SSL first for fastest cloud delivery, with Port 587 TLS fallback.
+    Returns (success: bool, error_message: str).
     """
     subject = "Vision2Venture — Password Reset Verification Code"
     
@@ -49,10 +50,10 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     </html>
     """
 
-    smtp_host = settings.SMTP_HOST or 'smtp.gmail.com'
-    smtp_user = settings.SMTP_USER or "devendrababumotupalli@gmail.com"
-    smtp_pass = settings.SMTP_PASSWORD or "qhuvnrvgfdhuhlyn"
-    from_email = settings.SMTP_FROM_EMAIL or smtp_user
+    smtp_host = "smtp.gmail.com"
+    smtp_user = (settings.SMTP_USER.strip() if settings.SMTP_USER else "") or "devendrababumotupalli@gmail.com"
+    smtp_pass = (settings.SMTP_PASSWORD.strip() if settings.SMTP_PASSWORD else "") or "qhuvnrvgfdhuhlyn"
+    from_email = (settings.SMTP_FROM_EMAIL.strip() if settings.SMTP_FROM_EMAIL else "") or smtp_user
 
     # Prepare MIME message
     msg = MIMEMultipart('alternative')
@@ -62,27 +63,25 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     msg.attach(MIMEText(html_content, 'html'))
     msg_str = msg.as_string()
 
-    # 1. Try Direct SSL (Port 465) - Fastest and unblocked on cloud hosts
+    # 1. Primary Strategy: Direct Port 465 SSL with SSLContext
     try:
-        with smtplib.SMTP_SSL(smtp_host, 465, timeout=8) as server:
+        ctx = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_host, 465, context=ctx, timeout=8) as server:
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, [to_email], msg_str)
         print(f"[EMAIL SERVICE] [OK] OTP sent successfully via SSL (Port 465) to {to_email}!")
-        return True
+        return (True, "")
     except Exception as e_ssl:
-        print(f"[EMAIL SERVICE] Port 465 SSL notice: {e_ssl}. Trying Port 587 TLS fallback...")
+        print(f"[EMAIL SERVICE] Port 465 SSL notice: {e_ssl}. Trying Port 587 STARTTLS...")
 
-    # 2. Try STARTTLS (Port 587) - Fallback
+    # 2. Fallback Strategy: Port 587 STARTTLS
     try:
         with smtplib.SMTP(smtp_host, 587, timeout=8) as server:
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, [to_email], msg_str)
         print(f"[EMAIL SERVICE] [OK] OTP sent successfully via TLS (Port 587) to {to_email}!")
-        return True
+        return (True, "")
     except Exception as e_tls:
         print(f"[EMAIL SERVICE] [FAIL] Both Port 465 and Port 587 failed: {e_tls}")
-
-    # Fallback log
-    print(f"\n[CONFIDENTIAL OTP OUTBOX] To: {to_email} | Code: {otp_code} (10 mins valid)\n")
-    return True
+        return (False, f"SMTP Connection Error: SSL ({e_ssl}) | TLS ({e_tls})")
