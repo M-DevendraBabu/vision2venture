@@ -6,8 +6,6 @@ from app.middleware.rate_limiter import RateLimiterMiddleware
 from app.models.user import User
 import os
 
-# Initialize DB tables (in production use Alembic)
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Vision2Venture API",
@@ -27,9 +25,14 @@ app.include_router(report.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 app.include_router(chatbot.router, prefix="/api")
 
-# Auto-promote admin on startup
+# Auto-promote admin and init DB on startup
 @app.on_event("startup")
-def init_admin():
+def startup_tasks():
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"[DB] Table creation notice: {e}")
+
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "devendrababumotupalli@gmail.com")
     db = SessionLocal()
     try:
