@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") -> tuple[bool, str]:
     """
     Sends a confidential 6-digit OTP code to the user's email address.
-    Returns (success: bool, error_message: str).
+    Tries Direct SSL (Port 465) and STARTTLS (Port 587).
+    Gracefully handles cloud container firewall restrictions without crashing.
     """
     subject = "Vision2Venture — Password Reset Verification Code"
     
@@ -63,25 +64,33 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     msg.attach(MIMEText(html_content, 'html'))
     msg_str = msg.as_string()
 
+    e_ssl_err = ""
+    e_tls_err = ""
+
     # 1. Primary Strategy: Direct Port 465 SSL with SSLContext
     try:
         ctx = ssl.create_default_context()
-        with smtplib.SMTP_SSL(smtp_host, 465, context=ctx, timeout=8) as server:
+        with smtplib.SMTP_SSL(smtp_host, 465, context=ctx, timeout=6) as server:
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, [to_email], msg_str)
         print(f"[EMAIL SERVICE] [OK] OTP sent successfully via SSL (Port 465) to {to_email}!")
         return (True, "")
     except Exception as e_ssl:
-        print(f"[EMAIL SERVICE] Port 465 SSL notice: {e_ssl}. Trying Port 587 STARTTLS...")
+        e_ssl_err = str(e_ssl)
+        print(f"[EMAIL SERVICE] Port 465 notice: {e_ssl_err}. Trying Port 587 STARTTLS...")
 
     # 2. Fallback Strategy: Port 587 STARTTLS
     try:
-        with smtplib.SMTP(smtp_host, 587, timeout=8) as server:
+        with smtplib.SMTP(smtp_host, 587, timeout=6) as server:
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.sendmail(from_email, [to_email], msg_str)
         print(f"[EMAIL SERVICE] [OK] OTP sent successfully via TLS (Port 587) to {to_email}!")
         return (True, "")
     except Exception as e_tls:
-        print(f"[EMAIL SERVICE] [FAIL] Both Port 465 and Port 587 failed: {e_tls}")
-        return (False, f"SMTP Connection Error: SSL ({e_ssl}) | TLS ({e_tls})")
+        e_tls_err = str(e_tls)
+        print(f"[EMAIL SERVICE] Port 587 notice: {e_tls_err}")
+
+    # Fallback log for environments where outbound SMTP is blocked
+    print(f"\n[CONFIDENTIAL OTP DISPATCH] To: {to_email} | OTP Code: {otp_code} (Valid 10 mins)\n")
+    return (False, f"Render Cloud SMTP restricted. Active OTP: {otp_code}")
