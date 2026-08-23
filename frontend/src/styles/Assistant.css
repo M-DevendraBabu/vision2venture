@@ -520,4 +520,50 @@
   .chat-input-pill {
     padding: 4px 6px 4px 14px !important;
   }
+
+  .mobile-quick-prompts {
+    margin-top: auto;
+    padding: 12px 0 6px 0;
+  }
+
+  .mobile-prompts-title {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .mobile-prompts-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .mobile-prompts-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-prompt-chip {
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    color: #cbd5e1;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-prompt-chip:active {
+    transform: scale(0.94);
+    background: rgba(99, 102, 241, 0.25);
+  }
 }

@@ -258,6 +258,25 @@ const AssistantPage = () => {
                 </div>
               </div>
             )}
+            {messages.length <= 1 && (
+              <div className="mobile-quick-prompts">
+                <p className="mobile-prompts-title">✨ Popular Startup Questions:</p>
+                <div className="mobile-prompts-scroll">
+                  {QUICK_PROMPTS.map((prompt, i) => (
+                    <button 
+                      key={i} 
+                      className="mobile-prompt-chip" 
+                      onClick={() => handlePromptClick(prompt.text)}
+                      type="button"
+                    >
+                      <span>{prompt.icon}</span>
+                      <span>{prompt.text}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
 

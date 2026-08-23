@@ -327,15 +327,29 @@ textarea.floating-input {
   max-width: 1400px;
   margin: 0 auto;
   padding: var(--spacing-xl);
-  padding-top: calc(80px + var(--spacing-xl));
+  padding-top: calc(70px + var(--spacing-md));
   min-height: 100vh;
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
 .page-content {
   flex: 1;
   min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .page-layout {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 14px;
+    padding-top: 72px;
+    gap: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 .main-content {

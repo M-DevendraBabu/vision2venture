@@ -307,9 +307,26 @@
   margin-left: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .wizard-container { 
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 14px !important; 
+    margin: 0 !important;
+  }
   .sector-cards-container, .form-row, .summary-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
-  .wizard-container { padding: var(--spacing-lg); }
+  .step-label {
+    font-size: 0.68rem;
+  }
+  .dot-circle {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+  .wizard-step h2 {
+    font-size: 1.3rem;
+  }
 }

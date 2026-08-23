@@ -173,8 +173,23 @@
   background-size: 28px 28px;
 }
 
-@media (max-width: 768px) {
-  .stats-grid { grid-template-columns: 1fr; }
-  .ideas-grid { grid-template-columns: 1fr; }
-  .dashboard-header { flex-direction: column; gap: var(--spacing-md); align-items: flex-start; }
+@media (max-width: 1024px) {
+  .stats-grid { 
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .ideas-grid { 
+    grid-template-columns: 1fr; 
+    gap: 12px;
+  }
+  .idea-card {
+    padding: 16px;
+    width: 100%;
+  }
+  .dashboard-header { 
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center; 
+    margin-bottom: 16px;
+  }
 }

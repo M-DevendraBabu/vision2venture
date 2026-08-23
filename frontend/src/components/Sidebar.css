@@ -70,8 +70,8 @@
   transform: scale(1.1);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .sidebar {
-    display: none;
+    display: none !important;
   }
 }

@@ -229,3 +229,21 @@
 .admin-section {
   margin-bottom: var(--spacing-2xl);
 }
+
+@media (max-width: 1024px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .admin-table-wrapper {
+    padding: 8px;
+  }
+  .admin-table th, .admin-table td {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+  .admin-tabs {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
