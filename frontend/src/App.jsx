@@ -14,6 +14,7 @@ import AssistantPage from './pages/AssistantPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import InstallAppPrompt from './components/Common/InstallAppPrompt';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,6 +25,7 @@ function App() {
   return (
     <>
       <Navbar />
+      <InstallAppPrompt />
       <main className={`main-content ${hideFooter ? 'no-scroll' : ''}`}>
         <Routes>
           <Route path="/" element={<LandingPage />} />

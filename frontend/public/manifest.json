@@ -1,0 +1,42 @@
+{
+  "name": "Vision2Venture - AI Startup Analysis",
+  "short_name": "Vision2Venture",
+  "description": "Validate any business idea in 60 seconds with AI-powered market, financial, competitor, and risk analysis.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "shortcuts": [
+    {
+      "name": "New Analysis",
+      "url": "/analyze",
+      "description": "Start analyzing a new startup idea"
+    },
+    {
+      "name": "Dashboard",
+      "url": "/dashboard",
+      "description": "View analyzed ideas and portfolio"
+    },
+    {
+      "name": "AI Assistant",
+      "url": "/assistant",
+      "description": "Chat with your AI startup co-pilot"
+    }
+  ]
+}

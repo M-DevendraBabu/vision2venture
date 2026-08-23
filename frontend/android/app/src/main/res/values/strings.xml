@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Vision2Venture</string>
+    <string name="title_activity_main">Vision2Venture</string>
+    <string name="package_name">com.vision2venture.app</string>
+    <string name="custom_url_scheme">com.vision2venture.app</string>
+</resources>
