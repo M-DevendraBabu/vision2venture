@@ -1,0 +1,62 @@
+/* ============================================================
+   VISION2VENTURE — CENTRAL RESPONSIVE BREAKPOINT SYSTEM
+   0px - 480px    : Mobile
+   481px - 768px  : Large Mobile / Small Tablet
+   769px - 1024px : Tablet
+   1025px+        : Desktop
+   ============================================================ */
+
+/* Page Container */
+.page-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+/* Visibility Helpers */
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: block !important;
+}
+
+.tablet-and-down {
+  display: none !important;
+}
+
+/* Tablet & Down (<= 1024px) */
+@media (max-width: 1024px) {
+  .page-container {
+    padding: 20px;
+  }
+}
+
+/* Mobile & Small Tablet (<= 768px) */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  .tablet-and-down {
+    display: block !important;
+  }
+}
+
+/* Small Phone (<= 480px) */
+@media (max-width: 480px) {
+  .page-container {
+    padding: 12px;
+  }
+}

@@ -3,12 +3,13 @@
    ================================================================= */
 
 .assistant-page {
-  height: 100vh;
+  height: calc(100dvh - 64px);
+  min-height: calc(100dvh - 64px);
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80px 24px 20px 24px;
+  padding: 74px 20px 16px 20px;
   box-sizing: border-box;
   overflow: hidden;
 }

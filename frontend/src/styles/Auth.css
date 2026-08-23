@@ -265,3 +265,22 @@
   color: #a5b4fc;
   text-decoration: underline;
 }
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 12px;
+    margin-top: 60px;
+  }
+  .auth-card {
+    width: 100%;
+    padding: 24px 16px;
+    border-radius: 16px;
+  }
+  .auth-title {
+    font-size: 1.6rem;
+  }
+  .pw-checks-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

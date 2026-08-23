@@ -1,4 +1,6 @@
 @import './variables.css';
+@import './globals.css';
+@import './responsive.css';
 @import './animations.css';
 
 * {

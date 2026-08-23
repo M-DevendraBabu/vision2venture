@@ -248,7 +248,21 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-@media (max-width: 1024px) {
+.desktop-user-table {
+  display: block;
+}
+
+.mobile-user-cards {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-user-table {
+    display: none !important;
+  }
+  .mobile-user-cards {
+    display: flex !important;
+  }
   .admin-stats-grid {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -256,10 +270,6 @@
   .admin-table-wrapper {
     padding: 4px;
     border-radius: 16px;
-  }
-  .admin-table th, .admin-table td {
-    padding: 12px 14px;
-    font-size: 0.88rem;
   }
   .admin-tabs {
     flex-wrap: wrap;
