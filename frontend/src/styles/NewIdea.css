@@ -19,7 +19,8 @@
 }
 
 .wizard-container {
-  max-width: 920px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: var(--spacing-2xl);
   background: #0f172a;
@@ -241,30 +242,45 @@
   .wizard-container { 
     width: 100% !important;
     max-width: 100% !important;
-    padding: 28px 20px !important; 
+    padding: 24px 16px !important; 
     margin: 0 !important;
-    border-radius: 18px !important;
+    border-radius: 16px !important;
   }
   .sector-cards-container, .form-row, .summary-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
   .step-label {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
   }
   .dot-circle {
-    width: 40px;
-    height: 40px;
-    font-size: 0.95rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
     font-weight: 700;
   }
   .wizard-step h2 {
-    font-size: 1.45rem;
+    font-size: 1.35rem;
   }
   .wizard-actions button {
     min-height: 52px;
     font-size: 1.05rem;
     padding: 12px 24px;
   }
+  /* Prevent auto-zoom on input focus */
+  .wizard-container input,
+  .wizard-container select,
+  .wizard-container textarea {
+    font-size: 16px !important;
+    min-height: 50px;
+    touch-action: manipulation;
+  }
+  .wizard-header {
+    margin-bottom: 16px;
+  }
+  .wizard-header h1 {
+    font-size: 1.5rem;
+  }
 }
+
