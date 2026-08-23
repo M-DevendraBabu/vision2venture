@@ -48,7 +48,9 @@ const Navbar = () => {
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="navbar-container">
           <Link to="/" className="navbar-logo">
-            <FaRocket className="logo-icon" />
+            <div className="logo-badge">
+              <FaRocket className="logo-icon" />
+            </div>
             <span className="gradient-text">Vision2Venture</span>
           </Link>
 

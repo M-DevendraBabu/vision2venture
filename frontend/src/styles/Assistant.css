@@ -461,10 +461,12 @@
   border: none !important;
   box-shadow: none !important;
   color: #f1f5f9 !important;
-  font-size: 0.95rem !important;
+  font-size: 16px !important; /* Prevents mobile browser from auto-zooming */
   outline: none !important;
-  padding: 8px 0 !important;
-  height: 40px !important;
+  padding: 10px 0 !important;
+  min-height: 44px !important;
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
 }
 
 .chat-input-pill input[type="text"]::placeholder {
