@@ -236,43 +236,43 @@ const AdminPage = () => {
                   </table>
                 </div>
 
-                {/* Mobile Cards View (<= 768px) */}
-                <div className="mobile-user-cards" style={{ display: 'none', flexDirection: 'column', gap: '12px' }}>
+                {/* Mobile Cards View (<= 1200px) */}
+                <div className="mobile-user-cards" style={{ display: 'none', flexDirection: 'column', gap: '16px' }}>
                   {filteredUsers.map(u => (
-                    <div key={u.id} className="mobile-user-card" style={{ padding: '16px', background: '#131b2e', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div key={u.id} className="mobile-user-card" style={{ padding: '20px 18px', background: '#131b2e', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <div>
-                          <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '1rem' }}>{u.name}</div>
-                          <div style={{ fontSize: '0.82rem', color: '#94a3b8' }}>{u.email}</div>
+                          <div style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.2rem' }}>{u.name}</div>
+                          <div style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '2px' }}>{u.email}</div>
                         </div>
                         {u.role === 'admin' ? (
-                          <span style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
-                            <FaCrown size={10} style={{ marginRight: 4 }} /> Admin
+                          <span style={{ background: 'rgba(245,158,11,0.18)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.35)', padding: '4px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 800 }}>
+                            <FaCrown size={12} style={{ marginRight: 6 }} /> Admin
                           </span>
                         ) : (
-                          <span style={{ background: 'rgba(99,102,241,0.15)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.3)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700 }}>
+                          <span style={{ background: 'rgba(99,102,241,0.18)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.35)', padding: '4px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 800 }}>
                             User
                           </span>
                         )}
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#cbd5e1' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#cbd5e1', background: 'rgba(255,255,255,0.03)', padding: '10px 14px', borderRadius: '10px' }}>
                         <span>Joined: {u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A'}</span>
-                        <span style={{ fontWeight: 700, color: '#818cf8' }}>Ideas: {u.idea_count || 0}</span>
+                        <span style={{ fontWeight: 800, color: '#818cf8' }}>Ideas: {u.idea_count || 0}</span>
                       </div>
-                      <div style={{ display: 'flex', gap: '8px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                      <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
                         <button
                           onClick={() => fetchUserHistory(u.id)}
-                          style={{ flex: 1, padding: '8px', background: selectedUser?.id === u.id ? '#6366f1' : '#1e293b', color: '#ffffff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                          style={{ flex: 1, minHeight: '48px', padding: '12px', background: selectedUser?.id === u.id ? '#6366f1' : '#1e293b', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                         >
-                          <FaFileAlt size={12} /> View History
+                          <FaFileAlt size={14} /> View History
                         </button>
                         {u.role !== 'admin' && (
                           <button
                             onClick={() => handleDeleteUser(u.id)}
-                            style={{ padding: '8px 12px', background: 'rgba(239,68,68,0.15)', color: '#f87171', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '8px', cursor: 'pointer' }}
+                            style={{ minHeight: '48px', padding: '12px 18px', background: 'rgba(239,68,68,0.18)', color: '#f87171', border: '1px solid rgba(239,68,68,0.35)', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             title="Delete User"
                           >
-                            <FaTrash size={12} />
+                            <FaTrash size={14} />
                           </button>
                         )}
                       </div>

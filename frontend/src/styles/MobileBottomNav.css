@@ -27,10 +27,10 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: 66px;
-  max-width: 500px;
+  height: 72px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 .mobile-nav-item {
@@ -42,13 +42,13 @@
   height: 100%;
   color: #94a3b8;
   text-decoration: none;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
   transition: all 0.2s ease;
   position: relative;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  gap: 3px;
+  gap: 4px;
 }
 
 .mobile-nav-item:active {
@@ -56,7 +56,7 @@
 }
 
 .mobile-nav-icon {
-  font-size: 22px;
+  font-size: 24px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
@@ -65,7 +65,7 @@
 
 .mobile-nav-label {
   letter-spacing: 0.2px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   transition: color 0.2s ease;
 }
 
