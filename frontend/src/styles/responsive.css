@@ -1,10 +1,28 @@
 /* ============================================================
-   VISION2VENTURE — CENTRAL RESPONSIVE BREAKPOINT SYSTEM
-   0px - 480px    : Mobile
-   481px - 768px  : Large Mobile / Small Tablet
-   769px - 1024px : Tablet
-   1025px+        : Desktop
+   VISION2VENTURE UNIFIED RESPONSIVE SYSTEM
+   
+   Breakpoints:
+   - max-width: 1200px  -> Adaptive Layout Threshold (Tablet/Adaptive WebView)
+   - max-width: 768px   -> Phone Refinement Threshold
+   - max-width: 480px   -> Small Phone Refinement Threshold
    ============================================================ */
+
+/* Universal Reset & Container Protection */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
 
 /* Page Container */
 .page-container {
@@ -13,50 +31,151 @@
   margin: 0 auto;
   padding: 32px;
   box-sizing: border-box;
+  min-width: 0;
 }
 
-/* Visibility Helpers */
-.mobile-only {
-  display: none !important;
+/* App Layout Grid Structure */
+.page-layout, .app-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: var(--spacing-xl, 32px);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  padding-top: calc(64px + 24px);
+  min-height: 100vh;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
-.desktop-only {
-  display: block !important;
+.page-content, .main-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
-.tablet-and-down {
-  display: none !important;
-}
+/* Visibility Utilities */
+.desktop-only { display: block !important; }
+.mobile-only { display: none !important; }
+.adaptive-only { display: none !important; }
 
-/* Tablet & Down (<= 1024px) */
-@media (max-width: 1024px) {
-  .page-container {
-    padding: 20px;
+/* ============================================================
+   1. ADAPTIVE THRESHOLD (<= 1200px)
+   ============================================================ */
+@media (max-width: 1200px) {
+  .page-layout, .app-layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+    padding-top: 72px !important;
+    margin: 0 !important;
   }
-}
 
-/* Mobile & Small Tablet (<= 768px) */
-@media (max-width: 768px) {
-  .page-container {
-    padding: 16px;
+  .sidebar {
+    display: none !important;
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-hamburger {
+    display: flex !important;
   }
 
   .desktop-only {
     display: none !important;
   }
 
-  .mobile-only {
+  .adaptive-only, .mobile-only {
     display: block !important;
   }
 
-  .tablet-and-down {
-    display: block !important;
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  .ideas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  .wizard-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px 18px !important;
+  }
+
+  .desktop-user-table {
+    display: none !important;
+  }
+
+  .mobile-user-cards {
+    display: flex !important;
+  }
+
+  .assistant-sidebar {
+    display: none !important;
   }
 }
 
-/* Small Phone (<= 480px) */
-@media (max-width: 480px) {
+/* ============================================================
+   2. PHONE REFINEMENT THRESHOLD (<= 768px)
+   ============================================================ */
+@media (max-width: 768px) {
   .page-container {
-    padding: 12px;
+    padding: 16px !important;
+  }
+
+  .page-layout, .app-layout {
+    padding: 14px !important;
+    padding-top: 68px !important;
+  }
+
+  .ideas-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .idea-card, .stat-card, .glass-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 18px 16px !important;
+  }
+
+  .form-row, .sector-cards-container, .summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* ============================================================
+   3. SMALL PHONE REFINEMENT (<= 480px)
+   ============================================================ */
+@media (max-width: 480px) {
+  .page-container, .page-layout, .app-layout {
+    padding: 12px !important;
+    padding-top: 64px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .hero-actions, .wizard-actions {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .hero-actions button, .hero-actions a, .wizard-actions button {
+    width: 100% !important;
+  }
+
+  .page-title {
+    font-size: 1.5rem !important;
   }
 }

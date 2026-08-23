@@ -315,7 +315,7 @@
 }
 
 /* Responsive Breakpoints */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .navbar {
     padding: 0 16px;
     height: 60px;
