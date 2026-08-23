@@ -683,7 +683,7 @@
 .gap-xl { gap: var(--spacing-xl); }
 .gap-lg { gap: var(--spacing-lg); }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .analysis-header {
     flex-direction: column;
     align-items: stretch;

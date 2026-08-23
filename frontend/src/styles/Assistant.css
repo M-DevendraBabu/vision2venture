@@ -501,14 +501,12 @@
 }
 
 /* Responsive Breakpoints */
-@media (max-width: 900px) {
-  .assistant-sidebar { display: none; }
+@media (max-width: 1200px) {
+  .assistant-sidebar { display: none !important; }
   .messages-viewport { padding: 12px 14px; }
   .chat-input-bar-container { padding: 8px 10px 12px; }
   .message-row { max-width: 95%; }
-}
 
-@media (max-width: 768px) {
   .assistant-page {
     padding: 62px 6px 6px 6px;
     height: calc(100dvh - 64px);

@@ -212,7 +212,7 @@
   max-width: 400px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .stats-grid { 
     grid-template-columns: 1fr;
     gap: 12px;

@@ -548,8 +548,8 @@ button:active, .btn-primary:active, .btn-secondary:active {
   transition: padding-bottom 0.2s ease;
 }
 
-/* Mobile & Tablet Auto-Adjustment (<= 1024px) */
-@media (max-width: 1024px) {
+/* Mobile & Tablet Auto-Adjustment (<= 1200px) */
+@media (max-width: 1200px) {
   html, body {
     font-size: 15px; /* Boost base font size */
   }
@@ -613,8 +613,8 @@ button:active, .btn-primary:active, .btn-secondary:active {
   }
 }
 
-/* Desktop Auto-Adjustment (>= 1025px) */
-@media (min-width: 1025px) {
+/* Desktop Auto-Adjustment (>= 1201px) */
+@media (min-width: 1201px) {
   .main-content {
     padding-bottom: 0px;
   }
