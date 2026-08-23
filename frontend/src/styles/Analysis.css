@@ -683,11 +683,67 @@
 .gap-xl { gap: var(--spacing-xl); }
 .gap-lg { gap: var(--spacing-lg); }
 
+/* Metadata row */
+.analysis-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 6px;
+}
+
+.sector-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em;
+}
+
+.meta-status-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  gap: 6px !important;
+}
+
+.status-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  padding: 2px 8px !important;
+  border-radius: 6px !important;
+  font-size: 0.78rem !important;
+}
+
+.meta-divider {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.meta-industry, .meta-status-label {
+  white-space: nowrap !important;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 1200px) {
   .analysis-header {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+  }
+
+  .analysis-header h1 {
+    font-size: 1.6rem !important;
+    word-break: break-word;
   }
 
   .overall-score-card {
@@ -716,9 +772,29 @@
     flex-shrink: 0;
   }
 
-  .overview-grid, .market-stats, .charts-grid-2, .bmc-grid, .swot-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+  .overview-grid, .market-stats, .charts-grid-2, .bmc-grid, .swot-grid, .risk-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .risk-card-enhanced {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    padding: 18px 16px !important;
+  }
+
+  .risk-card-enhanced p {
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
   }
   
   .col-span-2, .col-span-3 { grid-column: span 1; }
@@ -728,5 +804,12 @@
   
   .metric-cards-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .tab-content-area, .tabs-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
   }
 }

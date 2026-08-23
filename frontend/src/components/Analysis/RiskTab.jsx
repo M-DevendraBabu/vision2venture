@@ -149,11 +149,11 @@ const RiskTab = ({ data, idea }) => {
               const scoreColor = getScoreColor(risk.score);
               return (
                 <div key={idx} className={`glass-card p-lg risk-card-enhanced stagger-${idx+1}`}>
-                  <div className="risk-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
+                  <div className="risk-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '0.75rem' }}>
                     <div>
-                      <h4 className="risk-title">{risk.title}</h4>
+                      <h4 className="risk-title" style={{ margin: 0 }}>{risk.title}</h4>
                     </div>
-                    <div className={`score-badge ${scoreColor}`}>{sev.icon} {risk.severity} ({risk.score}/100)</div>
+                    <div className={`score-badge ${scoreColor}`} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{sev.icon} {risk.severity} ({risk.score}/100)</div>
                   </div>
 
                   <div className="mb-md">

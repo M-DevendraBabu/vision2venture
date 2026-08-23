@@ -180,13 +180,20 @@ const AnalysisPage = () => {
         <div className="analysis-header stagger-1">
           <div className="title-section">
             <h1>{idea?.title || 'Startup Analysis'}</h1>
-            <p className="text-secondary flex align-center gap-sm mt-xs">
-              <span className={`sector-badge sector-badge-${idea?.sector || 'hybrid'}`}>{idea?.sector || 'hybrid'}</span>
-              <span>•</span>
-              <span>{idea?.industry}</span>
-              <span>•</span>
-              Status: <span className={`status-text status-${analysisStatus} uppercase text-xs font-bold`}>{analysisStatus}</span>
-            </p>
+            <div className="analysis-meta-row flex align-center flex-wrap gap-xs mt-xs">
+              <span className={`sector-badge sector-badge-${idea?.sector || 'hybrid'}`}>
+                {idea?.sector || 'hybrid'}
+              </span>
+              <span className="meta-divider">•</span>
+              <span className="meta-industry">{idea?.industry}</span>
+              <span className="meta-divider">•</span>
+              <div className="meta-status-wrap flex align-center gap-xs">
+                <span className="meta-status-label">Status:</span>
+                <span className={`status-text status-${analysisStatus} uppercase text-xs font-bold`}>
+                  {analysisStatus}
+                </span>
+              </div>
+            </div>
           </div>
           
           {analysisStatus === 'completed' && analysisData['Overview'] && (
