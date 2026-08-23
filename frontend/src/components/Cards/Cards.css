@@ -3,18 +3,30 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: all var(--transition-normal);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .stat-icon-wrapper {
-  background: rgba(102, 126, 234, 0.1);
-  color: var(--primary-color);
-  width: 60px;
-  height: 60px;
-  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  color: #818cf8;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 .stat-content {
@@ -22,32 +34,41 @@
 }
 
 .stat-label {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: var(--spacing-xs);
+  color: #94a3b8;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
 }
 
 .stat-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: var(--spacing-xs);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
 }
 
 .stat-trend {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   display: flex;
-  gap: var(--spacing-xs);
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
 }
 
-.trend-up span:first-child { color: var(--success); }
-.trend-down span:first-child { color: var(--danger); }
-.trend-label { color: var(--text-secondary); }
+.trend-up span:first-child { color: #10b981; font-weight: 700; }
+.trend-down span:first-child { color: #ef4444; font-weight: 700; }
+.trend-label { color: #94a3b8; }
 
 /* Competitor Card */
 .competitor-card {
-  padding: var(--spacing-lg);
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .comp-header {
@@ -58,17 +79,17 @@
 }
 
 .similarity-badge {
-  background: rgba(102, 126, 234, 0.15);
-  color: var(--primary-color);
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 600;
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .comp-progress {
-  height: 6px;
-  background: var(--glass-bg);
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-full);
   margin-bottom: var(--spacing-lg);
   overflow: hidden;
@@ -76,7 +97,8 @@
 
 .comp-progress .progress-fill {
   height: 100%;
-  background: var(--primary-color);
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+  border-radius: var(--radius-full);
 }
 
 .comp-details {
@@ -86,23 +108,28 @@
 }
 
 .comp-details h4 {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   margin-bottom: var(--spacing-sm);
-  color: var(--text-secondary);
+  color: #cbd5e1;
+  font-weight: 600;
 }
 
 .comp-strengths ul, .comp-weaknesses ul {
   padding-left: var(--spacing-md);
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   list-style-type: disc;
+  line-height: 1.5;
 }
 
-.comp-strengths li { color: var(--success); }
-.comp-weaknesses li { color: var(--danger); }
+.comp-strengths li { color: #34d399; }
+.comp-weaknesses li { color: #f87171; }
 
 /* Risk Card */
 .risk-card {
-  padding: var(--spacing-lg);
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .risk-header {
@@ -113,16 +140,18 @@
 }
 
 .risk-level {
-  padding: 4px 8px;
+  padding: 4px 10px;
   border: 1px solid;
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-  font-weight: 600;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .risk-desc {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  line-height: 1.6;
   margin-bottom: var(--spacing-lg);
 }
 
@@ -131,18 +160,32 @@
 }
 
 .gauge-label {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   margin-bottom: var(--spacing-xs);
-  color: var(--text-secondary);
+  color: #94a3b8;
+  font-weight: 500;
 }
 
 .gauge-bar {
   height: 8px;
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .gauge-fill {
   height: 100%;
+}
+
+@media (max-width: 768px) {
+  .stat-card {
+    padding: 16px 18px;
+  }
+  .stat-value {
+    font-size: 2rem;
+  }
+  .comp-details {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
 }

@@ -1,4 +1,4 @@
-/* Admin Panel Styles */
+/* Admin Panel Styles — Mobile App Friendly */
 .admin-header {
   margin-bottom: var(--spacing-xl);
 }
@@ -17,7 +17,7 @@
 /* Stats Grid */
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
@@ -26,14 +26,16 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
-  padding: var(--spacing-xl);
+  padding: 20px;
+  background: #0f172a;
+  border-radius: 18px;
   border-left: 4px solid var(--primary-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .admin-stat-card .stat-icon {
   font-size: 2rem;
-  color: var(--primary-color);
-  opacity: 0.8;
+  color: #818cf8;
 }
 
 .stat-info {
@@ -42,16 +44,18 @@
 }
 
 .stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
 }
 
 .stat-label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 /* Admin Tabs */
@@ -66,25 +70,26 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: 10px 18px;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  font-weight: 500;
+  border-radius: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .admin-tab:hover {
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .admin-tab.active {
-  background: var(--glass-bg-accent);
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
 }
 
 /* Search Bar */
@@ -95,89 +100,102 @@
 
 .admin-search-bar input {
   width: 100%;
-  padding: 12px 16px 12px 44px;
+  padding: 14px 16px 14px 48px;
+  font-size: 16px;
+  border-radius: 14px;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
 }
 
 .admin-search-bar .search-icon {
   position: absolute;
-  left: 16px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: #94a3b8;
+  font-size: 1.1rem;
 }
 
 /* Table */
 .admin-table-wrapper {
   overflow-x: auto;
-  padding: var(--spacing-md);
+  padding: 4px;
+  background: #0f172a;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 .admin-table th {
   text-align: left;
-  padding: 12px 16px;
-  color: var(--text-secondary);
-  font-size: 0.8rem;
+  padding: 14px 18px;
+  color: #94a3b8;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--glass-border);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .admin-table td {
-  padding: 14px 16px;
-  color: var(--text-primary);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  font-size: 0.9rem;
+  padding: 16px 18px;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.95rem;
 }
 
 .admin-table tbody tr:hover {
-  background: rgba(99, 102, 241, 0.03);
+  background: rgba(99, 102, 241, 0.05);
 }
 
 .user-name {
   display: flex;
   align-items: center;
-  font-weight: 500;
+  font-weight: 600;
+  color: #ffffff;
 }
 
 /* Role Badge */
 .role-badge {
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .role-badge.admin {
-  background: rgba(251, 191, 36, 0.15);
+  background: rgba(251, 191, 36, 0.2);
   color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.3);
+  border: 1px solid rgba(251, 191, 36, 0.4);
 }
 
 .role-badge.user {
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(99, 102, 241, 0.15);
   color: #a5b4fc;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 /* Action Buttons */
 .action-cell {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .btn-sm {
-  padding: 6px 10px;
+  padding: 8px 12px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -185,37 +203,37 @@
 }
 
 .btn-sm:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .btn-sm.btn-info {
-  background: var(--info-bg);
-  color: var(--info);
-  border: 1px solid var(--info-border);
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .btn-sm.btn-success {
-  background: var(--success-bg);
-  color: var(--success);
-  border: 1px solid var(--success-border);
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .btn-sm.btn-warning {
-  background: var(--warning-bg);
-  color: var(--warning);
-  border: 1px solid var(--warning-border);
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .btn-sm.btn-danger {
-  background: var(--danger-bg);
-  color: var(--danger);
-  border: 1px solid var(--danger-border);
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .empty-table {
   text-align: center;
   padding: 40px;
-  color: var(--text-muted);
+  color: #94a3b8;
 }
 
 /* History */
@@ -236,11 +254,12 @@
     gap: 12px;
   }
   .admin-table-wrapper {
-    padding: 8px;
+    padding: 4px;
+    border-radius: 16px;
   }
   .admin-table th, .admin-table td {
-    padding: 10px 8px;
-    font-size: 0.8rem;
+    padding: 12px 14px;
+    font-size: 0.88rem;
   }
   .admin-tabs {
     flex-wrap: wrap;

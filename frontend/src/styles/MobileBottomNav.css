@@ -1,28 +1,25 @@
 /* ============================================================
-   MOBILE BOTTOM NAVIGATION BAR
-   Automatically visible ONLY on screens <= 768px (Mobile/Tablet)
-   Automatically hidden on Desktop (>= 769px)
+   MOBILE BOTTOM NAVIGATION BAR — PRO MOBILE APP DESIGN
    ============================================================ */
 
 .mobile-bottom-nav {
-  display: none; /* Hidden by default on Desktop */
+  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 999;
-  background: rgba(11, 15, 25, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  background: rgba(11, 15, 25, 0.96);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.6);
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  transition: transform 0.3s ease;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .mobile-bottom-nav {
-    display: block; /* Visible on mobile */
+    display: block;
   }
 }
 
@@ -30,10 +27,10 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: 62px;
+  height: 66px;
   max-width: 500px;
   margin: 0 auto;
-  padding: 0 8px;
+  padding: 0 10px;
 }
 
 .mobile-nav-item {
@@ -45,12 +42,13 @@
   height: 100%;
   color: #94a3b8;
   text-decoration: none;
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: 0.78rem;
+  font-weight: 600;
   transition: all 0.2s ease;
   position: relative;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  gap: 3px;
 }
 
 .mobile-nav-item:active {
@@ -58,8 +56,7 @@
 }
 
 .mobile-nav-icon {
-  font-size: 20px;
-  margin-bottom: 3px;
+  font-size: 22px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
@@ -68,57 +65,52 @@
 
 .mobile-nav-label {
   letter-spacing: 0.2px;
+  font-size: 0.75rem;
   transition: color 0.2s ease;
 }
 
 /* Active State */
 .mobile-nav-item.active {
-  color: #818cf8;
+  color: #a5b4fc;
 }
 
 .mobile-nav-item.active .mobile-nav-icon {
-  color: #6366f1;
+  color: #818cf8;
   transform: translateY(-2px);
-  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.6));
+  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.7));
 }
 
 .mobile-nav-item.active::after {
   content: '';
   position: absolute;
-  top: 4px;
-  width: 18px;
+  top: 6px;
+  width: 22px;
   height: 3px;
   background: linear-gradient(90deg, #6366f1, #a855f7);
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
-/* Prominent Central Action Button (New Idea / Analyze) */
+/* Center Action Button (New Idea / Analyze) */
 .mobile-nav-item.central-action {
   position: relative;
-  top: -12px;
+  top: -14px;
 }
 
 .mobile-nav-central-btn {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 24px;
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5), 0 0 0 4px rgba(11, 15, 25, 0.9);
+  font-size: 26px;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6), 0 0 0 4px #0b0f19;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   margin-bottom: 2px;
 }
 
 .mobile-nav-item.central-action:active .mobile-nav-central-btn {
   transform: scale(0.88);
-  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.7);
-}
-
-.mobile-nav-item.central-action.active .mobile-nav-central-btn {
-  background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
-  box-shadow: 0 0 22px rgba(168, 85, 247, 0.7), 0 0 0 4px rgba(11, 15, 25, 0.9);
 }

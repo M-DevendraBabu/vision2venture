@@ -546,34 +546,73 @@ button:active, .btn-primary:active, .btn-secondary:active {
   transition: padding-bottom 0.2s ease;
 }
 
-/* Mobile & Tablet Auto-Adjustment (<= 768px) */
-@media (max-width: 768px) {
+/* Mobile & Tablet Auto-Adjustment (<= 1024px) */
+@media (max-width: 1024px) {
+  html, body {
+    font-size: 15px; /* Boost base font size */
+  }
+
+  .page-title {
+    font-size: 1.65rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em;
+  }
+
+  .page-subtitle {
+    font-size: 0.95rem !important;
+    color: #cbd5e1 !important;
+  }
+
   .main-content {
-    padding-bottom: max(78px, calc(68px + env(safe-area-inset-bottom, 12px)));
+    padding-bottom: max(84px, calc(72px + env(safe-area-inset-bottom, 16px)));
   }
   
   .main-content.no-scroll {
-    padding-bottom: max(68px, calc(60px + env(safe-area-inset-bottom, 8px)));
+    padding-bottom: max(72px, calc(64px + env(safe-area-inset-bottom, 12px)));
   }
 
   .container, .dashboard-container, .analysis-container, .new-idea-container, .profile-container {
-    padding-left: 14px !important;
-    padding-right: 14px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Solid readable cards for mobile OLED screens */
+  .glass-card {
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 18px !important;
+    padding: 20px 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
   }
 
   /* Full touch targets for mobile */
   .btn-primary, .btn-secondary, .glass-btn, .tab-btn {
-    min-height: 44px;
+    min-height: 48px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
   }
   
-  .glass-input, .floating-input {
+  .glass-input, .floating-input, input, select, textarea {
     font-size: 16px !important; /* Prevents iOS auto-zoom on input focus */
-    min-height: 48px;
+    min-height: 52px !important;
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
+    background: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #f8fafc !important;
+  }
+
+  .floating-label {
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    top: 0.35rem !important;
+    left: 1rem !important;
   }
 }
 
-/* Desktop Auto-Adjustment (>= 769px) */
-@media (min-width: 769px) {
+/* Desktop Auto-Adjustment (>= 1025px) */
+@media (min-width: 1025px) {
   .main-content {
     padding-bottom: 0px;
   }
