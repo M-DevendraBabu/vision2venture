@@ -195,19 +195,20 @@ const AssistantPage = () => {
                 background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%)',
                 border: '1px solid rgba(99, 102, 241, 0.3)',
                 color: '#a5b4fc',
-                padding: '8px 16px',
+                padding: '6px 12px',
                 borderRadius: '8px',
-                fontSize: '0.85rem',
+                fontSize: '0.8rem',
                 fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: '6px',
                 transition: 'all 0.2s ease',
-                flexShrink: 0
+                flexShrink: 0,
+                whiteSpace: 'nowrap'
               }}
             >
-              <FaArrowLeft size={12} /> Back to Dashboard
+              <FaArrowLeft size={11} /> Back
             </button>
           </header>
 

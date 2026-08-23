@@ -239,18 +239,18 @@ const AdminPage = () => {
                 {/* Mobile Cards View (<= 1200px) */}
                 <div className="mobile-user-cards" style={{ display: 'none', flexDirection: 'column', gap: '16px' }}>
                   {filteredUsers.map(u => (
-                    <div key={u.id} className="mobile-user-card" style={{ padding: '20px 18px', background: '#131b2e', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <div>
-                          <div style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.2rem' }}>{u.name}</div>
-                          <div style={{ fontSize: '0.95rem', color: '#94a3b8', marginTop: '2px' }}>{u.email}</div>
+                    <div key={u.id} className="mobile-user-card" style={{ padding: '18px 16px', background: '#131b2e', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                          <div style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.15rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.name}</div>
+                          <div style={{ fontSize: '0.88rem', color: '#94a3b8', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</div>
                         </div>
                         {u.role === 'admin' ? (
-                          <span style={{ background: 'rgba(245,158,11,0.18)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.35)', padding: '4px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 800 }}>
-                            <FaCrown size={12} style={{ marginRight: 6 }} /> Admin
+                          <span style={{ background: 'rgba(245,158,11,0.18)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                            <FaCrown size={12} /> Admin
                           </span>
                         ) : (
-                          <span style={{ background: 'rgba(99,102,241,0.18)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.35)', padding: '4px 12px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 800 }}>
+                          <span style={{ background: 'rgba(99,102,241,0.18)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                             User
                           </span>
                         )}

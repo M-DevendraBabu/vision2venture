@@ -263,6 +263,10 @@
   .mobile-user-cards {
     display: flex !important;
   }
+  .mobile-user-card span {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
   .admin-stats-grid {
     grid-template-columns: 1fr;
     gap: 12px;
