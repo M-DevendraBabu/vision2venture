@@ -15,6 +15,7 @@ import TermsPage from './pages/TermsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import InstallAppPrompt from './components/Common/InstallAppPrompt';
+import MobileBottomNav from './components/Common/MobileBottomNav';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -46,6 +47,7 @@ function App() {
         </Routes>
       </main>
       {!hideFooter && <Footer />}
+      <MobileBottomNav />
       <ToastContainer theme="dark" position="bottom-right" />
     </>
   );

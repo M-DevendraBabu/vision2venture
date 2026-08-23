@@ -1,31 +1,47 @@
 import { createContext, useState, useEffect } from 'react';
-import { authAPI } from '../services/api';
+import api, { authAPI } from '../services/api';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Synchronous instant initialization from localStorage (0ms load time)
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const initAuth = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const res = await authAPI.getProfile();
+    // 1. Warm up backend connection in background immediately
+    api.get('/health').catch(() => {});
+
+    // 2. Validate and refresh profile silently if token exists
+    const token = localStorage.getItem('token');
+    if (token) {
+      authAPI.getProfile()
+        .then((res) => {
           setUser(res.data);
-        } catch (error) {
-          localStorage.removeItem('token');
-        }
-      }
-      setLoading(false);
-    };
-    initAuth();
+          localStorage.setItem('user', JSON.stringify(res.data));
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setUser(null);
+          }
+        });
+    }
   }, []);
 
   const login = async (email, password) => {
     const res = await authAPI.login({ email, password });
     localStorage.setItem('token', res.data.access_token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data;
   };
@@ -35,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     // Auto-login after registration
     const loginRes = await authAPI.login({ email, password });
     localStorage.setItem('token', loginRes.data.access_token);
+    localStorage.setItem('user', JSON.stringify(loginRes.data.user));
     setUser(loginRes.data.user);
     return loginRes.data;
   };
@@ -42,12 +59,14 @@ export const AuthProvider = ({ children }) => {
   const googleLogin = async (accessToken, userInfo) => {
     const res = await authAPI.googleAuth(accessToken, userInfo);
     localStorage.setItem('token', res.data.access_token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data;
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
   };
 

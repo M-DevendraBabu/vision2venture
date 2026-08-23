@@ -16,7 +16,8 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserResponse)
 def register(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = db.query(User).filter(User.email == user.email).first()
+    clean_email = user.email.strip().lower()
+    db_user = db.query(User).filter(User.email == clean_email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
         
@@ -34,8 +35,8 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         
     hashed_password = hash_password(user.password)
     new_user = User(
-        name=user.name,
-        email=user.email,
+        name=user.name.strip(),
+        email=clean_email,
         password_hash=hashed_password
     )
     db.add(new_user)
@@ -45,7 +46,8 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 def login(user: UserLogin, db: Session = Depends(get_db)):
-    db_user = db.query(User).filter(User.email == user.email).first()
+    clean_email = user.email.strip().lower()
+    db_user = db.query(User).filter(User.email == clean_email).first()
     if not db_user or not verify_password(user.password, db_user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     

@@ -502,7 +502,22 @@
 /* Responsive Breakpoints */
 @media (max-width: 900px) {
   .assistant-sidebar { display: none; }
-  .messages-viewport { padding: 16px 20px; }
-  .chat-input-bar-container { padding: 12px 16px 16px; }
-  .message-row { max-width: 92%; }
+  .messages-viewport { padding: 12px 14px; }
+  .chat-input-bar-container { padding: 8px 10px 12px; }
+  .message-row { max-width: 95%; }
+}
+
+@media (max-width: 768px) {
+  .assistant-page {
+    padding: 62px 6px 6px 6px;
+    height: calc(100dvh - 64px);
+  }
+
+  .assistant-glass-wrapper {
+    border-radius: 14px;
+  }
+
+  .chat-input-pill {
+    padding: 4px 6px 4px 14px !important;
+  }
 }

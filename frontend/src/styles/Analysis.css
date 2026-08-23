@@ -684,11 +684,49 @@
 .gap-lg { gap: var(--spacing-lg); }
 
 @media (max-width: 768px) {
+  .analysis-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .overall-score-card {
+    justify-content: space-between;
+    padding: 12px 16px;
+    width: 100%;
+  }
+
+  .tabs-nav {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .tabs-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    scroll-snap-align: start;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
   .overview-grid, .market-stats, .charts-grid-2, .bmc-grid, .swot-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
+  
   .col-span-2, .col-span-3 { grid-column: span 1; }
   .timeline-item { flex-direction: column; }
   .timeline-connector { flex-direction: row; width: 100%; }
   .timeline-line { display: none; }
+  
+  .metric-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

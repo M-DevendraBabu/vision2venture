@@ -508,3 +508,59 @@ textarea.floating-input {
   outline: 2px solid rgba(99, 102, 241, 0.5);
   outline-offset: 2px;
 }
+
+/* ===================================
+   MOBILE & DESKTOP AUTO-ADAPTATION
+   =================================== */
+html, body {
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+button:active, .btn-primary:active, .btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.main-content {
+  min-height: calc(100dvh - 70px);
+  width: 100%;
+  transition: padding-bottom 0.2s ease;
+}
+
+/* Mobile & Tablet Auto-Adjustment (<= 768px) */
+@media (max-width: 768px) {
+  .main-content {
+    padding-bottom: max(78px, calc(68px + env(safe-area-inset-bottom, 12px)));
+  }
+  
+  .main-content.no-scroll {
+    padding-bottom: max(68px, calc(60px + env(safe-area-inset-bottom, 8px)));
+  }
+
+  .container, .dashboard-container, .analysis-container, .new-idea-container, .profile-container {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  /* Full touch targets for mobile */
+  .btn-primary, .btn-secondary, .glass-btn, .tab-btn {
+    min-height: 44px;
+  }
+  
+  .glass-input, .floating-input {
+    font-size: 16px !important; /* Prevents iOS auto-zoom on input focus */
+    min-height: 48px;
+  }
+}
+
+/* Desktop Auto-Adjustment (>= 769px) */
+@media (min-width: 769px) {
+  .main-content {
+    padding-bottom: 0px;
+  }
+}
