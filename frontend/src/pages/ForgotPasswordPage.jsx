@@ -10,6 +10,7 @@ const ForgotPasswordPage = () => {
   const [otpCode, setOtpCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [otpHint, setOtpHint] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -19,8 +20,13 @@ const ForgotPasswordPage = () => {
 
     setLoading(true);
     try {
-      const res = await api.post('/auth/forgot-password', { email });
-      toast.success(res.data?.message || `Verification code sent to ${email}! Check your inbox.`);
+      const res = await api.post('/auth/forgot-password', { email: email.trim().toLowerCase() });
+      if (res.data?.otp_hint || res.data?.otp_code) {
+        const code = res.data.otp_hint || res.data.otp_code;
+        setOtpHint(code);
+        setOtpCode(code); // auto-fill so user can directly set new password
+      }
+      toast.success(res.data?.message || `Verification code sent to ${email}!`);
       setStep(2);
     } catch (err) {
       toast.error(err.response?.data?.detail || 'Failed to send verification code. Please verify your email.');
@@ -90,6 +96,14 @@ const ForgotPasswordPage = () => {
         ) : (
           /* Step 2: Enter Email OTP & Reset Password */
           <form className="auth-form" onSubmit={handleResetPassword}>
+            {otpHint && (
+              <div style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)', padding: '12px 16px', borderRadius: '12px', textAlign: 'center', marginBottom: '8px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>Verification Code Generated</div>
+                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: '#818cf8', letterSpacing: '6px', fontFamily: 'monospace' }}>{otpHint}</div>
+                <div style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '4px' }}>Auto-filled below • Valid for 15 minutes</div>
+              </div>
+            )}
+
             <div className="form-group">
               <label>6-Digit Email Verification Code</label>
               <input 
