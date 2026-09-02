@@ -2,6 +2,7 @@ import smtplib
 import ssl
 import json
 import urllib.request
+import urllib.error
 import logging
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -12,8 +13,8 @@ logger = logging.getLogger(__name__)
 def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") -> tuple[bool, str]:
     """
     Sends a confidential 6-digit OTP code to the user's email address.
-    Supports HTTPS REST APIs (Resend, Brevo - unblocked on cloud containers)
-    and direct SMTP (Port 465 / 587).
+    Supports HTTPS REST APIs (Brevo, Resend, SendGrid - 100% unblocked on Render cloud)
+    and direct SMTP (Port 465 / 587) fallback.
     """
     subject = "Vision2Venture — Password Reset Verification Code"
     
@@ -21,6 +22,7 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     <!DOCTYPE html>
     <html>
     <head>
+        <meta charset="utf-8">
         <style>
             body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0f19; color: #e2e8f0; margin: 0; padding: 20px; }}
             .container {{ max-width: 500px; margin: 0 auto; background: #131b2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }}
@@ -43,7 +45,7 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
                 <div class="otp-code">{otp_code}</div>
             </div>
             
-            <p style="font-size: 13px; color: #94a3b8;">This code is valid for <strong>10 minutes</strong>. If you did not request a password reset, please ignore this email or secure your account.</p>
+            <p style="font-size: 13px; color: #94a3b8;">This code is valid for <strong>15 minutes</strong>. If you did not request a password reset, please ignore this email or secure your account.</p>
             
             <div class="footer">
                 <p>&copy; 2026 Vision2Venture AI. All rights reserved.</p>
@@ -53,12 +55,44 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     </html>
     """
 
-    # 1. Try Resend HTTPS API (Port 443 - 100% unblocked on Render)
+    from_sender_email = (settings.SMTP_FROM_EMAIL.strip() if settings.SMTP_FROM_EMAIL else "") or "devendrababumotupalli@gmail.com"
+
+    # 1. Try Brevo HTTPS API (Port 443 - free 300 emails/day to ANY email address in the world)
+    brevo_key = settings.BREVO_API_KEY.strip() if settings.BREVO_API_KEY else ""
+    if brevo_key:
+        try:
+            req_data = json.dumps({
+                "sender": {"name": "Vision2Venture Security", "email": from_sender_email},
+                "to": [{"email": to_email, "name": user_name}],
+                "subject": subject,
+                "htmlContent": html_content
+            }).encode('utf-8')
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=req_data,
+                headers={
+                    "api-key": brevo_key,
+                    "Content-Type": "application/json",
+                    "User-Agent": "Vision2Venture/1.0"
+                }
+            )
+            with urllib.request.urlopen(req, timeout=8) as resp:
+                if resp.status in (200, 201):
+                    print(f"[EMAIL SERVICE] [OK] OTP email successfully delivered via Brevo API to {to_email}!")
+                    return (True, "")
+        except urllib.error.HTTPError as e_brevo:
+            body = e_brevo.read().decode('utf-8', errors='ignore')
+            print(f"[EMAIL SERVICE] Brevo API HTTP {e_brevo.code} notice: {body}. Trying next provider...")
+        except Exception as e_brevo:
+            print(f"[EMAIL SERVICE] Brevo API notice: {e_brevo}. Trying next provider...")
+
+    # 2. Try Resend HTTPS API (Port 443)
     resend_key = settings.RESEND_API_KEY.strip() if settings.RESEND_API_KEY else ""
     if resend_key:
         try:
+            from_header = settings.RESEND_FROM_EMAIL or "Vision2Venture <onboarding@resend.dev>"
             req_data = json.dumps({
-                "from": "Vision2Venture <onboarding@resend.dev>",
+                "from": from_header,
                 "to": [to_email],
                 "subject": subject,
                 "html": html_content
@@ -74,38 +108,41 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
             )
             with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status in (200, 201):
-                    print(f"[EMAIL SERVICE] [OK] OTP email sent via Resend HTTPS API to {to_email}!")
+                    print(f"[EMAIL SERVICE] [OK] OTP email successfully delivered via Resend API to {to_email}!")
                     return (True, "")
+        except urllib.error.HTTPError as e_resend:
+            body = e_resend.read().decode('utf-8', errors='ignore')
+            print(f"[EMAIL SERVICE] Resend API HTTP {e_resend.code} notice: {body}. Trying next provider...")
         except Exception as e_resend:
-            print(f"[EMAIL SERVICE] Resend API notice: {e_resend}. Trying Brevo / SMTP...")
+            print(f"[EMAIL SERVICE] Resend API notice: {e_resend}. Trying next provider...")
 
-    # 2. Try Brevo HTTPS API (Port 443)
-    brevo_key = settings.BREVO_API_KEY.strip() if settings.BREVO_API_KEY else ""
-    if brevo_key:
+    # 3. Try SendGrid HTTPS API (Port 443)
+    sendgrid_key = settings.SENDGRID_API_KEY.strip() if settings.SENDGRID_API_KEY else ""
+    if sendgrid_key:
         try:
-            from_email = settings.SMTP_FROM_EMAIL or "devendrababumotupalli@gmail.com"
             req_data = json.dumps({
-                "sender": {"name": "Vision2Venture Security", "email": from_email},
-                "to": [{"email": to_email}],
+                "personalizations": [{"to": [{"email": to_email}]}],
+                "from": {"email": from_sender_email, "name": "Vision2Venture Security"},
                 "subject": subject,
-                "htmlContent": html_content
+                "content": [{"type": "text/html", "value": html_content}]
             }).encode('utf-8')
             req = urllib.request.Request(
-                "https://api.brevo.com/v3/smtp/email",
+                "https://api.sendgrid.com/v3/mail/send",
                 data=req_data,
                 headers={
-                    "api-key": brevo_key,
-                    "Content-Type": "application/json"
+                    "Authorization": f"Bearer {sendgrid_key}",
+                    "Content-Type": "application/json",
+                    "User-Agent": "Vision2Venture/1.0"
                 }
             )
             with urllib.request.urlopen(req, timeout=8) as resp:
-                if resp.status in (200, 201):
-                    print(f"[EMAIL SERVICE] [OK] OTP email sent via Brevo HTTPS API to {to_email}!")
+                if resp.status in (200, 201, 202):
+                    print(f"[EMAIL SERVICE] [OK] OTP email successfully delivered via SendGrid API to {to_email}!")
                     return (True, "")
-        except Exception as e_brevo:
-            print(f"[EMAIL SERVICE] Brevo API notice: {e_brevo}. Trying SMTP...")
+        except Exception as e_sendgrid:
+            print(f"[EMAIL SERVICE] SendGrid API notice: {e_sendgrid}. Trying SMTP...")
 
-    # 3. Try Direct SMTP (Port 465 SSL / Port 587 STARTTLS)
+    # 4. Try Direct SMTP (Port 465 SSL / Port 587 STARTTLS) - for local machine / VPS
     smtp_host = settings.SMTP_HOST or "smtp.gmail.com"
     smtp_user = (settings.SMTP_USER.strip() if settings.SMTP_USER else "") or "devendrababumotupalli@gmail.com"
     smtp_pass = (settings.SMTP_PASSWORD.strip() if settings.SMTP_PASSWORD else "") or "qhuvnrvgfdhuhlyn"
@@ -140,5 +177,5 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     except Exception as e_tls:
         print(f"[EMAIL SERVICE] Port 587 notice: {e_tls}")
 
-    print(f"\n[CONFIDENTIAL OTP DISPATCH] To: {to_email} | OTP Code: {otp_code} (Valid 10 mins)\n")
-    return (False, f"Render Cloud SMTP restricted. Please configure RESEND_API_KEY in Render environment variables for HTTPS delivery.")
+    print(f"\n[CONFIDENTIAL OTP DISPATCH] To: {to_email} | OTP Code: {otp_code} (Valid 15 mins)\n")
+    return (False, "All email delivery channels failed. Please configure BREVO_API_KEY or verified RESEND_API_KEY in environment variables.")

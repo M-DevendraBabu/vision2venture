@@ -31,7 +31,9 @@ class Settings(BaseSettings):
 
     # Cloud HTTPS Email APIs (Unblocked on Render free tier)
     RESEND_API_KEY: str = ""
+    RESEND_FROM_EMAIL: str = "Vision2Venture <onboarding@resend.dev>"
     BREVO_API_KEY: str = ""
+    SENDGRID_API_KEY: str = ""
 
     class Config:
         env_file = str(_ENV_FILE)
