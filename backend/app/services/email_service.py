@@ -69,45 +69,47 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     webhook_url = settings.GMAIL_WEBHOOK_URL.strip() if settings.GMAIL_WEBHOOK_URL else ""
     if webhook_url:
         try:
-            req_data = json.dumps({
+            import http.client
+            import urllib.parse
+
+            payload = json.dumps({
                 "to": to_email,
                 "subject": subject,
                 "body": html_content,
                 "userName": user_name,
                 "otpCode": otp_code
-            }).encode('utf-8')
-            req = urllib.request.Request(
-                webhook_url,
-                data=req_data,
-                headers={
-                    "Content-Type": "application/json",
-                    "User-Agent": "Vision2Venture/1.0"
-                },
-                method="POST"
-            )
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                resp_body = resp.read().decode('utf-8', errors='ignore')
-                if resp.status in (200, 201, 302):
-                    print(f"[EMAIL SERVICE] [OK] OTP sent via Google Apps Script webhook to {to_email}")
-                    return (True, "")
-                else:
-                    print(f"[EMAIL SERVICE] Google Apps Script returned {resp.status}: {resp_body}")
-        except urllib.error.HTTPError as e:
-            # Google Apps Script redirects (302) on success — follow it
-            if e.code in (302, 301):
-                try:
-                    redirect_url = e.headers.get('Location', '')
-                    if redirect_url:
-                        req2 = urllib.request.Request(redirect_url, headers={"User-Agent": "Vision2Venture/1.0"})
-                        with urllib.request.urlopen(req2, timeout=10) as resp2:
-                            resp_body = resp2.read().decode('utf-8', errors='ignore')
-                            print(f"[EMAIL SERVICE] [OK] OTP sent via Google Apps Script (redirect) to {to_email}: {resp_body}")
+            })
+
+            parsed = urllib.parse.urlparse(webhook_url)
+            conn = http.client.HTTPSConnection(parsed.hostname, timeout=20)
+            conn.request('POST', parsed.path, body=payload, headers={
+                'Content-Type': 'application/json',
+                'User-Agent': 'Vision2Venture/1.0'
+            })
+
+            resp = conn.getresponse()
+            resp_body = resp.read().decode('utf-8', errors='ignore')
+
+            if resp.status == 200:
+                print(f"[EMAIL SERVICE] [OK] OTP sent via Google Apps Script to {to_email}: {resp_body[:100]}")
+                conn.close()
+                return (True, "")
+            elif resp.status in (301, 302, 307, 308):
+                # Google Apps Script always redirects on success — follow the redirect
+                redirect_url = resp.getheader('Location', '')
+                conn.close()
+                if redirect_url:
+                    req2 = urllib.request.Request(redirect_url, headers={'User-Agent': 'Vision2Venture/1.0'})
+                    with urllib.request.urlopen(req2, timeout=15) as resp2:
+                        final_body = resp2.read().decode('utf-8', errors='ignore')
+                        if '"success"' in final_body or resp2.status == 200:
+                            print(f"[EMAIL SERVICE] [OK] OTP sent via Google Apps Script to {to_email}: {final_body[:100]}")
                             return (True, "")
-                except Exception as e_redir:
-                    print(f"[EMAIL SERVICE] Google Apps Script redirect error: {e_redir}")
+                        else:
+                            print(f"[EMAIL SERVICE] Google Apps Script redirect returned: {final_body[:200]}")
             else:
-                body = e.read().decode('utf-8', errors='ignore')
-                print(f"[EMAIL SERVICE] Google Apps Script HTTP {e.code}: {body}. Trying next...")
+                conn.close()
+                print(f"[EMAIL SERVICE] Google Apps Script returned {resp.status}: {resp_body[:200]}. Trying next...")
         except Exception as e_gas:
             print(f"[EMAIL SERVICE] Google Apps Script error: {e_gas}. Trying next...")
 
