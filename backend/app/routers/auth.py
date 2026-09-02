@@ -161,13 +161,15 @@ def request_password_reset_otp(req: ForgotPasswordRequest, db: Session = Depends
         # Send email via HTTPS APIs or direct SSL
         sent, err_msg = send_reset_otp_email(to_email=user.email, otp_code=otp_code, user_name=user.name)
         if not sent:
-            print(f"[AUTH] Background email delivery notice: {err_msg}")
+            print(f"[AUTH] Email delivery failed: {err_msg}")
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to send verification email. Please try again later or contact support."
+            )
 
         return {
             "status": "success",
-            "message": f"A 6-digit verification code has been dispatched to {user.email}.",
-            "otp_code": otp_code,
-            "otp_hint": otp_code
+            "message": f"A 6-digit verification code has been sent to {user.email}. Please check your inbox."
         }
     except HTTPException:
         raise

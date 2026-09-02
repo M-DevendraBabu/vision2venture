@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     BREVO_API_KEY: str = ""
     SENDGRID_API_KEY: str = ""
 
+    # Google Apps Script Webhook (sends through Gmail's own servers - 100% delivery)
+    GMAIL_WEBHOOK_URL: str = ""
+
     class Config:
         env_file = str(_ENV_FILE)
         env_file_encoding = "utf-8"
