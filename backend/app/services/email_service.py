@@ -58,7 +58,11 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     from_sender_email = (settings.SMTP_FROM_EMAIL.strip() if settings.SMTP_FROM_EMAIL else "") or "devendrababumotupalli@gmail.com"
 
     # 1. Try Brevo HTTPS API (Port 443 - free 300 emails/day to ANY email address in the world)
-    brevo_key = settings.BREVO_API_KEY.strip() if settings.BREVO_API_KEY else ""
+    raw_brevo = settings.BREVO_API_KEY.strip() if settings.BREVO_API_KEY else ""
+    brevo_key = "".join(raw_brevo.split())
+    # If accidentally pasted twice or with extra characters, extract the exact 83-char key
+    if brevo_key.startswith("xkeysib-") and len(brevo_key) > 83:
+        brevo_key = brevo_key[:83]
     if brevo_key:
         try:
             req_data = json.dumps({
