@@ -276,35 +276,80 @@ def get_financial(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    _verify_idea_ownership(idea_id, current_user, db)
+    idea = _verify_idea_ownership(idea_id, current_user, db)
     fin = db.query(FinancialAnalysis).filter(FinancialAnalysis.idea_id == idea_id).first()
-    if not fin:
-        raise HTTPException(status_code=404, detail="Financial analysis not found")
-    return {
-        "status": "success",
-        "data": {
-            "subscription_revenue": float(fin.subscription_revenue),
-            "freemium_conversion": float(fin.freemium_conversion),
-            "monthly_recurring_revenue": float(fin.monthly_recurring_revenue),
-            "customer_acquisition_cost": float(fin.customer_acquisition_cost),
-            "lifetime_value": float(fin.lifetime_value),
-            "churn_rate": float(fin.churn_rate),
-            "daily_customers_estimate": fin.daily_customers_estimate,
-            "average_order_value": float(fin.average_order_value),
-            "monthly_revenue": float(fin.monthly_revenue),
-            "rent_cost": float(fin.rent_cost),
-            "staff_cost": float(fin.staff_cost),
-            "raw_material_cost": float(fin.raw_material_cost),
-            "utility_cost": float(fin.utility_cost),
-            "marketing_cost": float(fin.marketing_cost),
-            "development_cost": float(fin.development_cost),
-            "monthly_operating_cost": float(fin.monthly_operating_cost),
-            "break_even_analysis": fin.break_even_analysis,
-            "roi": float(fin.roi),
-            "profit_margins": float(fin.profit_margins),
-            "detailed_explanation": fin.detailed_explanation
-        }
+
+    # Generate or enrich with 25-sector realistic Indian financial intelligence
+    from app.services.financial_intelligence import generate_financial_analysis
+    context = {
+        'id': idea.id,
+        'title': idea.title,
+        'description': idea.description,
+        'industry': idea.industry,
+        'country': idea.country,
+        'sector': idea.sector,
+        'pricing_model': idea.pricing_model,
+        'target_customers': idea.target_customers,
+        'budget': idea.budget,
+        'team_size': idea.team_size,
+        'revenue_goal': idea.revenue_goal
     }
+    fi_data = generate_financial_analysis(context)
+
+    # Return merged payload ensuring all enriched CapEx, OpEx, unit economics, break-even, and methodology exist
+    fin_dict = {
+        "subscription_revenue": float(fin.subscription_revenue) if fin and fin.subscription_revenue > 0 else fi_data["subscription_revenue"],
+        "freemium_conversion": float(fin.freemium_conversion) if fin else fi_data["freemium_conversion"],
+        "monthly_recurring_revenue": float(fin.monthly_recurring_revenue) if fin and fin.monthly_recurring_revenue > 25000 else fi_data["monthly_recurring_revenue"],
+        "customer_acquisition_cost": float(fin.customer_acquisition_cost) if fin and fin.customer_acquisition_cost > 300 else fi_data["customer_acquisition_cost"],
+        "lifetime_value": float(fin.lifetime_value) if fin and fin.lifetime_value > 1000 else fi_data["lifetime_value"],
+        "churn_rate": float(fin.churn_rate) if fin else fi_data["churn_rate"],
+        "daily_customers_estimate": fin.daily_customers_estimate if fin and fin.daily_customers_estimate > 0 else fi_data["daily_customers_estimate"],
+        "average_order_value": float(fin.average_order_value) if fin and fin.average_order_value > 100 else fi_data["average_order_value"],
+        "monthly_revenue": float(fin.monthly_revenue) if fin and fin.monthly_revenue > 25000 else fi_data["monthly_revenue"],
+        "rent_cost": float(fin.rent_cost) if fin and fin.rent_cost > 5000 else fi_data["rent_cost"],
+        "staff_cost": float(fin.staff_cost) if fin and fin.staff_cost > 18000 else fi_data["staff_cost"],
+        "raw_material_cost": float(fin.raw_material_cost) if fin and fin.raw_material_cost > 0 else fi_data["raw_material_cost"],
+        "utility_cost": float(fin.utility_cost) if fin and fin.utility_cost > 1500 else fi_data["utility_cost"],
+        "marketing_cost": float(fin.marketing_cost) if fin and fin.marketing_cost > 5000 else fi_data["marketing_cost"],
+        "development_cost": float(fin.development_cost) if fin and fin.development_cost > 30000 else fi_data["development_cost"],
+        "monthly_operating_cost": float(fin.monthly_operating_cost) if fin and fin.monthly_operating_cost > 35000 else fi_data["monthly_operating_cost"],
+        "break_even_analysis": (fin.break_even_analysis if fin and len(fin.break_even_analysis) > 50 and not fin.break_even_analysis.startswith("Break-Even Projection: Based on capital efficiency models and") else fi_data["break_even_analysis"]),
+        "roi": float(fin.roi) if fin and fin.roi > 0 else fi_data["roi"],
+        "profit_margins": float(fin.profit_margins) if fin and fin.profit_margins > 0 else fi_data["profit_margins"],
+        "detailed_explanation": (fin.detailed_explanation if fin and len(fin.detailed_explanation) > 50 and not fin.detailed_explanation.startswith("Financial Methodology: These projections are generated using") else fi_data["detailed_explanation"]),
+
+        # Rich financial cockpit intelligence
+        "total_capex": fi_data["total_capex"],
+        "hardware_equipment_cost": fi_data["hardware_equipment_cost"],
+        "licensing_legal_cost": fi_data["licensing_legal_cost"],
+        "branding_design_cost": fi_data["branding_design_cost"],
+        "inventory_staging_cost": fi_data["inventory_staging_cost"],
+
+        "monthly_sales_volume": fi_data["monthly_sales_volume"],
+        "gross_margin_percent": fi_data["gross_margin_percent"],
+        "ltv_cac_ratio": fi_data["ltv_cac_ratio"],
+        "payback_period_months": fi_data["payback_period_months"],
+        "break_even_months": fi_data["break_even_months"],
+        "break_even_units_monthly": fi_data["break_even_units_monthly"],
+        "break_even_daily_transactions": fi_data["break_even_daily_transactions"],
+        "break_even_revenue_monthly": fi_data["break_even_revenue_monthly"],
+        "contribution_margin_per_unit": fi_data["contribution_margin_per_unit"],
+        "monthly_fixed_costs": fi_data["monthly_fixed_costs"],
+
+        "year1_revenue": fi_data["year1_revenue"],
+        "year2_revenue": fi_data["year2_revenue"],
+        "year3_revenue": fi_data["year3_revenue"],
+        "year1_opex": fi_data["year1_opex"],
+        "year2_opex": fi_data["year2_opex"],
+        "year3_opex": fi_data["year3_opex"],
+
+        "capex_breakdown": fi_data["capex_breakdown"],
+        "opex_breakdown": fi_data["opex_breakdown"],
+        "revenue_breakdown": fi_data["revenue_breakdown"],
+        "methodology_sources": fi_data["methodology_sources"]
+    }
+    return {"status": "success", "data": fin_dict}
 
 
 # ============================================================

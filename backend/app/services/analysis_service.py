@@ -287,33 +287,33 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Roadmap save: {e}")
             db.rollback()
 
-        # ============ 8. FINANCIAL ANALYSIS (ML/BENCHMARK DRIVEN) ============
+        # ============ 8. FINANCIAL ANALYSIS (REALISTIC INDIAN BENCHMARKS) ============
         try:
-            print(f"[Analysis] 8/9 Running Financial Analysis (ML/Benchmarks)...")
-            fin_data = MLService.calculate_financial_projections(context) or {}
-            rev_goal = safe_float(idea.revenue_goal, 50000)
+            print(f"[Analysis] 8/9 Running Financial Analysis (Realistic Indian Benchmarks)...")
+            from app.services.financial_intelligence import generate_financial_analysis
+            fi_fin = generate_financial_analysis(context)
             db.add(FinancialAnalysis(
                 idea_id=idea.id,
-                subscription_revenue=safe_float(fin_data.get('subscription_revenue'), rev_goal * 0.6 if sector == 'online' else 0),
-                freemium_conversion=safe_float(fin_data.get('freemium_conversion'), 5.0 if sector == 'online' else 0),
-                monthly_recurring_revenue=safe_float(fin_data.get('monthly_recurring_revenue'), rev_goal / 12),
-                customer_acquisition_cost=safe_float(fin_data.get('customer_acquisition_cost'), budget * 0.05),
-                lifetime_value=safe_float(fin_data.get('lifetime_value'), budget * 0.25),
-                churn_rate=safe_float(fin_data.get('churn_rate'), 4.5),
-                daily_customers_estimate=safe_int(fin_data.get('daily_customers_estimate'), 35 if sector == 'offline' else 0),
-                average_order_value=safe_float(fin_data.get('average_order_value'), 250 if sector == 'offline' else 0),
-                monthly_revenue=safe_float(fin_data.get('monthly_revenue'), rev_goal / 12),
-                rent_cost=safe_float(fin_data.get('rent_cost'), budget * 0.08 if sector == 'offline' else 0),
-                staff_cost=safe_float(fin_data.get('staff_cost'), budget * 0.15),
-                raw_material_cost=safe_float(fin_data.get('raw_material_cost'), budget * 0.05),
-                utility_cost=safe_float(fin_data.get('utility_cost'), 300),
-                marketing_cost=safe_float(fin_data.get('marketing_cost'), budget * 0.10),
-                development_cost=safe_float(fin_data.get('development_cost'), budget * 0.35),
-                monthly_operating_cost=safe_float(fin_data.get('monthly_operating_cost'), budget * 0.12),
-                break_even_analysis=str(fin_data.get('break_even_analysis') or f'Based on budget of ₹{budget:,.0f}, break-even estimated within 7-10 months.'),
-                roi=safe_float(fin_data.get('roi'), 145.0),
-                profit_margins=safe_float(fin_data.get('profit_margins'), 24.5),
-                detailed_explanation=str(fin_data.get('detailed_explanation') or f'Financial projections for {idea.title}.')
+                subscription_revenue=safe_float(fi_fin.get('subscription_revenue'), 0),
+                freemium_conversion=safe_float(fi_fin.get('freemium_conversion'), 5.0 if sector == 'online' else 0),
+                monthly_recurring_revenue=safe_float(fi_fin.get('monthly_recurring_revenue'), 50000),
+                customer_acquisition_cost=safe_float(fi_fin.get('customer_acquisition_cost'), 1500),
+                lifetime_value=safe_float(fi_fin.get('lifetime_value'), 6000),
+                churn_rate=safe_float(fi_fin.get('churn_rate'), 4.5),
+                daily_customers_estimate=safe_int(fi_fin.get('daily_customers_estimate'), 30),
+                average_order_value=safe_float(fi_fin.get('average_order_value'), 500),
+                monthly_revenue=safe_float(fi_fin.get('monthly_revenue'), 50000),
+                rent_cost=safe_float(fi_fin.get('rent_cost'), 15000),
+                staff_cost=safe_float(fi_fin.get('staff_cost'), 45000),
+                raw_material_cost=safe_float(fi_fin.get('raw_material_cost'), 0),
+                utility_cost=safe_float(fi_fin.get('utility_cost'), 5000),
+                marketing_cost=safe_float(fi_fin.get('marketing_cost'), 15000),
+                development_cost=safe_float(fi_fin.get('development_cost'), 120000),
+                monthly_operating_cost=safe_float(fi_fin.get('monthly_operating_cost'), 80000),
+                break_even_analysis=str(fi_fin.get('break_even_analysis') or f'Break-even estimated within 8-12 months.'),
+                roi=safe_float(fi_fin.get('roi'), 145.0),
+                profit_margins=safe_float(fi_fin.get('profit_margins'), 24.5),
+                detailed_explanation=str(fi_fin.get('detailed_explanation') or f'Financial projections for {idea.title}.')
             ))
             db.commit()
         except Exception as e:
