@@ -480,9 +480,20 @@ const BusinessTab = ({ data, idea }) => {
   const channels = parseItems(bm.channels, fallbackProfile.channels);
   const keyPartners = parseItems(bm.key_partners, fallbackProfile.key_partners);
   const keyActivities = parseItems(bm.key_activities, fallbackProfile.key_activities);
-  const keyResources = parseItems(bm.key_resources, fallbackProfile.key_resources);
-  const costStructure = parseItems(bm.cost_structure, fallbackProfile.cost_structure);
-  const revenueStreams = parseItems(bm.revenue_streams, fallbackProfile.revenue_streams);
+  // Ensure any legacy dollar values are safely sanitized into Indian Rupees (₹)
+  const sanitizeInr = (items) => {
+    return items.map(item => {
+      if (typeof item !== 'string') return item;
+      return item.replace(/\$(\d+(?:\.\d+)?)/g, (match, p1) => {
+        const usd = parseFloat(p1);
+        const inr = Math.round(usd * 85);
+        return `₹${inr.toLocaleString('en-IN')}`;
+      });
+    });
+  };
+
+  const costStructure = sanitizeInr(parseItems(bm.cost_structure, fallbackProfile.cost_structure));
+  const revenueStreams = sanitizeInr(parseItems(bm.revenue_streams, fallbackProfile.revenue_streams));
   const keyMetrics = parseItems(bm.key_metrics, fallbackProfile.key_metrics);
   const unfairAdvantage = bm.unfair_advantage || fallbackProfile.unfair_advantage;
 
@@ -628,7 +639,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* 1. Problem */}
             <div className="biz-canvas-card problem">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaExclamationTriangle style={{ color: '#ef4444' }} /> 1. Problem &amp; Market Friction</span>
+                <span className="biz-card-title"><FaExclamationTriangle style={{ color: '#ef4444' }} /> 1. Problem &amp; Friction</span>
                 <span className="biz-card-tag" style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)' }}>Pain Point</span>
               </div>
               <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{problemText}</p>
@@ -637,7 +648,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* 2. Customer Segments */}
             <div className="biz-canvas-card segments">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaUsers style={{ color: '#ec4899' }} /> 2. Target Customer Segments</span>
+                <span className="biz-card-title"><FaUsers style={{ color: '#ec4899' }} /> 2. Customer Segments</span>
                 <span className="biz-card-tag" style={{ color: '#ec4899', background: 'rgba(236,72,153,0.1)' }}>Personas</span>
               </div>
               <ul className="biz-list">
@@ -673,7 +684,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* 5. Channels */}
             <div className="biz-canvas-card channels">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaBullseye style={{ color: '#8b5cf6' }} /> 5. Channels &amp; GTM Funnel</span>
+                <span className="biz-card-title"><FaBullseye style={{ color: '#8b5cf6' }} /> 5. Channels &amp; GTM</span>
                 <span className="biz-card-tag" style={{ color: '#8b5cf6', background: 'rgba(139,92,246,0.1)' }}>Distribution</span>
               </div>
               <ul className="biz-list">
@@ -689,7 +700,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* 6. Unfair Advantage */}
             <div className="biz-canvas-card advantage">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaLock style={{ color: '#f59e0b' }} /> 6. Unfair Advantage &amp; Defensibility</span>
+                <span className="biz-card-title"><FaLock style={{ color: '#f59e0b' }} /> 6. Unfair Advantage</span>
                 <span className="biz-card-tag" style={{ color: '#f59e0b', background: 'rgba(245,158,11,0.1)' }}>Barrier to Entry</span>
               </div>
               <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{unfairAdvantage}</p>
@@ -714,7 +725,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* 8. Cost Structure */}
             <div className="biz-canvas-card costs">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaCoins style={{ color: '#f97316' }} /> 8. Cost Structure Drivers (₹)</span>
+                <span className="biz-card-title"><FaCoins style={{ color: '#f97316' }} /> 8. Cost Structure (₹)</span>
                 <span className="biz-card-tag" style={{ color: '#f97316', background: 'rgba(249,115,22,0.1)' }}>OPEX / CAPEX</span>
               </div>
               <ul className="biz-list">
@@ -730,7 +741,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* 9. Revenue Streams */}
             <div className="biz-canvas-card revenue">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaCreditCard style={{ color: '#10b981' }} /> 9. Revenue Streams &amp; Pricing (₹)</span>
+                <span className="biz-card-title"><FaCreditCard style={{ color: '#10b981' }} /> 9. Revenue Streams (₹)</span>
                 <span className="biz-card-tag" style={{ background: 'rgba(16,185,129,0.2)', color: '#34d399' }}>Monetization</span>
               </div>
               <ul className="biz-list">
