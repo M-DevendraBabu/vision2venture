@@ -1659,3 +1659,615 @@
   }
 }
 
+
+/* ============================================================
+   BUSINESS MODEL CANVAS, STRATEGIC SWOT & UNIT ECONOMICS
+   ============================================================ */
+
+.biz-executive-header {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.biz-executive-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4, #10b981);
+}
+
+.biz-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.biz-title-area h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.biz-badge-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.biz-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.biz-badge.archetype {
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+.biz-badge.delivery {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.biz-badge.currency {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.biz-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.biz-kpi-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  transition: all 0.25s ease;
+}
+
+.biz-kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(30, 41, 59, 0.7);
+}
+
+.biz-kpi-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.biz-kpi-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  letter-spacing: -0.01em;
+}
+
+.biz-kpi-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.biz-strategy-callout {
+  background: rgba(99, 102, 241, 0.08);
+  border-left: 4px solid #6366f1;
+  border-radius: 0 8px 8px 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.biz-strategy-callout strong {
+  color: #a5b4fc;
+}
+
+/* Sub-Tab Navigation */
+.biz-subtab-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.75rem;
+}
+
+.biz-subtab-btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.5);
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  transition: all 0.2s ease;
+}
+
+.biz-subtab-btn:hover {
+  background: rgba(30, 41, 59, 0.8);
+  color: #f1f5f9;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.biz-subtab-btn.active {
+  color: #ffffff;
+  font-weight: 600;
+  border-color: transparent;
+  box-shadow: 0 4px 15px -3px rgba(99, 102, 241, 0.4);
+}
+
+.biz-subtab-btn.canvas-active {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.biz-subtab-btn.swot-active {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.biz-subtab-btn.monetize-active {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.biz-subtab-btn.ecosystem-active {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+}
+
+/* 9-Pillar Lean Canvas Layout */
+.biz-canvas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.biz-canvas-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.4rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.biz-canvas-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+}
+
+.biz-canvas-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 14px 14px 0 0;
+}
+
+.biz-canvas-card.problem::before { background: #ef4444; }
+.biz-canvas-card.solution::before { background: #10b981; }
+.biz-canvas-card.uvp::before { background: #06b6d4; }
+.biz-canvas-card.advantage::before { background: #f59e0b; }
+.biz-canvas-card.segments::before { background: #ec4899; }
+.biz-canvas-card.channels::before { background: #8b5cf6; }
+.biz-canvas-card.metrics::before { background: #3b82f6; }
+.biz-canvas-card.costs::before { background: #f97316; }
+.biz-canvas-card.revenue::before { background: #10b981; }
+.biz-canvas-card.partners::before { background: #6366f1; }
+.biz-canvas-card.activities::before { background: #8b5cf6; }
+.biz-canvas-card.resources::before { background: #14b8a6; }
+
+.biz-canvas-card-highlight {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+.biz-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.biz-card-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.biz-card-tag {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.biz-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex-grow: 1;
+}
+
+.biz-list-item {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #cbd5e1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.biz-item-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 0.45rem;
+  flex-shrink: 0;
+}
+
+.biz-canvas-card.problem .biz-item-bullet { background: #ef4444; }
+.biz-canvas-card.solution .biz-item-bullet { background: #10b981; }
+.biz-canvas-card.uvp .biz-item-bullet { background: #06b6d4; }
+.biz-canvas-card.advantage .biz-item-bullet { background: #f59e0b; }
+.biz-canvas-card.segments .biz-item-bullet { background: #ec4899; }
+.biz-canvas-card.channels .biz-item-bullet { background: #8b5cf6; }
+.biz-canvas-card.metrics .biz-item-bullet { background: #3b82f6; }
+.biz-canvas-card.costs .biz-item-bullet { background: #f97316; }
+.biz-canvas-card.revenue .biz-item-bullet { background: #10b981; }
+.biz-canvas-card.partners .biz-item-bullet { background: #6366f1; }
+.biz-canvas-card.activities .biz-item-bullet { background: #8b5cf6; }
+.biz-canvas-card.resources .biz-item-bullet { background: #14b8a6; }
+
+/* Interactive SWOT Matrix */
+.swot-interactive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.swot-quadrant-card {
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.swot-quadrant-card.strengths {
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: linear-gradient(160deg, rgba(16, 185, 129, 0.05) 0%, rgba(15, 23, 42, 0.8) 100%);
+}
+
+.swot-quadrant-card.weaknesses {
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: linear-gradient(160deg, rgba(239, 68, 68, 0.05) 0%, rgba(15, 23, 42, 0.8) 100%);
+}
+
+.swot-quadrant-card.opportunities {
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  background: linear-gradient(160deg, rgba(6, 182, 212, 0.05) 0%, rgba(15, 23, 42, 0.8) 100%);
+}
+
+.swot-quadrant-card.threats {
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: linear-gradient(160deg, rgba(245, 158, 11, 0.05) 0%, rgba(15, 23, 42, 0.8) 100%);
+}
+
+.swot-quadrant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.swot-quadrant-header h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.swot-quadrant-card.strengths h4 { color: #34d399; }
+.swot-quadrant-card.weaknesses h4 { color: #f87171; }
+.swot-quadrant-card.opportunities h4 { color: #38bdf8; }
+.swot-quadrant-card.threats h4 { color: #fbbf24; }
+
+.swot-count-pill {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.swot-quadrant-card.strengths .swot-count-pill { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.swot-quadrant-card.weaknesses .swot-count-pill { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.swot-quadrant-card.opportunities .swot-count-pill { background: rgba(6, 182, 212, 0.2); color: #38bdf8; }
+.swot-quadrant-card.threats .swot-count-pill { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+.swot-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.swot-item-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.swot-item-box:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.swot-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.swot-item-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.swot-impact-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.swot-impact-badge.high { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+.swot-impact-badge.critical { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+.swot-impact-badge.growth { background: rgba(6, 182, 212, 0.2); color: #7dd3fc; border: 1px solid rgba(6, 182, 212, 0.4); }
+.swot-impact-badge.warning { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+.swot-item-desc {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+}
+
+.swot-action-tip {
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 3px solid #6366f1;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.swot-action-tip span {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+/* Pricing Tiers Grid */
+.biz-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.biz-pricing-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.75rem 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.biz-pricing-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5);
+}
+
+.biz-pricing-card.featured {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border: 2px solid #6366f1;
+  box-shadow: 0 8px 30px -6px rgba(99, 102, 241, 0.25);
+}
+
+.biz-pricing-badge-popular {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.biz-tier-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 0.35rem;
+}
+
+.biz-tier-target {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
+  min-height: 2.2em;
+}
+
+.biz-tier-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.biz-tier-currency {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #10b981;
+}
+
+.biz-tier-price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.biz-tier-period {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.biz-tier-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex-grow: 1;
+}
+
+.biz-tier-feature-item {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.biz-tier-feature-item svg {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+/* Strategic Moat Matrix */
+.biz-moat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.biz-moat-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.biz-moat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.biz-moat-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.biz-moat-score {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+}
+
+.biz-moat-desc {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.55;
+}

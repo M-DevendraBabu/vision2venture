@@ -204,36 +204,67 @@ def get_business(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    _verify_idea_ownership(idea_id, current_user, db)
+    idea = _verify_idea_ownership(idea_id, current_user, db)
     bm = db.query(BusinessModel).filter(BusinessModel.idea_id == idea_id).first()
     swot = db.query(SwotAnalysis).filter(SwotAnalysis.idea_id == idea_id).first()
 
-    data = {}
-    if bm:
-        data["business_model"] = {
-            "customer_segments": bm.customer_segments,
-            "value_proposition": bm.value_proposition,
-            "revenue_streams": bm.revenue_streams,
-            "channels": bm.channels,
-            "key_partners": bm.key_partners,
-            "key_activities": bm.key_activities,
-            "key_resources": bm.key_resources,
-            "cost_structure": bm.cost_structure,
-            "detailed_explanation": bm.detailed_explanation
-        }
-    if swot:
-        data["swot"] = {
-            "strengths": swot.strengths,
-            "weaknesses": swot.weaknesses,
-            "opportunities": swot.opportunities,
-            "threats": swot.threats,
-            "overall_assessment": swot.overall_assessment
-        }
+    # Generate or enrich with 25-sector business intelligence
+    from app.services.business_intelligence import generate_business_model, generate_swot_analysis
+    context = {
+        'id': idea.id,
+        'title': idea.title,
+        'description': idea.description,
+        'industry': idea.industry,
+        'country': idea.country,
+        'sector': idea.sector,
+        'pricing_model': idea.pricing_model,
+        'target_customers': idea.target_customers,
+        'budget': idea.budget,
+        'team_size': idea.team_size
+    }
+    bi_bm = generate_business_model(context)
+    bi_swot = generate_swot_analysis(context)
 
-    if not data:
-        raise HTTPException(status_code=404, detail="Business analysis not found")
+    # Assemble Business Model with rich 9-pillar Lean Canvas & Unit Economics
+    bm_dict = {
+        "customer_segments": (bm.customer_segments if bm and bm.customer_segments and not bm.customer_segments.startswith("Primary: Users seeking") else bi_bm["customer_segments_str"]),
+        "value_proposition": (bm.value_proposition if bm and bm.value_proposition and not bm.value_proposition.startswith("Solves key pain") else bi_bm["value_proposition"]),
+        "revenue_streams": (bm.revenue_streams if bm and bm.revenue_streams and not bm.revenue_streams.startswith("Revenue model based on") else bi_bm["revenue_streams_str"]),
+        "channels": (bm.channels if bm and bm.channels and not bm.channels.startswith("Digital Marketing, SEO, Social") else bi_bm["channels_str"]),
+        "key_partners": (bm.key_partners if bm and bm.key_partners and not bm.key_partners.startswith("Payment Processors, Cloud Providers") else bi_bm["key_partners_str"]),
+        "key_activities": (bm.key_activities if bm and bm.key_activities and not bm.key_activities.startswith("Product Development, Marketing") else bi_bm["key_activities_str"]),
+        "key_resources": (bm.key_resources if bm and bm.key_resources else bi_bm["key_resources_str"]),
+        "cost_structure": (bm.cost_structure if bm and bm.cost_structure and not bm.cost_structure.startswith("Development, Operations, Marketing") else bi_bm["cost_structure_str"]),
+        "detailed_explanation": (bm.detailed_explanation if bm and bm.detailed_explanation and not bm.detailed_explanation.startswith("Comprehensive business strategy for") else bi_bm["detailed_explanation"]),
+        
+        # Extended 9-pillar blocks & unit economics
+        "archetype": bi_bm["archetype"],
+        "gross_margin": bi_bm["gross_margin"],
+        "ltv_cac": bi_bm["ltv_cac"],
+        "payback_months": bi_bm["payback_months"],
+        "problem": bi_bm["problem"],
+        "solution": bi_bm["solution"],
+        "key_metrics": bi_bm["key_metrics"],
+        "unfair_advantage": bi_bm["unfair_advantage"],
+        "pricing_tiers": bi_bm["pricing_tiers"]
+    }
 
-    return {"status": "success", "data": data}
+    # Assemble SWOT with detailed impact annotations
+    swot_dict = {
+        "strengths": swot.strengths if swot and swot.strengths and not (len(swot.strengths) == 2 and 'Innovative approach' in str(swot.strengths[0])) else bi_swot["strengths"],
+        "weaknesses": swot.weaknesses if swot and swot.weaknesses and not (len(swot.weaknesses) == 2 and 'Early stage brand awareness' in str(swot.weaknesses[0])) else bi_swot["weaknesses"],
+        "opportunities": swot.opportunities if swot and swot.opportunities and not (len(swot.opportunities) == 2 and 'Expanding market' in str(swot.opportunities[0])) else bi_swot["opportunities"],
+        "threats": swot.threats if swot and swot.threats and not (len(swot.threats) == 2 and 'Incumbent market position' in str(swot.threats[0])) else bi_swot["threats"],
+        "overall_assessment": swot.overall_assessment if swot and swot.overall_assessment and not swot.overall_assessment.startswith("Strong overall baseline") else bi_swot["overall_assessment"],
+        
+        # Detailed structured SWOT objects
+        "strengths_detailed": bi_swot["strengths_detailed"],
+        "weaknesses_detailed": bi_swot["weaknesses_detailed"],
+        "opportunities_detailed": bi_swot["opportunities_detailed"],
+        "threats_detailed": bi_swot["threats_detailed"]
+    }
+
+    return {"status": "success", "data": {"business_model": bm_dict, "swot": swot_dict}}
 
 
 # ============================================================

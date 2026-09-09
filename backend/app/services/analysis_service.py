@@ -220,24 +220,41 @@ class AnalysisService:
         except Exception as e:
             print(f"[Analysis] Parallel executor notice: {e}")
 
+        # Ensure Business Model data is high-fidelity
+        if not bm_data or not bm_data.get('value_proposition'):
+            from app.services.business_intelligence import generate_business_model
+            bm_data = generate_business_model(context)
+
+        def _fmt_field(val, default=''):
+            if not val:
+                return default
+            if isinstance(val, list):
+                return "\n• ".join([""] + [str(x) for x in val]).strip()
+            return str(val)
+
         # Save Business Model
         try:
             db.add(BusinessModel(
                 idea_id=idea.id,
-                customer_segments=str(bm_data.get('customer_segments') or f'Primary: Users seeking {idea.industry} solutions'),
+                customer_segments=_fmt_field(bm_data.get('customer_segments') or bm_data.get('customer_segments_str'), f'Primary: Users seeking {idea.industry} solutions'),
                 value_proposition=str(bm_data.get('value_proposition') or f'Solves key pain points in {idea.industry}'),
-                revenue_streams=str(bm_data.get('revenue_streams') or f'Revenue model based on {idea.pricing_model or "Subscription"}'),
-                channels=str(bm_data.get('channels') or 'Digital Marketing, SEO, Social Media, Direct Sales'),
-                key_partners=str(bm_data.get('key_partners') or 'Payment Processors, Cloud Providers, Industry Vendors'),
-                key_activities=str(bm_data.get('key_activities') or 'Product Development, Marketing, Customer Support'),
-                key_resources=str(bm_data.get('key_resources') or f'Founding Team, Initial Budget of ₹{budget:,.0f}, IP'),
-                cost_structure=str(bm_data.get('cost_structure') or 'Development, Operations, Marketing, Personnel'),
+                revenue_streams=_fmt_field(bm_data.get('revenue_streams') or bm_data.get('revenue_streams_str'), f'Revenue model based on {idea.pricing_model or "Subscription"}'),
+                channels=_fmt_field(bm_data.get('channels') or bm_data.get('channels_str'), 'Digital Marketing, SEO, Social Media, Direct Sales'),
+                key_partners=_fmt_field(bm_data.get('key_partners') or bm_data.get('key_partners_str'), 'Payment Processors, Cloud Providers, Industry Vendors'),
+                key_activities=_fmt_field(bm_data.get('key_activities') or bm_data.get('key_activities_str'), 'Product Development, Marketing, Customer Support'),
+                key_resources=_fmt_field(bm_data.get('key_resources') or bm_data.get('key_resources_str'), f'Founding Team, Initial Budget of ₹{budget:,.0f}, IP'),
+                cost_structure=_fmt_field(bm_data.get('cost_structure') or bm_data.get('cost_structure_str'), 'Development, Operations, Marketing, Personnel'),
                 detailed_explanation=str(bm_data.get('detailed_explanation') or f'Comprehensive business strategy for {idea.title}.')
             ))
             db.commit()
         except Exception as e:
             print(f"[Analysis] ERROR in Business Model save: {e}")
             db.rollback()
+
+        # Ensure SWOT data is high-fidelity
+        if not swot_data or not swot_data.get('strengths'):
+            from app.services.business_intelligence import generate_swot_analysis
+            swot_data = generate_swot_analysis(context)
 
         # Save SWOT Analysis
         try:

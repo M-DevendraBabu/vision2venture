@@ -304,71 +304,67 @@ Return ONLY valid JSON:
 
     @staticmethod
     def run_business_model(context: dict) -> dict:
-        res = AIService._generate(f"""Design the business model for:
+        try:
+            res = AIService._generate(f"""Design the detailed 9-pillar Lean Business Model Canvas for:
 Title: {context['title']}
 Industry: {context['industry']}
-Sector: {context.get('sector', 'online')}
-Pricing: {context.get('pricing_model', 'Not specified')}
+Sector/Delivery: {context.get('sector', 'online')}
+Pricing Model: {context.get('pricing_model', 'Not specified')}
+Target Customers: {context.get('target_customers', 'Not specified')}
+Budget: ₹{float(context.get('budget') or 20000):,.0f}
 
-Return ONLY valid JSON:
-{{"customer_segments": "segment description", "value_proposition": "value proposition statement", "revenue_streams": "revenue breakdown", "channels": "marketing & sales channels", "key_partners": "key strategic partners", "key_activities": "core operational activities", "key_resources": "critical resources needed", "cost_structure": "main cost drivers", "detailed_explanation": "3-4 sentence summary"}}""")
-        if res and res.get('value_proposition'):
-            return res
+Return ONLY valid JSON with keys:
+"archetype": "business model type like B2B SaaS, D2C Omnichannel, Marketplace",
+"gross_margin": "e.g. 75% - 85%",
+"ltv_cac": "e.g. 4.2x",
+"payback_months": "e.g. 6 - 8 Months",
+"problem": "exact high friction pain point in India",
+"solution": "exact core product workflow solution",
+"customer_segments": ["ICP 1", "ICP 2", "ICP 3"],
+"value_proposition": "clear unfair value proposition",
+"revenue_streams": ["Pricing tier 1 with ₹", "Pricing tier 2 with ₹", "Tier 3"],
+"channels": ["Channel 1", "Channel 2", "Channel 3"],
+"key_partners": ["Partner 1", "Partner 2", "Partner 3"],
+"key_activities": ["Activity 1", "Activity 2"],
+"key_resources": ["Resource 1", "Resource 2"],
+"cost_structure": ["Cost driver 1", "Cost driver 2"],
+"key_metrics": ["Metric 1", "Metric 2"],
+"unfair_advantage": "defensible competitive moat",
+"detailed_explanation": "3-4 sentence strategic summary"
+""")
+            if res and res.get('value_proposition') and res.get('customer_segments'):
+                return res
+        except Exception as e:
+            print(f"[AI] run_business_model error: {e}")
 
-        title = context['title']
-        ind = context['industry']
-        pricing = context.get('pricing_model', 'Subscription & Tiered Pricing')
-        budget = float(context.get('budget', 20000))
-
-        return {
-            "customer_segments": f"Primary: Individual users and small-to-medium businesses in {context.get('country', 'Global')} seeking efficient {ind} solutions.",
-            "value_proposition": f"{title} delivers a high-impact solution that automates key processes, reduces operational overhead, and enhances user satisfaction in the {ind} domain.",
-            "revenue_streams": f"Monetized primarily via {pricing}, supplemented by add-on premium features and enterprise service tier packages.",
-            "channels": "Digital Marketing, Inbound SEO, Targeted Social Media Campaigns, Direct B2B Outreach & Referral Programs",
-            "key_partners": "Cloud Hosting Infrastructure Providers, Payment Gateways (Razorpay/Stripe), Industry Analytics Vendors & Channel Partners",
-            "key_activities": "Core Platform Development, Customer Onboarding, Continuous Product Optimization & Marketing Execution",
-            "key_resources": f"Proprietary Software Architecture, Founding Team Expertise, Initial Budget Allocation of ₹{budget:,.0f}, Customer Data & Brand Assets",
-            "cost_structure": "Software R&D / Engineering, Cloud Hosting & Server Infrastructure, Marketing & Customer Acquisition, Administrative Operations",
-            "detailed_explanation": f"{title} employs a scalable business model tailored for the {ind} market. By leveraging modern channel strategy and structured revenue pricing, the business is structured for rapid path to profitability."
-        }
+        # High-fidelity 25-sector fallback
+        from app.services.business_intelligence import generate_business_model
+        return generate_business_model(context)
 
     @staticmethod
     def run_swot_analysis(context: dict) -> dict:
-        res = AIService._generate(f"""Perform a SWOT analysis for:
+        try:
+            res = AIService._generate(f"""Perform an in-depth strategic SWOT analysis for:
 Title: {context['title']}
 Industry: {context['industry']}
-Country: {context.get('country', 'Global')}
+Country: {context.get('country', 'India')}
+Budget: ₹{float(context.get('budget') or 20000):,.0f}
 
-Return ONLY valid JSON:
-{{"strengths": ["s1", "s2"], "weaknesses": ["w1", "w2"], "opportunities": ["o1", "o2"], "threats": ["t1", "t2"], "overall_assessment": "3-4 sentence assessment"}}""")
-        if res and res.get('strengths'):
-            return res
+Return ONLY valid JSON with keys:
+"strengths": ["s1 with title & description", "s2", "s3"],
+"weaknesses": ["w1 with title & description", "w2"],
+"opportunities": ["o1 with title & description", "o2", "o3"],
+"threats": ["t1 with title & description", "t2"],
+"overall_assessment": "3-4 sentence executive strategic synthesis"
+""")
+            if res and res.get('strengths') and len(res.get('strengths', [])) >= 2:
+                return res
+        except Exception as e:
+            print(f"[AI] run_swot_analysis error: {e}")
 
-        title = context['title']
-        ind = context['industry']
-        country = context.get('country', 'Global')
-
-        return {
-            "strengths": [
-                f"Innovative service architecture tailored specifically for {ind}",
-                f"Lean operating structure enabling rapid feature iteration",
-                "Strong focus on customer experience and modern UI/UX"
-            ],
-            "weaknesses": [
-                "Early stage brand recognition compared to legacy incumbents",
-                "Initial customer acquisition budget constraints"
-            ],
-            "opportunities": [
-                f"Growing customer demand for modern {ind} services in {country}",
-                "Strategic partnerships with established industry players",
-                "Expansion into complementary product categories"
-            ],
-            "threats": [
-                "Potential response from well-capitalized market incumbents",
-                "Evolving regulatory and compliance requirements in the sector"
-            ],
-            "overall_assessment": f"{title} possesses a strong foundational baseline in the {ind} market. Leveraging its agile operational structure will allow it to effectively exploit market opportunities while mitigating competitive threats."
-        }
+        # High-fidelity 25-sector fallback
+        from app.services.business_intelligence import generate_swot_analysis
+        return generate_swot_analysis(context)
 
     @staticmethod
     def run_financial_analysis(context: dict) -> dict:
