@@ -707,21 +707,59 @@ class MLService:
 
         overall = round(mkt_score * 0.30 + tech_score * 0.25 + fin_score * 0.25 + inn_score * 0.20, 1)
 
+        # Dimension-specific explanations (Clean business reasoning, zero R² jargon)
+        tech_exp = (
+            f"High technical feasibility ({tech_score:.1f}/100): The proposed {sec} architecture in {context.get('industry', 'this sector')} utilizes mature frameworks and established development patterns. With a team of {team_size}, technical execution risks are low, and MVP build time can be kept under 3 months."
+            if tech_score > 70 else (
+                f"Moderate technical feasibility ({tech_score:.1f}/100): Developing a secure, reliable {sec} solution for {context.get('industry', 'this sector')} requires careful API integration, data protection, and robust backend handling. Achievable with focused engineering effort."
+                if tech_score > 50 else
+                f"Demanding technical requirements ({tech_score:.1f}/100): Specialized engineering talent and customized infrastructure are required. Development timelines should account for extensive testing, security audits, and latency optimization."
+            )
+        )
+
+        mkt_exp = (
+            f"Strong market feasibility ({mkt_score:.1f}/100): Target customers in {context.get('industry', 'this space')} exhibit high digital adoption and clear willingness to pay. Acquisition channels are accessible with competitive customer acquisition costs."
+            if mkt_score > 70 else (
+                f"Moderate market feasibility ({mkt_score:.1f}/100): Target customer segments exist with identifiable demand, but conversion requires sharp positioning, clear differentiation from incumbents, and educational onboarding."
+                if mkt_score > 50 else
+                f"Challenging market entry ({mkt_score:.1f}/100): Customer switching costs or established incumbent loyalties create friction. A targeted niche beachhead strategy is recommended before expanding broadly."
+            )
+        )
+
+        fin_exp = (
+            f"Healthy financial feasibility ({fin_score:.1f}/100): Initial budget of ${budget:,.0f} provides solid runway for early validation. Unit economics indicate a sustainable path to positive gross margins and rapid payback period."
+            if fin_score > 70 else (
+                f"Viable financial structure ({fin_score:.1f}/100): Initial capital of ${budget:,.0f} supports lean operations. Careful milestone-based capital allocation and tight cash flow management will ensure break-even within 8–14 months."
+                if fin_score > 50 else
+                f"Capital-constrained financial model ({fin_score:.1f}/100): Initial budget of ${budget:,.0f} requires strict cost control. Prioritize early revenue validation and customer pre-orders to extend operational runway."
+            )
+        )
+
+        inn_exp = (
+            f"High innovation potential ({inn_score:.1f}/100): Proprietary workflow improvements and differentiated positioning create defensible competitive advantages against traditional offerings in {context.get('industry', 'this sector')}."
+            if inn_score > 70 else (
+                f"Moderate innovation index ({inn_score:.1f}/100): Innovation is driven primarily by superior user experience, localized adaptation, and execution speed rather than complex proprietary technology."
+                if inn_score > 50 else
+                f"Incremental innovation index ({inn_score:.1f}/100): Business model closely follows standard industry templates. Consider developing proprietary features or exclusive data integrations to strengthen long-term moats."
+            )
+        )
+
+        overall_exp = (
+            f"Feasibility Assessment for {context.get('title')}: Evaluated at {overall:.1f}/100 overall feasibility. "
+            f"{'Strong overall viability with favorable alignment between technical execution, market opportunity, and financial resources.' if overall > 70 else ('Balanced feasibility profile with viable fundamentals, requiring focused execution on key operational milestones.' if overall > 50 else 'Demanding project scope requiring disciplined scoping, lean iteration, and targeted resource allocation.')}"
+        )
+
         return {
             "market_score": mkt_score,
             "technical_score": tech_score,
             "financial_score": fin_score,
             "innovation_score": inn_score,
             "overall_feasibility": overall,
-            "explanation": (
-                f"Feasibility Assessment for {context.get('title')}: Our StackingRegressor ensemble (R²=99.9%) evaluated 20 features "
-                f"to produce four feasibility dimensions. "
-                f"Market Access ({mkt_score:.1f}/100): {'Strong market entry potential with clear customer segments and accessible distribution channels.' if mkt_score > 70 else ('Moderate market accessibility — targeted positioning needed to reach early adopters.' if mkt_score > 50 else 'Challenging market entry — consider starting with a niche segment before expanding.')} "
-                f"Technical Buildability ({tech_score:.1f}/100): {'Highly buildable with proven tech stack and available talent pool.' if tech_score > 70 else ('Achievable with focused engineering effort and standard frameworks.' if tech_score > 50 else 'Requires specialized engineering talent and longer development timeline.')} "
-                f"Financial Viability ({fin_score:.1f}/100): {'Strong financial fundamentals with ${budget:,.0f} budget supporting clear path to profitability.' if fin_score > 70 else ('Viable with disciplined capital deployment and milestone-based spending.' if fin_score > 50 else 'Tight financial constraints — consider lean MVP approach and early revenue generation.')} "
-                f"Innovation Index ({inn_score:.1f}/100): {'High innovation potential — strong IP and differentiation opportunities.' if inn_score > 70 else ('Moderate innovation — focus on unique value proposition to stand out.' if inn_score > 50 else 'Consider strengthening the innovation narrative with proprietary features or unique data advantages.')} "
-                f"Overall Feasibility: {overall:.1f}/100. Methodology: 70% ML model (trained on 100K startup records with zero noise) + 30% {context.get('industry')} domain calibration."
-            )
+            "explanation": overall_exp,
+            "technical_explanation": tech_exp,
+            "market_explanation": mkt_exp,
+            "financial_explanation": fin_exp,
+            "innovation_explanation": inn_exp
         }
 
     # -----------------------------------------------------------------
@@ -801,22 +839,59 @@ class MLService:
         suggestions.append(f"Build functional MVP and acquire initial {50 + int(budget / 1000)} beta users to validate market traction")
         suggestions.append("Define clear unit economics with LTV:CAC ratio > 3x for Series A readiness")
 
+        # Dimension-specific investor explanations (Clean business reasoning, zero R² jargon)
+        scal_exp = (
+            f"High scalability ({scalability:.1f}/100): The {sec} business model allows revenue expansion with minimal marginal cost increases per customer, supporting rapid multi-market expansion."
+            if scalability > 70 else (
+                f"Moderate scalability ({scalability:.1f}/100): Expansion is achievable across target segments, though onboarding complexity and operational support requirements increase moderately with volume."
+                if scalability > 50 else
+                f"Constrained scaling potential ({scalability:.1f}/100): High variable costs, hands-on delivery, or localized dependency require structured automation before rapid venture scaling is feasible."
+            )
+        )
+
+        inn_exp = (
+            f"Strong defensibility ({innovation:.1f}/100): Significant competitive moat through proprietary technology, specialized domain data, or unique partner integrations that resist copycat replication."
+            if innovation > 70 else (
+                f"Moderate competitive moat ({innovation:.1f}/100): Differentiation relies on superior UX, customer relationships, and brand execution. Investors will evaluate long-term switching costs."
+                if innovation > 50 else
+                f"Low defensibility barrier ({innovation:.1f}/100): Easily replicable by well-funded competitors. Recommend building data flywheels, IP protections, or exclusive supplier/distribution channels."
+            )
+        )
+
+        biz_exp = (
+            f"Compelling business model ({biz_model:.1f}/100): High customer lifetime value relative to acquisition cost (LTV:CAC > 3x) and clear recurring revenue mechanics appeal strongly to investors."
+            if biz_model > 70 else (
+                f"Viable business model ({biz_model:.1f}/100): Monetization logic is sound, but customer payback periods and pricing tiers require live cohort validation to satisfy investor diligence."
+                if biz_model > 50 else
+                f"Unvalidated commercial model ({biz_model:.1f}/100): Needs proven customer willingness-to-pay and unit economic validation before seeking institutional venture rounds."
+            )
+        )
+
+        mkt_exp = (
+            f"Large market opportunity ({market:.1f}/100): Sizable addressable market with high compound annual growth rate provides the market size venture investors require for outsized returns."
+            if market > 70 else (
+                f"Focused addressable market ({market:.1f}/100): Healthy vertical market with defined niche opportunities. Investors will want to see potential expansion into adjacent verticals."
+                if market > 50 else
+                f"Niche market positioning ({market:.1f}/100): Tightly targeted customer segment; quantify your Total Addressable Market (TAM) to demonstrate commercial scale to investors."
+            )
+        )
+
+        overall_inv_exp = (
+            f"Investor Readiness Assessment for {context.get('title')}: Evaluated at {inv_score:.1f}/100 overall investor readiness. "
+            f"{'Startup presents an attractive seed profile with strong metrics across venture-critical dimensions.' if inv_score > 70 else ('Promising early profile — focus on demonstrating early customer traction and cohort retention to strengthen your pitch.' if inv_score > 50 else 'Pre-seed development stage — recommend building an active user base and proving product-market fit before institutional outreach.')}"
+        )
+
         return {
             "scalability": scalability,
             "innovation": innovation,
             "business_model": biz_model,
             "market": market,
             "investor_score": inv_score,
-            "explanation": (
-                f"Investor Readiness Analysis for {context.get('title')}: Our StackingRegressor ensemble (R²=91.1%) "
-                f"evaluated your startup across four investor-critical dimensions. "
-                f"Scalability ({scalability:.1f}/100): {'Excellent scaling potential — {sec} model enables rapid expansion with minimal marginal cost increase.'.format(sec=sec) if scalability > 70 else ('Moderate scalability — need to demonstrate clear 10x growth plan to investors.' if scalability > 50 else 'Scalability concerns — investors will want to see how you plan to scale beyond initial market.')} "
-                f"Innovation ({innovation:.1f}/100): {'Strong innovation moat — proprietary technology or unique approach creates defensible advantage.' if innovation > 70 else ('Moderate differentiation — strengthen IP strategy and unique value proposition for due diligence.' if innovation > 50 else 'Innovation gap — consider developing proprietary algorithms, data advantages, or patents before approaching investors.')} "
-                f"Business Model ({biz_model:.1f}/100): {'Robust business model — clear revenue streams and proven monetization strategy.' if biz_model > 70 else ('Viable model — refine unit economics (LTV:CAC, margins) for investor presentations.' if biz_model > 50 else 'Business model needs validation — demonstrate product-market fit with early revenue before seeking investment.')} "
-                f"Market Appeal ({market:.1f}/100): {'High market appeal — large TAM and strong growth trajectory attract investor interest.' if market > 70 else ('Moderate appeal — quantify your TAM/SAM/SOM and show market timing advantage.' if market > 50 else 'Market positioning needs work — clearly define your addressable market and competitive differentiation.')} "
-                f"Overall Score: {inv_score:.1f}/100. {'Your startup is well-positioned for angel/seed funding conversations.' if inv_score > 70 else ('Focus on the lowest-scoring dimension above to strengthen your pitch.' if inv_score > 50 else 'Recommend building more traction (users, revenue) before approaching institutional investors.')} "
-                f"Methodology: 70% ML model (trained on 100K records, R²=91.1%) + 30% {context.get('industry')} domain calibration."
-            ),
+            "explanation": overall_inv_exp,
+            "scalability_explanation": scal_exp,
+            "innovation_explanation": inn_exp,
+            "business_model_explanation": biz_exp,
+            "market_explanation": mkt_exp,
             "suggestions": suggestions
         }
 

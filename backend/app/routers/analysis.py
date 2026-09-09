@@ -307,7 +307,11 @@ def get_risk(
             "financial_score": float(feas.financial_score),
             "innovation_score": float(feas.innovation_score),
             "overall_feasibility": float(feas.overall_feasibility),
-            "explanation": feas.explanation
+            "explanation": feas.explanation,
+            "technical_explanation": getattr(feas, 'technical_explanation', None),
+            "market_explanation": getattr(feas, 'market_explanation', None),
+            "financial_explanation": getattr(feas, 'financial_explanation', None),
+            "innovation_explanation": getattr(feas, 'innovation_explanation', None)
         }
     if inv:
         data["investor_readiness"] = {
@@ -317,7 +321,11 @@ def get_risk(
             "market": float(inv.market),
             "investor_score": float(inv.investor_score),
             "explanation": inv.explanation,
-            "suggestions": inv.suggestions
+            "suggestions": inv.suggestions,
+            "scalability_explanation": getattr(inv, 'scalability_explanation', None),
+            "innovation_explanation": getattr(inv, 'innovation_explanation', None),
+            "business_model_explanation": getattr(inv, 'business_model_explanation', None),
+            "market_explanation": getattr(inv, 'market_explanation', None)
         }
 
     if not data:
