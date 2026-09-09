@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -15,6 +15,42 @@ import FinancialTab from '../components/Analysis/FinancialTab';
 import RiskTab from '../components/Analysis/RiskTab';
 import RoadmapTab from '../components/Analysis/RoadmapTab';
 import ReportTab from '../components/Analysis/ReportTab';
+
+class TabErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error(`Error in tab ${this.props.tabName}:`, error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="analysis-loading" style={{ padding: '3rem 1.5rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</div>
+          <h3 style={{ color: '#f87171' }}>Unable to display {this.props.tabName} analysis</h3>
+          <p style={{ color: '#94a3b8', maxWidth: '460px', margin: '0.5rem auto 1.5rem' }}>
+            We encountered an unexpected presentation error for this section. Your data is safe.
+          </p>
+          <button
+            className="btn-primary"
+            onClick={() => this.setState({ hasError: false })}
+          >
+            🔄 Retry Tab
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const AnalysisPage = () => {
   const { id } = useParams();
@@ -157,18 +193,26 @@ const AnalysisPage = () => {
       );
     }
 
-    switch (activeTab) {
-      case 'Overview': return <OverviewTab data={data} idea={idea} />;
-      case 'Market': return <MarketTab data={data} idea={idea} />;
-      case 'Competitor': return <CompetitorTab data={data} idea={idea} />;
-      case 'Technology': return <TechnologyTab data={data} idea={idea} />;
-      case 'Business': return <BusinessTab data={data} idea={idea} />;
-      case 'Financial': return <FinancialTab data={data} idea={idea} />;
-      case 'Risk': return <RiskTab data={data} idea={idea} />;
-      case 'Roadmap': return <RoadmapTab data={data} idea={idea} />;
-      case 'Report': return <ReportTab ideaId={id} />;
-      default: return <OverviewTab data={data} idea={idea} />;
-    }
+    const renderSpecificTab = () => {
+      switch (activeTab) {
+        case 'Overview': return <OverviewTab data={data} idea={idea} />;
+        case 'Market': return <MarketTab data={data} idea={idea} />;
+        case 'Competitor': return <CompetitorTab data={data} idea={idea} />;
+        case 'Technology': return <TechnologyTab data={data} idea={idea} />;
+        case 'Business': return <BusinessTab data={data} idea={idea} />;
+        case 'Financial': return <FinancialTab data={data} idea={idea} />;
+        case 'Risk': return <RiskTab data={data} idea={idea} />;
+        case 'Roadmap': return <RoadmapTab data={data} idea={idea} />;
+        case 'Report': return <ReportTab ideaId={id} />;
+        default: return <OverviewTab data={data} idea={idea} />;
+      }
+    };
+
+    return (
+      <TabErrorBoundary key={activeTab} tabName={activeTab}>
+        {renderSpecificTab()}
+      </TabErrorBoundary>
+    );
   };
 
   if (loading) return <div className="page-layout"><Sidebar /><div className="page-content"><LoadingSpinner /></div></div>;

@@ -373,7 +373,7 @@ const getUniversalDomainProfile = (industry, title, sector) => {
 
 
 // Dynamic low pricing calculation helper ensuring affordable rates and live monthly/annual toggle
-const getTierPricing = (tier, idx, cycle) => {
+const getTierPricing = (tier, idx = 0, cycle = 'annual') => {
   // Low, realistic Indian startup monthly benchmarks:
   // Tier 0 (Starter): ₹499/mo | Annual: ₹399/mo (₹4,788/yr, save 20%)
   // Tier 1 (Pro): ₹1,499/mo | Annual: ₹1,199/mo (₹14,388/yr, save 20%)
@@ -381,13 +381,18 @@ const getTierPricing = (tier, idx, cycle) => {
   const defaultMonthlyTiers = [499, 1499, 4999];
   let monthlyBase = defaultMonthlyTiers[idx] || (idx === 0 ? 499 : idx === 1 ? 1499 : 4999);
 
-  if (tier) {
-    const rawMonthly = tier.monthlyPrice || (!String(tier.period || '').includes('year') ? tier.price : null);
+  if (tier && typeof tier === 'object') {
+    const rawMonthly = tier.monthlyPrice || tier.monthly_price || (!String(tier.period || '').toLowerCase().includes('year') ? tier.price : null);
     if (rawMonthly) {
       const parsed = parseInt(String(rawMonthly).replace(/[^\d]/g, ''), 10);
-      if (!isNaN(parsed) && parsed >= 99 && parsed <= 9999) {
+      if (!isNaN(parsed) && parsed >= 49 && parsed <= 99999) {
         monthlyBase = parsed;
       }
+    }
+  } else if (typeof tier === 'string') {
+    const parsed = parseInt(tier.replace(/[^\d]/g, ''), 10);
+    if (!isNaN(parsed) && parsed >= 49 && parsed <= 99999) {
+      monthlyBase = parsed;
     }
   }
 
@@ -451,10 +456,14 @@ const BusinessTab = ({ data, idea }) => {
     ? FRONTEND_BUSINESS_INTELLIGENCE[sectorKey]
     : getUniversalDomainProfile(industry, title, sector);
 
-  // Helper parser for bullet lists from string or array
+  // Helper parser for bullet lists from string or array ensuring string children
   const parseItems = (val, fallbackList = []) => {
     if (!val) return fallbackList;
-    if (Array.isArray(val)) return val.length > 0 ? val : fallbackList;
+    if (Array.isArray(val)) {
+      return val.length > 0
+        ? val.map(item => (typeof item === 'object' && item !== null ? (item.title || item.name || item.desc || JSON.stringify(item)) : String(item)))
+        : fallbackList;
+    }
     if (typeof val === 'string') {
       const split = val
         .split(/(?:\r?\n• |\r?\n- |\r?\n|\. (?=[A-Z])|;)/)
@@ -480,10 +489,12 @@ const BusinessTab = ({ data, idea }) => {
   const channels = parseItems(bm.channels, fallbackProfile.channels);
   const keyPartners = parseItems(bm.key_partners, fallbackProfile.key_partners);
   const keyActivities = parseItems(bm.key_activities, fallbackProfile.key_activities);
+  const keyResources = parseItems(bm.key_resources, fallbackProfile.key_resources);
+
   // Ensure any legacy dollar values are safely sanitized into Indian Rupees (₹)
   const sanitizeInr = (items) => {
     return items.map(item => {
-      if (typeof item !== 'string') return item;
+      if (typeof item !== 'string') return String(item);
       return item.replace(/\$(\d+(?:\.\d+)?)/g, (match, p1) => {
         const usd = parseFloat(p1);
         const inr = Math.round(usd * 85);
@@ -497,9 +508,44 @@ const BusinessTab = ({ data, idea }) => {
   const keyMetrics = parseItems(bm.key_metrics, fallbackProfile.key_metrics);
   const unfairAdvantage = bm.unfair_advantage || fallbackProfile.unfair_advantage;
 
-  const pricingTiers = (bm.pricing_tiers && bm.pricing_tiers.length > 0)
+  // Rock-solid pricing tiers normalization with guaranteed object fields
+  const defaultFallbackTiers = [
+    { tier: 'Starter', monthlyPrice: '₹499', annualPrice: '₹4,788', period: '/ month', target: 'Early adopters & small teams', features: ['Core platform tools', 'Standard analytics dashboard', 'Email & WhatsApp support', '2 user seats'] },
+    { tier: 'Professional', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated GST reporting', 'Priority webhook SLAs'], popular: true },
+    { tier: 'Enterprise', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated database tenant', 'Custom ERP bi-directional sync', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
+  ];
+
+  const candidateTiers = Array.isArray(bm.pricing_tiers) && bm.pricing_tiers.length > 0
     ? bm.pricing_tiers
-    : fallbackProfile.pricing_tiers;
+    : (Array.isArray(fallbackProfile.pricing_tiers) && fallbackProfile.pricing_tiers.length > 0
+        ? fallbackProfile.pricing_tiers
+        : defaultFallbackTiers);
+
+  const pricingTiers = candidateTiers.map((t, idx) => {
+    const fallbackT = defaultFallbackTiers[idx] || defaultFallbackTiers[0];
+    if (typeof t === 'string') {
+      return {
+        tier: `Plan ${idx + 1}`,
+        target: 'Operational users & teams',
+        monthlyPrice: t,
+        annualPrice: t,
+        period: '/ month',
+        features: ['Core operational toolkit', 'Standard analytics'],
+        popular: idx === 1
+      };
+    }
+    return {
+      tier: t?.tier || t?.name || fallbackT.tier,
+      target: t?.target || t?.description || fallbackT.target,
+      monthlyPrice: t?.monthlyPrice || t?.monthly_price || t?.price || fallbackT.monthlyPrice,
+      annualPrice: t?.annualPrice || t?.annual_price || fallbackT.annualPrice,
+      period: t?.period || '/ month',
+      features: Array.isArray(t?.features)
+        ? t.features
+        : (typeof t?.features === 'string' ? t.features.split(/,\s*/).filter(Boolean) : fallbackT.features),
+      popular: Boolean(t?.popular || idx === 1)
+    };
+  });
 
   const parseSwotQuadrant = (items, fallbackItems = []) => {
     if (Array.isArray(items) && items.length > 0) {
@@ -535,12 +581,15 @@ const BusinessTab = ({ data, idea }) => {
     ? swot.overall_assessment
     : (bm.detailed_explanation || `${title} demonstrates compelling commercial viability in the Indian ${industry} market. By leveraging targeted digital distribution, strong unit margins (${grossMargin}), and defensible customer retention mechanisms, the business is structured for capital-efficient scale.`);
 
-  // Current selected plan object
-  const currentSelectedPlan = pricingTiers[selectedPlanIdx] || pricingTiers[0];
+  // Safe selected plan index & plan object
+  const safeSelectedIdx = (selectedPlanIdx >= 0 && selectedPlanIdx < pricingTiers.length) ? selectedPlanIdx : 0;
+  const currentSelectedPlan = pricingTiers[safeSelectedIdx] || pricingTiers[0] || defaultFallbackTiers[0];
 
   const handlePlanSelect = (idx) => {
-    setSelectedPlanIdx(idx);
-    toast.success(`Selected Plan: ${pricingTiers[idx].tier} (${billingCycle === 'annual' ? 'Annual Billing' : 'Monthly Billing'})`);
+    const validIdx = (idx >= 0 && idx < pricingTiers.length) ? idx : 0;
+    setSelectedPlanIdx(validIdx);
+    const plan = pricingTiers[validIdx] || pricingTiers[0] || defaultFallbackTiers[0];
+    toast.success(`Selected Plan: ${plan.tier} (${billingCycle === 'annual' ? 'Annual Billing' : 'Monthly Billing'})`);
   };
 
   return (
@@ -1021,15 +1070,17 @@ const BusinessTab = ({ data, idea }) => {
 
           {/* SELECTED PLAN SUMMARY & ROI CALLOUT */}
           {(() => {
-            const selectedPricing = getTierPricing(currentSelectedPlan, selectedPlanIdx, billingCycle);
+            const selectedPricing = getTierPricing(currentSelectedPlan, safeSelectedIdx, billingCycle);
+            const activeTierName = currentSelectedPlan?.tier || 'Selected';
+            const activeTargetDesc = currentSelectedPlan?.target || 'your core target audience';
             return (
               <div className="plan-selected-summary">
                 <div className="plan-summary-left">
                   <h4>
-                    <FaRocket style={{ color: '#10b981' }} /> Active Strategy: {currentSelectedPlan.tier} Plan ({billingCycle.toUpperCase()} BILLING)
+                    <FaRocket style={{ color: '#10b981' }} /> Active Strategy: {activeTierName} Plan ({billingCycle.toUpperCase()} BILLING)
                   </h4>
                   <p>
-                    Targeted at {currentSelectedPlan.target}. Designed to deliver maximum operational velocity with predictable {billingCycle} subscription cashflow.
+                    Targeted at {activeTargetDesc}. Designed to deliver maximum operational velocity with predictable {billingCycle} subscription cashflow.
                   </p>
                 </div>
 
@@ -1040,7 +1091,7 @@ const BusinessTab = ({ data, idea }) => {
                   </div>
 
                   <button
-                    onClick={() => toast.success(`Confirmed ${currentSelectedPlan.tier} plan at ${selectedPricing.summaryPrice}!`)}
+                    onClick={() => toast.success(`Confirmed ${activeTierName} plan at ${selectedPricing.summaryPrice}!`)}
                     className="plan-confirm-btn"
                   >
                     Confirm Plan Architecture <FaArrowRight />
@@ -1231,12 +1282,15 @@ const BusinessTab = ({ data, idea }) => {
                 <span className="biz-moat-score">Alliances</span>
               </div>
               <ul className="biz-list">
-                {keyPartners.map((partner, i) => (
-                  <li key={i} className="biz-list-item">
-                    <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
-                    <span>{partner}</span>
-                  </li>
-                ))}
+                {keyPartners.map((partner, i) => {
+                  const text = typeof partner === 'object' && partner !== null ? (partner.name || partner.title || partner.desc || JSON.stringify(partner)) : String(partner);
+                  return (
+                    <li key={i} className="biz-list-item">
+                      <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
+                      <span>{text}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -1247,12 +1301,15 @@ const BusinessTab = ({ data, idea }) => {
                 <span className="biz-moat-score">Core Ops</span>
               </div>
               <ul className="biz-list">
-                {keyActivities.map((act, i) => (
-                  <li key={i} className="biz-list-item">
-                    <span className="biz-item-bullet" style={{ background: '#8b5cf6' }} />
-                    <span>{act}</span>
-                  </li>
-                ))}
+                {keyActivities.map((act, i) => {
+                  const text = typeof act === 'object' && act !== null ? (act.name || act.title || act.desc || JSON.stringify(act)) : String(act);
+                  return (
+                    <li key={i} className="biz-list-item">
+                      <span className="biz-item-bullet" style={{ background: '#8b5cf6' }} />
+                      <span>{text}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -1263,12 +1320,15 @@ const BusinessTab = ({ data, idea }) => {
                 <span className="biz-moat-score">IP &amp; Capital</span>
               </div>
               <ul className="biz-list">
-                {keyResources.map((res, i) => (
-                  <li key={i} className="biz-list-item">
-                    <span className="biz-item-bullet" style={{ background: '#14b8a6' }} />
-                    <span>{res}</span>
-                  </li>
-                ))}
+                {keyResources.map((res, i) => {
+                  const text = typeof res === 'object' && res !== null ? (res.name || res.title || res.desc || JSON.stringify(res)) : String(res);
+                  return (
+                    <li key={i} className="biz-list-item">
+                      <span className="biz-item-bullet" style={{ background: '#14b8a6' }} />
+                      <span>{text}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -1281,4 +1341,64 @@ const BusinessTab = ({ data, idea }) => {
   );
 };
 
-export default BusinessTab;
+// Resilient Error Boundary ensuring zero black screens even during unexpected exceptions
+class BusinessTabErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("BusinessTab render error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          padding: '2.5rem',
+          textAlign: 'center',
+          background: 'rgba(30, 41, 59, 0.7)',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          borderRadius: '16px',
+          margin: '2rem 0'
+        }}>
+          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💼</div>
+          <h3 style={{ color: '#f87171', marginBottom: '0.5rem', fontSize: '1.25rem' }}>
+            Business Architecture Strategy
+          </h3>
+          <p style={{ color: '#94a3b8', maxWidth: '480px', margin: '0 auto 1.25rem', fontSize: '0.92rem' }}>
+            A temporary display issue occurred while rendering this sub-view. Click below to reload.
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false, error: null })}
+            style={{
+              padding: '0.6rem 1.5rem',
+              background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            🔄 Reload Business Section
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const SafeBusinessTab = (props) => (
+  <BusinessTabErrorBoundary>
+    <BusinessTab {...props} />
+  </BusinessTabErrorBoundary>
+);
+
+export default SafeBusinessTab;
