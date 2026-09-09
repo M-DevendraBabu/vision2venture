@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { FaExclamationTriangle, FaShieldAlt, FaTachometerAlt, FaCheckCircle, FaBriefcase } from 'react-icons/fa';
+import { 
+  FaExclamationTriangle, 
+  FaShieldAlt, 
+  FaTachometerAlt, 
+  FaCheckCircle, 
+  FaBriefcase, 
+  FaChartLine, 
+  FaLightbulb, 
+  FaCoins, 
+  FaGlobe, 
+  FaLaptopCode 
+} from 'react-icons/fa';
 
 const RiskTab = ({ data, idea }) => {
   const [activeSubTab, setActiveSubTab] = useState('heatmap');
@@ -55,46 +66,62 @@ const RiskTab = ({ data, idea }) => {
     return 'success';
   };
 
-  const getFeasibilityBadgeColor = (score) => {
-    if (score >= 70) return 'success';
-    if (score >= 50) return 'info';
-    if (score >= 35) return 'warning';
-    return 'danger';
+  const getBadgeClass = (score) => {
+    if (score >= 70) return 'score-success';
+    if (score >= 50) return 'score-info';
+    if (score >= 35) return 'score-warning';
+    return 'score-danger';
   };
 
-  // Clean R² or ML jargon from any text string
-  const cleanJargon = (str) => {
-    if (!str) return '';
-    return str
-      .replace(/Our StackingRegressor ensemble\s*\(R²=[^)]+\)\s*evaluated \d+ features to produce four feasibility dimensions\.\s*/gi, '')
-      .replace(/Our StackingRegressor ensemble\s*\(R²=[^)]+\)\s*evaluated your startup across four investor-critical dimensions\.\s*/gi, '')
-      .replace(/Methodology:\s*70%\s*ML model[^.]*\.\s*/gi, '')
-      .replace(/\(R²=[^)]+\)/gi, '')
-      .trim();
+  const getProgressGradient = (score) => {
+    if (score >= 70) return 'linear-gradient(90deg, #10b981, #34d399)';
+    if (score >= 50) return 'linear-gradient(90deg, #6366f1, #818cf8)';
+    if (score >= 35) return 'linear-gradient(90deg, #f59e0b, #fbbf24)';
+    return 'linear-gradient(90deg, #ef4444, #f87171)';
   };
 
-  // Helper to extract dimension-specific sentence from combined explanation
-  const extractDimensionText = (fullText, keywords) => {
+  // Precise extraction function: stops cleanly before the next section header without trailing decimals or stray headers
+  const extractSection = (fullText, targetName, followingSections) => {
     if (!fullText) return null;
-    for (const kw of keywords) {
-      const regex = new RegExp(`${kw}\\s*\\([^)]*\\):\\s*([^.]+\\.[^.]*\\.)`, 'i');
-      const match = fullText.match(regex);
-      if (match && match[1]) {
-        return cleanJargon(match[1].trim());
-      }
-    }
-    return null;
+    const lookahead = followingSections.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const regex = new RegExp(targetName + '\\s*\\([^)]*\\):\\s*([\\s\\S]*?)(?=(' + lookahead + '|$))', 'i');
+    const m = fullText.match(regex);
+    if (!m) return null;
+    let res = m[1].trim();
+    // Strip any trailing section headers like "Innovation (47." or "Business Model (44."
+    res = res.replace(/\s+[A-Za-z\s&]+\(\d*.*$/, '').trim();
+    // Strip any R² or math artifacts
+    res = res.replace(/\(R²=[^)]*\)/gi, '').trim();
+    return res.length > 10 ? res : null;
   };
 
+  const cleanOverallText = (rawExp, defaultType) => {
+    if (!rawExp) {
+      return `Comprehensive ${defaultType} evaluation for ${idea?.title || 'this venture'}: Demonstrates balanced operational alignment and clear progress potential.`;
+    }
+    
+    // Check if there is an executive recommendation after "Overall Score:" or "Overall Feasibility:"
+    const m = rawExp.match(/Overall\s+(?:Score|Feasibility):\s*[\d.]+\/100\.\s*([\s\S]*?)(?=Methodology|\d+%\s*ML|\(?R²|domain calibration|$)/i);
+    let rec = m ? m[1].trim() : '';
+    
+    rec = rec.replace(/Methodology[\s\S]*/gi, '')
+             .replace(/\d+%\s*ML[\s\S]*/gi, '')
+             .replace(/.*?\)\s*\+\s*\d+%[\s\S]*/gi, '')
+             .replace(/\(R²=[^)]*\)/gi, '')
+             .replace(/.*domain calibration\.\s*/gi, '')
+             .trim();
+             
+    if (rec && rec.length > 20) {
+      return `Assessment for ${idea?.title || 'this startup'}: ${rec}`;
+    }
+
+    return `Comprehensive ${defaultType} evaluation for ${idea?.title || 'this startup'}: Assessed across all four core pillars with balanced execution milestones and clear growth targets.`;
+  };
+
+  // ==================== FEASIBILITY DIMENSIONS ====================
   const getFeasibilityItems = () => {
     const rawExp = feasData.explanation || '';
-    const cleanOverall = cleanJargon(rawExp)
-      .replace(/Market Access\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Technical Buildability\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Financial Viability\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Innovation Index\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Overall Feasibility:\s*[\d.]+\/100\.\s*/gi, '')
-      .trim() || `Comprehensive feasibility assessment for ${idea?.title || 'this startup'}. The business demonstrates solid operational viability across technical execution, market accessibility, financial capital efficiency, and innovation potential.`;
+    const cleanOverall = cleanOverallText(rawExp, 'feasibility');
 
     const techScore = Math.round(feasData.technical_score ?? 75);
     const mktScore = Math.round(feasData.market_score ?? 75);
@@ -102,7 +129,7 @@ const RiskTab = ({ data, idea }) => {
     const innScore = Math.round(feasData.innovation_score ?? 68);
 
     const techExp = feasData.technical_explanation ||
-      extractDimensionText(rawExp, ['Technical Buildability', 'Technical', 'Tech']) ||
+      extractSection(rawExp, 'Technical Buildability', ['Financial Viability', 'Innovation Index', 'Market Access', 'Overall Feasibility', 'Methodology']) ||
       (techScore > 70
         ? `High technical buildability (${techScore}/100): The proposed architecture utilizes proven technologies and modern framework standards. Technical execution risks are minimal with realistic MVP delivery cycles.`
         : techScore > 50
@@ -110,7 +137,7 @@ const RiskTab = ({ data, idea }) => {
         : `Demanding engineering requirements (${techScore}/100): Specialized engineering talent and customized infrastructure are necessary. Timelines should prioritize security audits and latency testing.`);
 
     const mktExp = feasData.market_explanation ||
-      extractDimensionText(rawExp, ['Market Access', 'Market']) ||
+      extractSection(rawExp, 'Market Access', ['Technical Buildability', 'Financial Viability', 'Innovation Index', 'Overall Feasibility', 'Methodology']) ||
       (mktScore > 70
         ? `Strong market receptivity (${mktScore}/100): Target customer demand is clearly identified with accessible digital acquisition channels and favorable customer adoption dynamics.`
         : mktScore > 50
@@ -118,7 +145,7 @@ const RiskTab = ({ data, idea }) => {
         : `Challenging market adoption (${mktScore}/100): Customer switching friction or established incumbent habits require a focused niche beachhead strategy before expanding broadly.`);
 
     const finExp = feasData.financial_explanation ||
-      extractDimensionText(rawExp, ['Financial Viability', 'Financial']) ||
+      extractSection(rawExp, 'Financial Viability', ['Innovation Index', 'Technical Buildability', 'Market Access', 'Overall Feasibility', 'Methodology']) ||
       (finScore > 70
         ? `Healthy financial feasibility (${finScore}/100): Initial budget provides adequate runway for early validation. Unit economics indicate a sustainable path to positive gross margins and payback.`
         : finScore > 50
@@ -126,7 +153,7 @@ const RiskTab = ({ data, idea }) => {
         : `Capital-constrained financial model (${finScore}/100): Tight operating margins require strict cost control. Prioritize early revenue validation and customer pre-orders to extend operational runway.`);
 
     const innExp = feasData.innovation_explanation ||
-      extractDimensionText(rawExp, ['Innovation Index', 'Innovation']) ||
+      extractSection(rawExp, 'Innovation Index', ['Overall Feasibility', 'Methodology', 'Technical Buildability', 'Market Access', 'Financial Viability']) ||
       (innScore > 70
         ? `Strong innovation differentiation (${innScore}/100): Distinctive feature set and workflow optimizations create defensible competitive advantages against traditional solutions.`
         : innScore > 50
@@ -139,44 +166,55 @@ const RiskTab = ({ data, idea }) => {
         {
           title: 'Technical Feasibility',
           subtitle: 'Architecture & Implementability',
+          icon: <FaLaptopCode />,
+          iconBg: 'rgba(99, 102, 241, 0.15)',
+          iconColor: '#818cf8',
           score: techScore,
-          color: getFeasibilityBadgeColor(techScore),
-          explanation: techExp
+          primary: techExp,
+          detail: `Context: Evaluates framework maturity, integration endpoints, and engineering complexity for ${idea?.sector || 'this'} deployment in ${idea?.industry || 'this domain'}.`,
+          action: `Milestone: Finalize technical specification, set up testing environment, and stress-test data integrity pipelines.`
         },
         {
           title: 'Market Feasibility',
           subtitle: 'Target Buyer Adoption Potential',
+          icon: <FaGlobe />,
+          iconBg: 'rgba(16, 185, 129, 0.15)',
+          iconColor: '#34d399',
           score: mktScore,
-          color: getFeasibilityBadgeColor(mktScore),
-          explanation: mktExp
+          primary: mktExp,
+          detail: `Context: Assesses buyer readiness, addressable customer segments, and competitive alternatives in ${idea?.country || 'the target region'}.`,
+          action: `Milestone: Conduct customer discovery interviews with 25+ target buyers to validate positioning and conversion drivers.`
         },
         {
           title: 'Financial Feasibility',
           subtitle: 'Capital Efficiency & Runway',
+          icon: <FaCoins />,
+          iconBg: 'rgba(245, 158, 11, 0.15)',
+          iconColor: '#fbbf24',
           score: finScore,
-          color: getFeasibilityBadgeColor(finScore),
-          explanation: finExp
+          primary: finExp,
+          detail: `Context: Evaluates cash burn rate, working capital deployment velocity, and payback period against initial budget.`,
+          action: `Milestone: Maintain at least 6 months operating buffer and track unit economics (gross margin & CAC).`
         },
         {
           title: 'Innovation Index',
           subtitle: 'Proprietary Differentiation & Moats',
+          icon: <FaLightbulb />,
+          iconBg: 'rgba(236, 72, 153, 0.15)',
+          iconColor: '#f472b6',
           score: innScore,
-          color: getFeasibilityBadgeColor(innScore),
-          explanation: innExp
+          primary: innExp,
+          detail: `Context: Measures product uniqueness, technical novelty, and defensibility against existing market incumbents.`,
+          action: `Milestone: Document proprietary workflows and identify opportunities for trade secrets, patents, or data moats.`
         }
       ]
     };
   };
 
+  // ==================== INVESTOR READINESS DIMENSIONS ====================
   const getInvestorItems = () => {
     const rawExp = investorData.explanation || '';
-    const cleanOverall = cleanJargon(rawExp)
-      .replace(/Scalability\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Innovation\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Business Model\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Market Appeal\s*\([^)]*\):[^.]*\./gi, '')
-      .replace(/Overall Score:\s*[\d.]+\/100\.\s*/gi, '')
-      .trim() || `Investor readiness evaluation for ${idea?.title || 'this startup'}. Evaluates early-stage venture readiness across expansion scalability, defensibility, business model clarity, and total addressable market potential.`;
+    const cleanOverall = cleanOverallText(rawExp, 'investor readiness');
 
     const scalScore = Math.round(investorData.scalability ?? 70);
     const innScore = Math.round(investorData.innovation ?? 65);
@@ -184,7 +222,7 @@ const RiskTab = ({ data, idea }) => {
     const mktScore = Math.round(investorData.market ?? 70);
 
     const scalExp = investorData.scalability_explanation ||
-      extractDimensionText(rawExp, ['Scalability']) ||
+      extractSection(rawExp, 'Scalability', ['Innovation', 'Business Model', 'Market Appeal', 'Overall Score', 'Methodology']) ||
       (scalScore > 70
         ? `High exponential scalability (${scalScore}/100): Digital architecture enables rapid user and revenue expansion with minimal marginal cost increases per customer.`
         : scalScore > 50
@@ -192,7 +230,7 @@ const RiskTab = ({ data, idea }) => {
         : `Constrained scaling velocity (${scalScore}/100): Variable delivery costs or localized dependencies require automated processes before rapid venture scaling is feasible.`);
 
     const innExp = investorData.innovation_explanation ||
-      extractDimensionText(rawExp, ['Innovation']) ||
+      extractSection(rawExp, 'Innovation', ['Business Model', 'Market Appeal', 'Scalability', 'Overall Score', 'Methodology']) ||
       (innScore > 70
         ? `Strong defensibility moat (${innScore}/100): Significant competitive barrier through proprietary technology, specialized domain data, or unique partner integrations that resist copycat replication.`
         : innScore > 50
@@ -200,7 +238,7 @@ const RiskTab = ({ data, idea }) => {
         : `Low barrier to entry (${innScore}/100): Concept is susceptible to fast followers. Recommend building proprietary algorithms, data flywheels, or exclusive supplier channels.`);
 
     const bizExp = investorData.business_model_explanation ||
-      extractDimensionText(rawExp, ['Business Model']) ||
+      extractSection(rawExp, 'Business Model', ['Market Appeal', 'Innovation', 'Scalability', 'Overall Score', 'Methodology']) ||
       (bizScore > 70
         ? `Robust business model (${bizScore}/100): Clear monetization mechanics with healthy projected customer lifetime value (LTV) relative to customer acquisition cost (CAC).`
         : bizScore > 50
@@ -208,7 +246,7 @@ const RiskTab = ({ data, idea }) => {
         : `Unvalidated unit economics (${bizScore}/100): Demonstrating proven customer willingness-to-pay and repeat engagement is needed before approaching institutional venture investors.`);
 
     const mktExp = investorData.market_explanation ||
-      extractDimensionText(rawExp, ['Market Appeal', 'Market']) ||
+      extractSection(rawExp, 'Market Appeal', ['Overall Score', 'Methodology', 'Business Model', 'Innovation', 'Scalability']) ||
       (mktScore > 70
         ? `High market appeal (${mktScore}/100): Expansive addressable market (TAM) with strong industry tailwinds, matching the profile venture investors seek for outsized returns.`
         : mktScore > 50
@@ -220,31 +258,47 @@ const RiskTab = ({ data, idea }) => {
       dimensions: [
         {
           title: 'Scalability Index',
-          subtitle: 'Revenue Growth Scaling Potential',
+          subtitle: 'Revenue Growth & Scaling Velocity',
+          icon: <FaChartLine />,
+          iconBg: 'rgba(99, 102, 241, 0.15)',
+          iconColor: '#818cf8',
           score: scalScore,
-          color: getFeasibilityBadgeColor(scalScore),
-          explanation: scalExp
+          primary: scalExp,
+          detail: `Venture View: Investors assess how efficiently your business model scales beyond the initial wedge market without linear headcount growth.`,
+          action: `Milestone: Document unit economics scaling curves showing decreasing marginal cost per incremental user.`
         },
         {
           title: 'Innovation & Moat',
-          subtitle: 'Proprietary Differentiation & Defensibility',
+          subtitle: 'Proprietary Defensibility & Barriers',
+          icon: <FaShieldAlt />,
+          iconBg: 'rgba(236, 72, 153, 0.15)',
+          iconColor: '#f472b6',
           score: innScore,
-          color: getFeasibilityBadgeColor(innScore),
-          explanation: innExp
+          primary: innExp,
+          detail: `Venture View: Institutional investors evaluate proprietary algorithms, data advantages, and barriers that prevent well-funded copycats.`,
+          action: `Milestone: Build proprietary data loops and establish intellectual property protections before institutional diligence.`
         },
         {
           title: 'Business Model Viability',
-          subtitle: 'Monetization & Unit Economics',
+          subtitle: 'Monetization & LTV:CAC Economics',
+          icon: <FaBriefcase />,
+          iconBg: 'rgba(16, 185, 129, 0.15)',
+          iconColor: '#34d399',
           score: bizScore,
-          color: getFeasibilityBadgeColor(bizScore),
-          explanation: bizExp
+          primary: bizExp,
+          detail: `Venture View: Seed and Series A investors look for verified customer willingness-to-pay, recurring revenue stability, and healthy payback cycles.`,
+          action: `Milestone: Validate early monetization with paying beta users and demonstrate an LTV:CAC ratio exceeding 3:1.`
         },
         {
           title: 'Market Appeal & TAM',
           subtitle: 'Total Addressable Market Opportunity',
+          icon: <FaGlobe />,
+          iconBg: 'rgba(245, 158, 11, 0.15)',
+          iconColor: '#fbbf24',
           score: mktScore,
-          color: getFeasibilityBadgeColor(mktScore),
-          explanation: mktExp
+          primary: mktExp,
+          detail: `Venture View: Venture funds prioritize massive Total Addressable Markets (TAM > $1B) that can yield outsized fund-returning outcomes.`,
+          action: `Milestone: Quantify bottom-up TAM/SAM/SOM calculations with credible customer volume models in your pitch materials.`
         }
       ]
     };
@@ -378,91 +432,147 @@ const RiskTab = ({ data, idea }) => {
         </div>
       )}
 
-      {/* SUB-TAB 2: FEASIBILITY RATINGS */}
+      {/* SUB-TAB 2: FEASIBILITY RATINGS (2x2 GRID + HIGHLIGHTED SCORES) */}
       {activeSubTab === 'feasibility' && (() => {
         const { overallExplanation, dimensions } = getFeasibilityItems();
         const overallScore = Math.round(feasData.overall_feasibility || 80);
-        const overallBadge = getFeasibilityBadgeColor(overallScore);
+        const overallBadgeClass = getBadgeClass(overallScore);
 
         return (
           <div className="animate-fade-in">
             {/* Overall Feasibility Summary Banner */}
             <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #10b981', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Overall Feasibility</div>
+                <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Overall Feasibility</div>
                 <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#10b981', lineHeight: '1.1' }}>{overallScore}/100</div>
-                <div className={`score-badge ${overallBadge} mt-xs`} style={{ display: 'inline-block', fontSize: '0.75rem' }}>
+                <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
                   {overallScore > 70 ? 'High Feasibility' : overallScore > 50 ? 'Moderate Feasibility' : 'High Execution Challenge'}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
-                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#ffffff' }}>Overall Feasibility Evaluation</h4>
+                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#ffffff' }}>Overall Viability Assessment</h4>
                 <p style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   {overallExplanation}
                 </p>
               </div>
             </div>
 
-            {/* 4 Feasibility Dimension Cards with Rich Explanations */}
+            {/* Symmetrical 2x2 Feasibility Dimension Cards with Highlighted Scores & Rich Content */}
             <h4 className="section-heading mb-md"><FaTachometerAlt /> Feasibility Across Core Dimensions</h4>
-            <div className="metrics-grid mb-xl" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-              {dimensions.map((dim, idx) => (
-                <div key={idx} className="metric-card glass-card-accent p-lg" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <h5 style={{ margin: 0, fontSize: '0.95rem', color: '#ffffff', fontWeight: '700' }}>{dim.title}</h5>
-                    <span className={`score-badge ${dim.color}`} style={{ fontSize: '0.8rem', padding: '2px 8px', whiteSpace: 'nowrap' }}>{dim.score}/100</span>
+            <div className="dimension-cards-grid">
+              {dimensions.map((dim, idx) => {
+                const badgeClass = getBadgeClass(dim.score);
+                const progressGrad = getProgressGradient(dim.score);
+
+                return (
+                  <div key={idx} className="dimension-card-premium stagger-1">
+                    {/* Card Header: Icon + Title on left, Glowing Highlighted Score on right */}
+                    <div className="dim-header">
+                      <div className="dim-title-group">
+                        <div className="dim-icon" style={{ background: dim.iconBg, color: dim.iconColor }}>
+                          {dim.icon}
+                        </div>
+                        <div>
+                          <h5 className="dim-title">{dim.title}</h5>
+                          <div className="dim-subtitle">{dim.subtitle}</div>
+                        </div>
+                      </div>
+                      <div className={`dim-score-badge ${badgeClass}`}>
+                        <span>{dim.score}</span>
+                        <span className="score-denom">/100</span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar Indicator */}
+                    <div className="dim-progress-track">
+                      <div className="dim-progress-fill" style={{ width: `${dim.score}%`, background: progressGrad }} />
+                    </div>
+
+                    {/* Rich Content Body */}
+                    <div className="dim-body">
+                      <p className="dim-primary-text">{dim.primary}</p>
+                      <p className="dim-detail-text">{dim.detail}</p>
+                      <div className="dim-action-box" style={{ borderLeftColor: dim.iconColor }}>
+                        <span className="dim-action-label" style={{ color: dim.iconColor }}>Recommended Action</span>
+                        <span className="dim-action-content">{dim.action}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '10px', fontWeight: '500' }}>{dim.subtitle}</div>
-                  <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: '1.55', margin: 0, flex: 1 }}>
-                    {dim.explanation}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         );
       })()}
 
-      {/* SUB-TAB 3: INVESTOR READINESS */}
+      {/* SUB-TAB 3: INVESTOR READINESS (2x2 GRID + HIGHLIGHTED SCORES) */}
       {activeSubTab === 'investor' && (() => {
         const { overallExplanation, dimensions } = getInvestorItems();
         const overallScore = Math.round(investorData.investor_score || 80);
-        const overallBadge = getFeasibilityBadgeColor(overallScore);
+        const overallBadgeClass = getBadgeClass(overallScore);
 
         return (
           <div className="animate-fade-in">
             {/* Overall Investor Summary Banner */}
             <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #6366f1', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
-                <div style={{ fontSize: '0.8rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Investor Score</div>
+                <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Investor Score</div>
                 <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#818cf8', lineHeight: '1.1' }}>{overallScore}/100</div>
-                <div className={`score-badge ${overallBadge} mt-xs`} style={{ display: 'inline-block', fontSize: '0.75rem' }}>
+                <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
                   {overallScore > 70 ? 'Venture Ready' : overallScore > 50 ? 'Angel / Seed Stage' : 'Pre-Seed Development'}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
-                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#ffffff' }}>Venture & Angel Readiness Assessment</h4>
+                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#ffffff' }}>Venture Capital & Angel Readiness Assessment</h4>
                 <p style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   {overallExplanation}
                 </p>
               </div>
             </div>
 
-            {/* 4 Investor Dimension Cards with Rich Explanations */}
+            {/* Symmetrical 2x2 Investor Dimension Cards with Highlighted Scores & Rich Content */}
             <h4 className="section-heading mb-md"><FaBriefcase /> Investor Evaluation Dimensions</h4>
-            <div className="metrics-grid mb-xl" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-              {dimensions.map((dim, idx) => (
-                <div key={idx} className="metric-card glass-card-accent p-lg" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <h5 style={{ margin: 0, fontSize: '0.95rem', color: '#ffffff', fontWeight: '700' }}>{dim.title}</h5>
-                    <span className={`score-badge ${dim.color}`} style={{ fontSize: '0.8rem', padding: '2px 8px', whiteSpace: 'nowrap' }}>{dim.score}/100</span>
+            <div className="dimension-cards-grid">
+              {dimensions.map((dim, idx) => {
+                const badgeClass = getBadgeClass(dim.score);
+                const progressGrad = getProgressGradient(dim.score);
+
+                return (
+                  <div key={idx} className="dimension-card-premium stagger-1">
+                    {/* Card Header: Icon + Title on left, Glowing Highlighted Score on right */}
+                    <div className="dim-header">
+                      <div className="dim-title-group">
+                        <div className="dim-icon" style={{ background: dim.iconBg, color: dim.iconColor }}>
+                          {dim.icon}
+                        </div>
+                        <div>
+                          <h5 className="dim-title">{dim.title}</h5>
+                          <div className="dim-subtitle">{dim.subtitle}</div>
+                        </div>
+                      </div>
+                      <div className={`dim-score-badge ${badgeClass}`}>
+                        <span>{dim.score}</span>
+                        <span className="score-denom">/100</span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar Indicator */}
+                    <div className="dim-progress-track">
+                      <div className="dim-progress-fill" style={{ width: `${dim.score}%`, background: progressGrad }} />
+                    </div>
+
+                    {/* Rich Content Body */}
+                    <div className="dim-body">
+                      <p className="dim-primary-text">{dim.primary}</p>
+                      <p className="dim-detail-text">{dim.detail}</p>
+                      <div className="dim-action-box" style={{ borderLeftColor: dim.iconColor }}>
+                        <span className="dim-action-label" style={{ color: dim.iconColor }}>Investor Milestone</span>
+                        <span className="dim-action-content">{dim.action}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: '10px', fontWeight: '500' }}>{dim.subtitle}</div>
-                  <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: '1.55', margin: 0, flex: 1 }}>
-                    {dim.explanation}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="glass-card p-xl">
