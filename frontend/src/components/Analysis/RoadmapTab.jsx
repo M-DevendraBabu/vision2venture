@@ -252,20 +252,6 @@ const RoadmapTab = ({ data, idea }) => {
         </div>
       </div>
 
-      {/* ============================================================ */}
-      {/* FINANCIAL SYNCHRONIZATION CALLOUT BANNER                     */}
-      {/* ============================================================ */}
-      <div className="roadmap-sync-banner">
-        <FaLink className="roadmap-sync-icon" />
-        <div className="roadmap-sync-content">
-          <h5>100% Mathematically Synchronized with Financial Tab</h5>
-          <p>
-            {data?.financial_synchronization_note || (
-              `Setup Phases 1 to 3 deploy exactly ${formatCurrency(totalCapEx)} in upfront launch capital (CapEx), fully funding legal compliance, platform engineering, and opening inventory. Phase 4 operates within the baseline ${formatCurrency(monthlyOpEx)}/month operating overhead (OpEx), driving customer order volume past the break-even threshold with complete CapEx recovery projected within ${breakEvenMonths} months.`
-            )}
-          </p>
-        </div>
-      </div>
 
       {/* ============================================================ */}
       {/* 2. SUB-TAB NAVIGATION BAR (HORIZONTAL SCROLL WITH ARROWS)    */}
