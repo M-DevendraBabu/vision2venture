@@ -3,8 +3,10 @@ import {
   FaBuilding, FaTable, FaProjectDiagram, FaCoins, FaHandshake,
   FaCheckCircle, FaExclamationTriangle, FaLightbulb, FaShieldAlt,
   FaChartLine, FaRocket, FaUsers, FaBullseye, FaBolt, FaLock,
-  FaCreditCard, FaBalanceScale, FaCogs, FaCube
+  FaCreditCard, FaBalanceScale, FaCogs, FaCube, FaCheck, FaServer,
+  FaNetworkWired, FaCertificate, FaArrowRight, FaCalendarAlt
 } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 // Universal 25-sector fallback intelligence repository for frontend resiliency
 const FRONTEND_BUSINESS_INTELLIGENCE = {
@@ -67,9 +69,9 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
     ],
     unfair_advantage: 'Proprietary Indian curriculum constraint rules pre-configured for CBSE, ICSE, and state university elective credit patterns, delivering instant out-of-the-box schedules without manual rule configuration.',
     pricing_tiers: [
-      { tier: 'Starter Academy', price: '₹24,000', period: '/ year', target: 'Single K-12 Schools (<600 students)', features: ['Automated schedule solver', 'Teacher leave substitution', 'WhatsApp alert digest', '2 admin seats'] },
-      { tier: 'Campus Pro', price: '₹75,000', period: '/ year', target: 'Large Schools & Junior Colleges (600–2,500 students)', features: ['NEP elective credit matrix', 'Lab room allocation', 'Bi-directional SIS sync', 'Unlimited staff logins'], popular: true },
-      { tier: 'University Enterprise', price: '₹2,20,000+', period: '/ year', target: 'Multi-Campus Universities & School Chains', features: ['Multi-department scheduling', 'Cross-faculty load balancing', 'Custom API hooks', '24/7 dedicated account manager'] }
+      { tier: 'Starter Academy', monthlyPrice: '₹2,499', annualPrice: '₹24,000', period: '/ year', target: 'Single K-12 Schools (<600 students)', features: ['Automated schedule solver', 'Teacher leave substitution', 'WhatsApp alert digest', '2 admin seats'] },
+      { tier: 'Campus Pro', monthlyPrice: '₹7,499', annualPrice: '₹72,000', period: '/ year', target: 'Large Schools & Junior Colleges (600–2,500 students)', features: ['NEP elective credit matrix', 'Lab room allocation', 'Bi-directional SIS sync', 'Unlimited staff logins'], popular: true },
+      { tier: 'University Enterprise', monthlyPrice: '₹22,999', annualPrice: '₹2,20,000+', period: '/ year', target: 'Multi-Campus Universities & School Chains', features: ['Multi-department scheduling', 'Cross-faculty load balancing', 'Custom API hooks', '24/7 dedicated account manager'] }
     ],
     swot: {
       strengths: [
@@ -152,9 +154,9 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
     ],
     unfair_advantage: 'Direct NPCI switch connectivity combined with predictive multi-bank latency routing, achieving sub-1.2 second UPI payment completion times compared to legacy 3.5s gateway average.',
     pricing_tiers: [
-      { tier: 'Growth Merchant', price: '₹0 / mo', period: '+ 1.2% per tx', target: 'Early-stage startups processing <₹10L GMV', features: ['Standard UPI & Card checkout', 'T+1 settlement', 'Shopify plugin', 'Standard email support'] },
-      { tier: 'Scale Business', price: '₹4,999', period: '/ mo + 0.95% tx', target: 'Growing brands processing ₹10L–₹50L GMV', features: ['Instant T+0 settlement', 'Custom checkout UI', 'Automated GST reconciliation', 'Priority webhook SLAs'], popular: true },
-      { tier: 'Enterprise Tier', price: 'Custom', period: 'volume contract', target: 'High-volume marketplaces processing >₹50L GMV', features: ['Dedicated multi-bank switch', 'Split escrow payouts', 'Account Aggregator integration', '24/7 SLA manager'] }
+      { tier: 'Growth Merchant', monthlyPrice: '₹0 / mo', annualPrice: '₹0 + 1.2% tx', period: '+ 1.2% per tx', target: 'Early-stage startups processing <₹10L GMV', features: ['Standard UPI & Card checkout', 'T+1 settlement', 'Shopify plugin', 'Standard email support'] },
+      { tier: 'Scale Business', monthlyPrice: '₹4,999', annualPrice: '₹47,990', period: '/ mo + 0.95% tx', target: 'Growing brands processing ₹10L–₹50L GMV', features: ['Instant T+0 settlement', 'Custom checkout UI', 'Automated GST reconciliation', 'Priority webhook SLAs'], popular: true },
+      { tier: 'Enterprise Tier', monthlyPrice: 'Custom', annualPrice: 'Volume SLA', period: 'volume contract', target: 'High-volume marketplaces processing >₹50L GMV', features: ['Dedicated multi-bank switch', 'Split escrow payouts', 'Account Aggregator integration', '24/7 SLA manager'] }
     ],
     swot: {
       strengths: [
@@ -237,9 +239,9 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
     ],
     unfair_advantage: 'Seamless NHA-certified ABDM Milestone 1-3 gateway integration coupled with custom voice-to-prescription shortcuts adapted to Indian doctor shorthand and regional medicine brands.',
     pricing_tiers: [
-      { tier: 'Solo Practitioner', price: '₹1,999', period: '/ month', target: 'Individual Clinic Doctors', features: ['Digital EMR', 'ABDM ABHA generation', 'WhatsApp patient reminders', 'Queue display app'] },
-      { tier: 'Polyclinic Suite', price: '₹6,999', period: '/ month', target: 'Multi-specialty clinics (3–8 doctors)', features: ['Multi-doctor scheduling', 'Centralized billing & GST receipts', 'In-house lab integration', 'Custom letterhead'], popular: true },
-      { tier: 'Hospital Enterprise', price: '₹22,000+', period: '/ month', target: 'Nursing Homes & Daycare Hospitals', features: ['IPD/OPD ward management', 'Insurance TPA pre-authorization', 'Dedicated account manager', 'ABDM HIU/HIP gateway'] }
+      { tier: 'Solo Practitioner', monthlyPrice: '₹1,999', annualPrice: '₹19,990', period: '/ month', target: 'Individual Clinic Doctors', features: ['Digital EMR', 'ABDM ABHA generation', 'WhatsApp patient reminders', 'Queue display app'] },
+      { tier: 'Polyclinic Suite', monthlyPrice: '₹6,999', annualPrice: '₹69,990', period: '/ month', target: 'Multi-specialty clinics (3–8 doctors)', features: ['Multi-doctor scheduling', 'Centralized billing & GST receipts', 'In-house lab integration', 'Custom letterhead'], popular: true },
+      { tier: 'Hospital Enterprise', monthlyPrice: '₹22,000+', annualPrice: '₹2,20,000+', period: '/ month', target: 'Nursing Homes & Daycare Hospitals', features: ['IPD/OPD ward management', 'Insurance TPA pre-authorization', 'Dedicated account manager', 'ABDM HIU/HIP gateway'] }
     ],
     swot: {
       strengths: [
@@ -342,9 +344,9 @@ const getUniversalDomainProfile = (industry, title, sector) => {
     ],
     unfair_advantage: `Customized domain architecture engineered specifically for Indian operational nuances and payment ecosystems, creating defensible localized value compared to generic foreign software.`,
     pricing_tiers: [
-      { tier: 'Starter', price: '₹1,499', period: '/ month', target: 'Early adopters & small teams', features: [`Core ${ind} toolkit`, 'Standard analytics dashboard', 'Email & WhatsApp support', '2 user seats'] },
-      { tier: 'Professional', price: '₹4,999', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated GST reporting', 'Priority webhook SLAs'], popular: true },
-      { tier: 'Enterprise', price: '₹18,000+', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated database tenant', 'Custom ERP bi-directional sync', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
+      { tier: 'Starter', monthlyPrice: '₹1,499', annualPrice: '₹14,990', period: '/ month', target: 'Early adopters & small teams', features: [`Core ${ind} toolkit`, 'Standard analytics dashboard', 'Email & WhatsApp support', '2 user seats'] },
+      { tier: 'Professional', monthlyPrice: '₹4,999', annualPrice: '₹47,990', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated GST reporting', 'Priority webhook SLAs'], popular: true },
+      { tier: 'Enterprise', monthlyPrice: '₹18,000+', annualPrice: '₹1,80,000+', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated database tenant', 'Custom ERP bi-directional sync', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
     ],
     swot: {
       strengths: [
@@ -371,6 +373,9 @@ const getUniversalDomainProfile = (industry, title, sector) => {
 
 const BusinessTab = ({ data, idea }) => {
   const [activeSubTab, setActiveSubTab] = useState('canvas');
+  const [selectedPlanIdx, setSelectedPlanIdx] = useState(1); // Default to middle plan
+  const [billingCycle, setBillingCycle] = useState('annual'); // 'monthly' or 'annual'
+  const [swotFilter, setSwotFilter] = useState('all'); // 'all', 'strengths', 'weaknesses', 'opportunities', 'threats'
 
   if (!data && !idea) {
     return <div className="text-center p-8 animate-fade-in text-secondary">Loading business strategy...</div>;
@@ -412,7 +417,6 @@ const BusinessTab = ({ data, idea }) => {
     return fallbackList;
   };
 
-  // Structured fields with graceful fallback to domain intelligence
   const archetype = bm.archetype || fallbackProfile.archetype;
   const grossMargin = bm.gross_margin || fallbackProfile.gross_margin;
   const ltvCac = bm.ltv_cac || fallbackProfile.ltv_cac;
@@ -437,9 +441,6 @@ const BusinessTab = ({ data, idea }) => {
   const pricingTiers = (bm.pricing_tiers && bm.pricing_tiers.length > 0)
     ? bm.pricing_tiers
     : fallbackProfile.pricing_tiers;
-
-  // SWOT items parsing
-  const swotDetailed = swot.strengths_detailed ? swot : fallbackProfile.swot;
 
   const parseSwotQuadrant = (items, fallbackItems = []) => {
     if (Array.isArray(items) && items.length > 0) {
@@ -475,10 +476,20 @@ const BusinessTab = ({ data, idea }) => {
     ? swot.overall_assessment
     : (bm.detailed_explanation || `${title} demonstrates compelling commercial viability in the Indian ${industry} market. By leveraging targeted digital distribution, strong unit margins (${grossMargin}), and defensible customer retention mechanisms, the business is structured for capital-efficient scale.`);
 
+  // Current selected plan object
+  const currentSelectedPlan = pricingTiers[selectedPlanIdx] || pricingTiers[0];
+
+  const handlePlanSelect = (idx) => {
+    setSelectedPlanIdx(idx);
+    toast.success(`Selected Plan: ${pricingTiers[idx].tier} (${billingCycle === 'annual' ? 'Annual Billing' : 'Monthly Billing'})`);
+  };
+
   return (
     <div className="business-tab animate-fade-in" style={{ paddingBottom: '3rem' }}>
       
-      {/* EXECUTIVE STRATEGY COMMAND BANNER */}
+      {/* ============================================================ */}
+      {/* 1. EXECUTIVE STRATEGY COMMAND BANNER                          */}
+      {/* ============================================================ */}
       <div className="biz-executive-header">
         <div className="biz-header-top">
           <div className="biz-title-area">
@@ -526,7 +537,9 @@ const BusinessTab = ({ data, idea }) => {
         </div>
       </div>
 
-      {/* SUB-TAB NAVIGATION BAR */}
+      {/* ============================================================ */}
+      {/* 2. SUB-TAB NAVIGATION BAR                                    */}
+      {/* ============================================================ */}
       <div className="biz-subtab-bar">
         <button
           onClick={() => setActiveSubTab('canvas')}
@@ -546,7 +559,7 @@ const BusinessTab = ({ data, idea }) => {
           onClick={() => setActiveSubTab('monetize')}
           className={`biz-subtab-btn ${activeSubTab === 'monetize' ? 'active monetize-active' : ''}`}
         >
-          <FaCoins /> 3. Monetization, Pricing Tiers &amp; Unit Economics (₹)
+          <FaCoins /> 3. Recommended Tiered Pricing &amp; Unit Economics (₹)
         </button>
 
         <button
@@ -568,7 +581,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card problem">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaExclamationTriangle style={{ color: '#ef4444' }} /> 1. Problem &amp; Market Friction</span>
-                <span className="biz-card-tag">High Friction</span>
+                <span className="biz-card-tag" style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)' }}>Pain Point</span>
               </div>
               <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{problemText}</p>
             </div>
@@ -577,7 +590,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card segments">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaUsers style={{ color: '#ec4899' }} /> 2. Target Customer Segments</span>
-                <span className="biz-card-tag">Personas</span>
+                <span className="biz-card-tag" style={{ color: '#ec4899', background: 'rgba(236,72,153,0.1)' }}>Personas</span>
               </div>
               <ul className="biz-list">
                 {customerSegments.map((seg, i) => (
@@ -589,7 +602,7 @@ const BusinessTab = ({ data, idea }) => {
               </ul>
             </div>
 
-            {/* 3. Unique Value Proposition (Highlighted) */}
+            {/* 3. Unique Value Proposition (Highlighted Centerpiece) */}
             <div className="biz-canvas-card uvp biz-canvas-card-highlight">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaRocket style={{ color: '#06b6d4' }} /> 3. Unique Value Proposition</span>
@@ -604,7 +617,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card solution">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaCheckCircle style={{ color: '#10b981' }} /> 4. Solution &amp; Workflows</span>
-                <span className="biz-card-tag">Product Engine</span>
+                <span className="biz-card-tag" style={{ color: '#10b981', background: 'rgba(16,185,129,0.1)' }}>Product Engine</span>
               </div>
               <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{solutionText}</p>
             </div>
@@ -613,7 +626,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card channels">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaBullseye style={{ color: '#8b5cf6' }} /> 5. Channels &amp; GTM Funnel</span>
-                <span className="biz-card-tag">Distribution</span>
+                <span className="biz-card-tag" style={{ color: '#8b5cf6', background: 'rgba(139,92,246,0.1)' }}>Distribution</span>
               </div>
               <ul className="biz-list">
                 {channels.map((ch, i) => (
@@ -629,7 +642,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card advantage">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaLock style={{ color: '#f59e0b' }} /> 6. Unfair Advantage &amp; Defensibility</span>
-                <span className="biz-card-tag">Barrier to Entry</span>
+                <span className="biz-card-tag" style={{ color: '#f59e0b', background: 'rgba(245,158,11,0.1)' }}>Barrier to Entry</span>
               </div>
               <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{unfairAdvantage}</p>
             </div>
@@ -638,7 +651,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card metrics">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaChartLine style={{ color: '#3b82f6' }} /> 7. Key North Star Metrics</span>
-                <span className="biz-card-tag">KPIs</span>
+                <span className="biz-card-tag" style={{ color: '#3b82f6', background: 'rgba(59,130,246,0.1)' }}>KPIs</span>
               </div>
               <ul className="biz-list">
                 {keyMetrics.map((km, i) => (
@@ -654,7 +667,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card costs">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaCoins style={{ color: '#f97316' }} /> 8. Cost Structure Drivers (₹)</span>
-                <span className="biz-card-tag">OPEX / CAPEX</span>
+                <span className="biz-card-tag" style={{ color: '#f97316', background: 'rgba(249,115,22,0.1)' }}>OPEX / CAPEX</span>
               </div>
               <ul className="biz-list">
                 {costStructure.map((cost, i) => (
@@ -691,165 +704,311 @@ const BusinessTab = ({ data, idea }) => {
       {/* ============================================================ */}
       {activeSubTab === 'swot' && (
         <div className="animate-fade-in">
+          
+          {/* SWOT TOOLBAR: QUADRANT FILTER & BALANCE METER */}
+          <div className="swot-header-toolbar">
+            <div className="swot-filter-group">
+              <button
+                onClick={() => setSwotFilter('all')}
+                className={`swot-filter-pill ${swotFilter === 'all' ? 'active' : ''}`}
+              >
+                All 4 Quadrants (2x2 View)
+              </button>
+              <button
+                onClick={() => setSwotFilter('strengths')}
+                className={`swot-filter-pill ${swotFilter === 'strengths' ? 'active' : ''}`}
+                style={{ color: swotFilter === 'strengths' ? '#fff' : '#34d399' }}
+              >
+                Strengths ({strengthsList.length})
+              </button>
+              <button
+                onClick={() => setSwotFilter('weaknesses')}
+                className={`swot-filter-pill ${swotFilter === 'weaknesses' ? 'active' : ''}`}
+                style={{ color: swotFilter === 'weaknesses' ? '#fff' : '#f87171' }}
+              >
+                Weaknesses ({weaknessesList.length})
+              </button>
+              <button
+                onClick={() => setSwotFilter('opportunities')}
+                className={`swot-filter-pill ${swotFilter === 'opportunities' ? 'active' : ''}`}
+                style={{ color: swotFilter === 'opportunities' ? '#fff' : '#38bdf8' }}
+              >
+                Opportunities ({opportunitiesList.length})
+              </button>
+              <button
+                onClick={() => setSwotFilter('threats')}
+                className={`swot-filter-pill ${swotFilter === 'threats' ? 'active' : ''}`}
+                style={{ color: swotFilter === 'threats' ? '#fff' : '#fbbf24' }}
+              >
+                Threats ({threatsList.length})
+              </button>
+            </div>
+
+            <div className="swot-balance-box">
+              <span className="swot-balance-label">Strategic Posture:</span>
+              <span className="swot-balance-tag">High Market Tailwinds with Defensible Core</span>
+            </div>
+          </div>
+
           <div className="swot-interactive-grid">
             
             {/* QUADRANT 1: STRENGTHS */}
-            <div className="swot-quadrant-card strengths">
-              <div className="swot-quadrant-header">
-                <h4><FaCheckCircle /> Internal Strengths</h4>
-                <span className="swot-count-pill">{strengthsList.length} Factors</span>
-              </div>
-              <div className="swot-items-container">
-                {strengthsList.map((item, idx) => (
-                  <div key={idx} className="swot-item-box">
-                    <div className="swot-item-top">
-                      <span className="swot-item-title">{item.title}</span>
-                      <span className="swot-impact-badge high">{item.impact || 'Core Competency'}</span>
-                    </div>
-                    <div className="swot-item-desc">{item.desc}</div>
-                    {item.action && (
-                      <div className="swot-action-tip">
-                        <span>💡 Strategic Action:</span> {item.action}
+            {(swotFilter === 'all' || swotFilter === 'strengths') && (
+              <div className="swot-quadrant-card strengths">
+                <div className="swot-quadrant-header">
+                  <h4><FaCheckCircle /> Internal Strengths</h4>
+                  <span className="swot-count-pill">{strengthsList.length} Core Factors</span>
+                </div>
+                <div className="swot-items-container">
+                  {strengthsList.map((item, idx) => (
+                    <div key={idx} className="swot-item-box">
+                      <div className="swot-item-top">
+                        <span className="swot-item-title">{item.title}</span>
+                        <span className="swot-impact-badge high">{item.impact || 'Core Competency'}</span>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div className="swot-item-desc">{item.desc}</div>
+                      {item.action && (
+                        <div className="swot-action-tip">
+                          <span>💡 Strategic Action:</span> {item.action}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* QUADRANT 2: WEAKNESSES */}
-            <div className="swot-quadrant-card weaknesses">
-              <div className="swot-quadrant-header">
-                <h4><FaExclamationTriangle /> Internal Weaknesses</h4>
-                <span className="swot-count-pill">{weaknessesList.length} Vulnerabilities</span>
-              </div>
-              <div className="swot-items-container">
-                {weaknessesList.map((item, idx) => (
-                  <div key={idx} className="swot-item-box">
-                    <div className="swot-item-top">
-                      <span className="swot-item-title">{item.title}</span>
-                      <span className="swot-impact-badge critical">{item.impact || 'Operational Hurdle'}</span>
-                    </div>
-                    <div className="swot-item-desc">{item.desc}</div>
-                    {item.action && (
-                      <div className="swot-action-tip">
-                        <span>🛡️ Mitigation:</span> {item.action}
+            {(swotFilter === 'all' || swotFilter === 'weaknesses') && (
+              <div className="swot-quadrant-card weaknesses">
+                <div className="swot-quadrant-header">
+                  <h4><FaExclamationTriangle /> Internal Weaknesses</h4>
+                  <span className="swot-count-pill">{weaknessesList.length} Vulnerabilities</span>
+                </div>
+                <div className="swot-items-container">
+                  {weaknessesList.map((item, idx) => (
+                    <div key={idx} className="swot-item-box">
+                      <div className="swot-item-top">
+                        <span className="swot-item-title">{item.title}</span>
+                        <span className="swot-impact-badge critical">{item.impact || 'Operational Risk'}</span>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div className="swot-item-desc">{item.desc}</div>
+                      {item.action && (
+                        <div className="swot-action-tip">
+                          <span>🛡️ Mitigation Playbook:</span> {item.action}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* QUADRANT 3: OPPORTUNITIES */}
-            <div className="swot-quadrant-card opportunities">
-              <div className="swot-quadrant-header">
-                <h4><FaLightbulb /> External Opportunities</h4>
-                <span className="swot-count-pill">{opportunitiesList.length} Catalysts</span>
-              </div>
-              <div className="swot-items-container">
-                {opportunitiesList.map((item, idx) => (
-                  <div key={idx} className="swot-item-box">
-                    <div className="swot-item-top">
-                      <span className="swot-item-title">{item.title}</span>
-                      <span className="swot-impact-badge growth">{item.impact || 'Market Tailwinds'}</span>
-                    </div>
-                    <div className="swot-item-desc">{item.desc}</div>
-                    {item.action && (
-                      <div className="swot-action-tip">
-                        <span>🚀 Expansion Plan:</span> {item.action}
+            {(swotFilter === 'all' || swotFilter === 'opportunities') && (
+              <div className="swot-quadrant-card opportunities">
+                <div className="swot-quadrant-header">
+                  <h4><FaLightbulb /> External Opportunities</h4>
+                  <span className="swot-count-pill">{opportunitiesList.length} Catalysts</span>
+                </div>
+                <div className="swot-items-container">
+                  {opportunitiesList.map((item, idx) => (
+                    <div key={idx} className="swot-item-box">
+                      <div className="swot-item-top">
+                        <span className="swot-item-title">{item.title}</span>
+                        <span className="swot-impact-badge growth">{item.impact || 'Growth Driver'}</span>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div className="swot-item-desc">{item.desc}</div>
+                      {item.action && (
+                        <div className="swot-action-tip">
+                          <span>🚀 Expansion Action:</span> {item.action}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* QUADRANT 4: THREATS */}
-            <div className="swot-quadrant-card threats">
-              <div className="swot-quadrant-header">
-                <h4><FaShieldAlt /> External Threats</h4>
-                <span className="swot-count-pill">{threatsList.length} Risks</span>
-              </div>
-              <div className="swot-items-container">
-                {threatsList.map((item, idx) => (
-                  <div key={idx} className="swot-item-box">
-                    <div className="swot-item-top">
-                      <span className="swot-item-title">{item.title}</span>
-                      <span className="swot-impact-badge warning">{item.impact || 'External Headwind'}</span>
-                    </div>
-                    <div className="swot-item-desc">{item.desc}</div>
-                    {item.action && (
-                      <div className="swot-action-tip">
-                        <span>⚖️ Defense Strategy:</span> {item.action}
+            {(swotFilter === 'all' || swotFilter === 'threats') && (
+              <div className="swot-quadrant-card threats">
+                <div className="swot-quadrant-header">
+                  <h4><FaShieldAlt /> External Threats</h4>
+                  <span className="swot-count-pill">{threatsList.length} Headwinds</span>
+                </div>
+                <div className="swot-items-container">
+                  {threatsList.map((item, idx) => (
+                    <div key={idx} className="swot-item-box">
+                      <div className="swot-item-top">
+                        <span className="swot-item-title">{item.title}</span>
+                        <span className="swot-impact-badge warning">{item.impact || 'Market Risk'}</span>
                       </div>
-                    )}
-                  </div>
-                ))}
+                      <div className="swot-item-desc">{item.desc}</div>
+                      {item.action && (
+                        <div className="swot-action-tip">
+                          <span>⚖️ Defensive Safeguard:</span> {item.action}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
           </div>
         </div>
       )}
 
       {/* ============================================================ */}
-      {/* SUB-TAB 3: MONETIZATION, PRICING TIERS & UNIT ECONOMICS     */}
+      {/* SUB-TAB 3: RECOMMENDED TIERED PRICING & UNIT ECONOMICS      */}
       {/* ============================================================ */}
       {activeSubTab === 'monetize' && (
         <div className="animate-fade-in">
           
-          <h4 className="section-title mb-md" style={{ color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <FaCreditCard style={{ color: '#10b981' }} /> Recommended Tiered Pricing Architecture (Indian Rupees ₹)
-          </h4>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div>
+              <h4 style={{ color: '#f1f5f9', margin: 0, fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaCreditCard style={{ color: '#10b981' }} /> Recommended Tiered Pricing Architecture (Indian Rupees ₹)
+              </h4>
+              <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: '4px 0 0' }}>
+                Select any plan to inspect live unit economics, billing options, and projected ROI.
+              </p>
+            </div>
 
-          {/* PRICING TIERS GRID */}
+            {/* BILLING CYCLE SWITCHER */}
+            <div className="pricing-billing-toggle">
+              <button
+                onClick={() => setBillingCycle('monthly')}
+                className={`pricing-toggle-btn ${billingCycle === 'monthly' ? 'active' : ''}`}
+              >
+                Monthly
+              </button>
+              <button
+                onClick={() => setBillingCycle('annual')}
+                className={`pricing-toggle-btn ${billingCycle === 'annual' ? 'active' : ''}`}
+              >
+                Annual <span className="pricing-discount-tag">Save 20%</span>
+              </button>
+            </div>
+          </div>
+
+          {/* INTERACTIVE PRICING TIERS GRID */}
           <div className="biz-pricing-grid">
             {pricingTiers.map((tier, idx) => {
               const features = Array.isArray(tier.features)
                 ? tier.features
                 : String(tier.features || '').split(/,\s*/).filter(Boolean);
 
+              const isSelected = selectedPlanIdx === idx;
+              const displayPrice = (billingCycle === 'annual' && tier.annualPrice) ? tier.annualPrice : (tier.monthlyPrice || tier.price);
+              const displayPeriod = billingCycle === 'annual' ? '/ year' : '/ month';
+
               return (
-                <div key={idx} className={`biz-pricing-card ${tier.popular ? 'featured' : ''}`}>
-                  {tier.popular && <span className="biz-pricing-badge-popular">Recommended</span>}
+                <div
+                  key={idx}
+                  onClick={() => handlePlanSelect(idx)}
+                  className={`biz-pricing-card ${tier.popular ? 'featured' : ''} ${isSelected ? 'selected' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {isSelected && (
+                    <span className="biz-selected-plan-badge">
+                      <FaCheck /> Active Plan
+                    </span>
+                  )}
+                  {!isSelected && tier.popular && (
+                    <span className="biz-pricing-badge-popular">Recommended</span>
+                  )}
+
                   <div className="biz-tier-name">{tier.tier}</div>
                   <div className="biz-tier-target">{tier.target}</div>
                   
                   <div className="biz-tier-price-box">
-                    <span className="biz-tier-price">{tier.price}</span>
-                    <span className="biz-tier-period">{tier.period}</span>
+                    <span className="biz-tier-price">{displayPrice}</span>
+                    <span className="biz-tier-period">{displayPeriod}</span>
                   </div>
 
                   <ul className="biz-tier-features">
                     {features.map((feat, fIdx) => (
                       <li key={fIdx} className="biz-tier-feature-item">
-                        <FaCheckCircle /> {feat}
+                        <FaCheckCircle style={{ color: isSelected ? '#10b981' : '#818cf8' }} /> {feat}
                       </li>
                     ))}
                   </ul>
 
                   <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePlanSelect(idx);
+                    }}
                     style={{
                       width: '100%',
-                      padding: '0.75rem',
-                      borderRadius: '8px',
+                      padding: '0.8rem',
+                      borderRadius: '10px',
                       border: 'none',
-                      background: tier.popular ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.08)',
+                      background: isSelected
+                        ? 'linear-gradient(135deg, #10b981, #059669)'
+                        : tier.popular
+                          ? 'linear-gradient(135deg, #6366f1, #4f46e5)'
+                          : 'rgba(255,255,255,0.08)',
                       color: '#ffffff',
-                      fontWeight: '600',
-                      cursor: 'pointer'
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      boxShadow: isSelected ? '0 4px 15px rgba(16,185,129,0.3)' : 'none'
                     }}
                   >
-                    Select Plan
+                    {isSelected ? <><FaCheck /> Selected Plan</> : 'Select This Plan'}
                   </button>
                 </div>
               );
             })}
           </div>
 
+          {/* SELECTED PLAN SUMMARY & ROI CALLOUT */}
+          <div className="plan-selected-summary">
+            <div className="plan-summary-left">
+              <h4>
+                <FaRocket style={{ color: '#10b981' }} /> Active Strategy: {currentSelectedPlan.tier} Plan ({billingCycle.toUpperCase()})
+              </h4>
+              <p>
+                Targeted at {currentSelectedPlan.target}. Designed to deliver maximum operational velocity with predictable {billingCycle} subscription cashflow.
+              </p>
+            </div>
+
+            <div className="plan-summary-right">
+              <div className="plan-price-callout">
+                <div className="price">
+                  {billingCycle === 'annual' && currentSelectedPlan.annualPrice ? currentSelectedPlan.annualPrice : (currentSelectedPlan.monthlyPrice || currentSelectedPlan.price)}
+                </div>
+                <div className="term">Billed {billingCycle === 'annual' ? 'Annually (₹ INR)' : 'Monthly (₹ INR)'}</div>
+              </div>
+
+              <button
+                onClick={() => toast.success(`Simulated subscription configured for ${currentSelectedPlan.tier} plan!`)}
+                style={{
+                  padding: '0.85rem 1.5rem',
+                  borderRadius: '10px',
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #10b981, #059669)',
+                  color: '#ffffff',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                Confirm Plan Architecture <FaArrowRight />
+              </button>
+            </div>
+          </div>
+
           {/* UNIT ECONOMICS & PAYMENT RAILS SUMMARY */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem', marginTop: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem', marginTop: '2rem' }}>
             <div className="glass-card p-lg" style={{ borderLeft: '4px solid #10b981' }}>
               <h4 style={{ color: '#34d399', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FaBalanceScale /> Unit Economics Breakdown
@@ -908,6 +1067,118 @@ const BusinessTab = ({ data, idea }) => {
       {activeSubTab === 'ecosystem' && (
         <div className="animate-fade-in">
           
+          {/* 1. VISUAL 4-STAGE VALUE CHAIN FLOW */}
+          <div style={{ marginBottom: '1.75rem' }}>
+            <h4 style={{ color: '#f1f5f9', fontSize: '1.25rem', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaNetworkWired style={{ color: '#0ea5e9' }} /> End-to-End Strategic Value Chain &amp; Ecosystem Map
+            </h4>
+            <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: 0 }}>
+              How {title} coordinates upstream infrastructure, core operational workflows, downstream distribution, and regulatory guardians.
+            </p>
+          </div>
+
+          <div className="ecosystem-chain-grid">
+            
+            {/* Step 1: Upstream */}
+            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #6366f1' }}>
+              <div className="chain-step-num">1</div>
+              <div className="chain-node-title"><FaServer style={{ color: '#818cf8' }} /> Upstream Rails</div>
+              <div className="chain-node-desc">
+                AWS Mumbai ap-south-1 cloud hosting, NPCI payment switches, and core identity verification rails.
+              </div>
+              <span className="chain-partner-tag">AWS, NPCI, DigiLocker</span>
+            </div>
+
+            {/* Step 2: Core Engine */}
+            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #8b5cf6' }}>
+              <div className="chain-step-num">2</div>
+              <div className="chain-node-title"><FaCogs style={{ color: '#a78bfa' }} /> Operational Engine</div>
+              <div className="chain-node-desc">
+                Proprietary workflow heuristics, automated scheduling &amp; routing logic, and client telemetry databases.
+              </div>
+              <span className="chain-partner-tag">FastAPI, PostgreSQL, Redis</span>
+            </div>
+
+            {/* Step 3: Downstream */}
+            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #10b981' }}>
+              <div className="chain-step-num">3</div>
+              <div className="chain-node-title"><FaRocket style={{ color: '#34d399' }} /> Channels &amp; GTM</div>
+              <div className="chain-node-desc">
+                Direct institutional demos, B2B software app stores, and industry associations across Tier-1/2 trade hubs.
+              </div>
+              <span className="chain-partner-tag">Field Sales, Trade Summits</span>
+            </div>
+
+            {/* Step 4: Regulatory */}
+            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #06b6d4' }}>
+              <div className="chain-step-num">4</div>
+              <div className="chain-node-title"><FaCertificate style={{ color: '#38bdf8' }} /> Trust &amp; Compliance</div>
+              <div className="chain-node-desc">
+                Adherence to Indian statutory mandates, GST e-invoicing, DPDP Act 2023, and annual CERT-In security audits.
+              </div>
+              <span className="chain-partner-tag">GSTN, CERT-In, Audits</span>
+            </div>
+
+          </div>
+
+          {/* 2. 5-DIMENSION MOAT DEFENSIBILITY RADAR */}
+          <div className="moat-radar-box">
+            <h4 style={{ color: '#38bdf8', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FaShieldAlt /> 5-Dimension Moat Defensibility Analysis
+            </h4>
+
+            <div className="moat-dimension-row">
+              <div className="moat-dimension-header">
+                <span className="moat-dim-title">1. Institutional Switching Cost &amp; Workflow Lock-In</span>
+                <span className="moat-dim-score" style={{ color: '#10b981' }}>92% Defensibility</span>
+              </div>
+              <div className="moat-progress-track">
+                <div className="moat-progress-fill" style={{ width: '92%', background: 'linear-gradient(90deg, #10b981, #059669)' }} />
+              </div>
+            </div>
+
+            <div className="moat-dimension-row">
+              <div className="moat-dimension-header">
+                <span className="moat-dim-title">2. Localized Indian Public Infrastructure (DPI) Integration</span>
+                <span className="moat-dim-score" style={{ color: '#06b6d4' }}>88% Defensibility</span>
+              </div>
+              <div className="moat-progress-track">
+                <div className="moat-progress-fill" style={{ width: '88%', background: 'linear-gradient(90deg, #06b6d4, #0284c7)' }} />
+              </div>
+            </div>
+
+            <div className="moat-dimension-row">
+              <div className="moat-dimension-header">
+                <span className="moat-dim-title">3. Near-Zero Marginal Serving Cost (Operating Leverage)</span>
+                <span className="moat-dim-score" style={{ color: '#8b5cf6' }}>85% Defensibility</span>
+              </div>
+              <div className="moat-progress-track">
+                <div className="moat-progress-fill" style={{ width: '85%', background: 'linear-gradient(90deg, #8b5cf6, #7c3aed)' }} />
+              </div>
+            </div>
+
+            <div className="moat-dimension-row">
+              <div className="moat-dimension-header">
+                <span className="moat-dim-title">4. Proprietary Heuristic &amp; Data Optimization Model</span>
+                <span className="moat-dim-score" style={{ color: '#f59e0b' }}>81% Defensibility</span>
+              </div>
+              <div className="moat-progress-track">
+                <div className="moat-progress-fill" style={{ width: '81%', background: 'linear-gradient(90deg, #f59e0b, #d97706)' }} />
+              </div>
+            </div>
+
+            <div className="moat-dimension-row">
+              <div className="moat-dimension-header">
+                <span className="moat-dim-title">5. Partner Ecosystem Alliances &amp; Distribution Moat</span>
+                <span className="moat-dim-score" style={{ color: '#ec4899' }}>77% Defensibility</span>
+              </div>
+              <div className="moat-progress-track">
+                <div className="moat-progress-fill" style={{ width: '77%', background: 'linear-gradient(90deg, #ec4899, #db2777)' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* 3. KEY PARTNERS, ACTIVITIES & RESOURCES MATRIX */}
           <div className="biz-moat-grid">
             
             {/* Key Partners */}
@@ -958,43 +1229,6 @@ const BusinessTab = ({ data, idea }) => {
               </ul>
             </div>
 
-          </div>
-
-          {/* 4 MOAT PILLARS RADAR */}
-          <div className="glass-card p-xl" style={{ borderTop: '3px solid #06b6d4', marginTop: '1.5rem' }}>
-            <h4 style={{ color: '#38bdf8', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <FaShieldAlt /> 4-Pillar Long-Term Moat Defensibility
-            </h4>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '10px' }}>
-                <strong style={{ color: '#f8fafc', display: 'block', marginBottom: '0.35rem' }}>1. High Switching Cost</strong>
-                <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.5' }}>
-                  Once core administrative workflows and customer records are codified into {title}, replacing the system requires prohibitive retraining and institutional friction.
-                </p>
-              </div>
-
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '10px' }}>
-                <strong style={{ color: '#f8fafc', display: 'block', marginBottom: '0.35rem' }}>2. Data Flywheel Moat</strong>
-                <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.5' }}>
-                  Every completed transaction and user interaction trains proprietary optimization models, widening the accuracy gap over newer market entrants.
-                </p>
-              </div>
-
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '10px' }}>
-                <strong style={{ color: '#f8fafc', display: 'block', marginBottom: '0.35rem' }}>3. Localized Ecosystem Tie-Ins</strong>
-                <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.5' }}>
-                  Native integration with India\'s digital public infrastructure (UPI, DigiLocker, GSTN, ABDM) creates deep local defensibility against foreign platforms.
-                </p>
-              </div>
-
-              <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '10px' }}>
-                <strong style={{ color: '#f8fafc', display: 'block', marginBottom: '0.35rem' }}>4. High Operating Leverage</strong>
-                <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.5' }}>
-                  Cloud-native serverless architecture ensures incremental marginal serving cost is near zero, allowing surplus cash flow reinvestment into customer acquisition.
-                </p>
-              </div>
-            </div>
           </div>
 
         </div>
