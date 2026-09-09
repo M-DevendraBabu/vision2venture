@@ -155,25 +155,65 @@ const NewIdeaPage = () => {
     }
   };
 
-  const renderSectorCards = () => (
-    <div className="sector-cards-container">
-      <div className={`sector-card ${formData.sector === 'online' ? 'active' : ''}`} onClick={() => handleSectorSelect('online')}>
-        <div className="sector-icon online"><FaLaptopCode /></div>
-        <h3>Online</h3>
-        <p>SaaS, Apps, Platforms, E-commerce, Digital Services</p>
+  const renderSectorCards = () => {
+    const sectors = [
+      {
+        id: 'online',
+        title: 'Online',
+        desc: 'SaaS, Apps, Platforms, E-commerce, Digital Services',
+        icon: <FaLaptopCode />
+      },
+      {
+        id: 'offline',
+        title: 'Offline',
+        desc: 'Restaurants, Shops, Clinics, Studios, Service Centers',
+        icon: <FaStore />
+      },
+      {
+        id: 'hybrid',
+        title: 'Hybrid',
+        desc: 'Online + Physical presence, Delivery apps, O2O models',
+        icon: <FaSync />
+      }
+    ];
+
+    return (
+      <div className="sector-cards-container">
+        {sectors.map((sec) => {
+          const isSelected = formData.sector === sec.id;
+          return (
+            <div
+              key={sec.id}
+              className={`sector-card ${isSelected ? 'selected active' : ''}`}
+              onClick={() => handleSectorSelect(sec.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleSectorSelect(sec.id);
+                }
+              }}
+            >
+              <div className={`sector-icon ${sec.id}`}>{sec.icon}</div>
+              <div className="sector-info">
+                <div className="sector-header-row">
+                  <h3 className="sector-title">{sec.title}</h3>
+                  <div className="sector-badge-wrapper">
+                    {isSelected && <span className="sector-selected-tag">Selected</span>}
+                    <div className={`sector-radio-badge ${isSelected ? 'selected' : ''}`}>
+                      {isSelected ? <FaCheckCircle className="check-icon" /> : <span className="radio-circle" />}
+                    </div>
+                  </div>
+                </div>
+                <p className="sector-desc">{sec.desc}</p>
+              </div>
+            </div>
+          );
+        })}
       </div>
-      <div className={`sector-card ${formData.sector === 'offline' ? 'active' : ''}`} onClick={() => handleSectorSelect('offline')}>
-        <div className="sector-icon offline"><FaStore /></div>
-        <h3>Offline</h3>
-        <p>Restaurants, Shops, Clinics, Studios, Service Centers</p>
-      </div>
-      <div className={`sector-card ${formData.sector === 'hybrid' ? 'active' : ''}`} onClick={() => handleSectorSelect('hybrid')}>
-        <div className="sector-icon hybrid"><FaSync /></div>
-        <h3>Hybrid</h3>
-        <p>Online + Physical presence, Delivery apps, O2O models</p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   // ==================== SECTOR-SPECIFIC QUESTIONS ====================
 
