@@ -3,7 +3,7 @@ import {
   FaMapSigns, FaCheckCircle, FaCalendarAlt, FaTrophy, FaTools,
   FaRupeeSign, FaBullseye, FaFlag, FaChevronLeft, FaChevronRight,
   FaLink, FaLightbulb, FaShieldAlt, FaRocket, FaClock, FaCheck,
-  FaClipboardList, FaCoins, FaBalanceScale, FaBuilding
+  FaClipboardList, FaCoins, FaBalanceScale, FaBuilding, FaReceipt, FaCalculator
 } from 'react-icons/fa';
 
 // Client-side fallback intelligence synchronized with Financial Intelligence
@@ -81,9 +81,9 @@ const RoadmapTab = ({ data, idea }) => {
         duration: p.duration || `Months ${i * 2 - 1}–${i * 2}`,
         weeks: p.weeks || `Weeks ${(i - 1) * 8 + 1}–${i * 8}`,
         focus: p.focus || 'Strategic Execution & Milestones',
-        tasks: Array.isArray(p.tasks) ? p.tasks : [],
-        milestones: Array.isArray(p.milestones) ? p.milestones : [],
-        success_metrics: Array.isArray(p.success_metrics) ? p.success_metrics : [],
+        tasks: Array.isArray(p.tasks) ? p.tasks : (typeof p.tasks === 'string' ? p.tasks.split('\n').filter(Boolean) : []),
+        milestones: Array.isArray(p.milestones) ? p.milestones : (typeof p.milestones === 'string' ? p.milestones.split('•').map(s => s.trim()).filter(Boolean) : []),
+        success_metrics: Array.isArray(p.success_metrics) ? p.success_metrics : (typeof p.success_metrics === 'string' ? p.success_metrics.split('•').map(s => s.trim()).filter(Boolean) : []),
         estimated_cost: String(p.estimated_cost || 'N/A').replace(/\$/g, '₹'),
         cost_numeric: Number(p.cost_numeric) || (i === 1 ? fb.phase_1_cost : (i === 2 ? fb.phase_2_cost : (i === 3 ? fb.phase_3_cost : (i === 4 ? fb.phase_4_cost : fb.phase_5_cost)))),
         cost_rationale: p.cost_rationale || `Operational expenditure allocated to complete all phase deliverables.`,
@@ -360,7 +360,7 @@ const RoadmapTab = ({ data, idea }) => {
 
                     <div className="rm-badge-group">
                       <span className="rm-cost-badge" style={{ background: `${color}20`, color: color, border: `1px solid ${color}40` }}>
-                        <FaRupeeSign /> {phase.estimated_cost}
+                        <FaCoins style={{ marginRight: '0.25rem' }} /> {phase.estimated_cost}
                       </span>
                       <span className="rm-duration-badge">
                         <FaClock /> {phase.duration} ({phase.weeks})
