@@ -56,10 +56,10 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
       'Legal, CBSE/UGC Regulatory Compliance & Audit Certifications (8%)'
     ],
     revenue_streams: [
-      'Tier 1 Starter (Single School): ₹18,000 – ₹35,000 / year (up to 40 faculty members)',
-      'Tier 2 Pro (Multi-Wing School / College): ₹65,000 – ₹1,20,000 / year (unlimited batches & elective optimization)',
-      'Tier 3 Enterprise (University / Group of Schools): ₹2,50,000+ / year with custom ERP bi-directional sync & dedicated support',
-      'Implementation & Faculty Onboarding Fee: ₹10,000 – ₹25,000 one-time setup charge'
+      'Tier 1 Starter (Single School): ₹499 / month (₹399 / mo on annual plan, up to 40 faculty members)',
+      'Tier 2 Pro (Multi-Wing School / College): ₹1,499 / month (₹1,199 / mo on annual plan, unlimited batches)',
+      'Tier 3 Enterprise (University / Group of Schools): ₹4,999 / month (₹3,999 / mo on annual plan, custom ERP sync)',
+      'Implementation & Faculty Onboarding Fee: ₹999 – ₹1,999 one-time setup charge'
     ],
     key_metrics: [
       'Annual Contract Value (ACV) & Institutional Net Revenue Retention (NRR > 115%)',
@@ -69,9 +69,9 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
     ],
     unfair_advantage: 'Proprietary Indian curriculum constraint rules pre-configured for CBSE, ICSE, and state university elective credit patterns, delivering instant out-of-the-box schedules without manual rule configuration.',
     pricing_tiers: [
-      { tier: 'Starter Academy', monthlyPrice: '₹2,499', annualPrice: '₹24,000', period: '/ year', target: 'Single K-12 Schools (<600 students)', features: ['Automated schedule solver', 'Teacher leave substitution', 'WhatsApp alert digest', '2 admin seats'] },
-      { tier: 'Campus Pro', monthlyPrice: '₹7,499', annualPrice: '₹72,000', period: '/ year', target: 'Large Schools & Junior Colleges (600–2,500 students)', features: ['NEP elective credit matrix', 'Lab room allocation', 'Bi-directional SIS sync', 'Unlimited staff logins'], popular: true },
-      { tier: 'University Enterprise', monthlyPrice: '₹22,999', annualPrice: '₹2,20,000+', period: '/ year', target: 'Multi-Campus Universities & School Chains', features: ['Multi-department scheduling', 'Cross-faculty load balancing', 'Custom API hooks', '24/7 dedicated account manager'] }
+      { tier: 'Starter Academy', monthlyPrice: '₹499', annualPrice: '₹4,788', period: '/ month', target: 'Single K-12 Schools (<600 students)', features: ['Automated schedule solver', 'Teacher leave substitution', 'WhatsApp alert digest', '2 admin seats'] },
+      { tier: 'Campus Pro', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Large Schools & Junior Colleges (600–2,500 students)', features: ['NEP elective credit matrix', 'Lab room allocation', 'Bi-directional SIS sync', 'Unlimited staff logins'], popular: true },
+      { tier: 'University Enterprise', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'Multi-Campus Universities & School Chains', features: ['Multi-department scheduling', 'Cross-faculty load balancing', 'Custom API hooks', '24/7 dedicated account manager'] }
     ],
     swot: {
       strengths: [
@@ -141,10 +141,10 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
       'Tier-1 Merchant Success & 24/7 Fraud Prevention Operations (5%)'
     ],
     revenue_streams: [
-      'Domestic Payment Processing Fee: 0.9% – 1.4% per transaction on Credit Cards, Net Banking & Wallets',
-      'UPI P2M Transactions: 0% MDR on basic UPI; ₹0.15 flat fee for value-added routing & dispute protection',
-      'Instant T+0 Settlement Surcharge: 0.20% flat on accelerated fund disbursements',
-      'Enterprise Subscription: ₹4,999 – ₹18,000 / month for custom checkout branding, analytics & webhook SLAs'
+      'Starter Platform Fee: ₹499 / month (₹399 / mo on annual plan) + standard UPI rails',
+      'Growth Merchant Subscription: ₹1,499 / month (₹1,199 / mo on annual plan) for automated recon & instant settlement',
+      'Enterprise Tier: ₹4,999 / month (₹3,999 / mo on annual plan) for dedicated multi-bank switch routing',
+      'Instant T+0 Settlement Surcharge: 0.15% flat on accelerated fund disbursements'
     ],
     key_metrics: [
       'Gross Merchandise Value (GMV Processed / month)',
@@ -154,9 +154,9 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
     ],
     unfair_advantage: 'Direct NPCI switch connectivity combined with predictive multi-bank latency routing, achieving sub-1.2 second UPI payment completion times compared to legacy 3.5s gateway average.',
     pricing_tiers: [
-      { tier: 'Growth Merchant', monthlyPrice: '₹0 / mo', annualPrice: '₹0 + 1.2% tx', period: '+ 1.2% per tx', target: 'Early-stage startups processing <₹10L GMV', features: ['Standard UPI & Card checkout', 'T+1 settlement', 'Shopify plugin', 'Standard email support'] },
-      { tier: 'Scale Business', monthlyPrice: '₹4,999', annualPrice: '₹47,990', period: '/ mo + 0.95% tx', target: 'Growing brands processing ₹10L–₹50L GMV', features: ['Instant T+0 settlement', 'Custom checkout UI', 'Automated GST reconciliation', 'Priority webhook SLAs'], popular: true },
-      { tier: 'Enterprise Tier', monthlyPrice: 'Custom', annualPrice: 'Volume SLA', period: 'volume contract', target: 'High-volume marketplaces processing >₹50L GMV', features: ['Dedicated multi-bank switch', 'Split escrow payouts', 'Account Aggregator integration', '24/7 SLA manager'] }
+      { tier: 'Growth Merchant', monthlyPrice: '₹499', annualPrice: '₹4,788', period: '/ month', target: 'Early-stage startups processing <₹10L GMV', features: ['Standard UPI & Card checkout', 'T+1 settlement', 'Shopify plugin', 'Standard email support'] },
+      { tier: 'Scale Business', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Growing brands processing ₹10L–₹50L GMV', features: ['Instant T+0 settlement', 'Custom checkout UI', 'Automated GST reconciliation', 'Priority webhook SLAs'], popular: true },
+      { tier: 'Enterprise Tier', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'High-volume marketplaces processing >₹50L GMV', features: ['Dedicated multi-bank switch', 'Split escrow payouts', 'Account Aggregator integration', '24/7 SLA manager'] }
     ],
     swot: {
       strengths: [
@@ -226,10 +226,10 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
       'Medical Regulatory Legal Counsel, Data Protection & Security Audits (8%)'
     ],
     revenue_streams: [
-      'Clinic SaaS Subscription: ₹1,499 – ₹3,999 / month per doctor (unlimited EMR, queueing & ABDM sync)',
-      'Polyclinic / Nursing Home Enterprise License: ₹12,000 – ₹35,000 / month for multi-doctor facilities',
-      'Teleconsultation Platform Convenience Fee: ₹25 – ₹50 per remote video consultation',
-      'Diagnostic & Pharmacy Marketplace Integration Fee: 6% – 10% commission on fulfilled home lab tests & medicine orders'
+      'Solo Practitioner Clinic License: ₹499 / month (₹399 / mo on annual plan, single doctor)',
+      'Polyclinic Suite: ₹1,499 / month (₹1,199 / mo on annual plan, 3–8 doctors)',
+      'Hospital Enterprise License: ₹4,999 / month (₹3,999 / mo on annual plan, nursing homes)',
+      'Teleconsultation Platform Convenience Fee: ₹10 – ₹25 per remote video consultation'
     ],
     key_metrics: [
       'Monthly Active Prescribing Doctors (MAPD)',
@@ -239,9 +239,9 @@ const FRONTEND_BUSINESS_INTELLIGENCE = {
     ],
     unfair_advantage: 'Seamless NHA-certified ABDM Milestone 1-3 gateway integration coupled with custom voice-to-prescription shortcuts adapted to Indian doctor shorthand and regional medicine brands.',
     pricing_tiers: [
-      { tier: 'Solo Practitioner', monthlyPrice: '₹1,999', annualPrice: '₹19,990', period: '/ month', target: 'Individual Clinic Doctors', features: ['Digital EMR', 'ABDM ABHA generation', 'WhatsApp patient reminders', 'Queue display app'] },
-      { tier: 'Polyclinic Suite', monthlyPrice: '₹6,999', annualPrice: '₹69,990', period: '/ month', target: 'Multi-specialty clinics (3–8 doctors)', features: ['Multi-doctor scheduling', 'Centralized billing & GST receipts', 'In-house lab integration', 'Custom letterhead'], popular: true },
-      { tier: 'Hospital Enterprise', monthlyPrice: '₹22,000+', annualPrice: '₹2,20,000+', period: '/ month', target: 'Nursing Homes & Daycare Hospitals', features: ['IPD/OPD ward management', 'Insurance TPA pre-authorization', 'Dedicated account manager', 'ABDM HIU/HIP gateway'] }
+      { tier: 'Solo Practitioner', monthlyPrice: '₹499', annualPrice: '₹4,788', period: '/ month', target: 'Individual Clinic Doctors', features: ['Digital EMR', 'ABDM ABHA generation', 'WhatsApp patient reminders', 'Queue display app'] },
+      { tier: 'Polyclinic Suite', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Multi-specialty clinics (3–8 doctors)', features: ['Multi-doctor scheduling', 'Centralized billing & GST receipts', 'In-house lab integration', 'Custom letterhead'], popular: true },
+      { tier: 'Hospital Enterprise', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'Nursing Homes & Daycare Hospitals', features: ['IPD/OPD ward management', 'Insurance TPA pre-authorization', 'Dedicated account manager', 'ABDM HIU/HIP gateway'] }
     ],
     swot: {
       strengths: [
@@ -331,10 +331,10 @@ const getUniversalDomainProfile = (industry, title, sector) => {
       'Regulatory Filings, GST/Tax Accounting & Legal Retainers (8%)'
     ],
     revenue_streams: [
-      'Starter Tier: ₹999 – ₹1,999 / month (Core essential features for small operators & practitioners)',
-      'Growth Tier: ₹3,999 – ₹7,999 / month (Comprehensive toolkit, multi-seat collaboration, and advanced reporting)',
-      'Enterprise Tier: ₹18,000 – ₹45,000+ / month (Custom ERP integrations, dedicated support, and SLA guarantees)',
-      'Value-Added Services: Onboarding setup charges, API usage fees, and priority support retainers'
+      'Starter Tier: ₹499 / month (₹399 / mo on annual plan, core essentials for small operators)',
+      'Growth Tier: ₹1,499 / month (₹1,199 / mo on annual plan, multi-seat collaboration & analytics)',
+      'Enterprise Tier: ₹4,999 / month (₹3,999 / mo on annual plan, custom integrations & SLAs)',
+      'Value-Added Services: Setup fees, priority onboarding, and custom module development'
     ],
     key_metrics: [
       'Monthly Recurring Revenue (MRR) & Annualized Run Rate (ARR Growth)',
@@ -344,9 +344,9 @@ const getUniversalDomainProfile = (industry, title, sector) => {
     ],
     unfair_advantage: `Customized domain architecture engineered specifically for Indian operational nuances and payment ecosystems, creating defensible localized value compared to generic foreign software.`,
     pricing_tiers: [
-      { tier: 'Starter', monthlyPrice: '₹1,499', annualPrice: '₹14,990', period: '/ month', target: 'Early adopters & small teams', features: [`Core ${ind} toolkit`, 'Standard analytics dashboard', 'Email & WhatsApp support', '2 user seats'] },
-      { tier: 'Professional', monthlyPrice: '₹4,999', annualPrice: '₹47,990', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated GST reporting', 'Priority webhook SLAs'], popular: true },
-      { tier: 'Enterprise', monthlyPrice: '₹18,000+', annualPrice: '₹1,80,000+', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated database tenant', 'Custom ERP bi-directional sync', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
+      { tier: 'Starter', monthlyPrice: '₹499', annualPrice: '₹4,788', period: '/ month', target: 'Early adopters & small teams', features: [`Core ${ind} toolkit`, 'Standard analytics dashboard', 'Email & WhatsApp support', '2 user seats'] },
+      { tier: 'Professional', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated GST reporting', 'Priority webhook SLAs'], popular: true },
+      { tier: 'Enterprise', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated database tenant', 'Custom ERP bi-directional sync', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
     ],
     swot: {
       strengths: [
@@ -368,6 +368,54 @@ const getUniversalDomainProfile = (industry, title, sector) => {
         { title: 'Macroeconomic Price Sensitivity', desc: 'Economic tightening could lead corporate clients to review software subscription budgets.', impact: 'Churn Pressure', action: 'Continuously demonstrate hard cash savings and undeniable productivity ROI to maintain essential status.' }
       ]
     }
+  };
+};
+
+
+// Dynamic low pricing calculation helper ensuring affordable rates and live monthly/annual toggle
+const getTierPricing = (tier, idx, cycle) => {
+  // Low, realistic Indian startup monthly benchmarks:
+  // Tier 0 (Starter): ₹499/mo | Annual: ₹399/mo (₹4,788/yr, save 20%)
+  // Tier 1 (Pro): ₹1,499/mo | Annual: ₹1,199/mo (₹14,388/yr, save 20%)
+  // Tier 2+ (Enterprise): ₹4,999/mo | Annual: ₹3,999/mo (₹47,988/yr, save 20%)
+  const defaultMonthlyTiers = [499, 1499, 4999];
+  let monthlyBase = defaultMonthlyTiers[idx] || (idx === 0 ? 499 : idx === 1 ? 1499 : 4999);
+
+  if (tier) {
+    const rawMonthly = tier.monthlyPrice || (!String(tier.period || '').includes('year') ? tier.price : null);
+    if (rawMonthly) {
+      const parsed = parseInt(String(rawMonthly).replace(/[^\d]/g, ''), 10);
+      if (!isNaN(parsed) && parsed >= 99 && parsed <= 9999) {
+        monthlyBase = parsed;
+      }
+    }
+  }
+
+  const annualMonthly = Math.round(monthlyBase * 0.8);
+  const annualTotal = annualMonthly * 12;
+
+  if (cycle === 'annual') {
+    return {
+      activePrice: `₹${annualMonthly.toLocaleString('en-IN')}`,
+      period: '/ month',
+      strikethrough: `₹${monthlyBase.toLocaleString('en-IN')}`,
+      discountTag: 'Save 20%',
+      billingNote: `Billed annually at ₹${annualTotal.toLocaleString('en-IN')} / year`,
+      summaryPrice: `₹${annualMonthly.toLocaleString('en-IN')} / month`,
+      summarySub: `Billed annually at ₹${annualTotal.toLocaleString('en-IN')} / year (Save 20%) • ₹ INR`,
+      annualTotalFormatted: `₹${annualTotal.toLocaleString('en-IN')}`
+    };
+  }
+
+  return {
+    activePrice: `₹${monthlyBase.toLocaleString('en-IN')}`,
+    period: '/ month',
+    strikethrough: null,
+    discountTag: null,
+    billingNote: 'Billed monthly, cancel anytime',
+    summaryPrice: `₹${monthlyBase.toLocaleString('en-IN')} / month`,
+    summarySub: 'Billed monthly • Cancel anytime • ₹ INR',
+    annualTotalFormatted: null
   };
 };
 
@@ -545,28 +593,28 @@ const BusinessTab = ({ data, idea }) => {
           onClick={() => setActiveSubTab('canvas')}
           className={`biz-subtab-btn ${activeSubTab === 'canvas' ? 'active canvas-active' : ''}`}
         >
-          <FaTable /> 1. Lean Business Canvas (9 Pillars)
+          <FaTable /> 📋 Lean Canvas
         </button>
 
         <button
           onClick={() => setActiveSubTab('swot')}
           className={`biz-subtab-btn ${activeSubTab === 'swot' ? 'active swot-active' : ''}`}
         >
-          <FaProjectDiagram /> 2. 4-Quadrant Strategic SWOT Matrix
+          <FaProjectDiagram /> 🎯 SWOT Matrix
         </button>
 
         <button
           onClick={() => setActiveSubTab('monetize')}
           className={`biz-subtab-btn ${activeSubTab === 'monetize' ? 'active monetize-active' : ''}`}
         >
-          <FaCoins /> 3. Recommended Tiered Pricing &amp; Unit Economics (₹)
+          <FaCoins /> 💰 Pricing Plans (₹)
         </button>
 
         <button
           onClick={() => setActiveSubTab('ecosystem')}
           className={`biz-subtab-btn ${activeSubTab === 'ecosystem' ? 'active ecosystem-active' : ''}`}
         >
-          <FaHandshake /> 4. Strategic Ecosystem &amp; Moat Defensibility
+          <FaHandshake /> 🤝 Ecosystem & Moats
         </button>
       </div>
 
@@ -866,12 +914,12 @@ const BusinessTab = ({ data, idea }) => {
       {activeSubTab === 'monetize' && (
         <div className="animate-fade-in">
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div className="pricing-header-row">
             <div>
-              <h4 style={{ color: '#f1f5f9', margin: 0, fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h4 className="pricing-section-title">
                 <FaCreditCard style={{ color: '#10b981' }} /> Recommended Tiered Pricing Architecture (Indian Rupees ₹)
               </h4>
-              <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: '4px 0 0' }}>
+              <p className="pricing-section-sub">
                 Select any plan to inspect live unit economics, billing options, and projected ROI.
               </p>
             </div>
@@ -901,8 +949,7 @@ const BusinessTab = ({ data, idea }) => {
                 : String(tier.features || '').split(/,\s*/).filter(Boolean);
 
               const isSelected = selectedPlanIdx === idx;
-              const displayPrice = (billingCycle === 'annual' && tier.annualPrice) ? tier.annualPrice : (tier.monthlyPrice || tier.price);
-              const displayPeriod = billingCycle === 'annual' ? '/ year' : '/ month';
+              const pricing = getTierPricing(tier, idx, billingCycle);
 
               return (
                 <div
@@ -924,8 +971,19 @@ const BusinessTab = ({ data, idea }) => {
                   <div className="biz-tier-target">{tier.target}</div>
                   
                   <div className="biz-tier-price-box">
-                    <span className="biz-tier-price">{displayPrice}</span>
-                    <span className="biz-tier-period">{displayPeriod}</span>
+                    {pricing.strikethrough && (
+                      <div className="biz-tier-strikethrough-row">
+                        <span className="biz-tier-strikethrough">{pricing.strikethrough}</span>
+                        <span className="biz-discount-badge">{pricing.discountTag}</span>
+                      </div>
+                    )}
+                    <div className="biz-tier-main-price-row">
+                      <span className="biz-tier-price">{pricing.activePrice}</span>
+                      <span className="biz-tier-period">{pricing.period}</span>
+                    </div>
+                    <div className={`biz-tier-cycle-note ${billingCycle === 'annual' ? 'annual-highlight' : ''}`}>
+                      {pricing.billingNote}
+                    </div>
                   </div>
 
                   <ul className="biz-tier-features">
@@ -941,25 +999,7 @@ const BusinessTab = ({ data, idea }) => {
                       e.stopPropagation();
                       handlePlanSelect(idx);
                     }}
-                    style={{
-                      width: '100%',
-                      padding: '0.8rem',
-                      borderRadius: '10px',
-                      border: 'none',
-                      background: isSelected
-                        ? 'linear-gradient(135deg, #10b981, #059669)'
-                        : tier.popular
-                          ? 'linear-gradient(135deg, #6366f1, #4f46e5)'
-                          : 'rgba(255,255,255,0.08)',
-                      color: '#ffffff',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.5rem',
-                      boxShadow: isSelected ? '0 4px 15px rgba(16,185,129,0.3)' : 'none'
-                    }}
+                    className={`biz-tier-select-btn ${isSelected ? 'btn-selected' : tier.popular ? 'btn-popular' : 'btn-default'}`}
                   >
                     {isSelected ? <><FaCheck /> Selected Plan</> : 'Select This Plan'}
                   </button>
@@ -969,48 +1009,40 @@ const BusinessTab = ({ data, idea }) => {
           </div>
 
           {/* SELECTED PLAN SUMMARY & ROI CALLOUT */}
-          <div className="plan-selected-summary">
-            <div className="plan-summary-left">
-              <h4>
-                <FaRocket style={{ color: '#10b981' }} /> Active Strategy: {currentSelectedPlan.tier} Plan ({billingCycle.toUpperCase()})
-              </h4>
-              <p>
-                Targeted at {currentSelectedPlan.target}. Designed to deliver maximum operational velocity with predictable {billingCycle} subscription cashflow.
-              </p>
-            </div>
-
-            <div className="plan-summary-right">
-              <div className="plan-price-callout">
-                <div className="price">
-                  {billingCycle === 'annual' && currentSelectedPlan.annualPrice ? currentSelectedPlan.annualPrice : (currentSelectedPlan.monthlyPrice || currentSelectedPlan.price)}
+          {(() => {
+            const selectedPricing = getTierPricing(currentSelectedPlan, selectedPlanIdx, billingCycle);
+            return (
+              <div className="plan-selected-summary">
+                <div className="plan-summary-left">
+                  <h4>
+                    <FaRocket style={{ color: '#10b981' }} /> Active Strategy: {currentSelectedPlan.tier} Plan ({billingCycle.toUpperCase()} BILLING)
+                  </h4>
+                  <p>
+                    Targeted at {currentSelectedPlan.target}. Designed to deliver maximum operational velocity with predictable {billingCycle} subscription cashflow.
+                  </p>
                 </div>
-                <div className="term">Billed {billingCycle === 'annual' ? 'Annually (₹ INR)' : 'Monthly (₹ INR)'}</div>
-              </div>
 
-              <button
-                onClick={() => toast.success(`Simulated subscription configured for ${currentSelectedPlan.tier} plan!`)}
-                style={{
-                  padding: '0.85rem 1.5rem',
-                  borderRadius: '10px',
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #10b981, #059669)',
-                  color: '#ffffff',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
-                }}
-              >
-                Confirm Plan Architecture <FaArrowRight />
-              </button>
-            </div>
-          </div>
+                <div className="plan-summary-right">
+                  <div className="plan-price-callout">
+                    <div className="price">{selectedPricing.summaryPrice}</div>
+                    <div className="term">{selectedPricing.summarySub}</div>
+                  </div>
+
+                  <button
+                    onClick={() => toast.success(`Confirmed ${currentSelectedPlan.tier} plan at ${selectedPricing.summaryPrice}!`)}
+                    className="plan-confirm-btn"
+                  >
+                    Confirm Plan Architecture <FaArrowRight />
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* UNIT ECONOMICS & PAYMENT RAILS SUMMARY */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem', marginTop: '2rem' }}>
-            <div className="glass-card p-lg" style={{ borderLeft: '4px solid #10b981' }}>
-              <h4 style={{ color: '#34d399', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="biz-economics-grid">
+            <div className="glass-card p-md" style={{ borderLeft: '4px solid #10b981' }}>
+              <h4 style={{ color: '#34d399', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FaBalanceScale /> Unit Economics Breakdown
               </h4>
               <ul className="biz-list">
@@ -1033,9 +1065,9 @@ const BusinessTab = ({ data, idea }) => {
               </ul>
             </div>
 
-            <div className="glass-card p-lg" style={{ borderLeft: '4px solid #6366f1' }}>
-              <h4 style={{ color: '#818cf8', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <FaCreditCard /> Indian Payment &amp; Billing Rails
+            <div className="glass-card p-md" style={{ borderLeft: '4px solid #6366f1' }}>
+              <h4 style={{ color: '#818cf8', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaCreditCard /> Indian Payment & Billing Rails
               </h4>
               <ul className="biz-list">
                 <li className="biz-list-item">
@@ -1048,11 +1080,11 @@ const BusinessTab = ({ data, idea }) => {
                 </li>
                 <li className="biz-list-item">
                   <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
-                  <span><strong>e-NACH Mandates:</strong> Corporate bank debit mandates for annual enterprise subscriptions</span>
+                  <span><strong>e-NACH Mandates:</strong> Corporate bank debit mandates for annual subscriptions</span>
                 </li>
                 <li className="biz-list-item">
                   <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
-                  <span><strong>GST Compliance:</strong> Automated e-Invoicing with HSN/SAC classification &amp; B2B input tax credit</span>
+                  <span><strong>GST Compliance:</strong> Automated e-Invoicing with HSN/SAC classification</span>
                 </li>
               </ul>
             </div>

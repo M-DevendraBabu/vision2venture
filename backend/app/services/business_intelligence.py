@@ -122,10 +122,10 @@ SECTOR_PROFILES = {
             "Legal, CBSE/UGC Regulatory Compliance & Audit Certifications (8%)"
         ],
         "revenue_streams": [
-            "Tier 1 Starter (Single School): ₹18,000 – ₹35,000 / year (up to 40 faculty members)",
-            "Tier 2 Pro (Multi-Wing School / College): ₹65,000 – ₹1,20,000 / year (unlimited batches & elective optimization)",
-            "Tier 3 Enterprise (University / Group of Schools): ₹2,50,000+ / year with custom ERP bi-directional sync & dedicated support",
-            "Implementation & Faculty Onboarding Fee: ₹10,000 – ₹25,000 one-time setup charge"
+            "Tier 1 Starter (Single School): ₹499 / month (₹399 / mo on annual plan, up to 40 faculty members)",
+            "Tier 2 Pro (Multi-Wing School / College): ₹1,499 / month (₹1,199 / mo on annual plan, unlimited batches)",
+            "Tier 3 Enterprise (University / Group of Schools): ₹4,999 / month (₹3,999 / mo on annual plan, custom ERP sync)",
+            "Implementation & Faculty Onboarding Fee: ₹999 – ₹1,999 one-time setup charge"
         ],
         "key_metrics": [
             "Annual Contract Value (ACV) & Institutional Net Revenue Retention (NRR > 115%)",
@@ -136,9 +136,9 @@ SECTOR_PROFILES = {
         "unfair_advantage": "Proprietary Indian curriculum constraint rules pre-configured for CBSE, ICSE, and state university elective credit patterns, delivering instant out-of-the-box schedules without manual rule configuration.",
         "detailed_explanation": "{title} operates a high-retention B2B institutional SaaS model tailored specifically to the Indian education ecosystem. By turning weeks of administrative frustration into automated, NEP-compliant schedules, the platform achieves high switching barriers and predictable annual recurring revenue.",
         "pricing_tiers": [
-            {"tier": "Starter Academy", "price": "₹24,000", "period": "/ year", "target": "Single K-12 Schools (<600 students)", "features": "Automated schedule solver, teacher leave substitution, WhatsApp alert digest, 2 admin seats"},
-            {"tier": "Campus Pro", "price": "₹75,000", "period": "/ year", "target": "Large Schools & Junior Colleges (600–2,500 students)", "features": "NEP elective credit matrix, lab room allocation, bi-directional SIS sync, unlimited staff logins"},
-            {"tier": "University Enterprise", "price": "₹2,20,000+", "period": "/ year", "target": "Multi-Campus Universities & School Chains", "features": "Multi-department scheduling, cross-faculty load balancing, custom API hooks, 24/7 dedicated account manager"}
+            {"tier": "Starter Academy", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Single K-12 Schools (<600 students)", "features": "Automated schedule solver, teacher leave substitution, WhatsApp alert digest, 2 admin seats"},
+            {"tier": "Campus Pro", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Large Schools & Junior Colleges (600–2,500 students)", "features": "NEP elective credit matrix, lab room allocation, bi-directional SIS sync, unlimited staff logins", "popular": True},
+            {"tier": "University Enterprise", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹47,988", "period": "/ month", "target": "Multi-Campus Universities & School Chains", "features": "Multi-department scheduling, cross-faculty load balancing, custom API hooks, 24/7 dedicated account manager"}
         ],
         "swot": {
             "strengths": [
@@ -209,10 +209,10 @@ SECTOR_PROFILES = {
             "Tier-1 Merchant Success & 24/7 Fraud Prevention Operations (5%)"
         ],
         "revenue_streams": [
-            "Domestic Payment Processing Fee: 0.9% – 1.4% per transaction on Credit Cards, Net Banking & Wallets",
-            "UPI P2M Transactions: 0% MDR on basic UPI; ₹0.15 flat fee for value-added routing & dispute protection",
-            "Instant T+0 Settlement Surcharge: 0.20% flat on accelerated fund disbursements",
-            "Enterprise Subscription: ₹4,999 – ₹18,000 / month for custom checkout branding, analytics & webhook SLAs"
+            "Starter Platform Fee: ₹499 / month (₹399 / mo on annual plan) + standard UPI rails",
+            "Growth Merchant Subscription: ₹1,499 / month (₹1,199 / mo on annual plan) for automated recon & instant settlement",
+            "Enterprise Tier: ₹4,999 / month (₹3,999 / mo on annual plan) for dedicated multi-bank switch routing",
+            "Instant T+0 Settlement Surcharge: 0.15% flat on accelerated fund disbursements"
         ],
         "key_metrics": [
             "Gross Merchandise Value (GMV Processed / month)",
@@ -223,9 +223,9 @@ SECTOR_PROFILES = {
         "unfair_advantage": "Direct NPCI switch connectivity combined with predictive multi-bank latency routing, achieving sub-1.2 second UPI payment completion times compared to legacy 3.5s gateway average.",
         "detailed_explanation": "{title} scales on high-volume payment velocity with structural defensibility. By aligning with India's expanding digital payments revolution (surpassing 14 billion monthly UPI transactions), it captures recurring take-rate margins while monetizing instant liquidity features.",
         "pricing_tiers": [
-            {"tier": "Growth Merchant", "price": "₹0 / mo", "period": "+ 1.2% per tx", "target": "Early-stage startups processing <₹10L GMV", "features": "Standard UPI & Card checkout, T+1 settlement, plug-and-play Shopify plugin, standard support"},
-            {"tier": "Scale Business", "price": "₹4,999", "period": "/ mo + 0.95% tx", "target": "Growing brands processing ₹10L–₹50L GMV", "features": "Instant T+0 settlement, custom checkout UI, automated GST reconciliation, priority webhook SLAs"},
-            {"tier": "Enterprise Tier", "price": "Custom", "period": "volume contract", "target": "High-volume marketplaces processing >₹50L GMV", "features": "Dedicated multi-bank routing switch, split escrow payouts, Account Aggregator integration, 24/7 SLA"}
+            {"tier": "Growth Merchant", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Early-stage startups processing <₹10L GMV", "features": "Standard UPI & Card checkout, T+1 settlement, Shopify plugin, standard email support"},
+            {"tier": "Scale Business", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Growing brands processing ₹10L–₹50L GMV", "features": "Instant T+0 settlement, custom checkout UI, automated GST reconciliation, priority webhook SLAs", "popular": True},
+            {"tier": "Enterprise Tier", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹47,988", "period": "/ month", "target": "High-volume marketplaces processing >₹50L GMV", "features": "Dedicated multi-bank routing switch, split escrow payouts, Account Aggregator integration, 24/7 SLA"}
         ],
         "swot": {
             "strengths": [
@@ -268,13 +268,13 @@ SECTOR_PROFILES = {
             "Hyperlocal Medical Representative (MR) Outreach & Indian Medical Association (IMA) Branch Sponsorships",
             "Accredited Continuing Medical Education (CME) Workshops on ABDM Compliance & Electronic Health Records",
             "Doctor-to-Doctor Referral Programs offering clinical hardware peripherals (thermal prescription printers)",
-            "Digital Inbound SEO targeting 'ABDM certified EMR software' and 'clinic appointment management app'"
+            "High-intent Search Engine Campaigns on 'ABDM certified EMR', 'clinic queue management', and 'digital prescription software'"
         ],
         "key_partners": [
-            "National Health Authority (NHA) & Ayushman Bharat Digital Mission (ABDM) for Sandbox & Production Rails",
-            "Accredited Diagnostic Laboratory Chains (Thyrocare, Dr. Lal PathLabs) for bi-directional report sync",
-            "e-Pharmacy Fulfillment Networks (Tata 1mg, Apollo 24|7) for automated prescription delivery",
-            "AWS Mumbai Health Data Compliant Cloud with HIPAA & DISHA encryption compliance"
+            "National Health Authority (NHA) & Ayushman Bharat Digital Mission (ABDM) Sandbox",
+            "Indian Medical Association (IMA) State Chapters & Polyclinic Associations",
+            "Diagnostic Aggregators (Thyrocare, Lal PathLabs, Redcliffe) for API test routing",
+            "Leading WhatsApp Business Solution Providers for automated appointment updates"
         ],
         "key_activities": [
             "Continuous clinical workflow optimization for fast 30-second doctor digital prescription generation",
@@ -296,10 +296,10 @@ SECTOR_PROFILES = {
             "Medical Regulatory Legal Counsel, Data Protection & Security Audits (8%)"
         ],
         "revenue_streams": [
-            "Clinic SaaS Subscription: ₹1,499 – ₹3,999 / month per doctor (unlimited EMR, queueing & ABDM sync)",
-            "Polyclinic / Nursing Home Enterprise License: ₹12,000 – ₹35,000 / month for multi-doctor facilities",
-            "Teleconsultation Platform Convenience Fee: ₹25 – ₹50 per remote video consultation",
-            "Diagnostic & Pharmacy Marketplace Integration Fee: 6% – 10% commission on fulfilled home lab tests & medicine orders"
+            "Solo Practitioner Clinic License: ₹499 / month (₹399 / mo on annual plan, single doctor)",
+            "Polyclinic Suite: ₹1,499 / month (₹1,199 / mo on annual plan, 3–8 doctors)",
+            "Hospital Enterprise License: ₹4,999 / month (₹3,999 / mo on annual plan, nursing homes)",
+            "Teleconsultation Platform Convenience Fee: ₹10 – ₹25 per remote video consultation"
         ],
         "key_metrics": [
             "Monthly Active Prescribing Doctors (MAPD)",
@@ -310,9 +310,9 @@ SECTOR_PROFILES = {
         "unfair_advantage": "Seamless NHA-certified ABDM Milestone 1-3 gateway integration coupled with custom voice-to-prescription shortcuts adapted to Indian doctor shorthand and regional medicine brands.",
         "detailed_explanation": "{title} leverages mandatory government tailwinds under the Ayushman Bharat Digital Mission (ABDM). By giving private practitioners an effortless way to digitize clinics without disrupting their clinical speed, it achieves sticky recurring SaaS subscriptions with strong multi-sided marketplace expansion.",
         "pricing_tiers": [
-            {"tier": "Solo Practitioner", "price": "₹1,999", "period": "/ month", "target": "Individual Clinic Doctors", "features": "Digital EMR, ABDM ABHA generation, WhatsApp patient reminders, queue display screen app"},
-            {"tier": "Polyclinic Suite", "price": "₹6,999", "period": "/ month", "target": "Multi-specialty clinics (3–8 doctors)", "features": "Multi-doctor scheduling, centralized billing & GST receipts, in-house lab integration, custom letterhead"},
-            {"tier": "Hospital Enterprise", "price": "₹22,000+", "period": "/ month", "target": "Nursing Homes & Daycare Hospitals", "features": "IPD/OPD ward management, insurance TPA pre-authorization workflows, dedicated account manager, ABDM HIU/HIP gateway"}
+            {"tier": "Solo Practitioner", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Individual Clinic Doctors", "features": "Digital EMR, ABDM ABHA generation, WhatsApp patient reminders, queue display screen app"},
+            {"tier": "Polyclinic Suite", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Multi-specialty clinics (3–8 doctors)", "features": "Multi-doctor scheduling, centralized billing & GST receipts, in-house lab integration, custom letterhead", "popular": True},
+            {"tier": "Hospital Enterprise", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹47,988", "period": "/ month", "target": "Nursing Homes & Daycare Hospitals", "features": "IPD/OPD ward management, insurance TPA pre-authorization workflows, dedicated account manager, ABDM HIU/HIP gateway"}
         ],
         "swot": {
             "strengths": [
@@ -549,9 +549,9 @@ def get_universal_business_profile(context: dict, sector_key: str) -> dict:
             "Regulatory Filings, GST/Tax Accounting & Legal Retainers (8%)"
         ],
         "revenue_streams": [
-            f"Starter Tier: ₹999 – ₹1,999 / month (Entry-level features for individual practitioners & small teams)",
-            f"Growth Tier: ₹3,999 – ₹7,999 / month (Complete operational toolkit, multi-seat access, and advanced reporting)",
-            f"Enterprise Tier: ₹18,000 – ₹45,000+ / month (Custom integrations, dedicated account manager, and SLA guarantees)",
+            f"Starter Tier: ₹499 / month (₹399 / mo on annual plan, core essentials for small operators)",
+            f"Growth Tier: ₹1,499 / month (₹1,199 / mo on annual plan, multi-seat collaboration & analytics)",
+            f"Enterprise Tier: ₹4,999 / month (₹3,999 / mo on annual plan, custom integrations & SLAs)",
             f"Value-Added Services: Setup fees, priority onboarding, and custom module development"
         ],
         "key_metrics": [
@@ -563,9 +563,9 @@ def get_universal_business_profile(context: dict, sector_key: str) -> dict:
         "unfair_advantage": f"Deeply customized domain architecture engineered specifically for Indian market nuances ({meta['pricing_unit']}), creating superior localized value compared to generic foreign software.",
         "detailed_explanation": f"{title} operates a defensible, high-margin business model in the {ind} sector. By solving acute operational pain points and leveraging scalable digital channels, the company is structured for capital-efficient growth and rapid unit economic profitability.",
         "pricing_tiers": [
-            {"tier": "Starter", "price": "₹1,499", "period": "/ month", "target": "Early adopters & small teams", "features": f"Core {ind} toolkit, standard analytics, email & chat support, 2 user seats"},
-            {"tier": "Professional", "price": "₹4,999", "period": "/ month", "target": "Growing businesses & active operators", "features": "Advanced workflows, multi-seat collaboration, automated reporting, priority webhook SLAs"},
-            {"tier": "Enterprise", "price": "₹18,000+", "period": "/ month", "target": "Large institutions & multi-location groups", "features": "Dedicated database tenant, custom ERP integration, 99.9% uptime SLA, 24/7 account manager"}
+            {"tier": "Starter", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Early adopters & small teams", "features": f"Core {ind} toolkit, standard analytics, email & chat support, 2 user seats"},
+            {"tier": "Professional", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Growing businesses & active operators", "features": "Advanced workflows, multi-seat collaboration, automated reporting, priority webhook SLAs", "popular": True},
+            {"tier": "Enterprise", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹47,988", "period": "/ month", "target": "Large institutions & multi-location groups", "features": "Dedicated database tenant, custom ERP integration, 99.9% uptime SLA, 24/7 account manager"}
         ],
         "swot": {
             "strengths": [
