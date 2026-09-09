@@ -271,27 +271,28 @@ class AnalysisService:
             print(f"[Analysis] ERROR in SWOT save: {e}")
             db.rollback()
 
-        # Save Roadmap
+        # ============ 7 & 8. FINANCIAL & ROADMAP INTELLIGENCE (SYNCHRONIZED) ============
         try:
+            print(f"[Analysis] 7-8/9 Running Financial & Roadmap Intelligence (Synchronized in INR)...")
+            from app.services.financial_intelligence import generate_financial_analysis
+            from app.services.roadmap_intelligence import generate_roadmap_analysis
+
+            fi_fin = generate_financial_analysis(context)
+            rm_data = generate_roadmap_analysis(context, fi_fin)
+
+            # Save Roadmap (Mathematically aligned with CapEx & OpEx)
             db.add(ImplementationRoadmap(
                 idea_id=idea.id,
-                phase_1=road_data.get('phase_1') or {'name': 'Phase 1: Validation & Design', 'duration': 'Months 1-2', 'tasks': ['Market validation', 'UI Wireframes', 'Customer Survey'], 'milestones': ['50 user interviews'], 'success_metrics': ['80% positive feedback'], 'estimated_cost': f'~₹{budget*0.15:,.0f}'},
-                phase_2=road_data.get('phase_2') or {'name': 'Phase 2: MVP Development', 'duration': 'Months 3-5', 'tasks': ['Core feature dev', 'Alpha testing', 'Brand setup'], 'milestones': ['MVP launch'], 'success_metrics': ['First 20 active users'], 'estimated_cost': f'~₹{budget*0.35:,.0f}'},
-                phase_3=road_data.get('phase_3') or {'name': 'Phase 3: Beta Launch & Growth', 'duration': 'Months 6-8', 'tasks': ['Public beta', 'Marketing campaign', 'User onboarding'], 'milestones': ['100 paying users'], 'success_metrics': ['Retention rate > 40%'], 'estimated_cost': f'~₹{budget*0.25:,.0f}'},
-                phase_4=road_data.get('phase_4') or {'name': 'Phase 4: Scaling & Optimization', 'duration': 'Months 9-10', 'tasks': ['Performance tuning', 'Expansion marketing', 'Hiring'], 'milestones': ['Break-even milestone'], 'success_metrics': ['15% MoM growth'], 'estimated_cost': f'~₹{budget*0.15:,.0f}'},
-                phase_5=road_data.get('phase_5') or {'name': 'Phase 5: Market Expansion', 'duration': 'Months 11-12', 'tasks': ['New market launch', 'Enterprise deals', 'Fundraising prep'], 'milestones': ['Series A readiness'], 'success_metrics': ['Profitable unit economics'], 'estimated_cost': f'~₹{budget*0.10:,.0f}'},
-                timeline=str(road_data.get('timeline') or '12 Months')
+                phase_1=rm_data['phase_1'],
+                phase_2=rm_data['phase_2'],
+                phase_3=rm_data['phase_3'],
+                phase_4=rm_data['phase_4'],
+                phase_5=rm_data['phase_5'],
+                timeline=str(rm_data.get('timeline') or '12 Months')
             ))
             db.commit()
-        except Exception as e:
-            print(f"[Analysis] ERROR in Roadmap save: {e}")
-            db.rollback()
 
-        # ============ 8. FINANCIAL ANALYSIS (REALISTIC INDIAN BENCHMARKS) ============
-        try:
-            print(f"[Analysis] 8/9 Running Financial Analysis (Realistic Indian Benchmarks)...")
-            from app.services.financial_intelligence import generate_financial_analysis
-            fi_fin = generate_financial_analysis(context)
+            # Save Financial Analysis
             db.add(FinancialAnalysis(
                 idea_id=idea.id,
                 subscription_revenue=safe_float(fi_fin.get('subscription_revenue'), 0),
@@ -317,7 +318,7 @@ class AnalysisService:
             ))
             db.commit()
         except Exception as e:
-            print(f"[Analysis] ERROR in Financial Analysis: {e}")
+            print(f"[Analysis] ERROR in Financial/Roadmap save: {e}")
             db.rollback()
 
         # ============ 9. ML RISK, FEASIBILITY, INVESTOR READINESS ============

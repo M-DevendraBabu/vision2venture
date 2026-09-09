@@ -419,20 +419,45 @@ def get_roadmap(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    _verify_idea_ownership(idea_id, current_user, db)
+    idea = _verify_idea_ownership(idea_id, current_user, db)
     roadmap = db.query(ImplementationRoadmap).filter(
         ImplementationRoadmap.idea_id == idea_id
     ).first()
-    if not roadmap:
-        raise HTTPException(status_code=404, detail="Roadmap not found")
+    fin = db.query(FinancialAnalysis).filter(
+        FinancialAnalysis.idea_id == idea_id
+    ).first()
+
+    # Generate or enrich with domain-specific roadmap intelligence synchronized with Financial tab
+    from app.services.financial_intelligence import generate_financial_analysis
+    from app.services.roadmap_intelligence import generate_roadmap_analysis
+
+    context = {
+        'id': idea.id,
+        'title': idea.title,
+        'description': idea.description,
+        'industry': idea.industry,
+        'country': idea.country,
+        'sector': idea.sector,
+        'pricing_model': idea.pricing_model,
+        'target_customers': idea.target_customers,
+        'budget': idea.budget,
+        'team_size': idea.team_size
+    }
+    fin_data = generate_financial_analysis(context)
+    rm_data = generate_roadmap_analysis(context, fin_data)
+
     return {
         "status": "success",
         "data": {
-            "phase_1": roadmap.phase_1,
-            "phase_2": roadmap.phase_2,
-            "phase_3": roadmap.phase_3,
-            "phase_4": roadmap.phase_4,
-            "phase_5": roadmap.phase_5,
-            "timeline": roadmap.timeline
+            "phase_1": rm_data["phase_1"],
+            "phase_2": rm_data["phase_2"],
+            "phase_3": rm_data["phase_3"],
+            "phase_4": rm_data["phase_4"],
+            "phase_5": rm_data["phase_5"],
+            "timeline": rm_data["timeline"],
+            "total_setup_capex": rm_data["total_setup_capex"],
+            "monthly_opex": rm_data["monthly_opex"],
+            "break_even_months": rm_data["break_even_months"],
+            "financial_synchronization_note": rm_data["financial_synchronization_note"]
         }
     }
