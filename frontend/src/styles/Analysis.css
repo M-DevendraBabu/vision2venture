@@ -2865,7 +2865,7 @@
 /* Sub-Tab Navigation Bar */
 .fin-subtab-bar {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0.5rem;
   background: rgba(15, 23, 42, 0.7);
   padding: 0.35rem;
@@ -2873,9 +2873,9 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .fin-subtab-bar {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 }
 
@@ -2925,6 +2925,10 @@
 
 .fin-subtab-btn.active.breakeven-active {
   background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.fin-subtab-btn.active.sources-active {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
 
 /* Formula Callout Banner */
@@ -3198,4 +3202,147 @@
 
 .fin-source-table tr:hover td {
   background: rgba(255, 255, 255, 0.02);
+}
+
+
+/* Enhanced Financial Visuals & Explanations */
+.fin-allocation-bar-container {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.fin-allocation-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fin-bar-track {
+  display: flex;
+  height: 12px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  margin-bottom: 0.75rem;
+}
+
+.fin-bar-seg {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.fin-legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  font-size: 0.76rem;
+}
+
+.fin-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #cbd5e1;
+}
+
+.fin-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Sensitivity & Volume Matrix */
+.fin-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.fin-matrix-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.fin-matrix-card:hover {
+  transform: translateY(-2px);
+}
+
+.fin-matrix-card.conservative {
+  border-top: 3px solid #f59e0b;
+}
+
+.fin-matrix-card.target {
+  border-top: 3px solid #10b981;
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.fin-matrix-card.aggressive {
+  border-top: 3px solid #6366f1;
+}
+
+.fin-matrix-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.fin-matrix-val {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.fin-matrix-detail {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.45;
+}
+
+/* Strategic Advisory Callout */
+.fin-advisory-box {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px dashed rgba(99, 102, 241, 0.35);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.fin-advisory-icon {
+  font-size: 1.4rem;
+  color: #818cf8;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.fin-advisory-content h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 0 0 0.3rem 0;
+}
+
+.fin-advisory-content p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
 }
