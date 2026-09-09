@@ -15,7 +15,7 @@ const INDUSTRY_PREVIEWS = {
     title: "AI Project Management Platform",
     sector: "Online • SaaS",
     score: 88,
-    marketSize: "$18.4 Billion",
+    marketSize: "₹1.5 Lakh Cr",
     growth: "+16.8% CAGR",
     risk: "Low-Medium",
     topCompetitors: ["Asana", "Monday.com", "ClickUp"],
@@ -25,7 +25,7 @@ const INDUSTRY_PREVIEWS = {
     title: "Authentic Hyderabadi Cloud Kitchen",
     sector: "Offline • Food & Beverage",
     score: 92,
-    marketSize: "$4.2 Million (Local)",
+    marketSize: "₹35 Cr (Local)",
     growth: "+22.4% CAGR",
     risk: "Low",
     topCompetitors: ["Behrouz Biryani", "Paradise", "Local Outlets"],
@@ -35,7 +35,7 @@ const INDUSTRY_PREVIEWS = {
     title: "Eco-Friendly D2C Apparel Brand",
     sector: "Hybrid • E-Commerce",
     score: 85,
-    marketSize: "$2.1 Billion",
+    marketSize: "₹17,500 Cr",
     growth: "+19.2% CAGR",
     risk: "Medium",
     topCompetitors: ["Patagonia", "Everlane", "Local D2C"],
@@ -45,7 +45,7 @@ const INDUSTRY_PREVIEWS = {
     title: "Telehealth & Smart Clinic Software",
     sector: "Online • HealthTech",
     score: 94,
-    marketSize: "$32.0 Billion",
+    marketSize: "₹2.6 Lakh Cr",
     growth: "+28.5% CAGR",
     risk: "Low",
     topCompetitors: ["Practo", "Teladoc", "PharmEasy"],
@@ -348,7 +348,7 @@ const LandingPage = () => {
               <div className="compare-label">Traditional Research</div>
               <ul>
                 <li><FaTimesCircle /> Weeks of manual research</li>
-                <li><FaTimesCircle /> $5,000+ consultant fees</li>
+                <li><FaTimesCircle /> ₹4,00,000+ consultant fees</li>
                 <li><FaTimesCircle /> Gut feelings & biased data</li>
                 <li><FaTimesCircle /> Static PDF documents</li>
                 <li><FaTimesCircle /> Limited to one business type</li>

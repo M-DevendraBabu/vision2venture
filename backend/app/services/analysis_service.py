@@ -252,7 +252,7 @@ class AnalysisService:
                 channels=str(bm_data.get('channels') or 'Digital Marketing, SEO, Social Media, Direct Sales'),
                 key_partners=str(bm_data.get('key_partners') or 'Payment Processors, Cloud Providers, Industry Vendors'),
                 key_activities=str(bm_data.get('key_activities') or 'Product Development, Marketing, Customer Support'),
-                key_resources=str(bm_data.get('key_resources') or f'Founding Team, Initial Budget of ${budget:,.0f}, IP'),
+                key_resources=str(bm_data.get('key_resources') or f'Founding Team, Initial Budget of ₹{budget:,.0f}, IP'),
                 cost_structure=str(bm_data.get('cost_structure') or 'Development, Operations, Marketing, Personnel'),
                 detailed_explanation=str(bm_data.get('detailed_explanation') or f'Comprehensive business strategy for {idea.title}.')
             ))
@@ -280,11 +280,11 @@ class AnalysisService:
         try:
             db.add(ImplementationRoadmap(
                 idea_id=idea.id,
-                phase_1=road_data.get('phase_1') or {'name': 'Phase 1: Validation & Design', 'duration': 'Months 1-2', 'tasks': ['Market validation', 'UI Wireframes', 'Customer Survey'], 'milestones': ['50 user interviews'], 'success_metrics': ['80% positive feedback'], 'estimated_cost': f'~${budget*0.15:,.0f}'},
-                phase_2=road_data.get('phase_2') or {'name': 'Phase 2: MVP Development', 'duration': 'Months 3-5', 'tasks': ['Core feature dev', 'Alpha testing', 'Brand setup'], 'milestones': ['MVP launch'], 'success_metrics': ['First 20 active users'], 'estimated_cost': f'~${budget*0.35:,.0f}'},
-                phase_3=road_data.get('phase_3') or {'name': 'Phase 3: Beta Launch & Growth', 'duration': 'Months 6-8', 'tasks': ['Public beta', 'Marketing campaign', 'User onboarding'], 'milestones': ['100 paying users'], 'success_metrics': ['Retention rate > 40%'], 'estimated_cost': f'~${budget*0.25:,.0f}'},
-                phase_4=road_data.get('phase_4') or {'name': 'Phase 4: Scaling & Optimization', 'duration': 'Months 9-10', 'tasks': ['Performance tuning', 'Expansion marketing', 'Hiring'], 'milestones': ['Break-even milestone'], 'success_metrics': ['15% MoM growth'], 'estimated_cost': f'~${budget*0.15:,.0f}'},
-                phase_5=road_data.get('phase_5') or {'name': 'Phase 5: Market Expansion', 'duration': 'Months 11-12', 'tasks': ['New market launch', 'Enterprise deals', 'Fundraising prep'], 'milestones': ['Series A readiness'], 'success_metrics': ['Profitable unit economics'], 'estimated_cost': f'~${budget*0.10:,.0f}'},
+                phase_1=road_data.get('phase_1') or {'name': 'Phase 1: Validation & Design', 'duration': 'Months 1-2', 'tasks': ['Market validation', 'UI Wireframes', 'Customer Survey'], 'milestones': ['50 user interviews'], 'success_metrics': ['80% positive feedback'], 'estimated_cost': f'~₹{budget*0.15:,.0f}'},
+                phase_2=road_data.get('phase_2') or {'name': 'Phase 2: MVP Development', 'duration': 'Months 3-5', 'tasks': ['Core feature dev', 'Alpha testing', 'Brand setup'], 'milestones': ['MVP launch'], 'success_metrics': ['First 20 active users'], 'estimated_cost': f'~₹{budget*0.35:,.0f}'},
+                phase_3=road_data.get('phase_3') or {'name': 'Phase 3: Beta Launch & Growth', 'duration': 'Months 6-8', 'tasks': ['Public beta', 'Marketing campaign', 'User onboarding'], 'milestones': ['100 paying users'], 'success_metrics': ['Retention rate > 40%'], 'estimated_cost': f'~₹{budget*0.25:,.0f}'},
+                phase_4=road_data.get('phase_4') or {'name': 'Phase 4: Scaling & Optimization', 'duration': 'Months 9-10', 'tasks': ['Performance tuning', 'Expansion marketing', 'Hiring'], 'milestones': ['Break-even milestone'], 'success_metrics': ['15% MoM growth'], 'estimated_cost': f'~₹{budget*0.15:,.0f}'},
+                phase_5=road_data.get('phase_5') or {'name': 'Phase 5: Market Expansion', 'duration': 'Months 11-12', 'tasks': ['New market launch', 'Enterprise deals', 'Fundraising prep'], 'milestones': ['Series A readiness'], 'success_metrics': ['Profitable unit economics'], 'estimated_cost': f'~₹{budget*0.10:,.0f}'},
                 timeline=str(road_data.get('timeline') or '12 Months')
             ))
             db.commit()
@@ -315,7 +315,7 @@ class AnalysisService:
                 marketing_cost=safe_float(fin_data.get('marketing_cost'), budget * 0.10),
                 development_cost=safe_float(fin_data.get('development_cost'), budget * 0.35),
                 monthly_operating_cost=safe_float(fin_data.get('monthly_operating_cost'), budget * 0.12),
-                break_even_analysis=str(fin_data.get('break_even_analysis') or f'Based on budget of ${budget:,.0f}, break-even estimated within 7-10 months.'),
+                break_even_analysis=str(fin_data.get('break_even_analysis') or f'Based on budget of ₹{budget:,.0f}, break-even estimated within 7-10 months.'),
                 roi=safe_float(fin_data.get('roi'), 145.0),
                 profit_margins=safe_float(fin_data.get('profit_margins'), 24.5),
                 detailed_explanation=str(fin_data.get('detailed_explanation') or f'Financial projections for {idea.title}.')

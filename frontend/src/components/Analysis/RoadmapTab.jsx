@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaMapSigns, FaCheckCircle, FaCalendarAlt, FaTrophy, FaTools, FaDollarSign, FaBullseye, FaFlag } from 'react-icons/fa';
+import { FaMapSigns, FaCheckCircle, FaCalendarAlt, FaTrophy, FaTools, FaRupeeSign, FaBullseye, FaFlag } from 'react-icons/fa';
 
 const RoadmapTab = ({ data, idea }) => {
   const [activeSubTab, setActiveSubTab] = useState('timeline');
@@ -16,7 +16,7 @@ const RoadmapTab = ({ data, idea }) => {
         tasks: phase.tasks || [],
         milestones: phase.milestones || [],
         success_metrics: phase.success_metrics || [],
-        estimated_cost: phase.estimated_cost || 'N/A'
+        estimated_cost: String(phase.estimated_cost || 'N/A').replace(/\$/g, '₹')
       });
     }
   }
@@ -95,7 +95,7 @@ const RoadmapTab = ({ data, idea }) => {
             gap: '0.5rem'
           }}
         >
-          <FaDollarSign /> 3. Phase Cost & Budget Allocation
+          <FaRupeeSign /> 3. Phase Cost & Budget Allocation
         </button>
       </div>
 

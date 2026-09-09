@@ -18,8 +18,8 @@ const FinancialTab = ({ data, idea }) => {
 
   const formatCurrency = (val) => {
     const num = getValue(val);
-    if (!num && num !== 0) return '$0';
-    return '$' + Number(num).toLocaleString(undefined, { maximumFractionDigits: 0 });
+    if (!num && num !== 0) return '₹0';
+    return '₹' + Number(num).toLocaleString('en-IN', { maximumFractionDigits: 0 });
   };
 
   // CapEx Itemization
@@ -74,13 +74,13 @@ const FinancialTab = ({ data, idea }) => {
     labels: ['Year 1', 'Year 2', 'Year 3'],
     datasets: [
       {
-        label: 'Annual Revenue ($)',
+        label: 'Annual Revenue (₹)',
         data: [y1Rev, y2Rev, y3Rev],
         backgroundColor: '#10b981',
         borderRadius: 6
       },
       {
-        label: 'Annual Operating Expenses ($)',
+        label: 'Annual Operating Expenses (₹)',
         data: [totalOpExMonthly * 12, totalOpExMonthly * 12 * 1.25, totalOpExMonthly * 12 * 1.4],
         backgroundColor: '#ef4444',
         borderRadius: 6
@@ -299,7 +299,7 @@ const FinancialTab = ({ data, idea }) => {
             <code style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.4rem', borderRadius: '4px', margin: '0 0.3rem' }}>
               (Average Order / Unit Price: {formatCurrency(pricePerUnit)}) × (Monthly Sales Volume: {monthlySalesVol.toLocaleString()} units)
             </code> 
-            = <strong>{formatCurrency(mrr)}/mo</strong> (${formatCurrency(arr)} ARR).
+            = <strong>{formatCurrency(mrr)}/mo</strong> ({formatCurrency(arr)} ARR).
           </div>
 
           <div className="metrics-grid mb-xl">

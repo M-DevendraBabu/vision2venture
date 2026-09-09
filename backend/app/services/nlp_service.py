@@ -271,8 +271,8 @@ class NLPService:
             "organizations": []
         }
 
-        # Monetary values: $100, $1M, 50 USD, etc.
-        money_pattern = r'(\$\d+(?:,\d+)*(?:\.\d+)?(?:[kKmMbB])?|\d+(?:,\d+)*(?:\.\d+)?\s*(?:USD|EUR|GBP))'
+        # Monetary values: ₹100, ₹10L, ₹5 Cr, $100, 50 INR, etc.
+        money_pattern = r'([₹$]\d+(?:,\d+)*(?:\.\d+)?(?:[kKmMbB]|(?:\s*(?:Lakh|Crore|Cr))s?)?|\d+(?:,\d+)*(?:\.\d+)?\s*(?:INR|USD|EUR|GBP|Rs\.?))'
         entities["money"] = list(set(re.findall(money_pattern, text)))
 
         # Organizations (capitalized words like "Google", "Vision2Venture", etc.)

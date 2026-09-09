@@ -297,7 +297,7 @@ const RiskTab = ({ data, idea }) => {
           iconColor: '#fbbf24',
           score: mktScore,
           primary: mktExp,
-          detail: `Venture View: Venture funds prioritize massive Total Addressable Markets (TAM > $1B) that can yield outsized fund-returning outcomes.`,
+          detail: `Venture View: Venture funds prioritize massive Total Addressable Markets (TAM > ₹8,000 Cr) that can yield outsized fund-returning outcomes.`,
           action: `Milestone: Quantify bottom-up TAM/SAM/SOM calculations with credible customer volume models in your pitch materials.`
         }
       ]

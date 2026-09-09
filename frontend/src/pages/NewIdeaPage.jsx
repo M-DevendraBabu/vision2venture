@@ -251,7 +251,7 @@ const NewIdeaPage = () => {
         <div className="form-group floating-group">
           <input id="monetization_detail" type="text" name="monetization_detail" className="floating-input" value={formData.monetization_detail} onChange={handleChange} placeholder=" " />
           <label htmlFor="monetization_detail" className="floating-label">How will you make money? (Detail)</label>
-          <small className="field-hint">e.g. "$9/mo basic, $29/mo pro", "5% commission per order"</small>
+          <small className="field-hint">e.g. "₹499/mo basic, ₹1,999/mo pro", "5% commission per order"</small>
         </div>
         <div className="form-group floating-group">
           <input id="known_competitors" type="text" name="known_competitors" className="floating-input" value={formData.known_competitors} onChange={handleChange} placeholder=" " />
@@ -399,29 +399,30 @@ const NewIdeaPage = () => {
   const renderSectorFinancials = () => {
     const sectorKey = formData.sector || 'online';
     const budgetLabel = {
-      online: 'Development + Marketing Budget',
-      offline: 'Total Investment Budget (Setup)',
-      hybrid: 'Total Budget (Physical + Digital)'
+      online: 'Development + Marketing Budget (₹)',
+      offline: 'Total Investment Budget (Setup) (₹)',
+      hybrid: 'Total Budget (Physical + Digital) (₹)'
     }[sectorKey];
     const budgetHint = {
-      online: 'Include dev costs, hosting, marketing, tools',
-      offline: 'Include rent deposit, interior, equipment, inventory',
-      hybrid: 'Include store setup, app dev, marketing'
+      online: 'Enter in Indian Rupees (₹). Include dev costs, hosting, marketing, tools',
+      offline: 'Enter in Indian Rupees (₹). Include rent deposit, interior, equipment, inventory',
+      hybrid: 'Enter in Indian Rupees (₹). Include store setup, app dev, marketing'
     }[sectorKey];
     const revenueLabel = {
-      online: 'Year 1 Revenue Target',
-      offline: 'Expected Monthly Revenue',
-      hybrid: 'Year 1 Combined Revenue Goal'
+      online: 'Year 1 Revenue Target (₹)',
+      offline: 'Expected Monthly Revenue (₹)',
+      hybrid: 'Year 1 Combined Revenue Goal (₹)'
     }[sectorKey];
     const revenueHint = {
-      online: 'Annual recurring revenue target',
-      offline: 'Estimated daily sales x 30',
-      hybrid: 'Online + offline combined'
+      online: 'Annual recurring revenue target in ₹',
+      offline: 'Estimated daily sales x 30 in ₹',
+      hybrid: 'Online + offline combined target in ₹'
     }[sectorKey];
+    const fundingLabel = 'Additional Funding Needed (₹)';
     const fundingHint = {
-      online: 'Seed/Angel/VC investment needed. 0 if bootstrapped',
-      offline: 'Loan, investor capital, etc. 0 if self-funded',
-      hybrid: 'External funding needed. 0 if self-funded'
+      online: 'Seed/Angel/VC investment needed in ₹. 0 if bootstrapped',
+      offline: 'Loan, investor capital, etc. in ₹. 0 if self-funded',
+      hybrid: 'External funding needed in ₹. 0 if self-funded'
     }[sectorKey];
     const icon = { online: <FaLaptopCode />, offline: <FaStore />, hybrid: <FaSync /> }[sectorKey];
 
@@ -450,7 +451,7 @@ const NewIdeaPage = () => {
           </div>
           <div className="form-group floating-group">
             <input id="funding_required" type="number" name="funding_required" className="floating-input" value={formData.funding_required} onChange={handleChange} placeholder=" " min="0" />
-            <label htmlFor="funding_required" className="floating-label">Additional Funding Needed</label>
+            <label htmlFor="funding_required" className="floating-label">{fundingLabel}</label>
             <small className="field-hint">{fundingHint}</small>
           </div>
         </div>
@@ -638,11 +639,11 @@ const NewIdeaPage = () => {
                     </div>
                     <div className="summary-item">
                       <span className="summary-label">Budget</span>
-                      <span className="summary-value">${Number(formData.budget).toLocaleString()}</span>
+                      <span className="summary-value">₹{Number(formData.budget).toLocaleString('en-IN')}</span>
                     </div>
                     <div className="summary-item">
                       <span className="summary-label">Revenue Goal</span>
-                      <span className="summary-value">${Number(formData.revenue_goal).toLocaleString()}</span>
+                      <span className="summary-value">₹{Number(formData.revenue_goal).toLocaleString('en-IN')}</span>
                     </div>
                   </div>
                 </div>

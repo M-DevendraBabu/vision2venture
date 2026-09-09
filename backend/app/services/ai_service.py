@@ -114,8 +114,8 @@ Industry: {context['industry']}
 Sector: {context.get('sector', 'online')}
 Country: {context.get('country', 'Global')}
 
-Return ONLY valid JSON:
-{{"market_size": "$12.4 Billion", "growth_rate": 16.2, "demand_level": "High", "opportunity_score": 84, "industry_trends": ["trend 1", "trend 2", "trend 3"], "primary_demo": "description of primary demographic", "key_pain_point": "the key pain point", "acquisition_channel": "recommended acquisition channel", "purchase_trigger": "trigger for purchase", "opportunity_explanation": "Why this score and market context", "market_analysis_explanation": "3-4 sentence detailed explanation of scores"}}""")
+Return ONLY valid JSON (all currency values MUST be in Indian Rupees ₹ / ₹ Cr):
+{{"market_size": "₹1,05,000 Cr", "growth_rate": 16.2, "demand_level": "High", "opportunity_score": 84, "industry_trends": ["trend 1", "trend 2", "trend 3"], "primary_demo": "description of primary demographic", "key_pain_point": "the key pain point", "acquisition_channel": "recommended acquisition channel", "purchase_trigger": "trigger for purchase", "opportunity_explanation": "Why this score and market context", "market_analysis_explanation": "3-4 sentence detailed explanation of scores"}}""")
         if res and res.get('market_size'):
             return res
 
@@ -128,7 +128,7 @@ Return ONLY valid JSON:
         h_val = sum(ord(c) * (i + 1) for i, c in enumerate(str(title) + str(ind))) % 23
         
         if sec == 'offline':
-            m_size = f"${float(context.get('budget', 50000))*85:,.0f} Local Market Size in {country}"
+            m_size = f"₹{float(context.get('budget', 50000))*85:,.0f} Local Market Size in {country}"
             g_rate = round(8.5 + (h_val % 7) * 0.8, 1)
             opp_score = round(max(58.0, min(92.0, 72.0 + (h_val % 13) - 4.0)), 1)
             demo = f"Local residents and foot traffic in {country} seeking quality {ind} services."
@@ -136,7 +136,7 @@ Return ONLY valid JSON:
             channel = "Local Hyperlocal Ads, Storefront Signage, Google Maps SEO & Direct Referral"
             trigger = "Urgent local service need or convenience recommendation"
         else:
-            m_size = f"${(6.2 + (h_val % 9) * 1.5):.1f} Billion globally"
+            m_size = f"₹{round((6.2 + (h_val % 9) * 1.5) * 8300):,d} Cr Addressable Market"
             g_rate = round(14.2 + (h_val % 8) * 1.1, 1)
             opp_score = round(max(62.0, min(96.0, 78.0 + (h_val % 15) - 5.0)), 1)
             demo = f"Tech-savvy professionals and digital businesses in {country} and globally."
@@ -209,7 +209,7 @@ Return ONLY valid JSON:
 Title: {context['title']}
 Industry: {context['industry']}
 Sector: {context.get('sector', 'online')}
-Budget: ${context.get('budget', 0):,.0f}
+Budget: ₹{context.get('budget', 0):,.0f}
 
 Return ONLY valid JSON:
 {{"frontend": "recommendation", "backend": "recommendation", "database_system": "recommendation", "cloud_platform": "recommendation", "ai_framework": "recommendation", "deployment": "recommendation", "reasoning": "2-3 sentence explanation"}}"""
@@ -325,9 +325,9 @@ Return ONLY valid JSON:
             "value_proposition": f"{title} delivers a high-impact solution that automates key processes, reduces operational overhead, and enhances user satisfaction in the {ind} domain.",
             "revenue_streams": f"Monetized primarily via {pricing}, supplemented by add-on premium features and enterprise service tier packages.",
             "channels": "Digital Marketing, Inbound SEO, Targeted Social Media Campaigns, Direct B2B Outreach & Referral Programs",
-            "key_partners": "Cloud Hosting Infrastructure Providers, Payment Gateways (Stripe/Razorpay), Industry Analytics Vendors & Channel Partners",
+            "key_partners": "Cloud Hosting Infrastructure Providers, Payment Gateways (Razorpay/Stripe), Industry Analytics Vendors & Channel Partners",
             "key_activities": "Core Platform Development, Customer Onboarding, Continuous Product Optimization & Marketing Execution",
-            "key_resources": f"Proprietary Software Architecture, Founding Team Expertise, Initial Budget Allocation of ${budget:,.0f}, Customer Data & Brand Assets",
+            "key_resources": f"Proprietary Software Architecture, Founding Team Expertise, Initial Budget Allocation of ₹{budget:,.0f}, Customer Data & Brand Assets",
             "cost_structure": "Software R&D / Engineering, Cloud Hosting & Server Infrastructure, Marketing & Customer Acquisition, Administrative Operations",
             "detailed_explanation": f"{title} employs a scalable business model tailored for the {ind} market. By leveraging modern channel strategy and structured revenue pricing, the business is structured for rapid path to profitability."
         }
@@ -375,7 +375,7 @@ Return ONLY valid JSON:
         prompt = f"""Generate financial projections for:
 Title: {context['title']}
 Industry: {context['industry']}
-Budget: ${context.get('budget', 0):,.0f}
+Budget: ₹{context.get('budget', 0):,.0f}
 
 Return ONLY valid JSON with numeric values:
 {{"monthly_recurring_revenue": 5000, "customer_acquisition_cost": 45, "lifetime_value": 450, "churn_rate": 4.5, "rent_cost": 0, "staff_cost": 2500, "marketing_cost": 1500, "development_cost": 8000, "monthly_operating_cost": 4000, "roi": 145, "profit_margins": 25, "break_even_analysis": "Break-even projected in 8 months based on CAC and growth trajectory", "detailed_explanation": "Detailed financial assessment."}}"""
@@ -483,10 +483,10 @@ Return ONLY valid JSON with numeric values:
             "year2_revenue": year2_rev,
             "year3_revenue": year3_rev,
             "payback_period_months": payback_months,
-            "break_even_analysis": f"Based on initial capital setup of ${total_capex:,.0f} and projected MRR of ${mrr:,.0f}, break-even is achieved in Month {payback_months}. Unit LTV:CAC ratio stands at {ltv_multiplier}x.",
+            "break_even_analysis": f"Based on initial capital setup of ₹{total_capex:,.0f} and projected MRR of ₹{mrr:,.0f}, break-even is achieved in Month {payback_months}. Unit LTV:CAC ratio stands at {ltv_multiplier}x.",
             "roi": roi_pct,
             "profit_margins": margin_pct,
-            "detailed_explanation": f"Transparent financial model for {context['title']}. Capital setup (${total_capex:,.0f}) is allocated: {capex_dev/total_capex*100:.0f}% Software R&D, {capex_hw/total_capex*100:.0f}% Infrastructure/Equipment, and {capex_brand/total_capex*100:.0f}% Branding. Projected revenue expands from ${year1_rev:,.0f} (Year 1) to ${year3_rev:,.0f} (Year 3) with {margin_pct}% net margin."
+            "detailed_explanation": f"Transparent financial model for {context['title']}. Capital setup (₹{total_capex:,.0f}) is allocated: {capex_dev/total_capex*100:.0f}% Software R&D, {capex_hw/total_capex*100:.0f}% Infrastructure/Equipment, and {capex_brand/total_capex*100:.0f}% Branding. Projected revenue expands from ₹{year1_rev:,.0f} (Year 1) to ₹{year3_rev:,.0f} (Year 3) with {margin_pct}% net margin."
         }
 
     @staticmethod
@@ -494,10 +494,10 @@ Return ONLY valid JSON with numeric values:
         res = AIService._generate(f"""Create a 5-phase execution roadmap for:
 Title: {context['title']}
 Industry: {context['industry']}
-Budget: ${context.get('budget', 0):,.0f}
+Budget: ₹{context.get('budget', 0):,.0f}
 
-Return ONLY valid JSON:
-{{"phase_1": {{"name": "Phase 1: Validation & Design", "duration": "Months 1-2", "tasks": ["Task 1", "Task 2"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "$2,500"}}, "phase_2": {{"name": "Phase 2: MVP Development", "duration": "Months 3-5", "tasks": ["Task 1", "Task 2"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "$8,000"}}, "phase_3": {{"name": "Phase 3: Beta Launch", "duration": "Months 6-8", "tasks": ["Task 1"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "$5,000"}}, "phase_4": {{"name": "Phase 4: Scaling", "duration": "Months 9-10", "tasks": ["Task 1"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "$3,000"}}, "phase_5": {{"name": "Phase 5: Expansion", "duration": "Months 11-12", "tasks": ["Task 1"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "$2,000"}}, "timeline": "12 Months"}}""")
+Return ONLY valid JSON (all costs in Indian Rupees ₹):
+{{"phase_1": {{"name": "Phase 1: Validation & Design", "duration": "Months 1-2", "tasks": ["Task 1", "Task 2"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "₹2,50,000"}}, "phase_2": {{"name": "Phase 2: MVP Development", "duration": "Months 3-5", "tasks": ["Task 1", "Task 2"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "₹8,00,000"}}, "phase_3": {{"name": "Phase 3: Beta Launch", "duration": "Months 6-8", "tasks": ["Task 1"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "₹5,00,000"}}, "phase_4": {{"name": "Phase 4: Scaling", "duration": "Months 9-10", "tasks": ["Task 1"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "₹3,00,000"}}, "phase_5": {{"name": "Phase 5: Expansion", "duration": "Months 11-12", "tasks": ["Task 1"], "milestones": ["M1"], "success_metrics": ["S1"], "estimated_cost": "₹2,00,000"}}, "timeline": "12 Months"}}""")
         if res and res.get('phase_1'):
             return res
 
@@ -509,7 +509,7 @@ Return ONLY valid JSON:
                 "tasks": ["Target user interviews & surveys", "UI/UX Figma wireframes", "Technical architecture design"],
                 "milestones": ["50 validated user survey responses", "Figma prototype signoff"],
                 "success_metrics": [">80% positive feedback on wireframes"],
-                "estimated_cost": f"${b*0.15:,.0f}"
+                "estimated_cost": f"₹{b*0.15:,.0f}"
             },
             "phase_2": {
                 "name": "Phase 2: MVP Engineering & Internal Testing",
@@ -517,7 +517,7 @@ Return ONLY valid JSON:
                 "tasks": ["Core feature backend & frontend build", "Database schema deployment", "Alpha team testing"],
                 "milestones": ["Working MVP build deployed to staging"],
                 "success_metrics": ["0 critical severity bugs in core user loop"],
-                "estimated_cost": f"${b*0.35:,.0f}"
+                "estimated_cost": f"₹{b*0.35:,.0f}"
             },
             "phase_3": {
                 "name": "Phase 3: Beta Launch & Early Traction",
@@ -525,7 +525,7 @@ Return ONLY valid JSON:
                 "tasks": ["Public beta release", "Targeted customer acquisition campaign", "User feedback collection"],
                 "milestones": ["First 100 active registered users"],
                 "success_metrics": ["Weekly active user retention > 35%"],
-                "estimated_cost": f"${b*0.25:,.0f}"
+                "estimated_cost": f"₹{b*0.25:,.0f}"
             },
             "phase_4": {
                 "name": "Phase 4: Revenue Optimization & Scaling",
@@ -533,7 +533,7 @@ Return ONLY valid JSON:
                 "tasks": ["Performance optimization", "Marketing channel scaling", "Payment gateway activation"],
                 "milestones": ["Break-even monthly operational cash flow"],
                 "success_metrics": ["15% Month-over-Month revenue growth"],
-                "estimated_cost": f"${b*0.15:,.0f}"
+                "estimated_cost": f"₹{b*0.15:,.0f}"
             },
             "phase_5": {
                 "name": "Phase 5: Geographic & Enterprise Expansion",
@@ -541,7 +541,7 @@ Return ONLY valid JSON:
                 "tasks": ["Expansion into secondary markets", "Enterprise tier feature rollouts", "Seed investment deck prep"],
                 "milestones": ["Series A / Seed funding readiness"],
                 "success_metrics": ["Profitable customer unit economics"],
-                "estimated_cost": f"${b*0.10:,.0f}"
+                "estimated_cost": f"₹{b*0.10:,.0f}"
             },
             "timeline": "12 Months Full Execution Roadmap"
         }
@@ -552,7 +552,7 @@ Return ONLY valid JSON:
 Title: {context['title']}
 Industry: {context['industry']}
 Sector: {context.get('sector', 'online')}
-Budget: ${context.get('budget', 0):,.0f}
+Budget: ₹{context.get('budget', 0):,.0f}
 
 Generate UNIQUE risk scores (15-88 range) specific to THIS business. Each risk type MUST have a DIFFERENT score reflecting the actual risk profile of this specific industry and sector. Do NOT use generic placeholder scores.
 
@@ -568,7 +568,7 @@ Return ONLY valid JSON with this structure:
 Title: {context['title']}
 Industry: {context['industry']}
 Sector: {context.get('sector', 'online')}
-Budget: ${context.get('budget', 0):,.0f}
+Budget: ₹{context.get('budget', 0):,.0f}
 Team Size: {context.get('team_size', 2)}
 
 Generate UNIQUE feasibility scores (45-96 range) that accurately reflect THIS specific business. Each dimension MUST have a DIFFERENT score. Consider the specific industry challenges and opportunities.
@@ -585,7 +585,7 @@ Return ONLY valid JSON:
 Title: {context['title']}
 Industry: {context['industry']}
 Sector: {context.get('sector', 'online')}
-Budget: ${context.get('budget', 0):,.0f}
+Budget: ₹{context.get('budget', 0):,.0f}
 
 Generate UNIQUE investor readiness scores (45-96 range) that specifically reflect THIS business opportunity. Each dimension MUST have a DIFFERENT score.
 
