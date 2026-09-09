@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import DoughnutChart from '../Charts/DoughnutChart';
 import BarChart from '../Charts/BarChart';
 import {
@@ -6,7 +6,7 @@ import {
   FaLaptopCode, FaTools, FaReceipt, FaCoins, FaRocket, FaCalculator,
   FaQuestionCircle, FaCheckCircle, FaShieldAlt, FaBalanceScale,
   FaArrowRight, FaBullseye, FaCalendarAlt, FaLightbulb, FaBuilding,
-  FaCheck, FaBookOpen, FaAward, FaSlidersH
+  FaCheck, FaBookOpen, FaAward, FaSlidersH, FaChevronLeft, FaChevronRight
 } from 'react-icons/fa';
 
 // Client-side fallback intelligence ensuring crash-proof financial calculations
@@ -188,6 +188,14 @@ const calculateFallbackFinancials = (idea, data) => {
 
 const FinancialTab = ({ data, idea }) => {
   const [activeSubTab, setActiveSubTab] = useState('capex');
+  const subtabBarRef = useRef(null);
+
+  const scrollTabs = (direction) => {
+    if (subtabBarRef.current) {
+      const scrollAmount = direction === 'left' ? -220 : 220;
+      subtabBarRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const fb = calculateFallbackFinancials(idea, data);
 
@@ -372,49 +380,77 @@ const FinancialTab = ({ data, idea }) => {
       </div>
 
       {/* ============================================================ */}
-      {/* 2. SUB-TAB NAVIGATION BAR (6 PILLARS)                        */}
+      {/* 2. SUB-TAB NAVIGATION BAR (HORIZONTAL SCROLL WITH ARROWS)    */}
       {/* ============================================================ */}
-      <div className="fin-subtab-bar">
+      <div className="fin-subtab-container">
         <button
-          onClick={() => setActiveSubTab('capex')}
-          className={`fin-subtab-btn ${activeSubTab === 'capex' ? 'active capex-active' : ''}`}
+          type="button"
+          className="fin-scroll-arrow left"
+          onClick={() => scrollTabs('left')}
+          aria-label="Scroll left"
+          title="Scroll Left"
         >
-          <FaTools /> 🏗️ 1. Setup CapEx
+          <FaChevronLeft />
         </button>
 
-        <button
-          onClick={() => setActiveSubTab('opex')}
-          className={`fin-subtab-btn ${activeSubTab === 'opex' ? 'active opex-active' : ''}`}
-        >
-          <FaReceipt /> 📉 2. Monthly OpEx
-        </button>
+        <div className="fin-subtab-bar" ref={subtabBarRef}>
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('capex')}
+            className={`fin-subtab-btn ${activeSubTab === 'capex' ? 'active capex-active' : ''}`}
+          >
+            <FaTools style={{ color: activeSubTab === 'capex' ? '#ffffff' : '#818cf8' }} /> CapEx Setup
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('opex')}
+            className={`fin-subtab-btn ${activeSubTab === 'opex' ? 'active opex-active' : ''}`}
+          >
+            <FaReceipt style={{ color: activeSubTab === 'opex' ? '#ffffff' : '#fbbf24' }} /> Monthly OpEx
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('income')}
+            className={`fin-subtab-btn ${activeSubTab === 'income' ? 'active income-active' : ''}`}
+          >
+            <FaCoins style={{ color: activeSubTab === 'income' ? '#ffffff' : '#34d399' }} /> Revenue Engine
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('unit')}
+            className={`fin-subtab-btn ${activeSubTab === 'unit' ? 'active unit-active' : ''}`}
+          >
+            <FaBalanceScale style={{ color: activeSubTab === 'unit' ? '#ffffff' : '#a78bfa' }} /> Unit Economics
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('breakeven')}
+            className={`fin-subtab-btn ${activeSubTab === 'breakeven' ? 'active breakeven-active' : ''}`}
+          >
+            <FaBullseye style={{ color: activeSubTab === 'breakeven' ? '#ffffff' : '#38bdf8' }} /> Break-Even Cockpit
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSubTab('sources')}
+            className={`fin-subtab-btn ${activeSubTab === 'sources' ? 'active sources-active' : ''}`}
+          >
+            <FaBookOpen style={{ color: activeSubTab === 'sources' ? '#ffffff' : '#60a5fa' }} /> Benchmark Citations
+          </button>
+        </div>
 
         <button
-          onClick={() => setActiveSubTab('income')}
-          className={`fin-subtab-btn ${activeSubTab === 'income' ? 'active income-active' : ''}`}
+          type="button"
+          className="fin-scroll-arrow right"
+          onClick={() => scrollTabs('right')}
+          aria-label="Scroll right"
+          title="Scroll Right"
         >
-          <FaCoins /> 💰 3. Revenue Engine
-        </button>
-
-        <button
-          onClick={() => setActiveSubTab('unit')}
-          className={`fin-subtab-btn ${activeSubTab === 'unit' ? 'active unit-active' : ''}`}
-        >
-          <FaBalanceScale /> ⚖️ 4. Unit Economics
-        </button>
-
-        <button
-          onClick={() => setActiveSubTab('breakeven')}
-          className={`fin-subtab-btn ${activeSubTab === 'breakeven' ? 'active breakeven-active' : ''}`}
-        >
-          <FaBullseye /> 🎯 5. Break-Even Cockpit
-        </button>
-
-        <button
-          onClick={() => setActiveSubTab('sources')}
-          className={`fin-subtab-btn ${activeSubTab === 'sources' ? 'active sources-active' : ''}`}
-        >
-          <FaBookOpen /> 🔬 6. Data Sources &amp; Citations
+          <FaChevronRight />
         </button>
       </div>
 

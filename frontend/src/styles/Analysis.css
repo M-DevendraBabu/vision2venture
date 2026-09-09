@@ -2862,38 +2862,98 @@
   color: #64748b;
 }
 
-/* Sub-Tab Navigation Bar */
-.fin-subtab-bar {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.5rem;
-  background: rgba(15, 23, 42, 0.7);
-  padding: 0.35rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Sub-Tab Navigation Bar with Horizontal Scrolling & Scroll Arrows */
+.fin-subtab-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
 }
 
-@media (max-width: 1100px) {
-  .fin-subtab-bar {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  }
+.fin-scroll-arrow {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  width: 32px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.fin-scroll-arrow:hover {
+  background: rgba(30, 41, 59, 0.95);
+  color: #f8fafc;
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: scale(1.05);
+}
+
+.fin-scroll-arrow:active {
+  transform: scale(0.95);
+}
+
+.fin-subtab-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background: rgba(15, 23, 42, 0.75);
+  padding: 0.35rem 0.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  flex: 1;
+  min-width: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.45) rgba(15, 23, 42, 0.3);
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+.fin-subtab-bar::-webkit-scrollbar {
+  height: 5px;
+}
+
+.fin-subtab-bar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 9999px;
+  margin: 0 0.5rem;
+}
+
+.fin-subtab-bar::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #6366f1, #3b82f6);
+  border-radius: 9999px;
+}
+
+.fin-subtab-bar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #818cf8, #60a5fa);
 }
 
 .fin-subtab-btn {
+  flex: 0 0 auto;
   background: transparent;
   border: none;
   color: #94a3b8;
-  padding: 0.65rem 0.85rem;
-  border-radius: 9px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
   font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
   transition: all 0.2s ease;
   white-space: nowrap;
+  user-select: none;
 }
 
 .fin-subtab-btn:hover {
