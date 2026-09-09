@@ -11,38 +11,38 @@ import { AuthContext } from '../context/AuthContext';
 import api from '../services/api';
 import '../styles/Assistant.css';
 
-// 4 High-Impact Gemini Hero Prompt Cards
+// 4 High-Impact Gemini Hero Prompt Cards (Horizontal Compact Layout)
 const HERO_PROMPT_CARDS = [
   {
     id: 'validate',
     icon: <FaRocket style={{ color: '#38bdf8' }} />,
-    bgGlow: 'rgba(56, 189, 248, 0.15)',
+    bgGlow: 'rgba(56, 189, 248, 0.16)',
     title: 'Validate Startup Idea',
-    description: 'Test market feasibility, problem-solution fit, and TAM for my startup',
+    description: 'Test market feasibility, problem-solution fit, and TAM',
     prompt: 'Can you help me rigorously validate my startup idea? What are the key customer pain points, market risks, and feasibility checks I should perform?'
   },
   {
     id: 'finance',
     icon: <FaCoins style={{ color: '#fbbf24' }} />,
-    bgGlow: 'rgba(251, 191, 36, 0.15)',
+    bgGlow: 'rgba(251, 191, 36, 0.16)',
     title: 'CapEx & Break-Even Modeling',
-    description: 'Calculate setup CapEx, monthly OpEx burn, and break-even in Indian Rupees',
+    description: 'Calculate setup CapEx, monthly OpEx, and break-even in INR',
     prompt: 'How do I accurately calculate my startup setup capital (CapEx), monthly operating burn (OpEx), and realistic unit economics in Indian Rupees (₹)?'
   },
   {
     id: 'competitor',
-    icon: <FaShieldAlt style={{ color: '#a855f7' }} />,
-    bgGlow: 'rgba(168, 85, 247, 0.15)',
+    icon: <FaShieldAlt style={{ color: '#c084fc' }} />,
+    bgGlow: 'rgba(192, 132, 252, 0.16)',
     title: 'Competitor Moats & Gaps',
-    description: 'Analyze competitive positioning, defensibility, and underserved niches',
+    description: 'Identify positioning gaps and defensible product advantages',
     prompt: 'How do I identify high-leverage competitor gaps and build a defensible product moat against well-funded incumbents?'
   },
   {
     id: 'roadmap',
     icon: <FaCompass style={{ color: '#34d399' }} />,
-    bgGlow: 'rgba(52, 211, 153, 0.15)',
+    bgGlow: 'rgba(52, 211, 153, 0.16)',
     title: '12-Month Launch Roadmap',
-    description: 'Generate a phased execution blueprint with legal compliance & KPIs',
+    description: 'Generate phased execution with legal licensing & milestones',
     prompt: 'Generate a 12-month phased execution roadmap for my venture, covering legal incorporation, MVP launch, and scaling milestones.'
   }
 ];
@@ -61,15 +61,12 @@ const renderFormattedMessage = (text) => {
 
   const lines = text.split('\n');
   return lines.map((line, idx) => {
-    // Trim line for checking
     const trimmed = line.trim();
 
-    // Empty line -> spacing
     if (!trimmed) {
       return <div key={idx} className="gemini-msg-spacer" />;
     }
 
-    // Headers: ### Header
     if (line.startsWith('### ')) {
       return <h4 key={idx} className="gemini-msg-h4">{renderInlineStyles(line.slice(4))}</h4>;
     }
@@ -77,7 +74,6 @@ const renderFormattedMessage = (text) => {
       return <h3 key={idx} className="gemini-msg-h3">{renderInlineStyles(line.slice(3))}</h3>;
     }
 
-    // Bullet points: * or -
     if (/^[\*\-]\s+/.test(trimmed)) {
       const bulletContent = trimmed.replace(/^[\*\-]\s+/, '');
       return (
@@ -88,7 +84,6 @@ const renderFormattedMessage = (text) => {
       );
     }
 
-    // Numbered list: 1. or 2.
     if (/^\d+\.\s+/.test(trimmed)) {
       const numMatch = trimmed.match(/^(\d+)\.\s+(.*)/);
       if (numMatch) {
@@ -101,15 +96,12 @@ const renderFormattedMessage = (text) => {
       }
     }
 
-    // Regular paragraph
     return <p key={idx} className="gemini-msg-p">{renderInlineStyles(line)}</p>;
   });
 };
 
-// Helper: Format **bold** and `code` inline
 const renderInlineStyles = (content) => {
   if (!content) return '';
-  // Split by bold (**...**) and inline code (`...`)
   const parts = content.split(/(\*[\*].*?\*[\*]|`.*?`)/g);
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
@@ -147,17 +139,15 @@ const AssistantPage = () => {
 
   useEffect(() => {
     textareaRef.current?.focus();
-    // Auto-adjust layout to fit viewport
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
 
-  // Handle textarea auto-resize
   const handleInputChange = (e) => {
     setInput(e.target.value);
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 140)}px`;
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
     }
   };
 
@@ -241,7 +231,6 @@ const AssistantPage = () => {
   };
 
   const handleRegenerate = (msgIndex) => {
-    // Find previous user message
     for (let i = msgIndex - 1; i >= 0; i--) {
       if (messages[i]?.sender === 'user') {
         sendMessage(messages[i].text);
@@ -262,7 +251,7 @@ const AssistantPage = () => {
   return (
     <div className="gemini-assistant-page">
       
-      {/* Background Ambient Lights */}
+      {/* Background Ambient Glows */}
       <div className="gemini-ambient-glow top-left" />
       <div className="gemini-ambient-glow bottom-right" />
 
@@ -274,7 +263,7 @@ const AssistantPage = () => {
         <aside className={`gemini-sidebar ${sidebarOpen ? 'open' : 'collapsed'}`}>
           <div className="gemini-sidebar-inner">
             
-            {/* New Chat Pill Button */}
+            {/* New Chat Button */}
             <div className="gemini-sidebar-top">
               <button 
                 type="button" 
@@ -302,7 +291,7 @@ const AssistantPage = () => {
                 </button>
               ))}
 
-              <div className="gemini-nav-section-title" style={{ marginTop: '1.2rem' }}>Quick Actions</div>
+              <div className="gemini-nav-section-title" style={{ marginTop: '1rem' }}>Quick Actions</div>
               <button
                 type="button"
                 className="gemini-nav-item"
@@ -387,7 +376,7 @@ const AssistantPage = () => {
                 onClick={startNewChat}
                 title="Reset to Welcome Screen"
               >
-                <FaPlus size={12} /> <span className="hide-on-mobile">New Chat</span>
+                <FaPlus size={11} /> <span className="hide-on-mobile">New Chat</span>
               </button>
               <button 
                 type="button" 
@@ -395,7 +384,7 @@ const AssistantPage = () => {
                 onClick={() => navigate('/dashboard')}
                 title="Return to Dashboard"
               >
-                <FaArrowLeft size={12} /> <span className="hide-on-mobile">Dashboard</span>
+                <FaArrowLeft size={11} /> <span className="hide-on-mobile">Dashboard</span>
               </button>
             </div>
           </header>
@@ -423,7 +412,7 @@ const AssistantPage = () => {
                   Ask anything about your startup idea — test market demand, build financial unit economics, analyze competitors, or map your 12-month launch.
                 </p>
 
-                {/* 2x2 Gemini Prompt Grid */}
+                {/* 2x2 Gemini Prompt Grid (Horizontal Compact Cards) */}
                 <div className="gemini-prompt-grid">
                   {HERO_PROMPT_CARDS.map((card) => (
                     <button
@@ -432,14 +421,16 @@ const AssistantPage = () => {
                       className="gemini-prompt-card"
                       onClick={() => handlePromptCardClick(card.prompt)}
                     >
-                      <div className="gemini-card-header">
-                        <div className="gemini-card-icon-circle" style={{ background: card.bgGlow }}>
-                          {card.icon}
-                        </div>
-                        <FaChevronRight className="gemini-card-arrow" />
+                      <div className="gemini-card-icon-circle" style={{ background: card.bgGlow }}>
+                        {card.icon}
                       </div>
-                      <h4 className="gemini-card-title">{card.title}</h4>
-                      <p className="gemini-card-desc">{card.description}</p>
+                      <div className="gemini-card-text-wrap">
+                        <div className="gemini-card-title-row">
+                          <h4 className="gemini-card-title">{card.title}</h4>
+                          <FaChevronRight className="gemini-card-arrow" />
+                        </div>
+                        <p className="gemini-card-desc">{card.description}</p>
+                      </div>
                     </button>
                   ))}
                 </div>
