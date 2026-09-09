@@ -117,16 +117,20 @@ const DashboardPage = () => {
             <div className="ideas-grid">
               {ideas.filter(i => i.analysis_status !== 'completed').map(idea => (
                 <div key={idea.id} className="idea-card glass-card">
-                  <div className="idea-header">
-                    <h3>{idea.title}</h3>
+                  <div className="idea-card-header">
+                    <h3 className="idea-title" title={idea.title}>
+                      {idea.title}
+                    </h3>
+                  </div>
+                  <div className="idea-meta-row">
+                    <div className="idea-meta">
+                      <span>{idea.industry}</span>
+                      <span className="idea-meta-bullet">•</span>
+                      <span className={`sector-badge sector-badge-${idea.sector}`}>{idea.sector}</span>
+                    </div>
                     <span className={`status-badge ${getStatusClass(idea.analysis_status)}`}>
                       {idea.analysis_status}
                     </span>
-                  </div>
-                  <div className="idea-meta">
-                    <span>{idea.industry}</span>
-                    <span>•</span>
-                    <span className={`sector-badge sector-badge-${idea.sector}`}>{idea.sector}</span>
                   </div>
                   <p className="idea-desc">{idea.description?.substring(0, 120)}...</p>
                   <div className="idea-actions">
@@ -161,16 +165,20 @@ const DashboardPage = () => {
             <div className="ideas-grid">
               {ideas.filter(i => i.analysis_status === 'completed').map(idea => (
                 <div key={idea.id} className="idea-card glass-card">
-                  <div className="idea-header">
-                    <h3>{idea.title}</h3>
-                    <span className="status-badge status-completed" style={{ background: 'var(--success-color, #10b981)', color: '#fff' }}>
+                  <div className="idea-card-header">
+                    <h3 className="idea-title" title={idea.title}>
+                      {idea.title}
+                    </h3>
+                  </div>
+                  <div className="idea-meta-row">
+                    <div className="idea-meta">
+                      <span>{idea.industry}</span>
+                      <span className="idea-meta-bullet">•</span>
+                      <span className={`sector-badge sector-badge-${idea.sector}`}>{idea.sector}</span>
+                    </div>
+                    <span className="status-badge status-completed">
                       Success Probability: {idea.overall_score ? `${idea.overall_score}/100` : 'High'}
                     </span>
-                  </div>
-                  <div className="idea-meta">
-                    <span>{idea.industry}</span>
-                    <span>•</span>
-                    <span className={`sector-badge sector-badge-${idea.sector}`}>{idea.sector}</span>
                   </div>
                   <p className="idea-desc">{idea.description?.substring(0, 120)}...</p>
                   <div className="idea-actions">

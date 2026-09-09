@@ -463,9 +463,13 @@ textarea.floating-input {
   margin-bottom: var(--spacing-sm);
 }
 
-.idea-header h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
+.idea-header h3,
+.idea-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
 }
 
 .idea-meta {

@@ -48,7 +48,7 @@
 }
 
 .idea-card {
-  padding: 22px;
+  padding: 24px;
   background: #0f172a;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 18px;
@@ -66,24 +66,61 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px rgba(99,102,241,0.1);
 }
 
+/* Card Title Alignment */
+.idea-card-header,
 .idea-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
+  width: 100%;
 }
 
+.idea-title,
 .idea-header h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: #ffffff;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
+  margin: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: none;
+  min-height: 3.3rem; /* Aligns 1-line and 2-line titles uniformly across all cards */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Meta & Status Row */
+.idea-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-height: 28px;
+}
+
+.idea-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #94a3b8;
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.idea-meta-bullet {
+  color: #475569;
+  font-size: 0.8rem;
 }
 
 .status-badge {
+  display: inline-flex;
+  align-items: center;
   padding: 4px 10px;
   border-radius: 20px;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -91,9 +128,9 @@
 }
 
 .status-completed {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
 }
 
 .status-running {
@@ -106,15 +143,6 @@
   background: rgba(99, 102, 241, 0.15);
   color: #818cf8;
   border: 1px solid rgba(99, 102, 241, 0.3);
-}
-
-.idea-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
-  color: #94a3b8;
-  font-weight: 500;
 }
 
 .sector-badge {
@@ -146,6 +174,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 4.4rem; /* Aligns description height across grid rows */
 }
 
 .idea-actions {
