@@ -7,10 +7,11 @@ import {
 } from 'react-icons/fa';
 
 // ============================================================
-// VENTURE-GRADE SECTOR ARCHITECTURE BLUEPRINTS (12 INDUSTRIES)
+// VENTURE-GRADE SECTOR ARCHITECTURE BLUEPRINTS (25 DOMAINS)
 // ============================================================
 
 const SECTOR_TECH_BLUEPRINTS = {
+  // --- 1. CORE 12 SECTORS ---
   edtech: {
     system_archetype: 'Combinatorial Constraint Solver & Reactive Microservices',
     readiness_score: 96,
@@ -705,28 +706,802 @@ const SECTOR_TECH_BLUEPRINTS = {
       ],
       total_monthly_inr: '₹6,200/mo'
     }
+  },
+
+  // --- 2. SPECIALIZED DOMAINS ---
+  ev_mobility: {
+    system_archetype: 'Smart EV Charging Station Protocol & Telematics Grid',
+    readiness_score: 96,
+    architecture_style: 'Event-Driven IoT Edge & OCPP Charging Controller',
+    concurrency_target: '30,000+ Connected EV Charging Plugs',
+    latency_target: '< 100ms OCPP Session Handshake • Sub-Second Tariff Sync',
+    monthly_opex_inr: '₹3,200 – ₹7,200 / mo',
+    ai_rationale: 'Engineered specifically for electric vehicle (EV) charging networks and smart mobility. High-concurrency Go microservices handle continuous OCPP 1.6/2.0 charging session telemetry from field chargers, while TimescaleDB stores real-time power draw metrics. Seamlessly manages driver slot reservations, dynamic peak-tariff load balancing, and instant UPI AutoPay settlements.',
+    tier1_client: {
+      tech: 'Next.js 14 PWA + React Native (Driver Charging Station Map & Slot Reservation App)',
+      role: 'Driver Charging Booking PWA & Station Operator Command Console',
+      why: 'Next.js PWA delivers fast 0.8s charging station locator maps with live plug availability. React Native mobile app enables Bluetooth and NFC tap-to-charge with background notifications when charging completes.',
+      performance: 'Map station locator load < 0.9s • Plug state sync latency < 150ms',
+      alternative_rejected: 'Rejected Plain Web App: Lacked native Bluetooth and background push notifications required for alerting drivers when charging finishes.',
+      indian_context: 'Pre-integrated with PhonePe/Paytm UPI AutoPay and Bureau of Energy Efficiency (BEE) standards.'
+    },
+    tier2_gateway: {
+      tech: 'AWS IoT Core MQTT Broker + OCPP WebSocket Gateway',
+      role: 'OCPP 1.6/2.0 Charger Hardware Ingestion & Dynamic Load Balancer',
+      why: 'Sustains continuous, bidirectional WebSocket connections to OCPP-compliant EV chargers across highways and residential complexes with zero packet drop.',
+      performance: 'Sub-5ms OCPP message dispatch • 100% encrypted hardware mTLS',
+      alternative_rejected: 'Rejected Plain HTTP Polling: Cellular IoT modems on chargers require persistent WebSockets for remote start/stop commands.',
+      indian_context: 'Optimized for high-jitter Indian highway 4G connections with automated offline transaction caching.'
+    },
+    tier3_core: {
+      tech: 'Go (Golang OCPP Protocol Switch) + Python FastAPI (Tariff & Load Balancing)',
+      role: 'Charging Session State Machine, Energy Accounting & Peak Shaving',
+      why: 'Go microservices process OCPP charging transactions with sub-millisecond execution. Python routines calculate dynamic kilowatt tariffs and distribute power across multiple charging guns to prevent transformer tripping.',
+      performance: 'Processes 20,000 active charging sessions per node • Tariff calculation < 20ms',
+      alternative_rejected: 'Rejected Java Spring: Heavier memory footprint per charger socket connection.',
+      indian_context: 'Automated compliance with Central Electricity Authority (CEA) Technical Standards.'
+    },
+    tier4_data: {
+      primary_db: 'TimescaleDB (Continuous Charger KwH & Voltage Telemetry)',
+      cache_layer: 'Redis Cluster 7 (Live Plug State & Driver Reservation Locks)',
+      role: 'High-Density Energy Consumption Archive & Sub-Second Slot Locks',
+      why: 'TimescaleDB compresses time-series kilowatt-hour and voltage telemetry by 92%. Redis distributed locks prevent two drivers from reserving the same charging plug simultaneously.',
+      performance: 'Atomic slot reservation in < 2ms • 92% historical telemetry compression',
+      alternative_rejected: 'Rejected MongoDB: Cannot handle high-frequency time-series aggregations efficiently.',
+      indian_context: 'Automated monthly generation of state DISCOM power consumption audit logs.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS IoT Core + AWS ECS Fargate (Mumbai ap-south-1)',
+      container_ci_cd: 'Docker Containers + Automated OCPP Hardware Compliance Testing',
+      security_compliance: 'OCPP 1.6/2.0 Protocol Compliance • DPDP Act 2023 • TLS 1.3 • AES-256',
+      why: 'Fargate serverless containers scale compute up automatically during peak evening vehicle charging rush hours and scale down at night, optimizing cost.',
+      performance: '99.98% charging availability SLA • Zero-downtime rolling updates',
+      cost_breakdown_inr: [
+        { item: 'AWS IoT Core & MQTT Broker', cost: '₹1,200/mo', note: 'Handles 100k daily charger pings' },
+        { item: 'TimescaleDB Managed Cloud DB', cost: '₹1,400/mo', note: 'Compressed KWh telemetry logs' },
+        { item: 'AWS Fargate Serverless Containers', cost: '₹1,100/mo', note: 'OCPP protocol switch workers' },
+        { item: 'Cloudflare Edge WAF & DNS', cost: '₹0/mo', note: 'Free DDoS shield and edge SSL' },
+        { item: 'WhatsApp Business API Alerts', cost: '₹400/mo', note: 'Charging session complete notifications' }
+      ],
+      total_monthly_inr: '₹4,100/mo'
+    }
+  },
+
+  legaltech_saas: {
+    system_archetype: 'Confidential Document Intelligence & Contract Risk NLP Engine',
+    readiness_score: 98,
+    architecture_style: 'Vector Retrieval-Augmented Generation (RAG) & Encrypted Microservices',
+    concurrency_target: '10,000+ Legal Documents / Hour',
+    latency_target: '< 1.2s Semantic Clause Search • < 15ms Document Redlining',
+    monthly_opex_inr: '₹2,800 – ₹6,500 / mo',
+    ai_rationale: 'Engineered for confidential legal document intelligence and contract risk scoring. FastAPI asynchronously parses complex multi-hundred-page PDFs and agreements into vector embeddings, enabling near-instant semantic search and anomaly clause flagging while adhering to strict attorney-client privilege and DPDP Act 2023 data localization.',
+    tier1_client: {
+      tech: 'Next.js 14 + React 18 + Tailwind CSS (Interactive Redlining & Contract Comparison UI)',
+      role: 'Attorney Workspace, Redline Diff Viewer & Clause Risk Dashboard',
+      why: 'Next.js delivers fast client-side rendering of multi-page legal contracts with synchronized side-by-side diff viewers. The UI provides sub-second document scrolling and instant search highlighting without DOM freeze.',
+      performance: 'FCP < 0.8s • Renders 200-page contract diff at 60fps',
+      alternative_rejected: 'Rejected Monolithic Web Forms: Inability to render complex side-by-side diffing and real-time clause risk badges.',
+      indian_context: 'Pre-loaded with Indian Contract Act 1872 clauses and High Court citation formats.'
+    },
+    tier2_gateway: {
+      tech: 'Cloudflare Enterprise WAF + Strict mTLS Client Authentication',
+      role: 'Enterprise Document Security, Token Rate Limiting & TLS 1.3 Termination',
+      why: 'Guarantees that all legal documents transmitted by law firms and corporate legal teams are encrypted end-to-end with zero intermediary interception.',
+      performance: 'Zero plaintext transmission • Sub-millisecond token authentication',
+      alternative_rejected: 'Rejected Standard Unencrypted Reverse Proxies: Inadequate for legal compliance and client confidentiality mandates.',
+      indian_context: 'Hosted in Indian cloud data centers to comply with Bar Council data confidentiality guidelines.'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI (Asynchronous Document Ingestion) + Groq LLaMA-3 Legal Intelligence Engine',
+      role: 'Contract Risk Classification, Clause Anomaly Detection & NLP Summarization',
+      why: 'FastAPI asynchronously extracts text from scanned PDFs and DOCX files. Groq LLaMA-3 70B evaluates liability caps, indemnity clauses, and governing law in seconds with explainable risk flags.',
+      performance: 'Parses and audits a 40-page contract in < 2.5 seconds • 98.2% clause accuracy',
+      alternative_rejected: 'Rejected Generic OCR Tools: Failed on non-standard legal typography and complex multi-column judicial filings.',
+      indian_context: 'Calibrated to Indian Arbitration and Conciliation Act standards.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (Encrypted Case Files & Redline Audits) + Qdrant (Vector Clause Search)',
+      cache_layer: 'Redis 7 (Active Document Review Sessions & OCR Cache)',
+      role: 'Zero-Knowledge Encrypted Case Vault & Semantic Precedent Store',
+      why: 'PostgreSQL encrypts contract metadata and redline audit logs at rest. Qdrant vector database indexes clauses by semantic meaning, enabling lawyers to find similar precedents across thousands of past agreements.',
+      performance: 'Vector similarity search < 12ms • Sub-5ms database audit lookup',
+      alternative_rejected: 'Rejected MongoDB: Lacked native column-level encryption required for confidential legal discovery.',
+      indian_context: 'Complies with Indian Digital Personal Data Protection (DPDP) Act 2023 retention rules.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS Mumbai (ap-south-1) Dedicated Encrypted VPC + CloudFront CDN',
+      container_ci_cd: 'Docker Multi-Stage Containers + Automated DPDP Act 2023 Compliance Auditing',
+      security_compliance: 'DPDP Act 2023 • SOC2 Type II • ISO 27001 • AES-256 GCM Encryption',
+      why: 'Strict multi-AZ deployment in Mumbai ap-south-1 guarantees data sovereignty, ensuring sensitive corporate contracts never leave Indian jurisdiction.',
+      performance: 'RPO = 0 • 99.98% legal enterprise SLA availability',
+      cost_breakdown_inr: [
+        { item: 'AWS ECS Fargate Encrypted Containers', cost: '₹1,300/mo', note: 'Document parsing and API workers' },
+        { item: 'PostgreSQL Encrypted Managed RDS', cost: '₹1,100/mo', note: 'Contract database with automated backups' },
+        { item: 'Qdrant Cloud Vector Database', cost: '₹0/mo', note: 'Free tier covers 100k legal embeddings' },
+        { item: 'Groq LLaMA-3 Legal Inference', cost: '₹800/mo', note: 'Pay-per-token contract analysis' },
+        { item: 'Cloudflare WAF & Edge', cost: '₹0/mo', note: 'Free edge protection & SSL' }
+      ],
+      total_monthly_inr: '₹3,200/mo'
+    }
+  },
+
+  marketplace_ondemand: {
+    system_archetype: 'Real-Time Geospatial Matchmaker & Dual-Sided Escrow Ledger',
+    readiness_score: 97,
+    architecture_style: 'High-Concurrency Event Mesh & Spatial Polygon Dispatch',
+    concurrency_target: '40,000+ Concurrent Bookings & GPS Pings',
+    latency_target: '< 20ms Provider Geofence Match • < 300ms End-to-End Booking',
+    monthly_opex_inr: '₹3,500 – ₹8,800 / mo',
+    ai_rationale: 'Purpose-built for high-frequency on-demand service marketplaces (pet care, home services, rentals, on-demand maintenance). PostGIS executes sub-10ms provider radius lookups, while Go handles real-time booking dispatch and Redis distributed locks eliminate double-booking of field specialists. Built-in dual-sided escrow billing with automated Razorpay Route split disbursements.',
+    tier1_client: {
+      tech: 'React Native (Customer & Service Provider App) + Next.js 14 Responsive Web Marketplace',
+      role: 'Dual-Sided Consumer Booking App & Service Provider Job Dispatch Console',
+      why: 'React Native powers both the consumer mobile app and the provider task console with native background geolocation updates. Next.js delivers a fast, SEO-optimized web storefront for discovering local service offerings.',
+      performance: 'Time to Interactive < 0.9s • Smooth 60fps map pan and pinch interactions',
+      alternative_rejected: 'Rejected Separate Native Codebases: Doubles engineering maintenance overhead for dual-sided marketplace apps.',
+      indian_context: 'Built-in multi-language voice prompts (Hindi, Tamil, Telugu) for gig economy workers.'
+    },
+    tier2_gateway: {
+      tech: 'Kong API Gateway + Cloudflare Edge Workers',
+      role: 'Real-Time Request Routing, Rate Limiting & Provider Auth Verification',
+      why: 'Kong handles high-concurrency mobile app traffic with sub-millisecond overhead, shielding core microservices from spike loads during peak booking hours.',
+      performance: 'Gateway routing latency < 1.5ms • Rate limits malicious bots automatically',
+      alternative_rejected: 'Rejected Basic Nginx: Lacked dynamic plugin ecosystem for mobile JWT token rotation.',
+      indian_context: 'Optimized for high-latency 4G cellular towers across Tier-2/3 Indian cities.'
+    },
+    tier3_core: {
+      tech: 'Go (Sub-Second Geolocation Matchmaker) + Python FastAPI + WebSockets',
+      role: 'Provider Dispatch Engine, Dynamic Surge Pricing & Escrow Ledger',
+      why: 'Go matches available field providers with customer service requests in under 15ms based on distance and rating. Python models compute dynamic surge pricing during high-demand weekend slots.',
+      performance: 'Matches 5,000 requests/sec with < 20ms latency • Automated job broadcast in < 100ms',
+      alternative_rejected: 'Rejected Node.js for heavy spatial math: Go provides 4x higher CPU throughput for complex distance matrix calculations.',
+      indian_context: 'Integrated with Aadhaar OKYC verification for onboarding gig service providers.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 with PostGIS (Spatial Radius Search & Escrow Ledger)',
+      cache_layer: 'Redis Cluster 7 (Live Provider Coordinates & Slot Reservation Locks)',
+      role: 'Geospatial Locality Index & Sub-Millisecond Provider Lock State',
+      why: 'PostGIS queries (e.g. "Find top-rated dog walkers within 3km who are available at 5 PM") execute in under 6ms. Redis distributed locks guarantee that a provider cannot be double-booked for overlapping time slots.',
+      performance: 'PostGIS spatial lookup < 4.5ms • Redis atomic lock acquisition < 1ms',
+      alternative_rejected: 'Rejected MySQL: PostGIS is far superior for complex spatial polygon intersections.',
+      indian_context: 'Stores localized Indian address landmarks, PIN codes, and society gate details.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS EKS (Kubernetes with Karpenter) + Cloudflare Edge CDN & WAF',
+      container_ci_cd: 'Docker Containers + Helm Charts + GitHub Actions Continuous Delivery',
+      security_compliance: 'DPDP Act 2023 Gig Worker Privacy • PCI-DSS Escrow Security • TLS 1.3',
+      why: 'Karpenter auto-scaler provisions Spot EC2 worker nodes dynamically during morning and evening peak booking windows, reducing cloud compute costs by 65%.',
+      performance: 'Auto-scales from 2 to 15 pods in < 45 seconds • 99.98% availability',
+      cost_breakdown_inr: [
+        { item: 'AWS EKS Managed Node Cluster', cost: '₹2,200/mo', note: 'Auto-scaled worker pods' },
+        { item: 'PostgreSQL PostGIS Managed RDS', cost: '₹1,400/mo', note: 'Spatial queries & billing ledger' },
+        { item: 'Redis Cluster Cache (Upstash)', cost: '₹650/mo', note: 'Real-time provider GPS coordinates' },
+        { item: 'Cloudflare Edge WAF & CDN', cost: '₹0/mo', note: 'Free DDoS mitigation and DNS' },
+        { item: 'SMS & OTP Authentication (Fast2SMS)', cost: '₹500/mo', note: 'Customer and provider login OTPs' }
+      ],
+      total_monthly_inr: '₹4,750/mo'
+    }
+  },
+
+  b2b_saas: {
+    system_archetype: 'Multi-Tenant Enterprise Workflow & Row-Level Security Engine',
+    readiness_score: 97,
+    architecture_style: 'Decoupled Multi-Tenant Microservices & Event Stream',
+    concurrency_target: '25,000+ Enterprise Business Users',
+    latency_target: '< 35ms P99 API Response • 99.99% Data Durability',
+    monthly_opex_inr: '₹2,200 – ₹5,500 / mo',
+    ai_rationale: 'Enterprise B2B SaaS architecture with strict multi-tenant data isolation. PostgreSQL Row-Level Security (RLS) ensures complete tenant data segregation at the database layer, while FastAPI provides high-throughput async APIs, keeping infrastructure cost under ₹3,000/mo on AWS Free Tier.',
+    tier1_client: {
+      tech: 'Next.js 14 (App Router) + React 18 + Tailwind CSS + TanStack Table + Lucide',
+      role: 'Enterprise Workspace Dashboard, Bulk Data Grids & Collaboration UI',
+      why: 'Next.js App Router delivers sub-second initial paint times and streaming SSR. TanStack Table renders 50,000 table rows with virtualized DOM scrolling at 60fps without lag.',
+      performance: 'First Contentful Paint < 0.75s • Virtual table renders 50k rows at 60fps',
+      alternative_rejected: 'Rejected Angular: Heavier bundle sizes and rigid architecture increase development turnaround time.',
+      indian_context: 'Responsive layout tested across laptops and mobile browsers; GST invoicing integration.'
+    },
+    tier2_gateway: {
+      tech: 'Cloudflare Edge Workers + Nginx ASGI Reverse Proxy',
+      role: 'Multi-Tenant Subdomain Routing (tenant.domain.com) & Rate Limiting',
+      why: 'Automatically routes requests to tenant-specific contexts at the edge based on subdomains with zero origin latency.',
+      performance: 'Edge routing latency < 2ms • 100% automated SSL certificate issuance',
+      alternative_rejected: 'Rejected Costly Commercial Gateways: Cloudflare Workers handle wildcard subdomain SSL for free.',
+      indian_context: 'Hosted in Indian edge POPs for sub-15ms latency across Indian corporate internet connections.'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI / Node.js NestJS (Multi-Tenant Workspace REST & GraphQL API)',
+      role: 'Enterprise Role-Based Access Control (RBAC), Workflow Automation & Webhooks',
+      why: 'FastAPI leverages native async/await for handling thousands of concurrent business API requests. Pre-configured for automated webhook dispatch to Slack, WhatsApp, and email.',
+      performance: 'Handles 18,000 req/sec per container • Webhook dispatch latency < 50ms',
+      alternative_rejected: 'Rejected Django: Synchronous ORM creates thread-pool contention during bulk CSV export jobs.',
+      indian_context: 'Pre-integrated with Razorpay Subscriptions for recurring Indian mandate billing.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (Multi-Tenant Row-Level Security RLS) + Redis 7',
+      cache_layer: 'Redis 7 (Workspace Session Cache & Permission Token Store)',
+      role: 'Tenant-Isolated Relational Storage & Fast Session Permissions',
+      why: 'PostgreSQL Row-Level Security (RLS) enforces tenant data isolation at the engine level, guaranteeing that Company A can never accidentally query Company B’s records even if application code contains a bug.',
+      performance: 'Sub-3ms indexed tenant queries • Redis permission check < 0.5ms',
+      alternative_rejected: 'Rejected Separate Database Per Tenant: Creates unmanageable database maintenance overhead when onboarding thousands of tenants.',
+      indian_context: 'Daily automated point-in-time recovery (PITR) backups stored in AWS Mumbai ap-south-1.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS ECS Fargate (Mumbai ap-south-1) / Vercel Pro + CloudFront CDN',
+      container_ci_cd: 'Docker Multi-Stage Containers + GitHub Actions Blue-Green Deployments',
+      security_compliance: 'DPDP Act 2023 Enterprise Privacy • SOC2 Type II • ISO 27001 • TLS 1.3',
+      why: 'Serverless AWS Fargate containers scale automatically based on CPU utilization and scale down on weekends, keeping early-stage operating costs ultra-low.',
+      performance: 'Zero-downtime blue-green deployments in under 2 minutes • 99.98% uptime SLA',
+      cost_breakdown_inr: [
+        { item: 'AWS Fargate Serverless Compute', cost: '₹1,200/mo', note: 'Auto-scaled business API containers' },
+        { item: 'PostgreSQL Managed RDS (db.t4g.micro)', cost: '₹950/mo', note: 'Multi-tenant database with RLS' },
+        { item: 'Redis Upstash Managed Cache', cost: '₹0/mo', note: 'Free tier covers 10k commands/day' },
+        { item: 'Cloudflare Wildcard SSL & Edge', cost: '₹0/mo', note: 'Free wildcard subdomain routing' },
+        { item: 'Groq LLaMA-3 Workflow AI API', cost: '₹400/mo', note: 'Automated workspace summaries' }
+      ],
+      total_monthly_inr: '₹2,550/mo'
+    }
+  },
+
+  d2c_brand: {
+    system_archetype: 'Headless E-Commerce & Sub-Second Mobile Conversion Funnel',
+    readiness_score: 96,
+    architecture_style: 'Jamstack Edge SSR & Decoupled Inventory Services',
+    concurrency_target: '35,000+ Concurrent Flash-Sale Shoppers',
+    latency_target: '< 0.8s First Contentful Paint • < 50ms Cart Lock',
+    monthly_opex_inr: '₹2,000 – ₹4,800 / mo',
+    ai_rationale: 'Optimized for high-conversion D2C brand commerce (fashion, apparel, cosmetics, personal care). Headless Next.js storefront delivers 0.8s page load times on mobile devices, drastically boosting checkout conversions. Integrated with Razorpay UPI Intent and Shiprocket automated logistics.',
+    tier1_client: {
+      tech: 'Next.js 14 (Headless Storefront PWA) + Tailwind CSS + Framer Motion (Sub-Second Catalog)',
+      role: 'High-Conversion Consumer Storefront, Visual Lookbooks & 1-Click Checkout',
+      why: 'Next.js SSR pre-renders product detail pages at the edge, delivering instant page transitions. Framer Motion provides smooth micro-interactions that elevate brand perception and increase cart checkout conversions.',
+      performance: 'First Contentful Paint < 0.8s • 100/100 Lighthouse Performance Score',
+      alternative_rejected: 'Rejected Monolithic Shopify Liquid Templates: Slower page loading on Indian mobile connections and rigid design constraints.',
+      indian_context: 'Pre-built 1-click Razorpay Magic Checkout and Shiprocket pincode serviceability checker.'
+    },
+    tier2_gateway: {
+      tech: 'Cloudflare Edge POPs + Dynamic Image Resizing & WebP Conversion',
+      role: 'Global Edge Image Acceleration & Bot Attack Shield',
+      why: 'Automatically resizes and compresses high-resolution fashion photography into modern WebP/AVIF formats at the edge, cutting mobile data usage by 65%.',
+      performance: 'Edge image cache hit ratio > 94% • Edge TTFB < 20ms',
+      alternative_rejected: 'Rejected Uncompressed Origin Assets: Slows mobile loading and spikes cloud bandwidth bills.',
+      indian_context: 'Optimized for mobile 4G speeds across Indian Tier-2/3 cities.'
+    },
+    tier3_core: {
+      tech: 'Node.js (Medusa / NestJS Headless E-Commerce Engine) + Python (Recommendation API)',
+      role: 'Catalog Management, Discount Engine & Dynamic Cross-Sell Recommendations',
+      why: 'Medusa provides a modular headless commerce core with complete control over inventory, promo codes, and automated customer notifications. Python microservices generate personalized cross-sell recommendations.',
+      performance: 'Processes 5,000 cart operations/sec • Dynamic product recommendation in < 30ms',
+      alternative_rejected: 'Rejected WooCommerce: Monolithic PHP architecture fails under flash sale Instagram campaign spikes.',
+      indian_context: 'Automated integration with Shiprocket, Delhivery, and India Post parcel tracking.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (Product Catalog & Order Ledger) + Redis 7 (Flash-Sale Cart Locks)',
+      cache_layer: 'Redis 7 (Live Product Stock Locks & Fast Shopping Carts)',
+      role: 'Financial Order Ledger & Atomic Flash-Sale Inventory Decrement',
+      why: 'PostgreSQL maintains an ACID-compliant order history and GST tax ledger. Redis distributed locks decrement SKU stock in memory during viral product launches, eliminating overselling.',
+      performance: 'Atomic stock decrement < 1ms • 100% order ledger consistency',
+      alternative_rejected: 'Rejected MySQL: PostgreSQL has superior JSONB capabilities for dynamic product size/color variant schemas.',
+      indian_context: 'Automated GSTR-1 sales report generation with HSN code categorization.'
+    },
+    tier5_devops: {
+      cloud_provider: 'Vercel Pro (Global Edge SSR) + AWS RDS PostgreSQL + Cloudflare CDN',
+      container_ci_cd: 'Automated Vercel Edge Deployments + Webhook Event Receivers for Shiprocket',
+      security_compliance: 'PCI-DSS Tokenized Checkout • DPDP Act 2023 • TLS 1.3 • Encrypted Storage',
+      why: 'Vercel edge handles infinite traffic spikes from influencer marketing campaigns automatically with zero server crashes and zero manual configuration.',
+      performance: 'Instant edge scaling during viral promotions • 99.99% availability',
+      cost_breakdown_inr: [
+        { item: 'Vercel Pro Edge Hosting', cost: '₹1,600/mo', note: 'Global edge SSR and Next.js frontend' },
+        { item: 'PostgreSQL Managed Cloud DB', cost: '₹950/mo', note: 'Catalog and order ledger database' },
+        { item: 'Redis Upstash Caching', cost: '₹0/mo', note: 'Free tier covers up to 10k cart operations/day' },
+        { item: 'Cloudflare Edge CDN & WAF', cost: '₹0/mo', note: 'Free DDoS mitigation and image caching' },
+        { item: 'WhatsApp Business API Alerts', cost: '₹350/mo', note: 'Order confirmation and tracking updates' }
+      ],
+      total_monthly_inr: '₹2,900/mo'
+    }
+  },
+
+  fitness_wellness: {
+    system_archetype: 'Edge Computer Vision Pose Tracker & Biometric Analytics Engine',
+    readiness_score: 95,
+    architecture_style: 'On-Device Edge Inference & Time-Series Health Mesh',
+    concurrency_target: '15,000+ Synchronous Workout Sessions',
+    latency_target: '< 30ms Local Pose Estimation • 60fps Form Tracking',
+    monthly_opex_inr: '₹2,500 – ₹5,800 / mo',
+    ai_rationale: 'Designed for smart fitness coaching and workout tracking. MediaPipe computer vision analyzes camera video locally on device for rep counting without sending video to cloud, preserving user privacy while FastAPI manages nutrition plans.',
+    tier1_client: {
+      tech: 'React Native / Flutter (Cross-Platform Mobile App) + Bluetooth Low Energy (BLE) Sync',
+      role: 'Workout Assistant, Real-Time Camera Rep Counter & Calorie Diary',
+      why: 'Delivers a native 60fps mobile experience with on-device camera inference. Connects to smartwatches via Bluetooth Low Energy (BLE) for real-time heart rate and step telemetry.',
+      performance: 'On-device camera pose inference < 25ms • App size < 22MB',
+      alternative_rejected: 'Rejected Cloud Video Streaming: Streaming video to cloud causes high user mobile data bills and latency lag.',
+      indian_context: 'Pre-loaded with Indian dietary items (rotis, dal, regional curries) in the nutrition tracking database.'
+    },
+    tier2_gateway: {
+      tech: 'Nginx Reverse Proxy + Firebase Cloud Messaging',
+      role: 'Workout State Sync & Automated Push Notification Triggers',
+      why: 'Efficiently routes workout logs and triggers motivational workout reminders and hydration notifications based on user habits.',
+      performance: 'Sub-millisecond API proxy • Zero dropped notification packets',
+      alternative_rejected: 'Rejected Costly Notification Gateways: Firebase FCM provides free push notifications for mobile apps.',
+      indian_context: 'Localized reminder timings based on Indian morning/evening workout routines.'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI (Biometrics & Calorie Analysis) + MediaPipe CV Engine',
+      role: 'Personalized Workout Generator, Form Error Feedback & Nutrition Planner',
+      why: 'FastAPI generates personalized daily workout splits and macro targets. On-device MediaPipe models evaluate joint angles to alert users when their squat or plank form breaks down.',
+      performance: 'Generates customized 30-day fitness plan in < 60ms • Sub-30ms pose validation',
+      alternative_rejected: 'Rejected Generic Static Plans: Dynamic real-time form feedback is the primary differentiator for retention.',
+      indian_context: 'Integrates with UPI AutoPay for monthly fitness coaching memberships.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (User Profiles & Nutrition Logs) + TimescaleDB (Continuous Heart Rate & Steps)',
+      cache_layer: 'Redis 7 (Live Workout Session State & Leaderboards)',
+      role: 'Biometric Health Journal & Gamified Community Rankings',
+      why: 'TimescaleDB compresses millions of wearable biometric data points with 90% disk space savings, while Redis maintains real-time gym challenge leaderboards.',
+      performance: 'TimescaleDB query < 8ms • Redis leaderboard rank lookup < 1ms',
+      alternative_rejected: 'Rejected Unindexed MongoDB: Slower aggregations over continuous time-series fitness metrics.',
+      indian_context: 'Encrypted storage compliant with Indian DPDP Act 2023 health privacy guidelines.'
+    },
+    tier5_devops: {
+      cloud_provider: 'Google Cloud Run / AWS ECS Fargate + Firebase Cloud Messaging',
+      container_ci_cd: 'Docker Containers + Automated Mobile OTA Updates via CodePush',
+      security_compliance: 'DPDP Act 2023 • TLS 1.3 • AES-256 Storage Encryption',
+      why: 'Serverless containers scale up dynamically during early morning (6 AM – 9 AM) and evening workout rushes and scale to near zero during the day, minimizing costs.',
+      performance: '99.95% availability SLA • Automated over-the-air app updates',
+      cost_breakdown_inr: [
+        { item: 'Google Cloud Run Container Compute', cost: '₹1,200/mo', note: 'Auto-scaled workout API workers' },
+        { item: 'PostgreSQL & TimescaleDB Managed DB', cost: '₹1,100/mo', note: 'Health journals and telemetry' },
+        { item: 'Redis Managed Cache (Upstash)', cost: '₹0/mo', note: 'Free tier covers community challenges' },
+        { item: 'Firebase Mobile Cloud Services', cost: '₹0/mo', note: 'Free push notifications and auth' },
+        { item: 'Cloudflare Edge CDN', cost: '₹0/mo', note: 'Free DNS and edge caching' }
+      ],
+      total_monthly_inr: '₹2,300/mo'
+    }
+  },
+
+  biotech_deeptech: {
+    system_archetype: 'GPU-Accelerated Bioinformatics & Genomic Sequence Pipeline',
+    readiness_score: 97,
+    architecture_style: 'Distributed GPU Batch Processing & S3 Scientific Data Lake',
+    concurrency_target: '100+ Parallel Genomic Sequence Alignments',
+    latency_target: '< 3s 10M Base Pair BLAST Search • 99.999% Integrity',
+    monthly_opex_inr: '₹5,500 – ₹14,000 / mo',
+    ai_rationale: 'Engineered for computational biology and deep science informatics. GPU-accelerated container workers run heavy molecular and sequence alignment algorithms in parallel, while S3 handles multi-gigabyte genomic dataset storage securely.',
+    tier1_client: {
+      tech: 'Next.js 14 + WebGL Molecular Viewer (3D Protein / Chemical Structure Explorer)',
+      role: 'Interactive 3D Protein Visualizer & Genomic Research Workbench',
+      why: 'WebGL molecular viewer renders complex 3D protein structures (PDB format) with hardware acceleration directly in the browser, enabling scientists to inspect binding pockets without desktop software.',
+      performance: 'Smooth 60fps 3D molecular rotation • PDB model load < 1.2s',
+      alternative_rejected: 'Rejected Heavy Desktop Only Viewers: WebGL allows remote browser collaboration across research institutions.',
+      indian_context: 'Integrated with Indian Council of Medical Research (ICMR) and CSIR open database formats.'
+    },
+    tier2_gateway: {
+      tech: 'Envoy Gateway with Gzip Compression + Cloudflare Enterprise',
+      role: 'Large Scientific Dataset Upload Buffer & API Routing',
+      why: 'Manages multipart resumable uploads of multi-gigabyte genomic FASTA and BAM sequencing files over Indian broadband connections without timeout failures.',
+      performance: 'Resumable chunked uploads • 100% encrypted in transit',
+      alternative_rejected: 'Rejected Basic Web Servers: Standard HTTP servers abort multi-gigabyte file transfers on transient connection drops.',
+      indian_context: 'Multi-region routing optimized for Indian university and biotech research hubs.'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI (Scientific Async API) + Celery GPU Worker Pool (PyTorch Geometric & BioPython)',
+      role: 'Distributed Sequence Alignment, Molecular Property Prediction & Batch Compute',
+      why: 'Python leverages the full scientific ecosystem (BioPython, NumPy, PyTorch Geometric) with Celery queues dispatching heavy compute tasks across GPU instances in parallel.',
+      performance: 'Performs 10M base pair BLAST alignment in < 3.2 seconds',
+      alternative_rejected: 'Rejected Node.js: Lacks high-performance scientific bioinformatics libraries.',
+      indian_context: 'Compliant with Department of Biotechnology (DBT) guidelines on biological data storage.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (Sample & Experiment Ledger) + MinIO / AWS S3 (Large FASTA/BAM Genomic Files)',
+      cache_layer: 'Redis 7 (Active Computation Job Status & Pre-computed Molecular Descriptors)',
+      role: 'Laboratory Sample Tracking Ledger & Compressed Genomic Data Lake',
+      why: 'PostgreSQL maintains structured metadata on laboratory assays, clinical trials, and compound libraries. S3 Glacier lifecycle policies archive terabytes of raw sequencing data at minimal cost.',
+      performance: 'Sample query < 5ms • S3 storage cost optimized by 80% using tiered archiving',
+      alternative_rejected: 'Rejected Storing Raw Binary Files in Database: Bloats relational databases and degrades backup speeds.',
+      indian_context: 'Data residency maintained strictly within Indian cloud regions as per national data guidelines.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS GPU Accelerated Instances (EC2 G5) + AWS S3 Encrypted Object Store',
+      container_ci_cd: 'Docker Multi-Stage Containers with NVIDIA Container Toolkit CUDA Acceleration',
+      security_compliance: 'DBT Biological Data Guidelines • DPDP Act 2023 • TLS 1.3 • AES-256 Storage Encryption',
+      why: 'GPU instances are provisioned on-demand via batch spot instances and shut down immediately upon job completion, avoiding continuous idle GPU costs.',
+      performance: '99.98% availability SLA • Automated GPU cluster scaling',
+      cost_breakdown_inr: [
+        { item: 'AWS GPU Spot Compute (On-Demand)', cost: '₹3,200/mo', note: 'Batch molecular simulation workers' },
+        { item: 'AWS S3 Scientific Data Lake Storage', cost: '₹1,500/mo', note: 'Compressed genomic files and BAM data' },
+        { item: 'PostgreSQL Managed Cloud DB', cost: '₹1,200/mo', note: 'Laboratory sample and assay metadata' },
+        { item: 'Redis Upstash Cache', cost: '₹0/mo', note: 'Job queue status and token store' },
+        { item: 'Cloudflare Edge Security', cost: '₹0/mo', note: 'Free DDoS mitigation and edge SSL' }
+      ],
+      total_monthly_inr: '₹5,900/mo'
+    }
+  },
+
+  social_media: {
+    system_archetype: 'Viral Activity Feed Fan-Out & Low-Latency Stream Switch',
+    readiness_score: 97,
+    architecture_style: 'Distributed Pub/Sub WebSockets & NoSQL Feed Stream',
+    concurrency_target: '50,000+ Concurrent Active Streamers & Viewers',
+    latency_target: '< 15ms WebSocket Broadcast • < 80ms Feed Delivery',
+    monthly_opex_inr: '₹5,000 – ₹12,500 / mo',
+    ai_rationale: 'Built for real-time social interaction and viral feed distribution. Go WebSocket gateways maintain millions of concurrent player/creator socket connections, while ScyllaDB/PostgreSQL handles high-frequency feed fan-out with sub-10ms delivery.',
+    tier1_client: {
+      tech: 'Flutter / React Native (High-Fidelity Mobile App) + Next.js Web Explorer',
+      role: 'Consumer Social Feed, Short-Form Video Player & Creator Studio',
+      why: 'Delivers a butter-smooth 60fps vertical video scrolling experience with aggressive video pre-fetching. Responsive web explorer allows non-app users to view shared viral links seamlessly.',
+      performance: 'Video playback start time < 250ms • Zero frame stutter during rapid scrolling',
+      alternative_rejected: 'Rejected Pure Web-View Wrapper: Poor gesture handling and sluggish video caching on budget Indian mobile devices.',
+      indian_context: 'Optimized for Indian regional languages and lightweight video bitrates for 4G networks.'
+    },
+    tier2_gateway: {
+      tech: 'Agones / Envoy WebSocket Ingress Controller',
+      role: 'Live Chat Connection Hub & Video Stream Ingress Switch',
+      why: 'Terminates millions of persistent duplex WebSocket connections for live creator chat, reactions, and virtual gifting with tiny memory overhead.',
+      performance: 'Handles 50,000+ concurrent live chat messages/sec per node with < 5ms latency',
+      alternative_rejected: 'Rejected HTTP Polling: Overwhelms backend servers and causes battery drain on mobile phones.',
+      indian_context: 'Edge ingress POPs in Mumbai, Chennai, and Delhi for minimal latency across Indian telecoms.'
+    },
+    tier3_core: {
+      tech: 'Go (High-Throughput WebSocket Feed Switch) + Python FastAPI (Content Moderation AI)',
+      role: 'Viral Feed Fan-Out Engine & Automated AI Content Moderation',
+      why: 'Go microservices fan out creator posts to millions of follower feeds using Redis pub/sub. Python models inspect uploaded media for hate speech, NSFW content, and copyright violations in real-time.',
+      performance: 'Fans out post to 100,000 followers in < 400ms • Content moderation < 1.2s',
+      alternative_rejected: 'Rejected Monolithic Ruby/Python for fan-out: Go handles concurrent I/O with 10x lower RAM consumption.',
+      indian_context: 'Pre-configured compliance with Information Technology (Intermediary Guidelines) Rules 2021.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL / ScyllaDB (Activity Feed Event Stream) + Redis (Real-Time Presence)',
+      cache_layer: 'Redis Cluster 7 (Live User Presence & Trending Hashtags)',
+      role: 'High-Throughput Activity Feed Stream & Instant Trending Leaderboards',
+      why: 'ScyllaDB handles millions of write events per second for follower activity feeds. Redis Sorted Sets update trending topic hashtags every 5 seconds across millions of social engagements.',
+      performance: 'Feed write latency < 2ms • Trending hashtag calculation < 1ms',
+      alternative_rejected: 'Rejected Traditional MySQL: Collapses under viral write spikes during breaking social events.',
+      indian_context: 'Complies with Indian grievance officer reporting and statutory 180-day audit log retention.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS EKS Kubernetes + Cloudflare Stream (Video Transcoding & HLS Delivery)',
+      container_ci_cd: 'Docker Kubernetes + Auto-Scaling WebSocket Ingress Controller',
+      security_compliance: 'IT Intermediary Rules 2021 • DPDP Act 2023 • MeitY Guidelines • TLS 1.3',
+      why: 'Cloudflare Stream handles adaptive multi-bitrate HLS video transcoding automatically, offloading video infrastructure complexity and slashing cloud bandwidth costs.',
+      performance: 'Adaptive 360p/720p/1080p HLS video delivery • 99.98% streaming uptime',
+      cost_breakdown_inr: [
+        { item: 'AWS EKS Kubernetes Worker Nodes', cost: '₹2,600/mo', note: 'Auto-scaled feed and chat pods' },
+        { item: 'ScyllaDB / PostgreSQL Managed DB', cost: '₹1,800/mo', note: 'High-throughput social feed events' },
+        { item: 'Redis Cluster ElastiCache', cost: '₹1,100/mo', note: 'Live presence and trending cache' },
+        { item: 'Cloudflare Stream Video Hosting', cost: '₹1,500/mo', note: 'Adaptive video streaming storage' },
+        { item: 'Cloudflare Edge CDN & Security', cost: '₹0/mo', note: 'Free DDoS shield and edge SSL' }
+      ],
+      total_monthly_inr: '₹7,000/mo'
+    }
+  },
+
+  travel_marketplace: {
+    system_archetype: 'Dynamic Travel GDS Aggregator & Geospatial Itinerary Engine',
+    readiness_score: 96,
+    architecture_style: 'Microservices & Cached Real-Time Fare Discovery',
+    concurrency_target: '20,000+ Concurrent Travel Searches',
+    latency_target: '< 250ms Multi-Carrier Fare Search • Instant Booking',
+    monthly_opex_inr: '₹2,800 – ₹6,800 / mo',
+    ai_rationale: 'Designed for travel discovery and instant booking. PostGIS enables rapid search across thousands of hotels and tour experiences, while Redis caches airline and hotel inventory states to eliminate rate discrepancy during checkout.',
+    tier1_client: {
+      tech: 'Next.js 14 + Mapbox GL JS (Interactive Itinerary Planner & Price Heatmap)',
+      role: 'Consumer Travel Booking Portal, Interactive Itinerary Matrix & Mobile PWA',
+      why: 'Next.js delivers fast search results with client-side price filter sliders. Mapbox GL JS visualizes day-by-day trip itineraries on interactive 3D terrain maps with hotel pinpoints.',
+      performance: 'Search results render in < 400ms • Map renders 1,000 hotel markers at 60fps',
+      alternative_rejected: 'Rejected Legacy Monolithic Portals: Slow 4s+ page refreshes frustrate travelers and cause high checkout abandonment.',
+      indian_context: 'Integrated with IRCTC train booking deep-links and domestic Indian airline APIs (IndiGo, Air India).'
+    },
+    tier2_gateway: {
+      tech: 'Cloudflare Edge Workers + Amadeus / Booking API Adapter',
+      role: 'GDS Airline Aggregator Caching & Dynamic Rate Normalizer',
+      why: 'Caches frequent flight route searches at the edge for 15 minutes, slashing expensive third-party GDS supplier API query fees while keeping prices fresh.',
+      performance: 'Reduces supplier GDS API costs by 70% • Edge cache latency < 15ms',
+      alternative_rejected: 'Rejected Querying Live Supplier APIs on Every Click: Exhausts API rate limits and causes slow 6s user wait times.',
+      indian_context: 'Optimized for Indian festival travel booking surges (Diwali, Holi, New Year).'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI (Dynamic Pricing & Booking Engine) + Node.js (GDS/Airlines API Router)',
+      role: 'Multi-Carrier Fare Comparison, Itinerary Generator & Booking Confirmation',
+      why: 'FastAPI normalizes fare schemas across dozens of travel suppliers into a unified JSON format in parallel. Node.js manages payment webhooks and instant ticket PNR issuance.',
+      performance: 'Aggregates 25 travel suppliers in parallel in < 1.2 seconds',
+      alternative_rejected: 'Rejected Synchronous Python Calls: Sequential supplier querying leads to unacceptable 15-second user timeouts.',
+      indian_context: 'Automated GST invoice generation for corporate business travel claims.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL with PostGIS (Destination Radius Queries) + Redis (Live Availability Cache)',
+      cache_layer: 'Redis 7 (Live Fare Discovery Cache & Seat Locks)',
+      role: 'Geospatial Hotel Radius Store & Sub-Second Seat Inventory Locks',
+      why: 'PostGIS queries hotels within walking distance of attractions in under 4ms. Redis locks selected seats for 10 minutes during customer payment completion, preventing double-booking.',
+      performance: 'PostGIS hotel search < 5ms • Redis seat reservation lock < 1ms',
+      alternative_rejected: 'Rejected MongoDB: PostGIS spatial radius indexes are far more efficient for location-based travel booking.',
+      indian_context: 'Includes state tourism board approved homestays and verified pilgrimage routes.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS ECS Fargate (Mumbai ap-south-1) + CloudFront Global CDN',
+      container_ci_cd: 'Docker Containers on AWS ECS + Automated Booking Confirmation Webhooks',
+      security_compliance: 'IATA Security Standards • PCI-DSS Level 1 • DPDP Act 2023 • TLS 1.3',
+      why: 'Serverless containers automatically scale up during morning flight flash sales and long weekend holiday booking surges with zero manual infrastructure management.',
+      performance: '99.98% booking system availability • Zero double-booking errors',
+      cost_breakdown_inr: [
+        { item: 'AWS Fargate Serverless Containers', cost: '₹1,300/mo', note: 'Auto-scaled travel search workers' },
+        { item: 'PostgreSQL Managed Cloud DB', cost: '₹1,100/mo', note: 'Hotels, bookings, and customer accounts' },
+        { item: 'Redis Managed Cache (Upstash)', cost: '₹600/mo', note: 'Fast fare search cache' },
+        { item: 'Cloudflare Edge CDN & DNS', cost: '₹0/mo', note: 'Free edge protection and SSL' },
+        { item: 'SMS & WhatsApp Booking Ticket Pushes', cost: '₹450/mo', note: 'Automated PNR & boarding pass alerts' }
+      ],
+      total_monthly_inr: '₹3,450/mo'
+    }
+  },
+
+  construction_tech: {
+    system_archetype: 'Offline Jobsite Inspection & CAD Blueprint Collaboration Hub',
+    readiness_score: 95,
+    architecture_style: 'Offline-First Mobile Edge & Cloud BIM Synchronization',
+    concurrency_target: '10,000+ Construction Project Sites & Contractors',
+    latency_target: 'Zero Latency Offline Operation • 100% Background Sync',
+    monthly_opex_inr: '₹2,600 – ₹5,800 / mo',
+    ai_rationale: 'Engineered for rugged construction jobsite operations. Flutter app operates completely offline in remote construction zones, syncing blueprint revisions and punchlist photos when field engineers regain cell connectivity.',
+    tier1_client: {
+      tech: 'Flutter (Offline Site Inspection & Punchlist App) + Next.js 14 Architectural Admin Portal',
+      role: 'Field Engineer Mobile Punchlist App & Head Office BIM Project Portal',
+      why: 'Flutter app functions 100% offline in basement parking and remote construction sites, saving high-resolution defect photos and punchlist items to local SQLite. Next.js admin portal allows project managers to track progress.',
+      performance: 'Operates with 0% network connectivity • Local punchlist photo save < 50ms',
+      alternative_rejected: 'Rejected Web-Only Portals: Useless on remote construction sites lacking cellular internet coverage.',
+      indian_context: 'Pre-configured with CPWD (Central Public Works Dept) building inspection checklists.'
+    },
+    tier2_gateway: {
+      tech: 'Nginx Reverse Proxy + Gzip Payload Compression',
+      role: 'Low-Bandwidth Mobile Synchronization Gateway & CAD Upload Router',
+      why: 'Gzip compression minimizes data payload sizes by 70%, allowing field engineers to sync daily work logs smoothly even over weak 2G/3G connections.',
+      performance: 'Payload size reduced by 70% • Automatic resume on interrupted uploads',
+      alternative_rejected: 'Rejected Uncompressed REST APIs: Fails repeatedly on remote construction cell connections.',
+      indian_context: 'Optimized for high-latency mobile data towers across remote infrastructure project sites.'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI (AutoCAD/BIM Parser) + Node.js (Contractor & Worker Scheduling)',
+      role: 'Blueprint Layer Extraction, Material Quantity Takeoff & Site Safety AI',
+      why: 'Python parses architectural CAD/BIM drawing layers and computes Bill of Quantities (cement, steel, bricks). Node.js manages contractor billing milestones and worker attendance.',
+      performance: 'Parses 50MB CAD drawing in < 4 seconds • Material quantity takeoff in < 800ms',
+      alternative_rejected: 'Rejected Manual Estimator Spreadsheets: Human takeoff calculation takes days and incurs 8-15% material over-ordering waste.',
+      indian_context: 'Automated integration with RERA construction milestone reporting requirements.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL with PostGIS (Jobsite Geofencing & Material Inventory Ledger) + AWS S3',
+      cache_layer: 'Redis 7 (Daily Progress Logs & Contractor Assignment Queue)',
+      role: 'Cadastral Project Boundaries & High-Resolution Blueprint Vault',
+      why: 'PostGIS verifies that field engineers are physically inside the jobsite boundary polygon when submitting inspection reports. S3 stores versioned CAD blueprints and drone site progress photography.',
+      performance: 'Jobsite geofence validation < 2ms • Zero unauthorized remote report submissions',
+      alternative_rejected: 'Rejected MySQL: PostGIS provides vastly superior polygon containment algorithms.',
+      indian_context: 'Complies with Indian National Building Code (NBC 2016) record retention.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS ECS Fargate + AWS S3 (High-Resolution Blueprint & Drone Inspection Storage)',
+      container_ci_cd: 'Docker on Linux Cloud VPS + Automated Worker Attendance Geofencing Webhooks',
+      security_compliance: 'RERA Milestone Verification • DPDP Act 2023 • TLS 1.3 • AES-256 Storage',
+      why: 'Serverless container architecture provides reliable performance without requiring in-house DevOps engineers, keeping monthly infrastructure costs below ₹3,000/mo.',
+      performance: '99.95% cloud availability • Automated daily off-site encrypted backups',
+      cost_breakdown_inr: [
+        { item: 'AWS ECS Fargate API Containers', cost: '₹1,200/mo', note: 'Blueprint parsing and sync workers' },
+        { item: 'PostgreSQL Managed Cloud DB', cost: '₹950/mo', note: 'Jobsite projects and material ledgers' },
+        { item: 'AWS S3 High-Res Blueprint Storage', cost: '₹500/mo', note: 'CAD drawings and inspection photos' },
+        { item: 'Cloudflare Edge CDN', cost: '₹0/mo', note: 'Free DNS and edge protection' },
+        { item: 'WhatsApp Business API Alerts', cost: '₹300/mo', note: 'Contractor punchlist assignment notices' }
+      ],
+      total_monthly_inr: '₹2,950/mo'
+    }
+  },
+
+  // --- 3. UNIVERSAL DELIVERY-MODE FALLBACK BLUEPRINTS ---
+  offline_retail_operations: {
+    system_archetype: 'Connected Physical Retail & Offline-Tolerant Inventory Hub',
+    readiness_score: 94,
+    architecture_style: 'Local POS Gateway with Encrypted Cloud Journal',
+    concurrency_target: '3,000+ Daily Store Transactions & Barcode Scans',
+    latency_target: '< 100ms Thermal Receipt Print • Instant Local Barcode Lookup',
+    monthly_opex_inr: '₹1,500 – ₹3,200 / mo',
+    ai_rationale: 'Tailored for physical storefront operations. Integrates dedicated Android POS terminals, ESC/POS thermal receipt printers, and USB barcode scanners with a local SQLite buffer that functions smoothly even during internet outages, syncing automatically to PostgreSQL.',
+    tier1_client: {
+      tech: 'Sunmi Android POS Terminal UI + Handheld Scanner + React QR Web PWA',
+      role: 'Counter Billing Terminal, Handheld Stock Scanner & Contactless QR Menu PWA',
+      why: 'Delivers instant barcode scanning and thermal receipt printing on durable Android hardware. The companion QR web PWA allows walk-in customers to view the digital store catalog on their own phones.',
+      performance: 'Barcode lookup in < 30ms • Thermal receipt print in < 100ms',
+      alternative_rejected: 'Rejected Generic Desktop PC setups: Clunky, slow to boot, vulnerable to power cuts, and requires expensive Windows licenses.',
+      indian_context: 'Directly displays PhonePe / Paytm / Razorpay Dynamic UPI QR code on the customer-facing terminal screen.'
+    },
+    tier2_gateway: {
+      tech: 'Nginx ASGI Local Reverse Proxy + Let’s Encrypt Auto-Renewal',
+      role: 'Local In-Store API Gateway & Cloud Synchronization Buffer',
+      why: 'Routes store checkout transactions locally at line-speed without requiring an active internet connection, queueing cloud sync jobs when network drops.',
+      performance: 'Local checkout latency < 10ms • 100% offline checkout availability',
+      alternative_rejected: 'Rejected Cloud-Only Gateways: Stores cannot stop billing customers when local broadband experiences downtime.',
+      indian_context: 'Operates smoothly through frequent local electrical brownouts via built-in battery POS.'
+    },
+    tier3_core: {
+      tech: 'Node.js (NestJS) / Python FastAPI (Local Server with Cloud Sync) + Demand Forecasting',
+      role: 'Local Inventory Deduplication, Cash Drawer Management & Sales Reporting',
+      why: 'Manages multi-counter store inventory, cash drawer opening signals, and end-of-day Z-reports. Lightweight demand forecasting routines predict restock requirements.',
+      performance: 'Handles 500 scans/minute with zero lag • Daily closing report in < 2 seconds',
+      alternative_rejected: 'Rejected Legacy Desktop Tally alone: Lacks modern REST APIs for connecting handheld scanners and customer mobile loyalty apps.',
+      indian_context: 'Built-in automated GST calculation (CGST + SGST / IGST) with HSN code printouts.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (Local Master with Encrypted Cloud Backup) + Redis',
+      cache_layer: 'Redis 7 (Live Counter Cart State & Fast Price Lookup)',
+      role: 'Persistent Store Billing Ledger & High-Speed Barcode Cache',
+      why: 'PostgreSQL guarantees atomic, uncorrupted financial records for every cash, card, and UPI sale. Daily encrypted WAL backups synchronize automatically to cloud storage.',
+      performance: 'Sub-2ms local barcode price fetch • Zero corrupted sales records',
+      alternative_rejected: 'Rejected Fragile Flat Files: High risk of data loss during unexpected power shutdowns.',
+      indian_context: 'Complies with Indian tax audit requirements with tamper-evident serial invoice numbering.'
+    },
+    tier5_devops: {
+      cloud_provider: 'Google Cloud Run / DigitalOcean (Mumbai) + S3 Daily Backups',
+      container_ci_cd: 'Docker on Local Terminal + Cloud Run Webhook Sync + ESC/POS Printers',
+      security_compliance: 'GST E-Way Bill & E-Invoicing API • DPDP Act 2023 • TLS 1.3',
+      why: 'Cloud server costs remain negligible (under ₹2,000/mo) because heavy checkout processing occurs locally on the store terminal.',
+      performance: '99.95% cloud backup sync reliability • Low data bandwidth consumption',
+      cost_breakdown_inr: [
+        { item: 'Cloud Backup & Analytics VPS', cost: '₹1,100/mo', note: 'Centralized multi-store sales dashboard' },
+        { item: 'PostgreSQL Cloud Backup DB', cost: '₹850/mo', note: 'Nightly encrypted sales backups' },
+        { item: 'Dynamic UPI QR API Integration', cost: '₹0/mo', note: 'Standard zero MDR on UPI payments' },
+        { item: 'Cloudflare DNS & SSL', cost: '₹0/mo', note: 'Free edge protection' },
+        { item: 'SMS Billing Receipts (Fast2SMS)', cost: '₹250/mo', note: 'Digital paperless SMS receipts' }
+      ],
+      total_monthly_inr: '₹2,200/mo'
+    }
+  },
+
+  omnichannel_hybrid: {
+    system_archetype: 'Omnichannel Physical-Digital Fulfillment & Routing Grid',
+    readiness_score: 96,
+    architecture_style: 'Decoupled PWA Storefront & In-Store Field Terminal Sync',
+    concurrency_target: '15,000+ Omnichannel Shoppers & Field Agents',
+    latency_target: '< 50ms Real-Time Stock Sync • Sub-Second Digital Order Routing',
+    monthly_opex_inr: '₹2,600 – ₹6,200 / mo',
+    ai_rationale: 'Seamlessly unifies digital customer ordering with physical store fulfillment. Next.js PWA delivers instant online browsing, while PostGIS calculates nearest store pickup points and real-time WebSockets dispatch orders to store fulfillment staff.',
+    tier1_client: {
+      tech: 'Next.js 14 Responsive Web PWA + React Native (Field Staff & Customer Mobile App)',
+      role: 'Consumer Omnichannel PWA & In-Store Associate Fulfillment Tablet',
+      why: 'Next.js PWA delivers sub-second online catalog discovery, while the React Native app allows store associates to pick orders, update in-store inventory, and scan customer pickup QR codes.',
+      performance: 'First Contentful Paint < 0.8s • 60fps barcode scanning on staff tablets',
+      alternative_rejected: 'Rejected Disconnected Separate Apps: Causes inventory discrepancies between online store and physical shelves.',
+      indian_context: 'Pre-configured with PhonePe/GPay UPI Intent and Shiprocket hyperlocal delivery routing.'
+    },
+    tier2_gateway: {
+      tech: 'Cloudflare Edge POPs + Nginx API Gateway',
+      role: 'Omnichannel Reverse Proxy, Edge Caching & Real-Time WebSockets',
+      why: 'Terminates mobile and web traffic at the nearest Indian edge POP, routing customer orders directly to the designated fulfillment store in under 20ms.',
+      performance: 'Edge TTFB < 20ms • Persistent duplex WebSockets for live order dispatch',
+      alternative_rejected: 'Rejected Standard Origin Server: Heavy traffic spikes during marketing campaigns slow down store counter billing.',
+      indian_context: 'Direct ISP peering across Airtel, Jio, and ACT Fibernet for ultra-low latency.'
+    },
+    tier3_core: {
+      tech: 'Go (High-Concurrency Dispatch Engine) + Python FastAPI + WebSockets',
+      role: 'Omnichannel Order Routing, Click-and-Collect Sync & Inventory Balancing',
+      why: 'Go microservices route online orders to the nearest physical fulfillment outlet based on stock availability and driving distance. Python handles demand restock analytics.',
+      performance: 'Dispatches order to store handheld in < 150ms • 15k req/sec throughput',
+      alternative_rejected: 'Rejected Monolithic PHP: Single-threaded bottlenecks cause delays during high-volume sales.',
+      indian_context: 'Automated GST invoice generation with unified store branch accounting.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 with PostGIS (Store Locality & Radius Routing) + Redis 7',
+      cache_layer: 'Redis 7 (Live Shared Inventory Locks & Fast Carts)',
+      role: 'Unified Omnichannel Inventory Ledger & Sub-Millisecond Stock Locks',
+      why: 'PostGIS identifies the closest physical store to the customer’s GPS pin in under 3ms. Redis distributed locks decrement inventory across online and physical channels simultaneously.',
+      performance: 'PostGIS nearest store query < 3ms • Redis inventory lock < 1ms',
+      alternative_rejected: 'Rejected Traditional SQL without PostGIS: Inefficient spatial queries lead to slow delivery estimations.',
+      indian_context: 'Stores Indian PIN codes, municipal ward boundaries, and neighborhood landmarks.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS ECS Fargate (Mumbai ap-south-1) + Cloudflare Edge CDN',
+      container_ci_cd: 'Docker Multi-Stage Containers + GitHub Actions CI/CD to AWS',
+      security_compliance: 'DPDP Act 2023 • PCI-DSS Level 1 • TLS 1.3 • AES-256 Storage',
+      why: 'Serverless containers on AWS Fargate scale automatically during promotion spikes and scale down at night, keeping monthly operating costs strictly optimized.',
+      performance: 'Auto-scaling in < 60s • 99.98% system availability SLA',
+      cost_breakdown_inr: [
+        { item: 'AWS Fargate Serverless Compute', cost: '₹1,500/mo', note: 'Auto-scaled order routing workers' },
+        { item: 'PostgreSQL PostGIS Managed RDS', cost: '₹1,200/mo', note: 'Unified omnichannel inventory ledger' },
+        { item: 'Redis Managed Cache (Upstash)', cost: '₹500/mo', note: 'Real-time stock decrement locks' },
+        { item: 'Cloudflare Edge CDN & WAF', cost: '₹0/mo', note: 'Free DDoS shield and edge SSL' },
+        { item: 'WhatsApp Business API Alerts', cost: '₹400/mo', note: 'Order ready for pickup notifications' }
+      ],
+      total_monthly_inr: '₹3,600/mo'
+    }
+  },
+
+  universal_cloud_saas: {
+    system_archetype: 'Modern Decoupled Cloud Native Web Architecture',
+    readiness_score: 96,
+    architecture_style: 'Serverless Edge SSR & Asynchronous Microservices',
+    concurrency_target: '20,000+ Concurrent Global Users',
+    latency_target: '< 40ms P99 API Latency • < 0.8s First Contentful Paint',
+    monthly_opex_inr: '₹1,800 – ₹4,200 / mo',
+    ai_rationale: 'High-performance cloud-native decoupled architecture built for modern digital products. Next.js App Router delivers sub-second initial paint times, while Python FastAPI handles async business logic with non-blocking I/O. PostgreSQL multi-tenant schema ensures robust data durability.',
+    tier1_client: {
+      tech: 'Next.js 14 (App Router) + React 18 + Tailwind CSS (Responsive Modern Web App)',
+      role: 'High-Performance Consumer/Client Web App & Responsive User Experience',
+      why: 'Next.js 14 Server-Side Rendering (SSR) delivers sub-second initial paint times on mobile networks. Tailwind CSS utility styling minimizes client bundle sizes, while React 18 concurrent features ensure zero input lag.',
+      performance: 'First Contentful Paint < 0.8s • Optimized Client Bundle < 125KB gzip',
+      alternative_rejected: 'Rejected Legacy Client-Only SPAs: Large bundle downloads cause slow 3s+ loading on mobile connections.',
+      indian_context: 'Responsive layout optimized for Indian smartphone screens and low-bandwidth network environments.'
+    },
+    tier2_gateway: {
+      tech: 'Cloudflare Edge Workers + Nginx ASGI Gateway',
+      role: 'Edge Caching, Dynamic TLS 1.3 Termination & DDoS Shield',
+      why: 'Terminates TLS at the closest Indian edge POP (Mumbai, Chennai, Delhi, Hyderabad), shielding origin servers from volumetric attacks and accelerating API delivery.',
+      performance: 'Edge TTFB < 20ms • Automated SSL certificate issuance and renewal',
+      alternative_rejected: 'Rejected Costly Commercial Enterprise Gateways: Cloudflare provides enterprise-grade edge security for free.',
+      indian_context: 'Direct peering with Indian telecoms ensures sub-15ms latency across domestic broadband.'
+    },
+    tier3_core: {
+      tech: 'Python FastAPI (Asynchronous High-Throughput REST API) + Node.js',
+      role: 'Asynchronous Business API, Domain Processing & Background Tasks',
+      why: 'FastAPI leverages native Python asyncio for non-blocking I/O, effortlessly processing thousands of concurrent requests per second with automatic Swagger documentation.',
+      performance: 'Handles 22,000 req/sec per container • Sub-15ms internal API execution',
+      alternative_rejected: 'Rejected Django/Flask: Synchronous architectures suffer thread starvation under high concurrent traffic.',
+      indian_context: 'Integrated with Indian digital payment rails (UPI, Netbanking) and automated tax compliance.'
+    },
+    tier4_data: {
+      primary_db: 'PostgreSQL 16 (Multi-Tenant Schema & JSONB Documents) + Redis 7',
+      cache_layer: 'Redis 7 (In-Memory Session Caching & Fast Key-Value Store)',
+      role: 'ACID-Compliant Relational Data Ledger & Sub-Millisecond Cache',
+      why: 'PostgreSQL handles structured relational data with complete ACID reliability. Redis caches active user sessions and frequent query results in memory.',
+      performance: 'Sub-3ms indexed query response • Redis memory lookup < 0.8ms',
+      alternative_rejected: 'Rejected MongoDB: Lacks strict relational constraints, risking orphaned data and transactional inconsistencies.',
+      indian_context: 'Automated daily encrypted WAL backups stored in AWS Mumbai ap-south-1.'
+    },
+    tier5_devops: {
+      cloud_provider: 'AWS ECS Fargate (Mumbai ap-south-1) / Vercel Pro + CloudFront CDN',
+      container_ci_cd: 'Docker Multi-Stage Containers + GitHub Actions Automated CI/CD',
+      security_compliance: 'DPDP Act 2023 Data Privacy • JWT Role-Based Access Control (RBAC) • TLS 1.3',
+      why: 'Serverless container execution on AWS Fargate / Vercel eliminates dedicated server maintenance, scaling down compute to minimum baselines when idle to optimize early-stage cash burn.',
+      performance: 'Zero-downtime rolling deployments in under 3 minutes • 99.98% uptime SLA',
+      cost_breakdown_inr: [
+        { item: 'AWS Fargate Serverless Compute', cost: '₹1,200/mo', note: 'Auto-scaled API containers' },
+        { item: 'PostgreSQL Managed RDS (db.t4g.micro)', cost: '₹850/mo', note: 'ACID persistent database' },
+        { item: 'Redis Upstash Managed Cache', cost: '₹0/mo', note: 'Free tier covers 10k commands/day' },
+        { item: 'Cloudflare Edge CDN & WAF', cost: '₹0/mo', note: 'Free DDoS protection and edge SSL' },
+        { item: 'Groq LLaMA-3 Domain AI Inference', cost: '₹400/mo', note: 'Pay-per-use intelligent task automation' }
+      ],
+      total_monthly_inr: '₹2,450/mo'
+    }
   }
 };
 
 // ============================================================
-// HELPER: RESOLVE SECTOR BLUEPRINT
+// COMPREHENSIVE SECTOR RESOLVER (HANDLES 100% OF STARTUP IDEAS)
 // ============================================================
 
-const resolveSectorKey = (industry, title) => {
+const resolveSectorKey = (industry, title, sector = 'online') => {
   const raw = `${industry || ''} ${title || ''}`.toLowerCase();
-  if (/packag|manufactur|ecoprint/.test(raw)) return 'manufacturing';
-  if (/health|medtech|patient|wearab|carepulse|doctor|clinic/.test(raw)) return 'healthcare';
+  
+  // 1. Specialized Domains
+  if (/\bev\b|charg|battery|automot|vehicle|mobility|electric vehicle/.test(raw)) return 'ev_mobility';
+  if (/legal|lawyer|contract|paralegal/.test(raw)) return 'legaltech_saas';
+  if (/pet|dog|cat|veterinar|animal/.test(raw)) return 'marketplace_ondemand';
+  if (/biotech|genom|dna|protein|pharma|clinical lab/.test(raw)) return 'biotech_deeptech';
+  if (/fashion|cloth|apparel|cosmetic|beauty|d2c|jewel/.test(raw)) return 'd2c_brand';
+  if (/fitness|gym|workout|trainer|diet|nutrition|wellness/.test(raw)) return 'fitness_wellness';
+  if (/construct|site safety|architect|civil|contractor|blueprint/.test(raw)) return 'construction_tech';
+  if (/travel|hotel|tourism|flight|stay|booking|trip/.test(raw)) return 'travel_marketplace';
+  if (/social|creator|influenc|community|media|network/.test(raw)) return 'social_media';
+  if (/crm|erp|invoice|billing|workflow|productivity|saas/.test(raw)) return 'b2b_saas';
+
+  // 2. Core 12 Sectors
+  if (/packag|manufactur|ecoprint|factory|industrial/.test(raw)) return 'manufacturing';
+  if (/health|medtech|patient|wearab|carepulse|doctor|clinic|hospital/.test(raw)) return 'healthcare';
   if (/solar|cleantech|energy|renewable|carbon|solargrid/.test(raw)) return 'cleantech';
-  if (/food|beverage|cafe|restaurant|greenbite|dining/.test(raw)) return 'food & beverage';
-  if (/quick comm|e-commerce|ecommerce|hypermart|retail|grocery/.test(raw)) return 'e-commerce';
-  if (/fintech|crypto|payment|vaultpay|banking|wallet/.test(raw)) return 'fintech';
-  if (/cyber|security|zero trust|threat|cybershield/.test(raw)) return 'cybersecurity';
-  if (/agtech|agri|farm|robofarm|crop/.test(raw)) return 'agtech';
-  if (/gaming|game|web3|metaverse|esport/.test(raw)) return 'gaming';
-  if (/proptech|real estate|propmatch|property|broker/.test(raw)) return 'proptech';
-  if (/logist|fleet|freight|transport|neurallogistics/.test(raw)) return 'logistics';
-  if (/edtech|time table|timetable|education|school|skillcraft|college/.test(raw)) return 'edtech';
-  return 'edtech';
+  if (/food|beverage|cafe|restaurant|greenbite|dining|bakery|snack/.test(raw)) return 'food & beverage';
+  if (/quick comm|e-commerce|ecommerce|hypermart|retail|grocery|store|shop/.test(raw)) return 'e-commerce';
+  if (/fintech|crypto|payment|vaultpay|banking|wallet|invest|trading/.test(raw)) return 'fintech';
+  if (/cyber|security|zero trust|threat|cybershield|firewall|antivirus/.test(raw)) return 'cybersecurity';
+  if (/agtech|agri|farm|robofarm|crop|soil|seed/.test(raw)) return 'agtech';
+  if (/gaming|game|web3|metaverse|esport|unity|unreal/.test(raw)) return 'gaming';
+  if (/proptech|real estate|propmatch|property|broker|rental|housing/.test(raw)) return 'proptech';
+  if (/logist|fleet|freight|transport|neurallogistics|truck|cargo|delivery|drone/.test(raw)) return 'logistics';
+  if (/edtech|time table|timetable|education|school|skillcraft|college|course|tutor|learn/.test(raw)) return 'edtech';
+  
+  // 3. Universal Delivery-Mode Aware Dynamic Fallback
+  if (sector === 'offline') return 'offline_retail_operations';
+  if (sector === 'hybrid') return 'omnichannel_hybrid';
+  return 'universal_cloud_saas';
 };
 
 // ============================================================
@@ -739,12 +1514,38 @@ const TechnologyTab = ({ data, idea }) => {
 
   // Determine the best blueprint for this idea
   const sectorKey = useMemo(() => {
-    return resolveSectorKey(idea?.industry, idea?.title);
-  }, [idea?.industry, idea?.title]);
+    return resolveSectorKey(idea?.industry, idea?.title, idea?.sector);
+  }, [idea?.industry, idea?.title, idea?.sector]);
 
-  const bp = useMemo(() => {
-    return SECTOR_TECH_BLUEPRINTS[sectorKey] || SECTOR_TECH_BLUEPRINTS.edtech;
+  const rawBp = useMemo(() => {
+    return SECTOR_TECH_BLUEPRINTS[sectorKey] || SECTOR_TECH_BLUEPRINTS.universal_cloud_saas;
   }, [sectorKey]);
+
+  // Seamlessly blend backend database values if provided, and interpolate idea details
+  const bp = useMemo(() => {
+    const startupName = idea?.title || 'This Venture';
+    const startupInd = idea?.industry || 'Modern Industry';
+    
+    // Clone raw blueprint
+    const customized = JSON.parse(JSON.stringify(rawBp));
+
+    // Interpolate dynamic names if it was a fallback blueprint
+    if (['offline_retail_operations', 'omnichannel_hybrid', 'universal_cloud_saas'].includes(sectorKey)) {
+      customized.ai_rationale = `Customized cloud architecture engineered specifically for ${startupName} in ${startupInd}. Delivers sub-second responsiveness, horizontal auto-scaling, and strict DPDP Act 2023 compliance with low monthly operating costs.`;
+      customized.tier1_client.role = `${startupName} Client Interface & User Experience`;
+      customized.tier3_core.role = `${startupName} Core Business API & Transaction Processing`;
+    }
+
+    // Blend backend database values if they exist
+    if (data?.frontend) customized.tier1_client.tech = data.frontend;
+    if (data?.backend) customized.tier3_core.tech = data.backend;
+    if (data?.database_system) customized.tier4_data.primary_db = data.database_system;
+    if (data?.cloud_platform) customized.tier5_devops.cloud_provider = data.cloud_platform;
+    if (data?.deployment) customized.tier5_devops.container_ci_cd = data.deployment;
+    if (data?.reasoning) customized.ai_rationale = data.reasoning;
+
+    return customized;
+  }, [rawBp, data, idea?.title, idea?.industry, sectorKey]);
 
   // Handle Copy Blueprint to Clipboard
   const handleCopyBlueprint = () => {
@@ -757,7 +1558,7 @@ const TechnologyTab = ({ data, idea }) => {
 **Estimated Monthly Cloud OpEx:** ${bp.monthly_opex_inr}
 
 ## AI System Rationale
-${bp.ai_rationale}
+${data?.reasoning || bp.ai_rationale}
 
 ## 1. Presentation & Touchpoints (Tier 1)
 - **Technology:** ${bp.tier1_client.tech}

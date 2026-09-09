@@ -1155,36 +1155,179 @@ class MLService:
                 "ai_framework": "Google OR-Tools VRP (Capacitated Vehicle Routing Problem) + PyTorch Dynamic ETA Predictor",
                 "deployment": "Docker Kubernetes + Prometheus & Grafana Live Fleet Observability Stack",
                 "reasoning": "Built for large-scale commercial fleet optimization. High-throughput Go gateway effortlessly ingests tens of thousands of GPS pings per second. OR-Tools constraint algorithms calculate optimal multi-stop delivery routes, slashing fuel burn by 15-22% and integrating directly with India's National Logistics Policy ULIP API."
+            },
+            "ev_mobility": {
+                "frontend": "Next.js 14 PWA + React Native (Driver Charging Station Map & Slot Reservation App)",
+                "backend": "Go (Golang OCPP 1.6/2.0 Protocol Engine) + Python FastAPI (Tariff & Dynamic Load Balancing)",
+                "database_system": "TimescaleDB (Continuous Charger KwH & Voltage Telemetry) + Redis (Live Plug State)",
+                "cloud_platform": "AWS IoT Core (MQTT Charger Bridge) + AWS ECS Fargate (Mumbai ap-south-1)",
+                "ai_framework": "Machine Learning Grid Load Forecaster + Battery Thermal Anomaly Detection",
+                "deployment": "Docker Containers + Automated OCPP Hardware Charger Compliance Testing",
+                "reasoning": "Built for EV charging networks and smart mobility. High-concurrency Go microservices handle continuous OCPP charging session telemetry from field chargers, while TimescaleDB stores real-time power draw metrics. Delivers seamless slot booking and UPI billing for drivers."
+            },
+            "legaltech_saas": {
+                "frontend": "Next.js 14 + React 18 + Tailwind CSS (Interactive Redlining & Contract Comparison UI)",
+                "backend": "Python FastAPI (Asynchronous Document Ingestion) + Groq LLaMA-3 Legal Intelligence Engine",
+                "database_system": "PostgreSQL 16 (Encrypted Case Files & Redline Audits) + Qdrant (Vector Clause Search)",
+                "cloud_platform": "AWS Mumbai (ap-south-1) Dedicated Encrypted VPC + CloudFront CDN",
+                "ai_framework": "Groq LLaMA-3 70B NLP Engine + HuggingFace Embeddings for Contract Clause Semantic Matching",
+                "deployment": "Docker Multi-Stage Containers + Automated DPDP Act 2023 Compliance Auditing",
+                "reasoning": "Engineered for legal document intelligence and contract risk scoring. FastAPI asynchronously parses complex multi-hundred-page PDFs and agreements into vector embeddings, enabling near-instant semantic search and anomaly clause flagging with strict client-attorney confidentiality."
+            },
+            "marketplace_ondemand": {
+                "frontend": "React Native (Customer & Service Provider App) + Next.js 14 Responsive Web Marketplace",
+                "backend": "Go (Sub-Second Geolocation Matchmaker) + Python FastAPI + WebSockets",
+                "database_system": "PostgreSQL with PostGIS (Spatial Radius Search & Escrow Ledger) + Redis Cluster",
+                "cloud_platform": "AWS EKS (Kubernetes) + Cloudflare Edge CDN & WAF",
+                "ai_framework": "Dynamic Surge Pricing Algorithm + Provider Dispatch & Route Optimization Model",
+                "deployment": "Docker Kubernetes + Helm Charts + GitHub Actions Continuous Delivery",
+                "reasoning": "Purpose-built for high-frequency on-demand service marketplaces. PostGIS executes sub-10ms provider radius lookups, while Go handles real-time booking dispatch and Redis distributed locks eliminate double-booking of field specialists."
+            },
+            "b2b_saas": {
+                "frontend": "Next.js 14 (App Router) + React 18 + Tailwind CSS + Lucide Icons + TanStack Table",
+                "backend": "Python FastAPI / Node.js NestJS (Multi-Tenant Workspace REST & GraphQL API)",
+                "database_system": "PostgreSQL 16 (Multi-Tenant Row-Level Security RLS) + Redis 7 (Workspace Session Cache)",
+                "cloud_platform": "AWS ECS Fargate (Mumbai ap-south-1) / Vercel Pro + CloudFront CDN",
+                "ai_framework": "Groq LLaMA-3 (Intelligent Workflow Automation & AI Assistant)",
+                "deployment": "Docker Multi-Stage Containers + GitHub Actions Blue-Green Deployments",
+                "reasoning": "Enterprise B2B SaaS architecture with strict multi-tenant data isolation. PostgreSQL Row-Level Security (RLS) ensures complete tenant data segregation at the database layer, while FastAPI provides high-throughput async APIs, keeping infrastructure cost under ₹3,000/mo on AWS Free Tier."
+            },
+            "d2c_brand": {
+                "frontend": "Next.js 14 (Headless Storefront PWA) + Tailwind CSS + Framer Motion (Sub-Second Catalog)",
+                "backend": "Node.js (Medusa / NestJS Headless E-Commerce Engine) + Python (Recommendation API)",
+                "database_system": "PostgreSQL 16 (Product Catalog & Order Ledger) + Redis 7 (Flash-Sale Cart Locks)",
+                "cloud_platform": "Vercel Pro (Global Edge SSR) + AWS RDS PostgreSQL + Cloudflare CDN",
+                "ai_framework": "Collaborative Filtering Product Recommendation Engine + Churn Prediction Model",
+                "deployment": "Automated Vercel Edge Deployments + Webhook Event Receivers for Shiprocket & Razorpay",
+                "reasoning": "Optimized for high-conversion D2C brand commerce. Headless Next.js storefront delivers 0.8s page load times on mobile devices, drastically boosting checkout conversions. Integrated with Razorpay UPI Intent and Shiprocket automated logistics."
+            },
+            "fitness_wellness": {
+                "frontend": "React Native / Flutter (Cross-Platform Mobile App) + Bluetooth Low Energy (BLE) Sync",
+                "backend": "Python FastAPI (Biometrics & Calorie Analysis) + Node.js (Social Workout Challenges)",
+                "database_system": "PostgreSQL (User Profiles & Nutrition Logs) + TimescaleDB (Continuous Heart Rate & Steps)",
+                "cloud_platform": "Google Cloud Run / AWS ECS Fargate + Firebase Cloud Messaging",
+                "ai_framework": "MediaPipe Computer Vision Pose Estimation (Real-Time Exercise Rep Counting) + Calorie ML",
+                "deployment": "Docker Containers + Automated Mobile OTA Updates via CodePush",
+                "reasoning": "Designed for smart fitness coaching and workout tracking. MediaPipe computer vision analyzes camera video locally on device for rep counting without sending video to cloud, preserving user privacy while FastAPI manages nutrition plans."
+            },
+            "biotech_deeptech": {
+                "frontend": "Next.js 14 + WebGL Molecular Viewer (3D Protein / Chemical Structure Explorer)",
+                "backend": "Python FastAPI (Scientific Async API) + Celery GPU Worker Pool for Batch Processing",
+                "database_system": "PostgreSQL (Sample & Experiment Ledger) + MinIO / AWS S3 (Large FASTA/BAM Genomic Files)",
+                "cloud_platform": "AWS GPU Accelerated Instances (EC2 G5) + AWS S3 Encrypted Object Store",
+                "ai_framework": "BioPython + PyTorch Geometric (Graph Neural Networks for Molecular Property Prediction)",
+                "deployment": "Docker Multi-Stage Containers with NVIDIA Container Toolkit CUDA Acceleration",
+                "reasoning": "Engineered for computational biology and deep science informatics. GPU-accelerated container workers run heavy molecular and sequence alignment algorithms in parallel, while S3 handles multi-gigabyte genomic dataset storage securely."
+            },
+            "social_media": {
+                "frontend": "Flutter / React Native (High-Fidelity Mobile App) + Next.js Web Explorer",
+                "backend": "Go (High-Throughput WebSocket Feed Switch) + Python FastAPI (Content Moderation AI)",
+                "database_system": "PostgreSQL / ScyllaDB (Activity Feed Event Stream) + Redis (Real-Time Presence)",
+                "cloud_platform": "AWS EKS Kubernetes + Cloudflare Stream (Video Transcoding & HLS Delivery)",
+                "ai_framework": "PyTorch Computer Vision & NLP for Automated Content Moderation & Toxic Speech Detection",
+                "deployment": "Docker Kubernetes + Auto-Scaling WebSocket Ingress Controller",
+                "reasoning": "Built for real-time social interaction and viral feed distribution. Go WebSocket gateways maintain millions of concurrent player/creator socket connections, while ScyllaDB handles high-frequency feed fan-out with sub-10ms delivery."
+            },
+            "travel_marketplace": {
+                "frontend": "Next.js 14 + Mapbox GL JS (Interactive Itinerary Planner & Price Heatmap)",
+                "backend": "Python FastAPI (Dynamic Pricing & Booking Engine) + Node.js (GDS/Airlines API Router)",
+                "database_system": "PostgreSQL with PostGIS (Destination Radius Queries) + Redis (Live Availability Cache)",
+                "cloud_platform": "AWS ECS Fargate (Mumbai ap-south-1) + CloudFront Global CDN",
+                "ai_framework": "Machine Learning Dynamic Price Prediction & Personalized Travel Itinerary Generator",
+                "deployment": "Docker Containers on AWS ECS + Automated Booking Confirmation Webhooks",
+                "reasoning": "Designed for travel discovery and instant booking. PostGIS enables rapid search across thousands of hotels and tour experiences, while Redis caches airline and hotel inventory states to eliminate rate discrepancy during checkout."
+            },
+            "construction_tech": {
+                "frontend": "Flutter (Offline Site Inspection & Punchlist App) + Next.js 14 Architectural Admin Portal",
+                "backend": "Python FastAPI (AutoCAD/BIM Parser) + Node.js (Contractor & Worker Scheduling)",
+                "database_system": "PostgreSQL with PostGIS (Jobsite Geofencing & Material Inventory Ledger) + AWS S3",
+                "cloud_platform": "AWS ECS Fargate + AWS S3 (High-Resolution Blueprint & Drone Inspection Storage)",
+                "ai_framework": "Ultralytics YOLOv8 (Site Safety PPE Detection — Hardhats, Vests & Hazard Warnings)",
+                "deployment": "Docker on Linux Cloud VPS + Automated Worker Attendance Geofencing Webhooks",
+                "reasoning": "Engineered for rugged construction jobsite operations. Flutter app operates completely offline in remote construction zones, syncing blueprint revisions and punchlist photos when field engineers regain cell connectivity."
             }
         }
 
-        # Resolve exact sector key using priority matching
-        if any(k in raw for k in ['packag', 'manufactur', 'ecoprint']):
+        # Priority Domain Matching
+        if any(k in raw for k in ['ev\b', 'charg', 'battery', 'automot', 'vehicle', 'mobility', 'electric vehicle']):
+            key = 'ev_mobility'
+        elif any(k in raw for k in ['legal', 'lawyer', 'contract', 'paralegal']):
+            key = 'legaltech_saas'
+        elif any(k in raw for k in ['pet', 'dog', 'cat', 'veterinar', 'animal']):
+            key = 'marketplace_ondemand'
+        elif any(k in raw for k in ['biotech', 'genom', 'dna', 'protein', 'pharma', 'clinical lab']):
+            key = 'biotech_deeptech'
+        elif any(k in raw for k in ['fashion', 'cloth', 'apparel', 'cosmetic', 'beauty', 'd2c', 'jewel']):
+            key = 'd2c_brand'
+        elif any(k in raw for k in ['fitness', 'gym', 'workout', 'trainer', 'diet', 'nutrition', 'wellness']):
+            key = 'fitness_wellness'
+        elif any(k in raw for k in ['construct', 'site safety', 'architect', 'civil', 'contractor', 'blueprint']):
+            key = 'construction_tech'
+        elif any(k in raw for k in ['travel', 'hotel', 'tourism', 'flight', 'stay', 'booking', 'trip']):
+            key = 'travel_marketplace'
+        elif any(k in raw for k in ['social', 'creator', 'influenc', 'community', 'media', 'network']):
+            key = 'social_media'
+        elif any(k in raw for k in ['crm', 'erp', 'invoice', 'billing', 'workflow', 'productivity', 'saas']):
+            key = 'b2b_saas'
+        elif any(k in raw for k in ['packag', 'manufactur', 'ecoprint', 'factory', 'industrial']):
             key = 'manufacturing'
-        elif any(k in raw for k in ['health', 'medtech', 'patient', 'wearab', 'carepulse', 'doctor', 'clinic']):
+        elif any(k in raw for k in ['health', 'medtech', 'patient', 'wearab', 'carepulse', 'doctor', 'clinic', 'hospital']):
             key = 'healthcare'
         elif any(k in raw for k in ['solar', 'cleantech', 'energy', 'renewable', 'carbon', 'solargrid']):
             key = 'cleantech'
-        elif any(k in raw for k in ['food', 'beverage', 'cafe', 'restaurant', 'greenbite', 'dining']):
+        elif any(k in raw for k in ['food', 'beverage', 'cafe', 'restaurant', 'greenbite', 'dining', 'bakery', 'snack']):
             key = 'food & beverage'
-        elif any(k in raw for k in ['quick comm', 'e-commerce', 'ecommerce', 'hypermart', 'retail', 'grocery']):
+        elif any(k in raw for k in ['quick comm', 'e-commerce', 'ecommerce', 'hypermart', 'retail', 'grocery', 'store', 'shop']):
             key = 'e-commerce'
-        elif any(k in raw for k in ['fintech', 'crypto', 'payment', 'vaultpay', 'banking', 'wallet']):
+        elif any(k in raw for k in ['fintech', 'crypto', 'payment', 'vaultpay', 'banking', 'wallet', 'invest', 'trading']):
             key = 'fintech'
-        elif any(k in raw for k in ['cyber', 'security', 'zero trust', 'threat', 'cybershield']):
+        elif any(k in raw for k in ['cyber', 'security', 'zero trust', 'threat', 'cybershield', 'firewall', 'antivirus']):
             key = 'cybersecurity'
-        elif any(k in raw for k in ['agtech', 'agri', 'farm', 'robofarm', 'crop']):
+        elif any(k in raw for k in ['agtech', 'agri', 'farm', 'robofarm', 'crop', 'soil', 'seed']):
             key = 'agtech'
-        elif any(k in raw for k in ['gaming', 'game', 'web3', 'metaverse', 'esport']):
+        elif any(k in raw for k in ['gaming', 'game', 'web3', 'metaverse', 'esport', 'unity', 'unreal']):
             key = 'gaming'
-        elif any(k in raw for k in ['proptech', 'real estate', 'propmatch', 'property', 'broker']):
+        elif any(k in raw for k in ['proptech', 'real estate', 'propmatch', 'property', 'broker', 'rental', 'housing']):
             key = 'proptech'
-        elif any(k in raw for k in ['logist', 'fleet', 'freight', 'transport', 'neurallogistics']):
+        elif any(k in raw for k in ['logist', 'fleet', 'freight', 'transport', 'neurallogistics', 'truck', 'cargo', 'delivery', 'drone']):
             key = 'logistics'
-        elif any(k in raw for k in ['edtech', 'time table', 'timetable', 'education', 'school', 'skillcraft', 'college']):
+        elif any(k in raw for k in ['edtech', 'time table', 'timetable', 'education', 'school', 'skillcraft', 'college', 'course', 'tutor', 'learn']):
             key = 'edtech'
         else:
-            key = 'edtech'
+            # Universal Delivery-Mode Aware Dynamic Fallback
+            display_title = context.get('title') or 'this venture'
+            display_ind = context.get('industry') or 'this sector'
+            
+            if sec == 'offline':
+                return {
+                    'frontend': f'Sunmi Android POS Terminal UI + Handheld Scanner + React QR Web PWA',
+                    'backend': f'Node.js (NestJS) / Python FastAPI (Local Server with Cloud Sync)',
+                    'database_system': f'PostgreSQL 16 (Local Master with Encrypted Cloud Backup) + Redis',
+                    'cloud_platform': f'Google Cloud Run / DigitalOcean (Mumbai) + S3 Daily Backups',
+                    'ai_framework': f'Prophet Demand Forecasting & Local Inventory Reorder Analytics',
+                    'deployment': f'Docker on Local Terminal + Cloud Run Webhook Sync + ESC/POS Printers',
+                    'reasoning': f'Optimized for offline physical operations in {display_ind}. Features durable Android POS hardware integration, ESC/POS thermal receipt printing, offline-tolerant local inventory sync, and dynamic UPI QR billing for {display_title}.'
+                }
+            elif sec == 'hybrid':
+                return {
+                    'frontend': f'Next.js 14 Responsive Web PWA + React Native (Field Staff & Customer Mobile App)',
+                    'backend': f'Go (High-Concurrency Dispatch Engine) + Python FastAPI + WebSockets',
+                    'database_system': f'PostgreSQL 16 with PostGIS (Store Locality & Radius Routing) + Redis 7',
+                    'cloud_platform': f'AWS ECS Fargate (Mumbai ap-south-1) + Cloudflare Edge CDN',
+                    'ai_framework': f'Machine Learning Dynamic Dispatch & Demand Forecasting Model',
+                    'deployment': f'Docker Multi-Stage Containers + GitHub Actions CI/CD to AWS',
+                    'reasoning': f'Omnichannel hybrid architecture tailored for {display_title} in {display_ind}. Unifies digital customer ordering with physical fulfillment through PostGIS spatial routing and real-time WebSocket order tracking.'
+                }
+            else:
+                return {
+                    'frontend': f'Next.js 14 (App Router) + React 18 + Tailwind CSS (Responsive Web App)',
+                    'backend': f'Python FastAPI (Asynchronous High-Throughput REST API) + Node.js',
+                    'database_system': f'PostgreSQL 16 (Multi-Tenant Schema & JSONB) + Redis 7 (In-Memory Cache)',
+                    'cloud_platform': f'AWS ECS Fargate (Mumbai ap-south-1) / Vercel Pro + CloudFront CDN',
+                    'ai_framework': f'Groq LLaMA-3 (Intelligent Workflow Automation & Domain AI Engine)',
+                    'deployment': f'Docker Multi-Stage Containers + GitHub Actions Automated CI/CD',
+                    'reasoning': f'Modern cloud-native decoupled architecture built for {display_title} in {display_ind}. Delivers sub-second responsiveness, horizontal container auto-scaling, and strict DPDP Act 2023 compliance with low monthly operating costs.'
+                }
 
         return SECTOR_BLUEPRINTS[key]
 

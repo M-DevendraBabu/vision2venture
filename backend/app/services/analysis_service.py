@@ -178,29 +178,7 @@ class AnalysisService:
             tech_data = MLService.recommend_tech_stack(context) or {}
             
             if not tech_data or not tech_data.get('frontend'):
-                tech_bench = MLService.get_popular_tech_stack()
-                if sector == 'offline':
-                    tech_data = {
-                        'frontend': 'POS System & Customer Kiosk UI',
-                        'backend': 'Zoho / Tally Inventory Management',
-                        'database_system': 'PostgreSQL for Local & Cloud Sync',
-                        'cloud_platform': 'Google Cloud Platform',
-                        'ai_framework': 'Meta Business Suite & Local Analytics',
-                        'deployment': 'On-Premise POS with Cloud Analytics Backup',
-                        'reasoning': f'For an offline {idea.industry} store, reliable POS hardware and inventory software are primary.'
-                    }
-                else:
-                    top_web = [w[0] for w in tech_bench.get('top_web_frameworks', [])[:2]]
-                    top_db = [d[0] for d in tech_bench.get('top_databases', [])[:2]]
-                    tech_data = {
-                        'frontend': f"{' / '.join(top_web) if top_web else 'React.js / Next.js'} with Tailwind CSS",
-                        'backend': 'Python FastAPI / Node.js Express',
-                        'database_system': f"{' & '.join(top_db) if top_db else 'PostgreSQL & Redis'}",
-                        'cloud_platform': 'AWS / Vercel Cloud Architecture',
-                        'ai_framework': 'Groq Llama-3 / OpenAI API Integration',
-                        'deployment': 'Docker Containers on AWS ECS with CI/CD',
-                        'reasoning': f'Stack Overflow 64,461 developer survey benchmarks for {idea.industry}.'
-                    }
+                tech_data = MLService.recommend_tech_stack(context)
             db.add(TechnologyRecommendation(
                 idea_id=idea.id,
                 frontend=str(tech_data.get('frontend') or 'React.js'),
