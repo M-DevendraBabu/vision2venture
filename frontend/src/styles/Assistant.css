@@ -1017,10 +1017,26 @@
 /* =================================================================
    6. RESPONSIVE ADAPTATIONS (TABLET & MOBILE)
    ================================================================= */
+@media (max-width: 1200px) {
+  .gemini-assistant-page {
+    top: 60px !important;
+    height: calc(100vh - 60px) !important;
+    height: calc(100dvh - 60px) !important;
+  }
+
+  .gemini-sidebar {
+    top: 60px !important;
+  }
+
+  .gemini-sidebar-backdrop {
+    top: 60px !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .gemini-sidebar {
     position: fixed;
-    top: 64px;
+    top: 60px;
     left: 0;
     bottom: 0;
     z-index: 100;
@@ -1036,7 +1052,7 @@
   .gemini-sidebar-backdrop {
     display: block;
     position: fixed;
-    top: 64px;
+    top: 60px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -1056,7 +1072,9 @@
 
 @media (max-width: 640px) {
   .gemini-assistant-page {
-    top: 64px !important;
+    top: 60px !important;
+    height: calc(100vh - 60px) !important;
+    height: calc(100dvh - 60px) !important;
     bottom: 0 !important;
   }
 

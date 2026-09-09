@@ -47,7 +47,7 @@ function App() {
         </Routes>
       </main>
       {!hideFooter && <Footer />}
-      <MobileBottomNav />
+      {!hideFooter && <MobileBottomNav />}
       <ToastContainer theme="dark" position="bottom-right" />
     </>
   );

@@ -360,10 +360,20 @@ textarea.floating-input {
 }
 
 .main-content.no-scroll {
-  overflow: hidden;
-  height: 100vh;
-  margin-top: 0;
-  box-sizing: border-box;
+  overflow: hidden !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  max-height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  padding-bottom: 0 !important;
+  box-sizing: border-box !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
 }
 
 /* ===================================
@@ -574,7 +584,7 @@ button:active, .btn-primary:active, .btn-secondary:active {
   }
   
   .main-content.no-scroll {
-    padding-bottom: max(72px, calc(64px + env(safe-area-inset-bottom, 12px)));
+    padding-bottom: 0 !important;
   }
 
   .container, .dashboard-container, .analysis-container, .new-idea-container, .profile-container {

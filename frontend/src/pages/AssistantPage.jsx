@@ -126,11 +126,19 @@ const AssistantPage = () => {
   const [feedback, setFeedback] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const messagesEndRef = useRef(null);
+  const viewportRef = useRef(null);
   const textareaRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (viewportRef.current) {
+      viewportRef.current.scrollTo({
+        top: viewportRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+    if (window.scrollY !== 0) {
+      window.scrollTo(0, 0);
+    }
   };
 
   useEffect(() => {
@@ -138,9 +146,23 @@ const AssistantPage = () => {
   }, [messages, isTyping]);
 
   useEffect(() => {
-    textareaRef.current?.focus();
+    window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    document.documentElement.style.overflow = 'hidden';
+
+    const handleWindowScroll = () => {
+      if (window.scrollY !== 0 || window.scrollX !== 0) {
+        window.scrollTo(0, 0);
+      }
+    };
+    window.addEventListener('scroll', handleWindowScroll, { passive: true });
+
+    textareaRef.current?.focus({ preventScroll: true });
+    return () => {
+      window.removeEventListener('scroll', handleWindowScroll);
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
   }, []);
 
   const handleInputChange = (e) => {
@@ -197,7 +219,7 @@ const AssistantPage = () => {
       ]);
     } finally {
       setIsTyping(false);
-      setTimeout(() => textareaRef.current?.focus(), 50);
+      setTimeout(() => textareaRef.current?.focus({ preventScroll: true }), 50);
     }
   };
 
@@ -213,7 +235,7 @@ const AssistantPage = () => {
   const handleChipClick = (promptText) => {
     setInput(promptText);
     if (textareaRef.current) {
-      textareaRef.current.focus();
+      textareaRef.current.focus({ preventScroll: true });
     }
   };
 
@@ -390,7 +412,7 @@ const AssistantPage = () => {
           </header>
 
           {/* Messages & Hero Area */}
-          <div className="gemini-viewport">
+          <div className="gemini-viewport" ref={viewportRef}>
             
             {/* ---------------------------------------------------- */}
             {/* HERO WELCOME SCREEN (When conversation is fresh)      */}
@@ -548,8 +570,6 @@ const AssistantPage = () => {
                     </div>
                   </div>
                 )}
-
-                <div ref={messagesEndRef} />
               </div>
             )}
 
