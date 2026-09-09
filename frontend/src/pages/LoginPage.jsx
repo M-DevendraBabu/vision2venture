@@ -13,8 +13,14 @@ const LoginPage = () => {
   const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Proactively ensure backend is warm while user looks at login form
+    api.get('/health').catch(() => {});
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     try {
       await login(email, password);
@@ -30,6 +36,7 @@ const LoginPage = () => {
   const handleGoogleLogin = useGoogleLogin({
     flow: 'implicit',
     onSuccess: async (tokenResponse) => {
+      setLoading(true);
       try {
         // Get user info from Google using the access token
         const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -41,10 +48,13 @@ const LoginPage = () => {
         toast.success('Google Sign-In successful! 🎉');
         navigate('/dashboard');
       } catch (error) {
-        toast.error(error.response?.data?.detail || 'Google Sign-In failed');
+        toast.error(error.response?.data?.detail || 'Google Sign-In failed. Please try again.');
+      } finally {
+        setLoading(false);
       }
     },
     onError: () => {
+      setLoading(false);
       toast.error('Google Sign-In was cancelled or failed. Please try again.');
     },
   });
@@ -56,9 +66,14 @@ const LoginPage = () => {
         <p className="auth-subtitle">Login to continue your analysis</p>
 
         <div className="google-btn-wrapper">
-          <button className="custom-google-btn" onClick={() => handleGoogleLogin()}>
+          <button 
+            type="button" 
+            className="custom-google-btn" 
+            onClick={() => handleGoogleLogin()}
+            disabled={loading}
+          >
             <FaGoogle className="google-icon" />
-            <span>Sign in with Google</span>
+            <span>{loading ? 'Authenticating...' : 'Sign in with Google'}</span>
           </button>
         </div>
 

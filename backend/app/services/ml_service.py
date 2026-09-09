@@ -100,7 +100,26 @@ def _init_ml_models():
     except Exception as e:
         print(f"[ML Service] Error loading models: {e}")
 
-_init_ml_models()
+_models_loaded = False
+_models_lock = None
+
+def _get_models_lock():
+    global _models_lock
+    if _models_lock is None:
+        import threading
+        _models_lock = threading.Lock()
+    return _models_lock
+
+def ensure_ml_models_loaded():
+    """Thread-safe lazy/background loader for ML models. 
+    Allows FastAPI and Uvicorn to start instantly in <1s."""
+    global _models_loaded
+    if _models_loaded:
+        return
+    with _get_models_lock():
+        if not _models_loaded:
+            _init_ml_models()
+            _models_loaded = True
 
 
 # =====================================================================
@@ -123,6 +142,7 @@ def _safe_encode(encoder, value, fallback=0):
 def _build_20_features(context: dict) -> np.ndarray:
     """Build the standard 20-feature vector used by success, risk, feasibility, investor models.
     Must match the feature list in train_models.py v2."""
+    ensure_ml_models_loaded()
     budget = float(context.get('budget') or 20000)
     team_size = int(context.get('team_size') or 2)
     ind = str(context.get('industry', '')).lower()
@@ -245,6 +265,7 @@ class MLService:
     @staticmethod
     def calculate_market_analysis(context: dict) -> dict:
         """70% ML market model + 30% benchmark data enrichment."""
+        ensure_ml_models_loaded()
         ind = str(context.get('industry', 'Technology')).lower()
         country = str(context.get('country', 'India')).lower()
         budget = float(context.get('budget') or 20000)
@@ -486,6 +507,7 @@ class MLService:
     @staticmethod
     def calculate_financial_projections(context: dict) -> dict:
         """70% ML financial model + 30% template-based scaling."""
+        ensure_ml_models_loaded()
         ind = str(context.get('industry', '')).lower()
         budget = float(context.get('budget') or 20000)
         team_size = int(context.get('team_size') or 2)

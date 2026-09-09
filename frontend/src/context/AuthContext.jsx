@@ -36,6 +36,19 @@ export const AuthProvider = ({ children }) => {
           }
         });
     }
+    // 3. Tab visibility listener - when user returns to tab after idle time, silently ping health
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        api.get('/health').catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleVisibility);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleVisibility);
+    };
   }, []);
 
   const login = async (email, password) => {
@@ -67,6 +80,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('cached_startup_ideas');
     setUser(null);
   };
 

@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     
     SECRET_KEY: str = "v2v-prod-secret-key-change-in-production-2024"
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 30  # 30 days (43,200 minutes) - persistent session
     
     GEMINI_API_KEY: str = ""
     GROQ_API_KEY: str = ""

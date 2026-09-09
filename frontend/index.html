@@ -18,6 +18,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Backend Connection Pre-Warming & DNS Optimizations -->
+    <link rel="preconnect" href="https://vision2venture.onrender.com" crossorigin>
+    <link rel="dns-prefetch" href="https://vision2venture.onrender.com">
+    <script>
+      // Immediate non-blocking pre-warm ping to ensure backend is warm
+      (function() {
+        try {
+          fetch('https://vision2venture.onrender.com/api/health', { mode: 'no-cors', cache: 'no-store' });
+        } catch(e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

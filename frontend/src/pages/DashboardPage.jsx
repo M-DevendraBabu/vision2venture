@@ -10,21 +10,59 @@ import '../styles/Dashboard.css';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
-  const [ideas, setIdeas] = useState([]);
-  const [loading, setLoading] = useState(true);
+  
+  // Instant Stale-While-Revalidate: Load from localStorage in 0ms
+  const [ideas, setIdeas] = useState(() => {
+    try {
+      const cached = localStorage.getItem('cached_startup_ideas');
+      return cached ? JSON.parse(cached) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // If cached ideas exist, do NOT block screen with full-screen spinner
+  const [loading, setLoading] = useState(() => {
+    try {
+      const cached = localStorage.getItem('cached_startup_ideas');
+      return !cached || JSON.parse(cached).length === 0;
+    } catch {
+      return true;
+    }
+  });
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
     fetchIdeas();
+    // Safety guard: Never stay stuck in full-screen loading loop for >6s
+    const safetyTimer = setTimeout(() => {
+      setLoading(false);
+    }, 6000);
+    return () => clearTimeout(safetyTimer);
   }, []);
 
   const fetchIdeas = async () => {
+    const hasCached = ideas.length > 0;
+    if (!hasCached) {
+      setLoading(true);
+    } else {
+      setIsRefreshing(true);
+    }
+    setFetchError(false);
+
     try {
       const res = await startupAPI.list();
       setIdeas(res.data);
+      localStorage.setItem('cached_startup_ideas', JSON.stringify(res.data));
     } catch (err) {
-      toast.error('Failed to load startup ideas');
+      if (!hasCached) {
+        setFetchError(true);
+        toast.error('Could not connect to server. Retrying...');
+      }
     } finally {
       setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -36,6 +74,7 @@ const DashboardPage = () => {
       try {
         const res = await startupAPI.list();
         setIdeas(res.data);
+        localStorage.setItem('cached_startup_ideas', JSON.stringify(res.data));
       } catch (err) {
         console.error('Poll error', err);
       }
@@ -48,7 +87,9 @@ const DashboardPage = () => {
     if (!window.confirm('Delete this startup idea and all its analysis?')) return;
     try {
       await startupAPI.delete(id);
-      setIdeas(ideas.filter(i => i.id !== id));
+      const updated = ideas.filter(i => i.id !== id);
+      setIdeas(updated);
+      localStorage.setItem('cached_startup_ideas', JSON.stringify(updated));
       toast.success('Idea deleted');
     } catch (err) {
       toast.error('Failed to delete');
@@ -83,14 +124,49 @@ const DashboardPage = () => {
     }
   };
 
-  if (loading) return <div className="page-layout"><Sidebar /><div className="page-content"><LoadingSpinner /></div></div>;
+  if (loading) {
+    return (
+      <div className="page-layout">
+        <Sidebar />
+        <div className="page-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '14px' }}>
+          <LoadingSpinner />
+          <p style={{ color: '#94a3b8', fontSize: '0.88rem' }}>Connecting to server...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (fetchError && ideas.length === 0) {
+    return (
+      <div className="page-layout">
+        <Sidebar />
+        <div className="page-content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '16px', textAlign: 'center' }}>
+          <FaLightbulb size={48} color="#6366f1" />
+          <h2 style={{ color: '#f8fafc', margin: 0 }}>Connection Delayed</h2>
+          <p style={{ color: '#94a3b8', maxWidth: '420px', margin: 0 }}>
+            The cloud server is taking a moment to respond. Click below to reconnect.
+          </p>
+          <button className="btn-primary" onClick={fetchIdeas}>
+            Retry Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-layout">
       <Sidebar />
       <div className="page-content">
         <div className="dashboard-header">
-          <h1 className="page-title">Dashboard</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <h1 className="page-title" style={{ margin: 0 }}>Dashboard</h1>
+            {isRefreshing && (
+              <span style={{ fontSize: '0.72rem', color: '#a5b4fc', background: 'rgba(99, 102, 241, 0.12)', padding: '2px 8px', borderRadius: '10px', border: '1px solid rgba(99, 102, 241, 0.25)', fontWeight: 600 }}>
+                Syncing...
+              </span>
+            )}
+          </div>
           <button className="btn-primary" onClick={() => navigate('/new-idea')}>
             <FaPlus /> New Idea
           </button>
