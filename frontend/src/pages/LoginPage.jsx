@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import { FaGoogle } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
+import api from '../services/api';
 import { toast } from 'react-toastify';
 import '../styles/Auth.css';
 
