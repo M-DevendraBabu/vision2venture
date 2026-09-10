@@ -12,7 +12,7 @@ const CompetitorTab = ({ data }) => {
     <div className="competitor-tab animate-fade-in">
       <div className="section-heading mb-md"><FaUsers /> Competitive Intelligence & Market Benchmarking</div>
       
-      <div className="explanation-box mb-xl" style={{ borderLeft: '4px solid #6366f1' }}>
+      <div className="explanation-box mb-xl" style={{ borderLeft: '4px solid #0ea5e9' }}>
         <strong>AI Competitor Intelligence:</strong> Analyzed {competitors.length} key competitor(s) matched against our dataset of 5,997 Y Combinator companies and global market leaders.
       </div>
 
@@ -24,7 +24,7 @@ const CompetitorTab = ({ data }) => {
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
             border: 'none',
-            background: activeSubTab === 'matches' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.05)',
+            background: activeSubTab === 'matches' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : 'rgba(255,255,255,0.05)',
             color: '#fff',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'matches' ? '600' : '400',
@@ -42,7 +42,7 @@ const CompetitorTab = ({ data }) => {
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
             border: 'none',
-            background: activeSubTab === 'matrix' ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' : 'rgba(255,255,255,0.05)',
+            background: activeSubTab === 'matrix' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
             color: '#fff',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'matrix' ? '600' : '400',
@@ -81,7 +81,7 @@ const CompetitorTab = ({ data }) => {
           {activeSubTab === 'matches' && (
             <div className="competitors-grid animate-fade-in">
               {competitors.map((comp, idx) => (
-                <div key={idx} className={`competitor-card glass-card p-lg stagger-${(idx%5)+1}`} style={{ borderTop: '4px solid #6366f1' }}>
+                <div key={idx} className={`competitor-card glass-card p-lg stagger-${(idx%5)+1}`} style={{ borderTop: '4px solid #0ea5e9' }}>
                   <div className="comp-header">
                     <h4>{comp.name || 'Competitor'}</h4>
                     {comp.url && (
@@ -97,7 +97,7 @@ const CompetitorTab = ({ data }) => {
                       <span className="text-sm font-bold text-primary">{comp.similarity_score || comp.similarity || 50}%</span>
                     </div>
                     <div className="progress-bar" style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ width: `${comp.similarity_score || comp.similarity || 50}%`, background: 'linear-gradient(90deg, #6366f1, #06b6d4)', height: '100%' }}></div>
+                      <div style={{ width: `${comp.similarity_score || comp.similarity || 50}%`, background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', height: '100%' }}></div>
                     </div>
                   </div>
                   
@@ -118,7 +118,7 @@ const CompetitorTab = ({ data }) => {
             <div className="animate-fade-in">
               <div className="competitors-grid">
                 {competitors.map((comp, idx) => (
-                  <div key={idx} className="glass-card p-lg" style={{ borderTop: '4px solid #8b5cf6' }}>
+                  <div key={idx} className="glass-card p-lg" style={{ borderTop: '4px solid #10b981' }}>
                     <h4 className="text-primary mb-md">{comp.name}</h4>
                     <div className="comp-section mb-md">
                       <h5 className="flex align-center gap-xs text-success mb-xs"><FaBolt /> Key Strengths</h5>

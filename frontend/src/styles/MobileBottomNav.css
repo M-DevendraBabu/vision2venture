@@ -9,11 +9,11 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(11, 15, 25, 0.96);
+  background: rgba(5, 8, 17, 0.94);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.7);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -71,13 +71,13 @@
 
 /* Active State */
 .mobile-nav-item.active {
-  color: #a5b4fc;
+  color: #38bdf8;
 }
 
 .mobile-nav-item.active .mobile-nav-icon {
-  color: #818cf8;
+  color: #0ea5e9;
   transform: translateY(-2px);
-  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.7));
+  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.6));
 }
 
 .mobile-nav-item.active::after {
@@ -86,8 +86,9 @@
   top: 6px;
   width: 22px;
   height: 3px;
-  background: linear-gradient(90deg, #6366f1, #a855f7);
+  background: var(--gradient-brand);
   border-radius: 3px;
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.6);
 }
 
 /* Center Action Button (New Idea / Analyze) */
@@ -100,13 +101,13 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  background: var(--gradient-brand);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   font-size: 26px;
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6), 0 0 0 4px #0b0f19;
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5), 0 0 0 4px #050811;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   margin-bottom: 2px;
 }

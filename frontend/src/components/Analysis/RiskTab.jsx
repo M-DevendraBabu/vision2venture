@@ -75,7 +75,7 @@ const RiskTab = ({ data, idea }) => {
 
   const getProgressGradient = (score) => {
     if (score >= 70) return 'linear-gradient(90deg, #10b981, #34d399)';
-    if (score >= 50) return 'linear-gradient(90deg, #6366f1, #818cf8)';
+    if (score >= 50) return 'linear-gradient(90deg, #0ea5e9, #38bdf8)';
     if (score >= 35) return 'linear-gradient(90deg, #f59e0b, #fbbf24)';
     return 'linear-gradient(90deg, #ef4444, #f87171)';
   };
@@ -167,8 +167,8 @@ const RiskTab = ({ data, idea }) => {
           title: 'Technical Feasibility',
           subtitle: 'Architecture & Implementability',
           icon: <FaLaptopCode />,
-          iconBg: 'rgba(99, 102, 241, 0.15)',
-          iconColor: '#818cf8',
+          iconBg: 'rgba(14, 165, 233, 0.15)',
+          iconColor: '#38bdf8',
           score: techScore,
           primary: techExp,
           detail: `Context: Evaluates framework maturity, integration endpoints, and engineering complexity for ${idea?.sector || 'this'} deployment in ${idea?.industry || 'this domain'}.`,
@@ -260,8 +260,8 @@ const RiskTab = ({ data, idea }) => {
           title: 'Scalability Index',
           subtitle: 'Revenue Growth & Scaling Velocity',
           icon: <FaChartLine />,
-          iconBg: 'rgba(99, 102, 241, 0.15)',
-          iconColor: '#818cf8',
+          iconBg: 'rgba(14, 165, 233, 0.15)',
+          iconColor: '#38bdf8',
           score: scalScore,
           primary: scalExp,
           detail: `Venture View: Investors assess how efficiently your business model scales beyond the initial wedge market without linear headcount growth.`,
@@ -360,7 +360,7 @@ const RiskTab = ({ data, idea }) => {
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
             border: 'none',
-            background: activeSubTab === 'investor' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.05)',
+            background: activeSubTab === 'investor' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : 'rgba(255,255,255,0.05)',
             color: '#fff',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'investor' ? '600' : '400',
@@ -514,10 +514,10 @@ const RiskTab = ({ data, idea }) => {
         return (
           <div className="animate-fade-in">
             {/* Overall Investor Summary Banner */}
-            <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #6366f1', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
+            <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #0ea5e9', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
                 <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Investor Score</div>
-                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#818cf8', lineHeight: '1.1' }}>{overallScore}/100</div>
+                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#38bdf8', lineHeight: '1.1' }}>{overallScore}/100</div>
                 <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
                   {overallScore > 70 ? 'Venture Ready' : overallScore > 50 ? 'Angel / Seed Stage' : 'Pre-Seed Development'}
                 </div>

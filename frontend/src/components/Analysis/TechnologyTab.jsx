@@ -1730,10 +1730,10 @@ ${data?.reasoning || bp.ai_rationale}
             <div 
               className="tech-tier-node" 
               onClick={() => setActiveSubTab('client')}
-              style={{ borderTop: '4px solid #6366f1' }}
+              style={{ borderTop: '4px solid #0ea5e9' }}
             >
               <div className="tech-node-step">TIER 1</div>
-              <div className="tech-node-icon" style={{ color: '#6366f1' }}><FaLaptopCode /></div>
+              <div className="tech-node-icon" style={{ color: '#0ea5e9' }}><FaLaptopCode /></div>
               <div className="tech-node-name">Client Presentation</div>
               <div className="tech-node-tech">{bp.tier1_client.tech.split('+')[0].trim()}</div>
               <div className="tech-node-metric">{bp.tier1_client.performance.split('•')[0].trim()}</div>
@@ -1746,10 +1746,10 @@ ${data?.reasoning || bp.ai_rationale}
             <div 
               className="tech-tier-node" 
               onClick={() => setActiveSubTab('core')}
-              style={{ borderTop: '4px solid #8b5cf6' }}
+              style={{ borderTop: '4px solid #10b981' }}
             >
               <div className="tech-node-step">TIER 2</div>
-              <div className="tech-node-icon" style={{ color: '#8b5cf6' }}><FaCogs /></div>
+              <div className="tech-node-icon" style={{ color: '#10b981' }}><FaCogs /></div>
               <div className="tech-node-name">Edge & Gateway</div>
               <div className="tech-node-tech">{bp.tier2_gateway.tech.split('+')[0].trim()}</div>
               <div className="tech-node-metric">{bp.tier2_gateway.performance.split('•')[0].trim()}</div>
@@ -1853,10 +1853,10 @@ ${data?.reasoning || bp.ai_rationale}
           ============================================================ */}
       {activeSubTab === 'client' && (
         <div className="tech-detail-section animate-fade-in mb-xl">
-          <div className="tech-card-featured glass-card mb-lg" style={{ borderLeft: '5px solid #6366f1' }}>
+          <div className="tech-card-featured glass-card mb-lg" style={{ borderLeft: '5px solid #0ea5e9' }}>
             <div className="tech-card-header">
               <div className="flex align-center gap-sm">
-                <div className="tech-card-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#6366f1' }}>
+                <div className="tech-card-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0ea5e9' }}>
                   <FaLaptopCode />
                 </div>
                 <div>
@@ -1908,10 +1908,10 @@ ${data?.reasoning || bp.ai_rationale}
       {activeSubTab === 'core' && (
         <div className="tech-detail-section animate-fade-in mb-xl">
           {/* TIER 2: API GATEWAY */}
-          <div className="tech-card-featured glass-card mb-lg" style={{ borderLeft: '5px solid #8b5cf6' }}>
+          <div className="tech-card-featured glass-card mb-lg" style={{ borderLeft: '5px solid #10b981' }}>
             <div className="tech-card-header">
               <div className="flex align-center gap-sm">
-                <div className="tech-card-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#8b5cf6' }}>
+                <div className="tech-card-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981' }}>
                   <FaCogs />
                 </div>
                 <div>

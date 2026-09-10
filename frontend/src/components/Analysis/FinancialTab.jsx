@@ -278,7 +278,7 @@ const FinancialTab = ({ data, idea }) => {
     labels: costLabels,
     datasets: [{
       data: costValues,
-      backgroundColor: ['#6366f1', '#f59e0b', '#10b981', '#ec4899', '#06b6d4'],
+      backgroundColor: ['#0ea5e9', '#f59e0b', '#10b981', '#ec4899', '#06b6d4'],
       borderWidth: 0,
       hoverOffset: 6
     }]
@@ -354,8 +354,8 @@ const FinancialTab = ({ data, idea }) => {
         {/* 4 STRATEGIC KPI CARDS */}
         <div className="fin-kpi-grid">
           <div className="fin-kpi-card">
-            <div className="fin-kpi-label"><FaTools style={{ color: '#6366f1' }} /> Total Setup (CapEx)</div>
-            <div className="fin-kpi-value text-info" style={{ color: '#818cf8' }}>{formatCurrency(totalCapEx)}</div>
+            <div className="fin-kpi-label"><FaTools style={{ color: '#0ea5e9' }} /> Total Setup (CapEx)</div>
+            <div className="fin-kpi-value text-info" style={{ color: '#38bdf8' }}>{formatCurrency(totalCapEx)}</div>
             <div className="fin-kpi-sub">One-time upfront launch investment</div>
           </div>
 
@@ -399,7 +399,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('capex')}
             className={`fin-subtab-btn ${activeSubTab === 'capex' ? 'active capex-active' : ''}`}
           >
-            <FaTools style={{ color: activeSubTab === 'capex' ? '#ffffff' : '#818cf8' }} /> CapEx Setup
+            <FaTools style={{ color: activeSubTab === 'capex' ? '#ffffff' : '#38bdf8' }} /> CapEx Setup
           </button>
 
           <button
@@ -460,9 +460,9 @@ const FinancialTab = ({ data, idea }) => {
       {activeSubTab === 'capex' && (
         <div className="animate-fade-in">
           
-          <div className="fin-formula-box" style={{ borderLeft: '4px solid #6366f1' }}>
+          <div className="fin-formula-box" style={{ borderLeft: '4px solid #0ea5e9' }}>
             <div className="fin-formula-title">
-              <FaCalculator style={{ color: '#818cf8' }} /> Total Setup Capital (CapEx) Mathematical Formula
+              <FaCalculator style={{ color: '#38bdf8' }} /> Total Setup Capital (CapEx) Mathematical Formula
             </div>
             <div className="fin-formula-code">
               Total CapEx = Product R&amp;D ({formatCurrency(devCost)}) + Machinery/Hardware ({formatCurrency(hwCost)}) + Legal/Filing ({formatCurrency(licCost)}) + Branding ({formatCurrency(brandCost)}) + Working Capital Reserve ({formatCurrency(invCost)}) = {formatCurrency(totalCapEx)}
@@ -476,18 +476,18 @@ const FinancialTab = ({ data, idea }) => {
           <div className="fin-allocation-bar-container">
             <div className="fin-allocation-title">
               <span>CapEx Capital Allocation Breakdown</span>
-              <span style={{ color: '#818cf8' }}>Total: {formatCurrency(totalCapEx)}</span>
+              <span style={{ color: '#38bdf8' }}>Total: {formatCurrency(totalCapEx)}</span>
             </div>
             <div className="fin-bar-track">
-              <div className="fin-bar-seg" style={{ width: `${devPct}%`, background: '#6366f1' }} title={`R&D: ${devPct}%`} />
-              <div className="fin-bar-seg" style={{ width: `${hwPct}%`, background: '#8b5cf6' }} title={`Hardware: ${hwPct}%`} />
+              <div className="fin-bar-seg" style={{ width: `${devPct}%`, background: '#0ea5e9' }} title={`R&D: ${devPct}%`} />
+              <div className="fin-bar-seg" style={{ width: `${hwPct}%`, background: '#10b981' }} title={`Hardware: ${hwPct}%`} />
               <div className="fin-bar-seg" style={{ width: `${licPct}%`, background: '#f59e0b' }} title={`Legal: ${licPct}%`} />
               <div className="fin-bar-seg" style={{ width: `${brandPct}%`, background: '#10b981' }} title={`Branding: ${brandPct}%`} />
               <div className="fin-bar-seg" style={{ width: `${invPct}%`, background: '#06b6d4' }} title={`Reserve: ${invPct}%`} />
             </div>
             <div className="fin-legend-row">
-              <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#6366f1' }} /> R&amp;D / Fitout ({devPct}%)</div>
-              <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#8b5cf6' }} /> Hardware &amp; Machinery ({hwPct}%)</div>
+              <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#0ea5e9' }} /> R&amp;D / Fitout ({devPct}%)</div>
+              <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#10b981' }} /> Hardware &amp; Machinery ({hwPct}%)</div>
               <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#f59e0b' }} /> Legal &amp; Licensing ({licPct}%)</div>
               <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#10b981' }} /> Branding &amp; Launch ({brandPct}%)</div>
               <div className="fin-legend-item"><span className="fin-legend-dot" style={{ background: '#06b6d4' }} /> Liquidity Reserve ({invPct}%)</div>
@@ -498,12 +498,12 @@ const FinancialTab = ({ data, idea }) => {
           <div className="fin-cards-grid">
             
             {/* Card 1: Software R&D / Store Architectural Fit-Out */}
-            <div className="fin-item-card" style={{ borderTop: '3px solid #6366f1' }}>
+            <div className="fin-item-card" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">{isOffline ? 'Store Architectural Fit-Out & Renovation' : 'Software R&D & Core MVP Architecture'}</span>
                 <span className="fin-card-percent-pill">{devPct}% of CapEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#818cf8' }}>{formatCurrency(devCost)}</div>
+              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(devCost)}</div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -516,7 +516,7 @@ const FinancialTab = ({ data, idea }) => {
             </div>
 
             {/* Card 2: Commercial Equipment & Machinery */}
-            <div className="fin-item-card" style={{ borderTop: '3px solid #8b5cf6' }}>
+            <div className="fin-item-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">{isOffline ? 'Commercial Machinery & POS Terminals' : 'Developer Hardware & Workstations'}</span>
                 <span className="fin-card-percent-pill">{hwPct}% of CapEx</span>
@@ -638,8 +638,8 @@ const FinancialTab = ({ data, idea }) => {
             </div>
 
             <div className="fin-matrix-card aggressive">
-              <div className="fin-matrix-tag" style={{ color: '#6366f1' }}>Annualized Burn Run-Rate</div>
-              <div className="fin-matrix-val" style={{ color: '#818cf8' }}>{formatCurrency(totalOpExMonthly * 12)}</div>
+              <div className="fin-matrix-tag" style={{ color: '#0ea5e9' }}>Annualized Burn Run-Rate</div>
+              <div className="fin-matrix-val" style={{ color: '#38bdf8' }}>{formatCurrency(totalOpExMonthly * 12)}</div>
               <div className="fin-matrix-detail">
                 12-month baseline expenditure commitment to sustain steady-state operations without premature cash depletion.
               </div>
@@ -649,12 +649,12 @@ const FinancialTab = ({ data, idea }) => {
           <div className="fin-cards-grid">
             
             {/* Staff Payroll */}
-            <div className="fin-item-card" style={{ borderTop: '3px solid #6366f1' }}>
+            <div className="fin-item-card" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">Staff Payroll &amp; Team Salaries</span>
                 <span className="fin-card-percent-pill">{Math.round((staffCost / totalOpExMonthly) * 100)}% of OpEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#818cf8' }}>{formatCurrency(staffCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(staffCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -735,7 +735,7 @@ const FinancialTab = ({ data, idea }) => {
             )}
 
             {/* Utilities & Maintenance */}
-            <div className="fin-item-card" style={{ borderTop: '3px solid #8b5cf6' }}>
+            <div className="fin-item-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">Utilities, SaaS Tools &amp; Incidentals</span>
                 <span className="fin-card-percent-pill">{Math.round((utilCost / totalOpExMonthly) * 100)}% of OpEx</span>
@@ -811,8 +811,8 @@ const FinancialTab = ({ data, idea }) => {
             </div>
 
             <div className="fin-matrix-card aggressive">
-              <div className="fin-matrix-tag" style={{ color: '#6366f1' }}>Growth Scenario (140% Volume)</div>
-              <div className="fin-matrix-val" style={{ color: '#818cf8' }}>{formatCurrency(mrr * 1.40)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-matrix-tag" style={{ color: '#0ea5e9' }}>Growth Scenario (140% Volume)</div>
+              <div className="fin-matrix-val" style={{ color: '#38bdf8' }}>{formatCurrency(mrr * 1.40)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
               <div className="fin-matrix-detail">
                 ~{Math.round(monthlySalesVol * 1.40).toLocaleString('en-IN')} orders/mo. Expands net margins to ~{Math.min(45, netMarginPct + 12)}% via operating leverage and scale economies.
               </div>
@@ -835,14 +835,14 @@ const FinancialTab = ({ data, idea }) => {
               </div>
             </div>
 
-            <div className="fin-item-card" style={{ borderTop: '3px solid #6366f1' }}>
+            <div className="fin-item-card" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">Average Order Value (AOV) / Price</span>
                 <span className="fin-card-percent-pill">Per Unit Ticket</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#818cf8' }}>{formatCurrency(pricePerUnit)}</div>
-              <div className="fin-why-box" style={{ borderLeftColor: '#6366f1' }}>
-                <div className="fin-why-label" style={{ color: '#818cf8' }}><FaStore /> Unit Price Rationale:</div>
+              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(pricePerUnit)}</div>
+              <div className="fin-why-box" style={{ borderLeftColor: '#0ea5e9' }}>
+                <div className="fin-why-label" style={{ color: '#38bdf8' }}><FaStore /> Unit Price Rationale:</div>
                 <p className="fin-why-text">
                   {isOffline 
                     ? 'Average dining ticket size per customer bill (e.g. artisanal coffee + organic bakery food item) benchmarked against Indian specialty cafe averages.'
@@ -899,7 +899,7 @@ const FinancialTab = ({ data, idea }) => {
       {activeSubTab === 'unit' && (
         <div className="animate-fade-in">
           
-          <div className="fin-formula-box" style={{ borderLeft: '4px solid #8b5cf6' }}>
+          <div className="fin-formula-box" style={{ borderLeft: '4px solid #10b981' }}>
             <div className="fin-formula-title">
               <FaBalanceScale style={{ color: '#a78bfa' }} /> Unit Economics &amp; Venture Efficiency Formulas
             </div>
@@ -960,13 +960,13 @@ const FinancialTab = ({ data, idea }) => {
               </div>
             </div>
 
-            <div className="fin-item-card" style={{ borderTop: '3px solid #8b5cf6' }}>
+            <div className="fin-item-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">3-Year Cumulative ROI</span>
-                <span className="fin-card-percent-pill" style={{ background: 'rgba(139,92,246,0.2)', color: '#c084fc' }}>Venture Return</span>
+                <span className="fin-card-percent-pill" style={{ background: 'rgba(16, 185, 129,0.2)', color: '#c084fc' }}>Venture Return</span>
               </div>
               <div className="fin-card-amount" style={{ color: '#a78bfa' }}>{roiPct}%</div>
-              <div className="fin-why-box" style={{ borderLeftColor: '#8b5cf6' }}>
+              <div className="fin-why-box" style={{ borderLeftColor: '#10b981' }}>
                 <div className="fin-why-label" style={{ color: '#a78bfa' }}>Capital Multiplication:</div>
                 <p className="fin-why-text">
                   Projected net return on total setup capital ({formatCurrency(totalCapEx)}) over a 36-month operational horizon, factoring in Year 2 and Year 3 scaling economics.
@@ -1072,8 +1072,8 @@ const FinancialTab = ({ data, idea }) => {
             </div>
 
             <div className="fin-matrix-card aggressive">
-              <div className="fin-matrix-tag" style={{ color: '#6366f1' }}>CapEx Recoup Horizon</div>
-              <div className="fin-matrix-val" style={{ color: '#818cf8' }}>{breakEvenMonths} Months</div>
+              <div className="fin-matrix-tag" style={{ color: '#0ea5e9' }}>CapEx Recoup Horizon</div>
+              <div className="fin-matrix-val" style={{ color: '#38bdf8' }}>{breakEvenMonths} Months</div>
               <div className="fin-matrix-detail">
                 Time required for accumulated net profits to fully recoup the initial {formatCurrency(totalCapEx)} startup launch capital.
               </div>
@@ -1106,7 +1106,7 @@ const FinancialTab = ({ data, idea }) => {
           
           <div className="fin-methodology-section" style={{ marginTop: 0 }}>
             <div className="fin-methodology-header">
-              <h4><FaCalculator style={{ color: '#6366f1' }} /> Financial Modeling Methodology, Formulas &amp; Benchmark Citations</h4>
+              <h4><FaCalculator style={{ color: '#0ea5e9' }} /> Financial Modeling Methodology, Formulas &amp; Benchmark Citations</h4>
               <p style={{ color: '#94a3b8', fontSize: '0.86rem', margin: 0 }}>
                 How Vision2Venture calculates these metrics and validates unit economics against verified Indian market data.
               </p>

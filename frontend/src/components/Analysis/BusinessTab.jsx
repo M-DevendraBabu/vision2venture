@@ -601,7 +601,7 @@ const BusinessTab = ({ data, idea }) => {
       <div className="biz-executive-header">
         <div className="biz-header-top">
           <div className="biz-title-area">
-            <h3><FaBuilding style={{ color: '#818cf8' }} /> {title} Business Architecture</h3>
+            <h3><FaBuilding style={{ color: '#38bdf8' }} /> {title} Business Architecture</h3>
             <div className="biz-badge-group">
               <span className="biz-badge archetype"><FaRocket /> {archetype}</span>
               <span className="biz-badge delivery"><FaBolt /> {sector.toUpperCase()} DELIVERY</span>
@@ -631,7 +631,7 @@ const BusinessTab = ({ data, idea }) => {
           </div>
 
           <div className="biz-kpi-card">
-            <div className="biz-kpi-label"><FaCreditCard style={{ color: '#a855f7' }} /> Monetization Engine</div>
+            <div className="biz-kpi-label"><FaCreditCard style={{ color: '#34d399' }} /> Monetization Engine</div>
             <div className="biz-kpi-value" style={{ color: '#c084fc', fontSize: '1.1rem' }}>
               {ideaContext.pricing_model || 'Subscription (₹)'}
             </div>
@@ -733,8 +733,8 @@ const BusinessTab = ({ data, idea }) => {
             {/* 5. Channels */}
             <div className="biz-canvas-card channels">
               <div className="biz-card-header">
-                <span className="biz-card-title"><FaBullseye style={{ color: '#8b5cf6' }} /> 5. Channels &amp; GTM</span>
-                <span className="biz-card-tag" style={{ color: '#8b5cf6', background: 'rgba(139,92,246,0.1)' }}>Distribution</span>
+                <span className="biz-card-title"><FaBullseye style={{ color: '#10b981' }} /> 5. Channels &amp; GTM</span>
+                <span className="biz-card-tag" style={{ color: '#10b981', background: 'rgba(16, 185, 129,0.1)' }}>Distribution</span>
               </div>
               <ul className="biz-list">
                 {channels.map((ch, i) => (
@@ -1049,7 +1049,7 @@ const BusinessTab = ({ data, idea }) => {
                   <ul className="biz-tier-features">
                     {features.map((feat, fIdx) => (
                       <li key={fIdx} className="biz-tier-feature-item">
-                        <FaCheckCircle style={{ color: isSelected ? '#10b981' : '#818cf8' }} /> {feat}
+                        <FaCheckCircle style={{ color: isSelected ? '#10b981' : '#38bdf8' }} /> {feat}
                       </li>
                     ))}
                   </ul>
@@ -1127,25 +1127,25 @@ const BusinessTab = ({ data, idea }) => {
               </ul>
             </div>
 
-            <div className="glass-card p-md" style={{ borderLeft: '4px solid #6366f1' }}>
-              <h4 style={{ color: '#818cf8', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="glass-card p-md" style={{ borderLeft: '4px solid #0ea5e9' }}>
+              <h4 style={{ color: '#38bdf8', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FaCreditCard /> Indian Payment & Billing Rails
               </h4>
               <ul className="biz-list">
                 <li className="biz-list-item">
-                  <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
+                  <span className="biz-item-bullet" style={{ background: '#0ea5e9' }} />
                   <span><strong>UPI AutoPay:</strong> Recurring mandate collection without SMS OTP drop-offs</span>
                 </li>
                 <li className="biz-list-item">
-                  <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
+                  <span className="biz-item-bullet" style={{ background: '#0ea5e9' }} />
                   <span><strong>Payment Gateways:</strong> Native Razorpay / Cashfree routing with instant T+0 settlement</span>
                 </li>
                 <li className="biz-list-item">
-                  <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
+                  <span className="biz-item-bullet" style={{ background: '#0ea5e9' }} />
                   <span><strong>e-NACH Mandates:</strong> Corporate bank debit mandates for annual subscriptions</span>
                 </li>
                 <li className="biz-list-item">
-                  <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
+                  <span className="biz-item-bullet" style={{ background: '#0ea5e9' }} />
                   <span><strong>GST Compliance:</strong> Automated e-Invoicing with HSN/SAC classification</span>
                 </li>
               </ul>
@@ -1174,9 +1174,9 @@ const BusinessTab = ({ data, idea }) => {
           <div className="ecosystem-chain-grid">
             
             {/* Step 1: Upstream */}
-            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #6366f1' }}>
+            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="chain-step-num">1</div>
-              <div className="chain-node-title"><FaServer style={{ color: '#818cf8' }} /> Upstream Rails</div>
+              <div className="chain-node-title"><FaServer style={{ color: '#38bdf8' }} /> Upstream Rails</div>
               <div className="chain-node-desc">
                 AWS Mumbai ap-south-1 cloud hosting, NPCI payment switches, and core identity verification rails.
               </div>
@@ -1184,7 +1184,7 @@ const BusinessTab = ({ data, idea }) => {
             </div>
 
             {/* Step 2: Core Engine */}
-            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #8b5cf6' }}>
+            <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #10b981' }}>
               <div className="chain-step-num">2</div>
               <div className="chain-node-title"><FaCogs style={{ color: '#a78bfa' }} /> Operational Engine</div>
               <div className="chain-node-desc">
@@ -1244,10 +1244,10 @@ const BusinessTab = ({ data, idea }) => {
             <div className="moat-dimension-row">
               <div className="moat-dimension-header">
                 <span className="moat-dim-title">3. Near-Zero Marginal Serving Cost (Operating Leverage)</span>
-                <span className="moat-dim-score" style={{ color: '#8b5cf6' }}>85% Defensibility</span>
+                <span className="moat-dim-score" style={{ color: '#10b981' }}>85% Defensibility</span>
               </div>
               <div className="moat-progress-track">
-                <div className="moat-progress-fill" style={{ width: '85%', background: 'linear-gradient(90deg, #8b5cf6, #7c3aed)' }} />
+                <div className="moat-progress-fill" style={{ width: '85%', background: 'linear-gradient(90deg, #10b981, #059669)' }} />
               </div>
             </div>
 
@@ -1276,9 +1276,9 @@ const BusinessTab = ({ data, idea }) => {
           <div className="biz-moat-grid">
             
             {/* Key Partners */}
-            <div className="biz-moat-card" style={{ borderTop: '3px solid #6366f1' }}>
+            <div className="biz-moat-card" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="biz-moat-top">
-                <span className="biz-moat-title"><FaHandshake style={{ color: '#818cf8' }} /> Ecosystem Partners</span>
+                <span className="biz-moat-title"><FaHandshake style={{ color: '#38bdf8' }} /> Ecosystem Partners</span>
                 <span className="biz-moat-score">Alliances</span>
               </div>
               <ul className="biz-list">
@@ -1286,7 +1286,7 @@ const BusinessTab = ({ data, idea }) => {
                   const text = typeof partner === 'object' && partner !== null ? (partner.name || partner.title || partner.desc || JSON.stringify(partner)) : String(partner);
                   return (
                     <li key={i} className="biz-list-item">
-                      <span className="biz-item-bullet" style={{ background: '#6366f1' }} />
+                      <span className="biz-item-bullet" style={{ background: '#0ea5e9' }} />
                       <span>{text}</span>
                     </li>
                   );
@@ -1295,7 +1295,7 @@ const BusinessTab = ({ data, idea }) => {
             </div>
 
             {/* Key Activities */}
-            <div className="biz-moat-card" style={{ borderTop: '3px solid #8b5cf6' }}>
+            <div className="biz-moat-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="biz-moat-top">
                 <span className="biz-moat-title"><FaCogs style={{ color: '#a78bfa' }} /> Operational Workflows</span>
                 <span className="biz-moat-score">Core Ops</span>
@@ -1305,7 +1305,7 @@ const BusinessTab = ({ data, idea }) => {
                   const text = typeof act === 'object' && act !== null ? (act.name || act.title || act.desc || JSON.stringify(act)) : String(act);
                   return (
                     <li key={i} className="biz-list-item">
-                      <span className="biz-item-bullet" style={{ background: '#8b5cf6' }} />
+                      <span className="biz-item-bullet" style={{ background: '#10b981' }} />
                       <span>{text}</span>
                     </li>
                   );
@@ -1378,7 +1378,7 @@ class BusinessTabErrorBoundary extends React.Component {
             onClick={() => this.setState({ hasError: false, error: null })}
             style={{
               padding: '0.6rem 1.5rem',
-              background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+              background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',

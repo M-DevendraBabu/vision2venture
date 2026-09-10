@@ -475,7 +475,7 @@ const MarketTab = ({ data, idea }) => {
           <FaGlobe /> Market Intelligence & Strategic TAM Opportunity
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <span className="tag" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8', borderColor: 'rgba(99, 102, 241, 0.3)' }}>
+          <span className="tag" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8', borderColor: 'rgba(14, 165, 233, 0.3)' }}>
             <FaTag style={{ fontSize: '0.75rem' }} /> {industryName}
           </span>
           <span className="tag" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', borderColor: 'rgba(16, 185, 129, 0.3)' }}>
@@ -500,11 +500,11 @@ const MarketTab = ({ data, idea }) => {
       {/* ── 4-Metric Key Dashboard ── */}
       <div className="metrics-grid mb-2xl">
         {/* TAM Market Scale */}
-        <div className="metric-card glass-card-success" style={{ borderLeft: '4px solid #6366f1' }}>
+        <div className="metric-card glass-card-success" style={{ borderLeft: '4px solid #0ea5e9' }}>
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaRupeeSign /> Total Addressable Market (TAM)
           </div>
-          <div className="metric-value text-success" style={{ color: '#818cf8', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
+          <div className="metric-value text-success" style={{ color: '#38bdf8', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
             {marketSizing.tamStr}
           </div>
           <div className="text-secondary text-xs mt-xs">Total {industryName} Sector Spending Capacity</div>
@@ -552,7 +552,7 @@ const MarketTab = ({ data, idea }) => {
             padding: '0.65rem 1.25rem',
             borderRadius: '8px',
             border: 'none',
-            background: activeSubTab === 'tam' ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(255,255,255,0.05)',
+            background: activeSubTab === 'tam' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : 'rgba(255,255,255,0.05)',
             color: '#fff',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'tam' ? '600' : '400',
@@ -609,7 +609,7 @@ const MarketTab = ({ data, idea }) => {
             padding: '0.65rem 1.25rem',
             borderRadius: '8px',
             border: 'none',
-            background: activeSubTab === 'trends' ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' : 'rgba(255,255,255,0.05)',
+            background: activeSubTab === 'trends' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
             color: '#fff',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'trends' ? '600' : '400',
@@ -633,10 +633,10 @@ const MarketTab = ({ data, idea }) => {
             {/* TAM */}
             <div className="tam-card tam-tam">
               <div className="tam-header">
-                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#818cf8', textTransform: 'uppercase' }}>
+                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase' }}>
                   Total Addressable Market
                 </span>
-                <span className="tam-badge" style={{ background: 'rgba(99, 102, 241, 0.2)', color: '#a5b4fc', border: '1px solid rgba(99, 102, 241, 0.4)' }}>
+                <span className="tam-badge" style={{ background: 'rgba(14, 165, 233, 0.2)', color: '#7dd3fc', border: '1px solid rgba(14, 165, 233, 0.4)' }}>
                   100% Industry Scope
                 </span>
               </div>
@@ -655,7 +655,7 @@ const MarketTab = ({ data, idea }) => {
                 <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c084fc', textTransform: 'uppercase' }}>
                   Serviceable Addressable Market
                 </span>
-                <span className="tam-badge" style={{ background: 'rgba(139, 92, 246, 0.2)', color: '#d8b4fe', border: '1px solid rgba(139, 92, 246, 0.4)' }}>
+                <span className="tam-badge" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#d8b4fe', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
                   {marketSizing.samPercent}% Serviceable
                 </span>
               </div>
@@ -691,10 +691,10 @@ const MarketTab = ({ data, idea }) => {
           {/* Market Opportunity Index & Timing Card */}
           <div className="dimension-cards-grid">
             {/* Opportunity Gauge Card */}
-            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #8b5cf6' }}>
+            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#a78bfa' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#a78bfa' }}>
                     <FaChartPie />
                   </div>
                   <div>
@@ -702,18 +702,18 @@ const MarketTab = ({ data, idea }) => {
                     <div className="dim-subtitle">Viability & Market Tailwinds Assessment</div>
                   </div>
                 </div>
-                <div className="dim-score-badge score-success" style={{ color: '#a78bfa', borderColor: '#8b5cf6', background: 'rgba(139, 92, 246, 0.15)' }}>
+                <div className="dim-score-badge score-success" style={{ color: '#a78bfa', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
                   {opportunityScore}/100 Viability
                 </div>
               </div>
 
               <div className="dim-progress-track">
-                <div className="dim-progress-fill" style={{ width: `${opportunityScore}%`, background: 'linear-gradient(90deg, #8b5cf6, #10b981)' }}></div>
+                <div className="dim-progress-fill" style={{ width: `${opportunityScore}%`, background: 'linear-gradient(90deg, #10b981, #10b981)' }}></div>
               </div>
 
               <div className="dim-body">
                 <p className="dim-primary-text">{cleanedOpportunityExp}</p>
-                <div className="dim-action-box" style={{ borderLeftColor: '#8b5cf6' }}>
+                <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
                   <span className="dim-action-label" style={{ color: '#c084fc' }}>Venture Capital Perspective</span>
                   <span className="dim-action-content">
                     Institutional investors look for addressable depth (TAM &gt; ₹10,000 Cr) and high compounding expansion (CAGR &gt; 12%). {startupTitle} qualifies with a healthy TAM of {marketSizing.tamStr} and +{growthRate}% annual sector growth.
@@ -766,10 +766,10 @@ const MarketTab = ({ data, idea }) => {
         <div className="animate-fade-in">
           <div className="dimension-cards-grid">
             {/* Card 1: Ideal Customer Profile (ICP) */}
-            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #6366f1' }}>
+            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #0ea5e9' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
                     <FaUsers />
                   </div>
                   <div>
@@ -786,7 +786,7 @@ const MarketTab = ({ data, idea }) => {
                 <p className="dim-detail-text">
                   <strong>Audience Fit:</strong> Specifically targeting {targetCustomers} seeking dedicated {industryName} capability with proven operational track record.
                 </p>
-                <div className="dim-action-box" style={{ borderLeftColor: '#6366f1' }}>
+                <div className="dim-action-box" style={{ borderLeftColor: '#0ea5e9' }}>
                   <span className="dim-action-label">Target Milestone</span>
                   <span className="dim-action-content">
                     Validate product-market fit by securing initial 30–50 high-engagement customer accounts matching this exact buyer persona.
@@ -955,10 +955,10 @@ const MarketTab = ({ data, idea }) => {
             </div>
 
             {/* Card 3: 3-Stage Conversion Funnel */}
-            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #6366f1' }}>
+            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #0ea5e9' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
                     <FaLayerGroup />
                   </div>
                   <div>
@@ -970,8 +970,8 @@ const MarketTab = ({ data, idea }) => {
               </div>
               <div className="dim-body">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', borderLeft: '3px solid #818cf8' }}>
-                    <strong style={{ color: '#818cf8', fontSize: '0.85rem' }}>Top of Funnel (Awareness):</strong>
+                  <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', borderLeft: '3px solid #38bdf8' }}>
+                    <strong style={{ color: '#38bdf8', fontSize: '0.85rem' }}>Top of Funnel (Awareness):</strong>
                     <div style={{ color: '#cbd5e1', fontSize: '0.84rem' }}>{profile.funnel.top}</div>
                   </div>
                   <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', borderLeft: '3px solid #34d399' }}>
@@ -1028,10 +1028,10 @@ const MarketTab = ({ data, idea }) => {
         <div className="animate-fade-in">
           <div className="dimension-cards-grid">
             {/* Trend 1: AI & Automation */}
-            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #8b5cf6' }}>
+            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#a78bfa' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#a78bfa' }}>
                     <FaLightbulb />
                   </div>
                   <div>
@@ -1048,7 +1048,7 @@ const MarketTab = ({ data, idea }) => {
                 <p className="dim-detail-text">
                   <strong>Strategic Advantage:</strong> Embeds automated machine intelligence into daily workflows, allowing {startupTitle} to execute at 10x lower overhead than legacy competitors.
                 </p>
-                <div className="dim-action-box" style={{ borderLeftColor: '#8b5cf6' }}>
+                <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
                   <span className="dim-action-label" style={{ color: '#a78bfa' }}>R&D Focus</span>
                   <span className="dim-action-content">
                     Continually refine core software algorithms to widen product defensibility and reduce manual human intervention.
@@ -1118,10 +1118,10 @@ const MarketTab = ({ data, idea }) => {
             </div>
 
             {/* Trend 4: Defensibility Moat & Unit Economics */}
-            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #6366f1' }}>
+            <div className="dimension-card-premium" style={{ borderLeft: '4px solid #0ea5e9' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
                     <FaCheckCircle />
                   </div>
                   <div>
@@ -1138,7 +1138,7 @@ const MarketTab = ({ data, idea }) => {
                 <p className="dim-detail-text">
                   <strong>Execution Posture:</strong> By maintaining lean infrastructure and automated customer onboarding, {startupTitle} preserves runway while compounding market share.
                 </p>
-                <div className="dim-action-box" style={{ borderLeftColor: '#6366f1' }}>
+                <div className="dim-action-box" style={{ borderLeftColor: '#0ea5e9' }}>
                   <span className="dim-action-label">Defensibility Milestone</span>
                   <span className="dim-action-content">
                     Achieve operational cash break-even within 8–12 months to command premium valuations in subsequent funding rounds.

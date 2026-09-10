@@ -19,7 +19,7 @@
   transform: translateX(-50%);
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 60%);
+  background: radial-gradient(circle, rgba(14,165,233,0.12) 0%, rgba(16,185,129,0.05) 40%, transparent 70%);
   pointer-events: none;
 }
 
@@ -144,7 +144,7 @@
 }
 
 .divider-text {
-  background: rgba(10, 10, 25, 0.95);
+  background: #080e1a;
   padding: 0 14px;
   position: relative;
   z-index: 1;
@@ -251,18 +251,18 @@
   height: 18px;
   margin-top: 2px;
   flex-shrink: 0;
-  accent-color: #6366f1;
+  accent-color: #0ea5e9;
   cursor: pointer;
 }
 
 .checkbox-label a {
-  color: #818cf8;
+  color: #38bdf8;
   text-decoration: none;
   font-weight: 500;
 }
 
 .checkbox-label a:hover {
-  color: #a5b4fc;
+  color: #7dd3fc;
   text-decoration: underline;
 }
 
@@ -278,8 +278,8 @@
     max-width: 500px;
     padding: 28px 20px;
     border-radius: 20px;
-    background: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #080e1c;
+    border: 1px solid rgba(14, 165, 233, 0.2);
   }
   .auth-title {
     font-size: 1.8rem;

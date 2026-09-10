@@ -111,7 +111,7 @@ const AdminPage = () => {
         {stats && (
           <div className="stats-row mb-xl" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
             <div className="glass-card p-lg flex align-center gap-md">
-              <div className="stat-icon-bg primary" style={{ padding: 12, borderRadius: 10, background: 'rgba(99,102,241,0.15)', color: '#818cf8' }}>
+              <div className="stat-icon-bg primary" style={{ padding: 12, borderRadius: 10, background: 'rgba(14, 165, 233,0.15)', color: '#38bdf8' }}>
                 <FaUsers size={22} />
               </div>
               <div>
@@ -197,7 +197,7 @@ const AdminPage = () => {
                                 <FaCrown size={10} style={{ marginRight: 4 }} /> Admin
                               </span>
                             ) : (
-                              <span className="tag" style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                              <span className="tag" style={{ background: 'rgba(14, 165, 233,0.1)', color: '#38bdf8', border: '1px solid rgba(14, 165, 233,0.2)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
                                 User
                               </span>
                             )}
@@ -250,19 +250,19 @@ const AdminPage = () => {
                             <FaCrown size={12} /> Admin
                           </span>
                         ) : (
-                          <span style={{ background: 'rgba(99,102,241,0.18)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ background: 'rgba(14, 165, 233,0.18)', color: '#7dd3fc', border: '1px solid rgba(14, 165, 233,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                             User
                           </span>
                         )}
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#cbd5e1', background: 'rgba(255,255,255,0.03)', padding: '10px 14px', borderRadius: '10px' }}>
                         <span>Joined: {u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A'}</span>
-                        <span style={{ fontWeight: 800, color: '#818cf8' }}>Ideas: {u.idea_count || 0}</span>
+                        <span style={{ fontWeight: 800, color: '#38bdf8' }}>Ideas: {u.idea_count || 0}</span>
                       </div>
                       <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
                         <button
                           onClick={() => fetchUserHistory(u.id)}
-                          style={{ flex: 1, minHeight: '48px', padding: '12px', background: selectedUser?.id === u.id ? '#6366f1' : '#1e293b', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                          style={{ flex: 1, minHeight: '48px', padding: '12px', background: selectedUser?.id === u.id ? '#0ea5e9' : '#1e293b', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                         >
                           <FaFileAlt size={14} /> View History
                         </button>

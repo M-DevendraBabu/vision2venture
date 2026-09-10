@@ -27,24 +27,24 @@ const LoadingSpinner = ({ text = 'Loading...' }) => {
           inset: 0;
           border: 2px solid transparent;
           border-radius: 50%;
-          border-top-color: #6366f1;
+          border-top-color: #0ea5e9;
           animation: spinnerRotate 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
         }
         .spinner-ring.delay-1 {
           inset: 6px;
-          border-top-color: #06b6d4;
+          border-top-color: #38bdf8;
           animation-duration: 2s;
           animation-direction: reverse;
         }
         .spinner-ring.delay-2 {
           inset: 12px;
-          border-top-color: #8b5cf6;
+          border-top-color: #10b981;
           animation-duration: 2.5s;
         }
         .spinner-core {
           position: absolute;
           inset: 20px;
-          background: radial-gradient(circle, rgba(99,102,241,0.3), transparent);
+          background: radial-gradient(circle, rgba(14,165,233,0.35), transparent);
           border-radius: 50%;
           animation: spinnerPulse 2s ease-in-out infinite;
         }

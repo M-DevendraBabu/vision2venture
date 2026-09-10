@@ -3,10 +3,10 @@
   width: 100%;
   max-width: 700px;
   padding: 32px 28px;
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #080e1c;
+  border: 1px solid rgba(14, 165, 233, 0.18);
   border-radius: 20px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
 .profile-form {
@@ -32,8 +32,8 @@
   font-size: 1.05rem;
   padding: 16px;
   border-radius: 12px;
-  background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #0d1527;
+  border: 1px solid rgba(14, 165, 233, 0.2);
   color: #ffffff;
 }
 

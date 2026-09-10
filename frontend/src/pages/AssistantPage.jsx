@@ -327,7 +327,7 @@ const AssistantPage = () => {
                 className="gemini-nav-item"
                 onClick={() => navigate('/dashboard')}
               >
-                <span className="gemini-nav-icon"><FaArrowLeft style={{ color: '#818cf8' }} /></span>
+                <span className="gemini-nav-icon"><FaArrowLeft style={{ color: '#38bdf8' }} /></span>
                 <span className="gemini-nav-label">Back to Dashboard</span>
               </button>
             </div>

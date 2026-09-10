@@ -19,7 +19,7 @@ const OverviewTab = ({ data, idea }) => {
   // Score color helper
   const getScoreColor = (s) => {
     if (s >= 80) return '#10b981';
-    if (s >= 60) return '#6366f1';
+    if (s >= 60) return '#0ea5e9';
     if (s >= 40) return '#f59e0b';
     return '#ef4444';
   };
@@ -28,7 +28,7 @@ const OverviewTab = ({ data, idea }) => {
     <div className="overview-tab animate-fade-in" style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '24px' }}>
       
       {/* ── Quick Summary Card ── */}
-      <div className="glass-card-accent p-xl" style={{ borderLeft: '4px solid #6366f1', borderRadius: '12px' }}>
+      <div className="glass-card-accent p-xl" style={{ borderLeft: '4px solid #0ea5e9', borderRadius: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', flexWrap: 'wrap' }}>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#fff', margin: 0 }}>{idea.title}</h2>
           <span className={`sector-badge sector-badge-${idea.sector || 'hybrid'}`}>
@@ -168,9 +168,9 @@ const OverviewTab = ({ data, idea }) => {
             <span 
               key={i} 
               style={{ 
-                background: i < 5 ? 'rgba(99, 102, 241, 0.15)' : 'rgba(99, 102, 241, 0.08)', 
-                color: i < 5 ? '#a5b4fc' : '#94a3b8',
-                border: `1px solid ${i < 5 ? 'rgba(99, 102, 241, 0.3)' : 'rgba(99, 102, 241, 0.15)'}`,
+                background: i < 5 ? 'rgba(14, 165, 233, 0.15)' : 'rgba(14, 165, 233, 0.08)', 
+                color: i < 5 ? '#7dd3fc' : '#94a3b8',
+                border: `1px solid ${i < 5 ? 'rgba(14, 165, 233, 0.3)' : 'rgba(14, 165, 233, 0.15)'}`,
                 padding: '7px 16px', 
                 borderRadius: '20px', 
                 fontSize: '0.85rem', 

@@ -69,7 +69,7 @@ const RoadmapTab = ({ data, idea }) => {
 
   // Extract phases
   const phases = [];
-  const phaseColors = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'];
+  const phaseColors = ['#0ea5e9', '#10b981', '#06b6d4', '#10b981', '#f59e0b'];
 
   for (let i = 1; i <= 5; i++) {
     const phaseKey = `phase_${i}`;
@@ -227,8 +227,8 @@ const RoadmapTab = ({ data, idea }) => {
         {/* 4 STRATEGIC HORIZON KPI CARDS */}
         <div className="fin-kpi-grid">
           <div className="fin-kpi-card">
-            <div className="fin-kpi-label"><FaTools style={{ color: '#6366f1' }} /> Setup CapEx Deployment</div>
-            <div className="fin-kpi-value text-info" style={{ color: '#818cf8' }}>{formatCurrency(totalCapEx)}</div>
+            <div className="fin-kpi-label"><FaTools style={{ color: '#0ea5e9' }} /> Setup CapEx Deployment</div>
+            <div className="fin-kpi-value text-info" style={{ color: '#38bdf8' }}>{formatCurrency(totalCapEx)}</div>
             <div className="fin-kpi-sub">Phases 1–3 Launch Budget</div>
           </div>
 
@@ -289,7 +289,7 @@ const RoadmapTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('costs')}
             className={`roadmap-subtab-btn ${activeSubTab === 'costs' ? 'active costs-active' : ''}`}
           >
-            <FaCoins style={{ color: activeSubTab === 'costs' ? '#ffffff' : '#818cf8' }} /> Phase Budgets &amp; CapEx Tie
+            <FaCoins style={{ color: activeSubTab === 'costs' ? '#ffffff' : '#38bdf8' }} /> Phase Budgets &amp; CapEx Tie
           </button>
 
           <button
@@ -508,7 +508,7 @@ const RoadmapTab = ({ data, idea }) => {
 
           {/* Strategic Liquidity Advisory Box */}
           <div className="fin-advisory-box">
-            <FaShieldAlt className="fin-advisory-icon" style={{ color: '#6366f1' }} />
+            <FaShieldAlt className="fin-advisory-icon" style={{ color: '#0ea5e9' }} />
             <div className="fin-advisory-content">
               <h5>Staged Capital Deployment &amp; Runway Protection</h5>
               <p>

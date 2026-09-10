@@ -271,7 +271,7 @@ const LandingPage = () => {
             </div>
             
             <div className="step-connector">
-              <svg width="60" height="24" viewBox="0 0 60 24"><path d="M0 12h50M45 6l10 6-10 6" stroke="rgba(99,102,241,0.3)" strokeWidth="2" fill="none" strokeDasharray="4 3"/></svg>
+              <svg width="60" height="24" viewBox="0 0 60 24"><path d="M0 12h50M45 6l10 6-10 6" stroke="rgba(14, 165, 233,0.3)" strokeWidth="2" fill="none" strokeDasharray="4 3"/></svg>
             </div>
             
             <div className="step-card">
@@ -283,7 +283,7 @@ const LandingPage = () => {
             </div>
             
             <div className="step-connector">
-              <svg width="60" height="24" viewBox="0 0 60 24"><path d="M0 12h50M45 6l10 6-10 6" stroke="rgba(139,92,246,0.3)" strokeWidth="2" fill="none" strokeDasharray="4 3"/></svg>
+              <svg width="60" height="24" viewBox="0 0 60 24"><path d="M0 12h50M45 6l10 6-10 6" stroke="rgba(16, 185, 129,0.3)" strokeWidth="2" fill="none" strokeDasharray="4 3"/></svg>
             </div>
             
             <div className="step-card">

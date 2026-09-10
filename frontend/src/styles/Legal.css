@@ -83,7 +83,7 @@
   content: '•';
   position: absolute;
   left: 4px;
-  color: #6366f1;
+  color: #0ea5e9;
   font-weight: bold;
 }
 
@@ -92,13 +92,13 @@
 }
 
 .legal-section a {
-  color: #818cf8;
+  color: #38bdf8;
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .legal-section a:hover {
-  color: #a5b4fc;
+  color: #38bdf8;
   text-decoration: underline;
 }
 
@@ -143,7 +143,7 @@
 }
 
 .contact-email a {
-  color: #818cf8;
+  color: #38bdf8;
   text-decoration: none;
 }
 
@@ -162,7 +162,7 @@
 }
 
 .legal-footer-nav a {
-  color: #818cf8;
+  color: #38bdf8;
   text-decoration: none;
   font-size: 0.92rem;
   font-weight: 500;
@@ -170,7 +170,7 @@
 }
 
 .legal-footer-nav a:hover {
-  color: #a5b4fc;
+  color: #38bdf8;
 }
 
 /* Responsive */
