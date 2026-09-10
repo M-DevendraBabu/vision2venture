@@ -462,7 +462,7 @@ const RoadmapTab = ({ data, idea }) => {
           
           <div className="fin-formula-box" style={{ borderLeft: '4px solid #10b981' }}>
             <div className="fin-formula-title">
-              <FaCalculator style={{ color: '#34d399' }} /> Capital Deployment Mathematical Reconciliation
+              <FaCalculator style={{ color: '#059669' }} /> Capital Deployment Mathematical Reconciliation
             </div>
             <div className="fin-formula-code">
               Phase 1 ({phases[0]?.estimated_cost}) + Phase 2 ({phases[1]?.estimated_cost}) + Phase 3 ({phases[2]?.estimated_cost}) = Setup CapEx: {formatCurrency(totalCapEx)} • Phase 4: {formatCurrency(monthlyOpEx)}/mo OpEx

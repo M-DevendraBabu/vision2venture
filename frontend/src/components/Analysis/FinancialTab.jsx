@@ -462,7 +462,7 @@ const FinancialTab = ({ data, idea }) => {
           
           <div className="fin-formula-box" style={{ borderLeft: '4px solid #0ea5e9' }}>
             <div className="fin-formula-title">
-              <FaCalculator style={{ color: '#38bdf8' }} /> Total Setup Capital (CapEx) Mathematical Formula
+              <FaCalculator style={{ color: '#0ea5e9' }} /> Total Setup Capital (CapEx) Mathematical Formula
             </div>
             <div className="fin-formula-code">
               Total CapEx = Product R&amp;D ({formatCurrency(devCost)}) + Machinery/Hardware ({formatCurrency(hwCost)}) + Legal/Filing ({formatCurrency(licCost)}) + Branding ({formatCurrency(brandCost)}) + Working Capital Reserve ({formatCurrency(invCost)}) = {formatCurrency(totalCapEx)}
@@ -476,7 +476,7 @@ const FinancialTab = ({ data, idea }) => {
           <div className="fin-allocation-bar-container">
             <div className="fin-allocation-title">
               <span>CapEx Capital Allocation Breakdown</span>
-              <span style={{ color: '#38bdf8' }}>Total: {formatCurrency(totalCapEx)}</span>
+              <span style={{ color: '#0284c7' }}>Total: {formatCurrency(totalCapEx)}</span>
             </div>
             <div className="fin-bar-track">
               <div className="fin-bar-seg" style={{ width: `${devPct}%`, background: '#0ea5e9' }} title={`R&D: ${devPct}%`} />
@@ -503,7 +503,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">{isOffline ? 'Store Architectural Fit-Out & Renovation' : 'Software R&D & Core MVP Architecture'}</span>
                 <span className="fin-card-percent-pill">{devPct}% of CapEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(devCost)}</div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{formatCurrency(devCost)}</div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -521,7 +521,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">{isOffline ? 'Commercial Machinery & POS Terminals' : 'Developer Hardware & Workstations'}</span>
                 <span className="fin-card-percent-pill">{hwPct}% of CapEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#a78bfa' }}>{formatCurrency(hwCost)}</div>
+              <div className="fin-card-amount" style={{ color: '#7c3aed' }}>{formatCurrency(hwCost)}</div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -539,7 +539,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Entity Incorporation, Legal &amp; IP Filing</span>
                 <span className="fin-card-percent-pill">{licPct}% of CapEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#fbbf24' }}>{formatCurrency(licCost)}</div>
+              <div className="fin-card-amount" style={{ color: '#d97706' }}>{formatCurrency(licCost)}</div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -557,7 +557,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Branding, Visual Identity &amp; Collateral</span>
                 <span className="fin-card-percent-pill">{brandPct}% of CapEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#34d399' }}>{formatCurrency(brandCost)}</div>
+              <div className="fin-card-amount" style={{ color: '#059669' }}>{formatCurrency(brandCost)}</div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -573,7 +573,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">{isOffline ? 'Initial Inventory & Cutlery Stocking' : 'Staging Cloud Tenant & Security Audit'}</span>
                 <span className="fin-card-percent-pill">{invPct}% of CapEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(invCost)}</div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{formatCurrency(invCost)}</div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -609,7 +609,7 @@ const FinancialTab = ({ data, idea }) => {
           
           <div className="fin-formula-box" style={{ borderLeft: '4px solid #f59e0b' }}>
             <div className="fin-formula-title">
-              <FaCalculator style={{ color: '#fbbf24' }} /> Monthly Operating Expense (OpEx Burn Rate) Formula
+              <FaCalculator style={{ color: '#d97706' }} /> Monthly Operating Expense (OpEx Burn Rate) Formula
             </div>
             <div className="fin-formula-code">
               Monthly OpEx = Staff Payroll ({formatCurrency(staffCost)}) + Rent ({formatCurrency(rentCost)}) + Cloud/APIs ({formatCurrency(cloudCost)}) + Marketing ({formatCurrency(mktCost)}) + Raw Materials ({formatCurrency(rawMaterialCost)}) + Utilities ({formatCurrency(utilCost)}) = {formatCurrency(totalOpExMonthly)} / month
@@ -622,24 +622,24 @@ const FinancialTab = ({ data, idea }) => {
           {/* Fixed vs Variable Burn Matrix */}
           <div className="fin-matrix-grid">
             <div className="fin-matrix-card conservative">
-              <div className="fin-matrix-tag" style={{ color: '#f59e0b' }}>Fixed Monthly Overhead</div>
-              <div className="fin-matrix-val" style={{ color: '#fbbf24' }}>{formatCurrency(fixedCosts)}</div>
+              <div className="fin-matrix-tag" style={{ color: '#d97706' }}>Fixed Monthly Overhead</div>
+              <div className="fin-matrix-val" style={{ color: '#b45309' }}>{formatCurrency(fixedCosts)}</div>
               <div className="fin-matrix-detail">
                 Mandatory monthly commitment (Staff payroll, Facility rent, Cloud compute, Base utilities). Must be covered regardless of order volume.
               </div>
             </div>
 
             <div className="fin-matrix-card target">
-              <div className="fin-matrix-tag" style={{ color: '#10b981' }}>Variable Delivery Costs</div>
-              <div className="fin-matrix-val" style={{ color: '#34d399' }}>{formatCurrency(totalOpExMonthly - fixedCosts)}</div>
+              <div className="fin-matrix-tag" style={{ color: '#059669' }}>Variable Delivery Costs</div>
+              <div className="fin-matrix-val" style={{ color: '#059669' }}>{formatCurrency(totalOpExMonthly - fixedCosts)}</div>
               <div className="fin-matrix-detail">
                 Transaction-dependent costs (COGS, 2% payment gateway MDR, dynamic marketing spend). Scales proportionally with customer volume.
               </div>
             </div>
 
             <div className="fin-matrix-card aggressive">
-              <div className="fin-matrix-tag" style={{ color: '#0ea5e9' }}>Annualized Burn Run-Rate</div>
-              <div className="fin-matrix-val" style={{ color: '#38bdf8' }}>{formatCurrency(totalOpExMonthly * 12)}</div>
+              <div className="fin-matrix-tag" style={{ color: '#0284c7' }}>Annualized Burn Run-Rate</div>
+              <div className="fin-matrix-val" style={{ color: '#0284c7' }}>{formatCurrency(totalOpExMonthly * 12)}</div>
               <div className="fin-matrix-detail">
                 12-month baseline expenditure commitment to sustain steady-state operations without premature cash depletion.
               </div>
@@ -901,7 +901,7 @@ const FinancialTab = ({ data, idea }) => {
           
           <div className="fin-formula-box" style={{ borderLeft: '4px solid #10b981' }}>
             <div className="fin-formula-title">
-              <FaBalanceScale style={{ color: '#a78bfa' }} /> Unit Economics &amp; Venture Efficiency Formulas
+              <FaBalanceScale style={{ color: '#7c3aed' }} /> Unit Economics &amp; Venture Efficiency Formulas
             </div>
             <div className="fin-formula-code">
               LTV:CAC Ratio = LTV ({formatCurrency(ltv)}) ÷ CAC ({formatCurrency(cac)}) = {ltvCacRatio}x • Gross Margin: {grossMarginPct}% • CAC Payback: {cacPaybackMonths} mos
@@ -916,11 +916,11 @@ const FinancialTab = ({ data, idea }) => {
             <div className="fin-item-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">Gross Margin Profile</span>
-                <span className="fin-card-percent-pill" style={{ background: 'rgba(16,185,129,0.2)', color: '#34d399' }}>Unit Profitability</span>
+                <span className="fin-card-percent-pill" style={{ background: '#ECFDF5', color: '#059669' }}>Unit Profitability</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#34d399' }}>{grossMarginPct}%</div>
+              <div className="fin-card-amount" style={{ color: '#059669' }}>{grossMarginPct}%</div>
               <div className="fin-why-box" style={{ borderLeftColor: '#10b981' }}>
-                <div className="fin-why-label" style={{ color: '#34d399' }}>Contribution Strength:</div>
+                <div className="fin-why-label" style={{ color: '#059669' }}>Contribution Strength:</div>
                 <p className="fin-why-text">
                   {isOffline 
                     ? 'Reflects 38% food ingredient and packaging COGS, leaving 62% gross profit on every bill to easily cover labor and rent.'

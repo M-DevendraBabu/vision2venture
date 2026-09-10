@@ -931,22 +931,27 @@
 
 .gemini-textarea {
   flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #0F172A;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #0F172A !important;
+  -webkit-text-fill-color: #0F172A !important;
+  caret-color: #0EA5E9 !important;
   font-size: 15px;
   line-height: 1.45;
   resize: none;
   max-height: 110px;
-  padding: 6px 0;
+  padding: 6px 0 !important;
   font-family: inherit;
   box-sizing: border-box;
   height: 24px;
 }
 
 .gemini-textarea::placeholder {
-  color: #94A3B8;
+  color: #94A3B8 !important;
+  -webkit-text-fill-color: #94A3B8 !important;
+  opacity: 1 !important;
 }
 
 .gemini-input-controls {

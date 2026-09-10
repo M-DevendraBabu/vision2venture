@@ -289,16 +289,21 @@ input.dashboard-search-input {
   background: #FFFFFF !important;
   border: 1px solid var(--border-input, #CBD5E1) !important;
   border-radius: 8px;
-  color: var(--text-primary, #0F172A) !important;
+  color: #0F172A !important;
+  -webkit-text-fill-color: #0F172A !important;
+  caret-color: #0EA5E9 !important;
   font-size: 0.88rem;
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 input.dashboard-search-input:focus {
-  border-color: var(--primary-color, #0EA5E9) !important;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important;
+  border-color: #0EA5E9 !important;
+  outline: none !important;
+  color: #0F172A !important;
+  -webkit-text-fill-color: #0F172A !important;
+  caret-color: #0EA5E9 !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.16) !important;
 }
 
 .dashboard-search-icon {

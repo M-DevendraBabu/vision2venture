@@ -92,7 +92,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 /* ===================================
-   FORM CONTROLS — WHITE BACKGROUNDS
+   FORM CONTROLS — WHITE BACKGROUNDS & HIGH CONTRAST TEXT
    =================================== */
 input, select, textarea, button {
   font-family: inherit;
@@ -100,6 +100,7 @@ input, select, textarea, button {
 }
 
 .glass-input,
+.floating-input,
 select,
 input[type="text"],
 input[type="email"],
@@ -107,9 +108,12 @@ input[type="password"],
 input[type="number"],
 input[type="url"],
 input[type="tel"],
+input[type="search"],
 textarea {
   background: #FFFFFF !important;
-  color: var(--text-primary, #0F172A) !important;
+  color: #0F172A !important;
+  -webkit-text-fill-color: #0F172A !important;
+  caret-color: #0EA5E9 !important;
   border: 1px solid var(--border-input, #CBD5E1) !important;
   border-radius: var(--radius-md);
   padding: 10px 14px;
@@ -117,15 +121,55 @@ textarea {
   outline: none;
   font-size: 0.92rem;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  box-sizing: border-box;
 }
 
 .glass-input:focus,
+.floating-input:focus,
 select:focus,
 textarea:focus,
-input:focus {
-  border-color: var(--primary-color, #0EA5E9) !important;
+input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus,
+input[type="tel"]:focus,
+input[type="search"]:focus {
+  border-color: #0EA5E9 !important;
   background: #FFFFFF !important;
-  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important;
+  color: #0F172A !important;
+  -webkit-text-fill-color: #0F172A !important;
+  caret-color: #0EA5E9 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.16) !important;
+}
+
+/* Browser Autofill Styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #0F172A !important;
+  -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+  box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #0EA5E9 !important;
+}
+
+/* Global Selection Styling */
+::selection {
+  background-color: rgba(14, 165, 233, 0.22) !important;
+  color: #0F172A !important;
+}
+::-moz-selection {
+  background-color: rgba(14, 165, 233, 0.22) !important;
+  color: #0F172A !important;
 }
 
 select option {
@@ -158,9 +202,13 @@ textarea {
   line-height: 1.6;
 }
 
-::placeholder {
-  color: var(--text-muted, #64748B) !important;
-  opacity: 0.85;
+::placeholder,
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder {
+  color: #94A3B8 !important;
+  -webkit-text-fill-color: #94A3B8 !important;
+  opacity: 1 !important;
 }
 
 /* Floating Labels */
