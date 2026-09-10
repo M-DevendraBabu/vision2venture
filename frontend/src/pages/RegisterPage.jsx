@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-import { FaCheck, FaTimes, FaEye, FaEyeSlash, FaGoogle } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaEye, FaEyeSlash, FaGoogle, FaBrain } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import '../styles/Auth.css';
@@ -88,7 +88,13 @@ const RegisterPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-card glass-card animate-scale-in">
-        <h1 className="auth-title gradient-text">Create Account</h1>
+        <div className="auth-brand-header">
+          <div className="auth-brand-badge">
+            <FaBrain className="auth-brand-icon" />
+          </div>
+          <span className="auth-brand-name">Vision2Venture</span>
+        </div>
+        <h1 className="auth-title">Create Account</h1>
         <p className="auth-subtitle">Start analyzing your startup ideas</p>
 
         <div className="google-btn-wrapper">

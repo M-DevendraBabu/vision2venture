@@ -9,11 +9,11 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(5, 8, 17, 0.94);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background: rgba(11, 22, 38, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.65);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: 72px;
+  height: 68px;
   max-width: 600px;
   margin: 0 auto;
   padding: 0 12px;
@@ -42,13 +42,13 @@
   height: 100%;
   color: #94a3b8;
   text-decoration: none;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 500;
   transition: all 0.2s ease;
   position: relative;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  gap: 4px;
+  gap: 3px;
 }
 
 .mobile-nav-item:active {
@@ -56,8 +56,8 @@
 }
 
 .mobile-nav-icon {
-  font-size: 24px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 22px;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,50 +65,50 @@
 
 .mobile-nav-label {
   letter-spacing: 0.2px;
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   transition: color 0.2s ease;
 }
 
 /* Active State */
 .mobile-nav-item.active {
-  color: #38bdf8;
+  color: var(--primary-color);
+  font-weight: 600;
 }
 
 .mobile-nav-item.active .mobile-nav-icon {
-  color: #0ea5e9;
+  color: var(--primary-color);
   transform: translateY(-2px);
-  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.6));
+  filter: drop-shadow(0 0 6px rgba(33, 184, 242, 0.5));
 }
 
 .mobile-nav-item.active::after {
   content: '';
   position: absolute;
-  top: 6px;
-  width: 22px;
-  height: 3px;
+  top: 5px;
+  width: 20px;
+  height: 2.5px;
   background: var(--gradient-brand);
   border-radius: 3px;
-  box-shadow: 0 0 8px rgba(14, 165, 233, 0.6);
 }
 
 /* Center Action Button (New Idea / Analyze) */
 .mobile-nav-item.central-action {
   position: relative;
-  top: -14px;
+  top: -12px;
 }
 
 .mobile-nav-central-btn {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--gradient-brand);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 26px;
-  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5), 0 0 0 4px #050811;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 24px;
+  box-shadow: 0 4px 16px rgba(33, 184, 242, 0.45), 0 0 0 3px #07111F;
+  transition: all 0.2s ease;
   margin-bottom: 2px;
 }
 

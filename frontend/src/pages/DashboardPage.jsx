@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import StatCard from '../components/Cards/StatCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { startupAPI, analysisAPI } from '../services/api';
-import { FaLightbulb, FaCheckCircle, FaStar, FaPlus, FaTrash, FaRocket } from 'react-icons/fa';
+import { FaLightbulb, FaCheckCircle, FaStar, FaPlus, FaTrash, FaRocket, FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import '../styles/Dashboard.css';
 
@@ -32,6 +32,8 @@ const DashboardPage = () => {
   });
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [fetchError, setFetchError] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sectorFilter, setSectorFilter] = useState('all');
 
   useEffect(() => {
     fetchIdeas();
@@ -108,12 +110,30 @@ const DashboardPage = () => {
   };
 
   const completedCount = ideas.filter(i => i.analysis_status === 'completed').length;
+  const scoredIdeas = ideas.filter(i => i.overall_score);
+  const avgScore = scoredIdeas.length > 0 
+    ? Math.round(scoredIdeas.reduce((sum, i) => sum + Number(i.overall_score), 0) / scoredIdeas.length)
+    : null;
 
   const stats = [
-    { icon: <FaLightbulb />, label: 'Total Ideas', value: String(ideas.length), trend: ideas.length, trendLabel: 'all time' },
-    { icon: <FaCheckCircle />, label: 'Analyzed', value: String(completedCount), trend: completedCount, trendLabel: 'completed' },
+    { icon: <FaLightbulb />, label: 'Total Ideas', value: String(ideas.length), trend: ideas.length, trendLabel: 'portfolio' },
+    { icon: <FaCheckCircle />, label: 'Analyzed', value: String(completedCount), trend: completedCount, trendLabel: 'complete' },
     { icon: <FaStar />, label: 'Pending', value: String(ideas.length - completedCount), trend: 0, trendLabel: 'awaiting' }
   ];
+
+  const filteredIdeas = ideas.filter(idea => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch = !query || 
+      idea.title?.toLowerCase().includes(query) ||
+      idea.description?.toLowerCase().includes(query) ||
+      idea.industry?.toLowerCase().includes(query);
+    const matchesSector = sectorFilter === 'all' || 
+      idea.sector?.toLowerCase() === sectorFilter.toLowerCase();
+    return matchesSearch && matchesSector;
+  });
+
+  const activeIdeas = filteredIdeas.filter(i => i.analysis_status !== 'completed');
+  const completedIdeas = filteredIdeas.filter(i => i.analysis_status === 'completed');
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -159,13 +179,16 @@ const DashboardPage = () => {
       <Sidebar />
       <div className="page-content">
         <div className="dashboard-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <h1 className="page-title" style={{ margin: 0 }}>Dashboard</h1>
-            {isRefreshing && (
-              <span style={{ fontSize: '0.72rem', color: '#7dd3fc', background: 'rgba(14, 165, 233, 0.12)', padding: '2px 8px', borderRadius: '10px', border: '1px solid rgba(14, 165, 233, 0.25)', fontWeight: 600 }}>
-                Syncing...
-              </span>
-            )}
+          <div className="dashboard-header-text">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 className="page-title" style={{ margin: 0 }}>Founder Workspace</h1>
+              {isRefreshing && (
+                <span style={{ fontSize: '0.72rem', color: '#21B8F2', background: 'rgba(33, 184, 242, 0.12)', padding: '2px 8px', borderRadius: '10px', border: '1px solid rgba(33, 184, 242, 0.25)', fontWeight: 600 }}>
+                  Syncing...
+                </span>
+              )}
+            </div>
+            <p>Real-time venture validation pipeline and market intelligence portfolio</p>
           </div>
           <button className="btn-primary" onClick={() => navigate('/new-idea')}>
             <FaPlus /> New Idea
@@ -178,21 +201,53 @@ const DashboardPage = () => {
           ))}
         </div>
 
-        <div className="dashboard-section">
-          <h2>Active Ideas</h2>
-          {ideas.filter(i => i.analysis_status !== 'completed').length === 0 ? (
-            <div className="empty-state glass-card">
-              <FaLightbulb size={48} />
-              <h3>No active ideas</h3>
-              <p>Submit your first startup idea to get AI-powered analysis!</p>
-              <button className="btn-primary" onClick={() => navigate('/new-idea')}>
-                <FaPlus /> Submit New Idea
+        <div className="dashboard-toolbar">
+          <div className="dashboard-search-wrap">
+            <FaSearch className="dashboard-search-icon" />
+            <input 
+              type="text" 
+              className="dashboard-search-input"
+              placeholder="Search concepts by title, industry..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="dashboard-filter-chips">
+            {['all', 'online', 'offline', 'hybrid'].map((sector) => (
+              <button
+                key={sector}
+                className={`filter-chip ${sectorFilter === sector ? 'active' : ''}`}
+                onClick={() => setSectorFilter(sector)}
+              >
+                {sector.charAt(0).toUpperCase() + sector.slice(1)}
               </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="dashboard-section">
+          <div className="dashboard-section-header">
+            <h2>Active Concepts <span className="section-count-badge">{activeIdeas.length}</span></h2>
+          </div>
+          {activeIdeas.length === 0 ? (
+            <div className="empty-state">
+              <FaLightbulb size={40} />
+              <h3>{searchQuery || sectorFilter !== 'all' ? 'No matching concepts' : 'No active concepts'}</h3>
+              <p>
+                {searchQuery || sectorFilter !== 'all'
+                  ? 'Try clearing your search query or switching sector filters.'
+                  : 'Submit your first startup idea to get AI-powered venture intelligence!'}
+              </p>
+              {!searchQuery && sectorFilter === 'all' && (
+                <button className="btn-primary" onClick={() => navigate('/new-idea')}>
+                  <FaPlus /> Submit New Idea
+                </button>
+              )}
             </div>
           ) : (
             <div className="ideas-grid">
-              {ideas.filter(i => i.analysis_status !== 'completed').map(idea => (
-                <div key={idea.id} className="idea-card glass-card">
+              {activeIdeas.map(idea => (
+                <div key={idea.id} className="idea-card">
                   <div className="idea-card-header">
                     <h3 className="idea-title" title={idea.title}>
                       {idea.title}
@@ -202,7 +257,7 @@ const DashboardPage = () => {
                     <div className="idea-meta">
                       <span>{idea.industry}</span>
                       <span className="idea-meta-bullet">•</span>
-                      <span className={`sector-badge sector-badge-${idea.sector}`}>{idea.sector}</span>
+                      <span className={`sector-badge sector-badge-${idea.sector?.toLowerCase()}`}>{idea.sector}</span>
                     </div>
                     <span className={`status-badge ${getStatusClass(idea.analysis_status)}`}>
                       {idea.analysis_status}
@@ -237,37 +292,45 @@ const DashboardPage = () => {
 
         {completedCount > 0 && (
           <div className="dashboard-section" style={{ marginTop: '2rem' }}>
-            <h2>Analysis History</h2>
-            <div className="ideas-grid">
-              {ideas.filter(i => i.analysis_status === 'completed').map(idea => (
-                <div key={idea.id} className="idea-card glass-card">
-                  <div className="idea-card-header">
-                    <h3 className="idea-title" title={idea.title}>
-                      {idea.title}
-                    </h3>
-                  </div>
-                  <div className="idea-meta-row">
-                    <div className="idea-meta">
-                      <span>{idea.industry}</span>
-                      <span className="idea-meta-bullet">•</span>
-                      <span className={`sector-badge sector-badge-${idea.sector}`}>{idea.sector}</span>
-                    </div>
-                    <span className="status-badge status-completed">
-                      Success Probability: {idea.overall_score ? `${idea.overall_score}/100` : 'High'}
-                    </span>
-                  </div>
-                  <p className="idea-desc">{idea.description?.substring(0, 120)}...</p>
-                  <div className="idea-actions">
-                    <Link to={`/analysis/${idea.id}`} className="btn-secondary">
-                      View Results
-                    </Link>
-                    <button className="btn-danger" onClick={() => handleDelete(idea.id)} title="Delete">
-                      <FaTrash />
-                    </button>
-                  </div>
-                </div>
-              ))}
+            <div className="dashboard-section-header">
+              <h2>Validated Intelligence <span className="section-count-badge">{completedIdeas.length}</span></h2>
             </div>
+            {completedIdeas.length === 0 ? (
+              <div className="empty-state">
+                <p>No analyzed concepts match your search criteria.</p>
+              </div>
+            ) : (
+              <div className="ideas-grid">
+                {completedIdeas.map(idea => (
+                  <div key={idea.id} className="idea-card">
+                    <div className="idea-card-header">
+                      <h3 className="idea-title" title={idea.title}>
+                        {idea.title}
+                      </h3>
+                    </div>
+                    <div className="idea-meta-row">
+                      <div className="idea-meta">
+                        <span>{idea.industry}</span>
+                        <span className="idea-meta-bullet">•</span>
+                        <span className={`sector-badge sector-badge-${idea.sector?.toLowerCase()}`}>{idea.sector}</span>
+                      </div>
+                      <span className="status-badge status-completed">
+                        {idea.overall_score ? `V2V ${idea.overall_score}/100` : 'Validated'}
+                      </span>
+                    </div>
+                    <p className="idea-desc">{idea.description?.substring(0, 120)}...</p>
+                    <div className="idea-actions">
+                      <Link to={`/analysis/${idea.id}`} className="btn-secondary">
+                        View Dossier
+                      </Link>
+                      <button className="btn-danger" onClick={() => handleDelete(idea.id)} title="Delete">
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

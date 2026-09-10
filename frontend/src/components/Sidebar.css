@@ -41,25 +41,25 @@
   transform: translateY(-50%);
   width: 3px;
   height: 0;
-  background: var(--gradient-brand);
+  background: var(--primary-color);
   border-radius: 0 3px 3px 0;
-  transition: height 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+  transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(33, 184, 242, 0.5);
 }
 
 .sidebar-link:hover {
-  color: #f1f5f9;
+  color: #F5F7FA;
   background: rgba(255, 255, 255, 0.04);
 }
 
 .sidebar-link.active {
-  color: #38bdf8;
-  background: rgba(14, 165, 233, 0.1);
+  color: var(--primary-color);
+  background: rgba(33, 184, 242, 0.08);
   font-weight: 600;
 }
 
 .sidebar-link.active::before {
-  height: 60%;
+  height: 55%;
 }
 
 .sidebar-link svg {

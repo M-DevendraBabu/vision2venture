@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaBrain } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import api from '../services/api';
 import '../styles/Auth.css';
@@ -63,7 +64,13 @@ const ForgotPasswordPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-card glass-card animate-scale-in">
-        <h1 className="auth-title gradient-text">Secure Password Reset</h1>
+        <div className="auth-brand-header">
+          <div className="auth-brand-badge">
+            <FaBrain className="auth-brand-icon" />
+          </div>
+          <span className="auth-brand-name">Vision2Venture</span>
+        </div>
+        <h1 className="auth-title">Secure Password Reset</h1>
         <p className="auth-subtitle">
           {step === 1 ? 'Enter your registered email to receive a confidential 6-digit verification code' : `Enter the verification code sent to ${email}`}
         </p>

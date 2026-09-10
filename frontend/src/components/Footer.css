@@ -4,8 +4,8 @@
 .footer {
   margin-top: var(--spacing-2xl);
   padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-md);
-  background: linear-gradient(180deg, rgba(5,8,17,0.95) 0%, rgba(8,14,28,0.98) 100%);
-  border-top: 1px solid rgba(255,255,255,0.04);
+  background: #0B1626;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   z-index: 1;
 }
@@ -15,9 +15,9 @@
   position: absolute;
   top: 0; left: 50%;
   transform: translateX(-50%);
-  width: 200px;
+  width: 240px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(14,165,233,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(33, 184, 242, 0.5), transparent);
 }
 
 .footer-content {

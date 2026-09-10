@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
-import { FaGoogle } from 'react-icons/fa';
+import { FaGoogle, FaBrain } from 'react-icons/fa';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
 import { toast } from 'react-toastify';
@@ -63,8 +63,14 @@ const LoginPage = () => {
   return (
     <div className="auth-page">
       <div className="auth-card glass-card animate-scale-in">
-        <h1 className="auth-title gradient-text">Welcome Back</h1>
-        <p className="auth-subtitle">Login to continue your analysis</p>
+        <div className="auth-brand-header">
+          <div className="auth-brand-badge">
+            <FaBrain className="auth-brand-icon" />
+          </div>
+          <span className="auth-brand-name">Vision2Venture</span>
+        </div>
+        <h1 className="auth-title">Welcome Back</h1>
+        <p className="auth-subtitle">Sign in to your venture intelligence workspace</p>
 
         <div className="google-btn-wrapper">
           <button 
