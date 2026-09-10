@@ -176,7 +176,7 @@ const AdminPage = () => {
                 <div className="desktop-user-table user-table-wrap" style={{ overflowX: 'auto' }}>
                   <table className="admin-table w-full text-left" style={{ borderCollapse: 'collapse' }}>
                     <thead>
-                      <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8', fontSize: '0.8rem', textTransform: 'uppercase' }}>
+                      <tr style={{ borderBottom: '1px solid #E2E8F0', color: '#64748B', fontSize: '0.8rem', textTransform: 'uppercase' }}>
                         <th className="p-sm">User</th>
                         <th className="p-sm">Role</th>
                         <th className="p-sm">Joined Date</th>
@@ -186,18 +186,18 @@ const AdminPage = () => {
                     </thead>
                     <tbody>
                       {filteredUsers.map(u => (
-                        <tr key={u.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                        <tr key={u.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
                           <td className="p-sm">
-                            <div className="font-bold text-white" style={{ fontSize: '0.92rem' }}>{u.name}</div>
+                            <div className="font-bold" style={{ color: '#0F172A', fontSize: '0.92rem' }}>{u.name}</div>
                             <div className="text-xs text-secondary">{u.email}</div>
                           </td>
                           <td className="p-sm">
                             {u.role === 'admin' ? (
-                              <span className="tag" style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                              <span className="tag" style={{ background: 'rgba(245,158,11,0.15)', color: '#d97706', border: '1px solid rgba(245,158,11,0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
                                 <FaCrown size={10} style={{ marginRight: 4 }} /> Admin
                               </span>
                             ) : (
-                              <span className="tag" style={{ background: 'rgba(14, 165, 233,0.1)', color: '#38bdf8', border: '1px solid rgba(14, 165, 233,0.2)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                              <span className="tag" style={{ background: 'rgba(14, 165, 233,0.1)', color: '#0284c7', border: '1px solid rgba(14, 165, 233,0.2)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
                                 User
                               </span>
                             )}
@@ -214,7 +214,7 @@ const AdminPage = () => {
                               <button
                                 onClick={() => fetchUserHistory(u.id)}
                                 className="btn text-xs flex align-center gap-xs"
-                                style={{ background: selectedUser?.id === u.id ? 'var(--primary-color)' : 'rgba(255,255,255,0.08)', color: '#fff', border: 'none', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 500 }}
+                                style={{ background: selectedUser?.id === u.id ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : '#F1F5F9', color: selectedUser?.id === u.id ? '#fff' : '#334155', border: '1px solid #CBD5E1', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 }}
                               >
                                 <FaFileAlt size={11} /> History
                               </button>
@@ -223,7 +223,7 @@ const AdminPage = () => {
                                   onClick={() => handleDeleteUser(u.id)}
                                   className="btn text-xs text-danger"
                                   title="Delete User Account"
-                                  style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer' }}
+                                  style={{ background: 'rgba(239,68,68,0.15)', color: '#dc2626', border: 'none', padding: '5px 10px', borderRadius: '6px', cursor: 'pointer' }}
                                 >
                                   <FaTrash size={11} />
                                 </button>
@@ -243,21 +243,21 @@ const AdminPage = () => {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
                         <div style={{ minWidth: 0, flex: 1 }}>
                           <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '1.15rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.name}</div>
-                          <div style={{ fontSize: '0.88rem', color: '#94a3b8', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</div>
+                          <div style={{ fontSize: '0.88rem', color: '#64748B', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</div>
                         </div>
                         {u.role === 'admin' ? (
-                          <span style={{ background: 'rgba(245,158,11,0.18)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ background: 'rgba(245,158,11,0.18)', color: '#d97706', border: '1px solid rgba(245,158,11,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                             <FaCrown size={12} /> Admin
                           </span>
                         ) : (
-                          <span style={{ background: 'rgba(14, 165, 233,0.18)', color: '#7dd3fc', border: '1px solid rgba(14, 165, 233,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ background: 'rgba(14, 165, 233,0.18)', color: '#0284c7', border: '1px solid rgba(14, 165, 233,0.35)', padding: '5px 12px', borderRadius: '8px', fontSize: '0.82rem', fontWeight: 800, whiteSpace: 'nowrap', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                             User
                           </span>
                         )}
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#334155', background: '#F8FAFC', padding: '10px 14px', borderRadius: '10px' }}>
                         <span>Joined: {u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A'}</span>
-                        <span style={{ fontWeight: 800, color: '#38bdf8' }}>Ideas: {u.idea_count || 0}</span>
+                        <span style={{ fontWeight: 800, color: '#0284c7' }}>Ideas: {u.idea_count || 0}</span>
                       </div>
                       <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
                         <button
@@ -269,7 +269,7 @@ const AdminPage = () => {
                         {u.role !== 'admin' && (
                           <button
                             onClick={() => handleDeleteUser(u.id)}
-                            style={{ minHeight: '48px', padding: '12px 18px', background: 'rgba(239,68,68,0.18)', color: '#f87171', border: '1px solid rgba(239,68,68,0.35)', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            style={{ minHeight: '48px', padding: '12px 18px', background: 'rgba(239,68,68,0.18)', color: '#dc2626', border: '1px solid rgba(239,68,68,0.35)', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             title="Delete User"
                           >
                             <FaTrash size={14} />
@@ -284,14 +284,14 @@ const AdminPage = () => {
               {/* Selected User History Detail Panel */}
               {selectedUser && (
                 <div className="glass-card p-lg animate-fade-in">
-                  <div className="flex-between mb-md pb-xs" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div className="flex-between mb-md pb-xs" style={{ borderBottom: '1px solid #E2E8F0' }}>
                     <div>
                       <h3 className="text-primary font-bold">{selectedUser.name}'s Idea History</h3>
                       <p className="text-xs text-secondary">{selectedUser.email}</p>
                     </div>
                     <button 
                       onClick={() => setSelectedUser(null)} 
-                      style={{ background: 'rgba(255,255,255,0.06)', border: 'none', color: '#94a3b8', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+                      style={{ background: '#F1F5F9', border: '1px solid #CBD5E1', color: '#475569', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
                     >
                       Close
                     </button>

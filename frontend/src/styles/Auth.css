@@ -4,14 +4,15 @@
    ================================================================= */
 
 .auth-page {
+  min-height: calc(100dvh - 64px);
   min-height: calc(100vh - 64px);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 32px 16px;
   background-color: var(--bg-color, #F8FAFC);
   position: relative;
-  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .auth-page::before {
@@ -27,9 +28,8 @@
 }
 
 .auth-card {
-  width: 100%;
-  max-width: 440px;
-  padding: 36px 32px;
+  width: min(100%, 440px);
+  padding: 28px 28px;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -37,6 +37,8 @@
   border: 1px solid var(--border-color, #E2E8F0) !important;
   border-radius: var(--radius-lg, 14px) !important;
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08) !important;
+  box-sizing: border-box;
+  margin: auto 0;
 }
 
 .auth-brand-header {
@@ -44,12 +46,12 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .auth-brand-badge {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-sm, 8px);
   background: #F0F9FF;
   border: 1px solid #BAE6FD;
@@ -57,19 +59,19 @@
   align-items: center;
   justify-content: center;
   color: var(--primary-dark, #0284C7);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
 .auth-brand-name {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary, #0F172A);
   letter-spacing: -0.02em;
 }
 
 .auth-title {
-  font-size: 1.65rem;
-  margin-bottom: 6px;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary, #0F172A);
@@ -77,9 +79,9 @@
 
 .auth-subtitle {
   color: var(--text-muted, #64748B);
-  margin-bottom: 24px;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  margin-bottom: 16px;
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 /* Google Sign-In */
@@ -326,17 +328,29 @@
   margin-top: 2px;
 }
 
-/* Mobile responsive */
+/* Short-height screen protection (e.g. 768px/800px laptops) */
+@media (max-height: 750px) {
+  .auth-page {
+    align-items: flex-start;
+    padding-top: 16px;
+    padding-bottom: 32px;
+  }
+}
+
+/* Mobile responsive (375px - 640px) */
 @media (max-width: 640px) {
   .auth-page {
-    padding: 24px 16px;
+    padding: 16px 14px 36px 14px;
+    align-items: flex-start;
   }
   .auth-card {
-    padding: 28px 20px;
+    width: 100%;
+    max-width: 400px;
+    padding: 22px 16px;
     border-radius: var(--radius-md, 10px) !important;
   }
   .auth-title {
-    font-size: 1.45rem;
+    font-size: 1.35rem;
   }
   .pw-checks-grid {
     grid-template-columns: 1fr;

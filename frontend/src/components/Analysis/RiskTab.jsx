@@ -443,15 +443,15 @@ const RiskTab = ({ data, idea }) => {
             {/* Overall Feasibility Summary Banner */}
             <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #10b981', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
-                <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Overall Feasibility</div>
-                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#10b981', lineHeight: '1.1' }}>{overallScore}/100</div>
+                <div style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Overall Feasibility</div>
+                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#059669', lineHeight: '1.1' }}>{overallScore}/100</div>
                 <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
                   {overallScore > 70 ? 'High Feasibility' : overallScore > 50 ? 'Moderate Feasibility' : 'High Execution Challenge'}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
                 <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0F172A' }}>Overall Viability Assessment</h4>
-                <p style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.6' }}>
+                <p style={{ margin: 0, color: '#334155', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   {overallExplanation}
                 </p>
               </div>
@@ -516,15 +516,15 @@ const RiskTab = ({ data, idea }) => {
             {/* Overall Investor Summary Banner */}
             <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #0ea5e9', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
-                <div style={{ fontSize: '0.78rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Investor Score</div>
-                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#38bdf8', lineHeight: '1.1' }}>{overallScore}/100</div>
+                <div style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Investor Score</div>
+                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#0284c7', lineHeight: '1.1' }}>{overallScore}/100</div>
                 <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
                   {overallScore > 70 ? 'Venture Ready' : overallScore > 50 ? 'Angel / Seed Stage' : 'Pre-Seed Development'}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
                 <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0F172A' }}>Venture Capital & Angel Readiness Assessment</h4>
-                <p style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.6' }}>
+                <p style={{ margin: 0, color: '#334155', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   {overallExplanation}
                 </p>
               </div>
@@ -580,7 +580,7 @@ const RiskTab = ({ data, idea }) => {
               <ul className="user-list">
                 {investorData.suggestions && investorData.suggestions.length > 0 ? (
                   investorData.suggestions.map((s, i) => (
-                    <li key={i} className="text-sm py-xs leading-relaxed" style={{ color: '#cbd5e1' }}>{s}</li>
+                    <li key={i} className="text-sm py-xs leading-relaxed" style={{ color: '#334155' }}>{s}</li>
                   ))
                 ) : (
                   <li className="text-sm text-secondary">Deploy functional MVP to demonstrate initial customer traction and retention.</li>

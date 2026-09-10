@@ -355,25 +355,25 @@ const FinancialTab = ({ data, idea }) => {
         <div className="fin-kpi-grid">
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaTools style={{ color: '#0ea5e9' }} /> Total Setup (CapEx)</div>
-            <div className="fin-kpi-value text-info" style={{ color: '#38bdf8' }}>{formatCurrency(totalCapEx)}</div>
+            <div className="fin-kpi-value text-info" style={{ color: '#0284c7' }}>{formatCurrency(totalCapEx)}</div>
             <div className="fin-kpi-sub">One-time upfront launch investment</div>
           </div>
 
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaReceipt style={{ color: '#f59e0b' }} /> Monthly Burn (OpEx)</div>
-            <div className="fin-kpi-value" style={{ color: '#fbbf24' }}>{formatCurrency(totalOpExMonthly)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+            <div className="fin-kpi-value" style={{ color: '#d97706' }}>{formatCurrency(totalOpExMonthly)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
             <div className="fin-kpi-sub">Total monthly operating overhead</div>
           </div>
 
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaChartLine style={{ color: '#10b981' }} /> Target MRR Run-Rate</div>
-            <div className="fin-kpi-value" style={{ color: '#34d399' }}>{formatCurrency(mrr)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+            <div className="fin-kpi-value" style={{ color: '#059669' }}>{formatCurrency(mrr)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
             <div className="fin-kpi-sub">{formatCurrency(arr)} Annualized Run-Rate (ARR)</div>
           </div>
 
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaBullseye style={{ color: '#06b6d4' }} /> Break-Even Horizon</div>
-            <div className="fin-kpi-value" style={{ color: '#38bdf8' }}>{breakEvenMonths} Months</div>
+            <div className="fin-kpi-value" style={{ color: '#0284c7' }}>{breakEvenMonths} Months</div>
             <div className="fin-kpi-sub">Full CapEx investment recovery</div>
           </div>
         </div>
@@ -654,7 +654,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Staff Payroll &amp; Team Salaries</span>
                 <span className="fin-card-percent-pill">{Math.round((staffCost / totalOpExMonthly) * 100)}% of OpEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(staffCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{formatCurrency(staffCost)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -672,7 +672,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">{isOffline ? 'Commercial Facility Lease & CAM' : 'Coworking & Office Infrastructure'}</span>
                 <span className="fin-card-percent-pill">{Math.round((rentCost / totalOpExMonthly) * 100)}% of OpEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#fbbf24' }}>{formatCurrency(rentCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#d97706' }}>{formatCurrency(rentCost)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -690,7 +690,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Cloud Infrastructure &amp; APIs</span>
                 <span className="fin-card-percent-pill">{Math.round((cloudCost / totalOpExMonthly) * 100)}% of OpEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(cloudCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{formatCurrency(cloudCost)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -706,7 +706,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Performance Marketing &amp; CAC Budget</span>
                 <span className="fin-card-percent-pill">{Math.round((mktCost / totalOpExMonthly) * 100)}% of OpEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#34d399' }}>{formatCurrency(mktCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#059669' }}>{formatCurrency(mktCost)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -723,7 +723,7 @@ const FinancialTab = ({ data, idea }) => {
                   <span className="fin-card-title">Raw Materials, Produce &amp; Packaging</span>
                   <span className="fin-card-percent-pill">{Math.round((rawMaterialCost / totalOpExMonthly) * 100)}% of OpEx</span>
                 </div>
-                <div className="fin-card-amount" style={{ color: '#f472b6' }}>{formatCurrency(rawMaterialCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+                <div className="fin-card-amount" style={{ color: '#db2777' }}>{formatCurrency(rawMaterialCost)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
                 <div className="fin-why-box">
                   <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                   <p className="fin-why-text">
@@ -740,7 +740,7 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Utilities, SaaS Tools &amp; Incidentals</span>
                 <span className="fin-card-percent-pill">{Math.round((utilCost / totalOpExMonthly) * 100)}% of OpEx</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#a78bfa' }}>{formatCurrency(utilCost)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#7c3aed' }}>{formatCurrency(utilCost)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-why-box">
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
@@ -795,24 +795,24 @@ const FinancialTab = ({ data, idea }) => {
           {/* 3-Tier Volume Sensitivity Matrix */}
           <div className="fin-matrix-grid">
             <div className="fin-matrix-card conservative">
-              <div className="fin-matrix-tag" style={{ color: '#f59e0b' }}>Conservative Scenario (60% Volume)</div>
-              <div className="fin-matrix-val" style={{ color: '#fbbf24' }}>{formatCurrency(mrr * 0.60)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-matrix-tag" style={{ color: '#d97706' }}>Conservative Scenario (60% Volume)</div>
+              <div className="fin-matrix-val" style={{ color: '#d97706' }}>{formatCurrency(mrr * 0.60)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-matrix-detail">
                 ~{Math.round(monthlySalesVol * 0.60).toLocaleString('en-IN')} orders/mo (~{Number((dailyCustomers * 0.60).toFixed(1))} orders/day). Covers core fixed expenses while early customer adoption ramps up.
               </div>
             </div>
 
             <div className="fin-matrix-card target">
-              <div className="fin-matrix-tag" style={{ color: '#10b981' }}>Target Base Case (100% Volume)</div>
-              <div className="fin-matrix-val" style={{ color: '#34d399' }}>{formatCurrency(mrr)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-matrix-tag" style={{ color: '#059669' }}>Target Base Case (100% Volume)</div>
+              <div className="fin-matrix-val" style={{ color: '#059669' }}>{formatCurrency(mrr)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-matrix-detail">
                 ~{monthlySalesVol.toLocaleString('en-IN')} orders/mo (~{dailyCustomers} orders/day). Fully covers all operating overhead, generating {formatCurrency(mrr - totalOpExMonthly)} net monthly cash profit ({netMarginPct}% margin).
               </div>
             </div>
 
             <div className="fin-matrix-card aggressive">
-              <div className="fin-matrix-tag" style={{ color: '#0ea5e9' }}>Growth Scenario (140% Volume)</div>
-              <div className="fin-matrix-val" style={{ color: '#38bdf8' }}>{formatCurrency(mrr * 1.40)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-matrix-tag" style={{ color: '#0284c7' }}>Growth Scenario (140% Volume)</div>
+              <div className="fin-matrix-val" style={{ color: '#0284c7' }}>{formatCurrency(mrr * 1.40)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-matrix-detail">
                 ~{Math.round(monthlySalesVol * 1.40).toLocaleString('en-IN')} orders/mo. Expands net margins to ~{Math.min(45, netMarginPct + 12)}% via operating leverage and scale economies.
               </div>
@@ -823,11 +823,11 @@ const FinancialTab = ({ data, idea }) => {
             <div className="fin-item-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">Monthly Top-Line Run-Rate (MRR)</span>
-                <span className="fin-card-percent-pill" style={{ background: 'rgba(16,185,129,0.2)', color: '#34d399' }}>Active Run-Rate</span>
+                <span className="fin-card-percent-pill" style={{ background: '#ECFDF5', color: '#059669' }}>Active Run-Rate</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#34d399' }}>{formatCurrency(mrr)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#059669' }}>{formatCurrency(mrr)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
               <div className="fin-why-box" style={{ borderLeftColor: '#10b981' }}>
-                <div className="fin-why-label" style={{ color: '#34d399' }}><FaCoins /> Revenue Model Mechanics:</div>
+                <div className="fin-why-label" style={{ color: '#059669' }}><FaCoins /> Revenue Model Mechanics:</div>
                 <p className="fin-why-text">
                   Generated across core sales transactions, automated subscriptions, and value-add modules. Provides predictable monthly cashflow to cover OpEx and fund expansion.
                 </p>
@@ -840,9 +840,9 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Average Order Value (AOV) / Price</span>
                 <span className="fin-card-percent-pill">Per Unit Ticket</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(pricePerUnit)}</div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{formatCurrency(pricePerUnit)}</div>
               <div className="fin-why-box" style={{ borderLeftColor: '#0ea5e9' }}>
-                <div className="fin-why-label" style={{ color: '#38bdf8' }}><FaStore /> Unit Price Rationale:</div>
+                <div className="fin-why-label" style={{ color: '#0284c7' }}><FaStore /> Unit Price Rationale:</div>
                 <p className="fin-why-text">
                   {isOffline 
                     ? 'Average dining ticket size per customer bill (e.g. artisanal coffee + organic bakery food item) benchmarked against Indian specialty cafe averages.'
@@ -857,9 +857,9 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Monthly Sales Target Volume</span>
                 <span className="fin-card-percent-pill">Capacity</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{monthlySalesVol.toLocaleString('en-IN')} <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>orders/mo</span></div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{monthlySalesVol.toLocaleString('en-IN')} <span style={{ fontSize: '0.8rem', color: '#64748B' }}>orders/mo</span></div>
               <div className="fin-why-box" style={{ borderLeftColor: '#06b6d4' }}>
-                <div className="fin-why-label" style={{ color: '#38bdf8' }}><FaBullseye /> Daily Transaction Target:</div>
+                <div className="fin-why-label" style={{ color: '#0284c7' }}><FaBullseye /> Daily Transaction Target:</div>
                 <p className="fin-why-text">
                   Corresponds to an average of ~{dailyCustomers} customer orders per day. Fully achievable within standard Indian retail footfall or digital marketing conversion funnels.
                 </p>
@@ -874,18 +874,18 @@ const FinancialTab = ({ data, idea }) => {
               <FaChartLine style={{ color: '#10b981' }} /> 3-Year Revenue &amp; Operating Cost Trajectory (₹)
             </h4>
             <BarChart data={barData} />
-            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '1rem', marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '1rem', marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid #E2E8F0' }}>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Year 1 Net Income:</span>{' '}
-                <strong style={{ color: '#34d399' }}>{formatCurrency(y1Rev - y1OpEx)}</strong>
+                <span style={{ color: '#475569', fontSize: '0.8rem' }}>Year 1 Net Income:</span>{' '}
+                <strong style={{ color: '#059669' }}>{formatCurrency(y1Rev - y1OpEx)}</strong>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Year 2 Net Income:</span>{' '}
-                <strong style={{ color: '#34d399' }}>{formatCurrency(y2Rev - y2OpEx)}</strong>
+                <span style={{ color: '#475569', fontSize: '0.8rem' }}>Year 2 Net Income:</span>{' '}
+                <strong style={{ color: '#059669' }}>{formatCurrency(y2Rev - y2OpEx)}</strong>
               </div>
               <div>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Year 3 Net Income:</span>{' '}
-                <strong style={{ color: '#34d399' }}>{formatCurrency(y3Rev - y3OpEx)}</strong>
+                <span style={{ color: '#475569', fontSize: '0.8rem' }}>Year 3 Net Income:</span>{' '}
+                <strong style={{ color: '#059669' }}>{formatCurrency(y3Rev - y3OpEx)}</strong>
               </div>
             </div>
           </div>
@@ -935,9 +935,9 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Customer Acquisition Cost (CAC)</span>
                 <span className="fin-card-percent-pill">Blended Spend</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#fbbf24' }}>{formatCurrency(cac)}</div>
+              <div className="fin-card-amount" style={{ color: '#d97706' }}>{formatCurrency(cac)}</div>
               <div className="fin-why-box" style={{ borderLeftColor: '#f59e0b' }}>
-                <div className="fin-why-label" style={{ color: '#fbbf24' }}>Acquisition Efficiency:</div>
+                <div className="fin-why-label" style={{ color: '#d97706' }}>Acquisition Efficiency:</div>
                 <p className="fin-why-text">
                   Total marketing ad spend divided by new customers acquired. Calibrated for high conversion through targeted digital search, localized promotions, and referral loops.
                 </p>
@@ -950,9 +950,9 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">Customer Lifetime Value (LTV)</span>
                 <span className="fin-card-percent-pill">Repeat Retention</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#38bdf8' }}>{formatCurrency(ltv)}</div>
+              <div className="fin-card-amount" style={{ color: '#0284c7' }}>{formatCurrency(ltv)}</div>
               <div className="fin-why-box" style={{ borderLeftColor: '#06b6d4' }}>
-                <div className="fin-why-label" style={{ color: '#38bdf8' }}>Retention Engine:</div>
+                <div className="fin-why-label" style={{ color: '#0284c7' }}>Retention Engine:</div>
                 <p className="fin-why-text">
                   Cumulative gross profit generated over the full customer retention lifecycle. Driven by product quality, customer loyalty, and recurring engagement.
                 </p>
@@ -963,11 +963,11 @@ const FinancialTab = ({ data, idea }) => {
             <div className="fin-item-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="fin-card-header-row">
                 <span className="fin-card-title">3-Year Cumulative ROI</span>
-                <span className="fin-card-percent-pill" style={{ background: 'rgba(16, 185, 129,0.2)', color: '#c084fc' }}>Venture Return</span>
+                <span className="fin-card-percent-pill" style={{ background: '#ECFDF5', color: '#059669' }}>Venture Return</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#a78bfa' }}>{roiPct}%</div>
+              <div className="fin-card-amount" style={{ color: '#7c3aed' }}>{roiPct}%</div>
               <div className="fin-why-box" style={{ borderLeftColor: '#10b981' }}>
-                <div className="fin-why-label" style={{ color: '#a78bfa' }}>Capital Multiplication:</div>
+                <div className="fin-why-label" style={{ color: '#7c3aed' }}>Capital Multiplication:</div>
                 <p className="fin-why-text">
                   Projected net return on total setup capital ({formatCurrency(totalCapEx)}) over a 36-month operational horizon, factoring in Year 2 and Year 3 scaling economics.
                 </p>
@@ -979,7 +979,7 @@ const FinancialTab = ({ data, idea }) => {
 
           {/* Investor Readiness Advisory */}
           <div className="fin-advisory-box">
-            <FaAward className="fin-advisory-icon" style={{ color: '#f59e0b' }} />
+            <FaAward className="fin-advisory-icon" style={{ color: '#d97706' }} />
             <div className="fin-advisory-content">
               <h5>Investor Viability Assessment: {ltvCacRatio >= 3.5 ? 'Tier-1 Venture Scale' : 'Viable Growth Model'}</h5>
               <p>
@@ -1001,7 +1001,7 @@ const FinancialTab = ({ data, idea }) => {
             
             <div className="fin-cockpit-header">
               <div className="fin-cockpit-title">
-                <FaBullseye style={{ color: '#06b6d4' }} /> Operational Break-Even Cockpit &amp; Run-Rate Analyzer
+                <FaBullseye style={{ color: '#0284c7' }} /> Operational Break-Even Cockpit &amp; Run-Rate Analyzer
               </div>
               <span className="fin-cockpit-status-tag">
                 <FaCheck /> CASHFLOW PROFITABLE ({breakEvenProgressPct}% of Target)
@@ -1020,34 +1020,34 @@ const FinancialTab = ({ data, idea }) => {
 
             <div className="fin-meter-labels">
               <span>0 Orders (Launch)</span>
-              <span style={{ color: '#fbbf24', fontWeight: 700 }}>Break-Even: {breakEvenUnits.toLocaleString('en-IN')} orders/mo</span>
-              <span style={{ color: '#34d399', fontWeight: 700 }}>Target: {monthlySalesVol.toLocaleString('en-IN')} orders/mo</span>
+              <span style={{ color: '#d97706', fontWeight: 700 }}>Break-Even: {breakEvenUnits.toLocaleString('en-IN')} orders/mo</span>
+              <span style={{ color: '#059669', fontWeight: 700 }}>Target: {monthlySalesVol.toLocaleString('en-IN')} orders/mo</span>
             </div>
 
             <div className="fin-breakeven-stats-grid">
               <div className="fin-stat-tile">
                 <div className="fin-stat-tile-label">Monthly Fixed Costs:</div>
-                <div className="fin-stat-tile-val" style={{ color: '#f87171' }}>{formatCurrency(fixedCosts)}</div>
+                <div className="fin-stat-tile-val" style={{ color: '#dc2626' }}>{formatCurrency(fixedCosts)}</div>
               </div>
 
               <div className="fin-stat-tile">
                 <div className="fin-stat-tile-label">Contribution Margin / Unit:</div>
-                <div className="fin-stat-tile-val" style={{ color: '#38bdf8' }}>{formatCurrency(contribMargin)}</div>
+                <div className="fin-stat-tile-val" style={{ color: '#0284c7' }}>{formatCurrency(contribMargin)}</div>
               </div>
 
               <div className="fin-stat-tile">
                 <div className="fin-stat-tile-label">Break-Even Volume:</div>
-                <div className="fin-stat-tile-val" style={{ color: '#fbbf24' }}>{breakEvenUnits.toLocaleString('en-IN')} <span style={{ fontSize: '0.8rem' }}>orders/mo</span></div>
+                <div className="fin-stat-tile-val" style={{ color: '#d97706' }}>{breakEvenUnits.toLocaleString('en-IN')} <span style={{ fontSize: '0.8rem' }}>orders/mo</span></div>
               </div>
 
               <div className="fin-stat-tile">
                 <div className="fin-stat-tile-label">Daily Required Pace:</div>
-                <div className="fin-stat-tile-val" style={{ color: '#a78bfa' }}>{breakEvenDaily} <span style={{ fontSize: '0.8rem' }}>orders/day</span></div>
+                <div className="fin-stat-tile-val" style={{ color: '#7c3aed' }}>{breakEvenDaily} <span style={{ fontSize: '0.8rem' }}>orders/day</span></div>
               </div>
 
               <div className="fin-stat-tile">
                 <div className="fin-stat-tile-label">Break-Even Revenue:</div>
-                <div className="fin-stat-tile-val" style={{ color: '#34d399' }}>{formatCurrency(breakEvenRev)}<span style={{ fontSize: '0.8rem' }}>/mo</span></div>
+                <div className="fin-stat-tile-val" style={{ color: '#059669' }}>{formatCurrency(breakEvenRev)}<span style={{ fontSize: '0.8rem' }}>/mo</span></div>
               </div>
             </div>
 
@@ -1056,24 +1056,24 @@ const FinancialTab = ({ data, idea }) => {
           {/* Margin of Safety Callout */}
           <div className="fin-matrix-grid">
             <div className="fin-matrix-card target">
-              <div className="fin-matrix-tag" style={{ color: '#10b981' }}>Margin of Safety</div>
-              <div className="fin-matrix-val" style={{ color: '#34d399' }}>{marginOfSafetyPct}% Buffer</div>
+              <div className="fin-matrix-tag" style={{ color: '#059669' }}>Margin of Safety</div>
+              <div className="fin-matrix-val" style={{ color: '#059669' }}>{marginOfSafetyPct}% Buffer</div>
               <div className="fin-matrix-detail">
                 Monthly sales volume can drop by up to {marginOfSafetyPct}% before operations dip below the operational break-even threshold.
               </div>
             </div>
 
             <div className="fin-matrix-card conservative">
-              <div className="fin-matrix-tag" style={{ color: '#f59e0b' }}>Net Monthly Profit Buffer</div>
-              <div className="fin-matrix-val" style={{ color: '#fbbf24' }}>{formatCurrency(mrr - totalOpExMonthly)}</div>
+              <div className="fin-matrix-tag" style={{ color: '#d97706' }}>Net Monthly Profit Buffer</div>
+              <div className="fin-matrix-val" style={{ color: '#d97706' }}>{formatCurrency(mrr - totalOpExMonthly)}</div>
               <div className="fin-matrix-detail">
                 Monthly free operating cashflow remaining after fully paying all staff salaries, rent, cloud infrastructure, and marketing CAC.
               </div>
             </div>
 
             <div className="fin-matrix-card aggressive">
-              <div className="fin-matrix-tag" style={{ color: '#0ea5e9' }}>CapEx Recoup Horizon</div>
-              <div className="fin-matrix-val" style={{ color: '#38bdf8' }}>{breakEvenMonths} Months</div>
+              <div className="fin-matrix-tag" style={{ color: '#0284c7' }}>CapEx Recoup Horizon</div>
+              <div className="fin-matrix-val" style={{ color: '#0284c7' }}>{breakEvenMonths} Months</div>
               <div className="fin-matrix-detail">
                 Time required for accumulated net profits to fully recoup the initial {formatCurrency(totalCapEx)} startup launch capital.
               </div>
@@ -1082,10 +1082,10 @@ const FinancialTab = ({ data, idea }) => {
 
           {/* BREAK-EVEN NARRATIVE CALLOUT */}
           <div className="glass-card p-xl mb-lg" style={{ borderLeft: '4px solid #06b6d4', background: 'rgba(6, 182, 212, 0.05)' }}>
-            <h4 style={{ color: '#38bdf8', marginBottom: '0.75rem', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h4 style={{ color: '#0284c7', marginBottom: '0.75rem', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <FaLightbulb /> Executive Break-Even Mathematical Synthesis
             </h4>
-            <p style={{ color: '#cbd5e1', lineHeight: '1.65', fontSize: '0.92rem', margin: 0 }}>
+            <p style={{ color: '#334155', lineHeight: '1.65', fontSize: '0.92rem', margin: 0 }}>
               {data?.break_even_analysis || fb.break_even_analysis || (
                 `To achieve break-even, ${title} must cover monthly fixed overheads of ${formatCurrency(fixedCosts)}. ` +
                 `With an average order value of ${formatCurrency(pricePerUnit)} and a unit contribution margin of ${formatCurrency(contribMargin)}, ` +
@@ -1107,7 +1107,7 @@ const FinancialTab = ({ data, idea }) => {
           <div className="fin-methodology-section" style={{ marginTop: 0 }}>
             <div className="fin-methodology-header">
               <h4><FaCalculator style={{ color: '#0ea5e9' }} /> Financial Modeling Methodology, Formulas &amp; Benchmark Citations</h4>
-              <p style={{ color: '#94a3b8', fontSize: '0.86rem', margin: 0 }}>
+              <p style={{ color: '#475569', fontSize: '0.86rem', margin: 0 }}>
                 How Vision2Venture calculates these metrics and validates unit economics against verified Indian market data.
               </p>
             </div>

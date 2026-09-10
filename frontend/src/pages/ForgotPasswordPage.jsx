@@ -140,7 +140,7 @@ const ForgotPasswordPage = () => {
                 type="button" 
                 onClick={() => { setStep(1); setOtpCode(''); }} 
                 className="btn text-xs" 
-                style={{ background: 'rgba(255,255,255,0.06)', color: '#cbd5e1', border: '1px solid rgba(255,255,255,0.1)', padding: '12px 16px', borderRadius: '10px', width: '35%' }}
+                style={{ background: '#F1F5F9', color: '#334155', border: '1px solid #CBD5E1', padding: '12px 16px', borderRadius: '10px', width: '35%', fontWeight: 600 }}
               >
                 Change Email
               </button>

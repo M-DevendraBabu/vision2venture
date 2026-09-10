@@ -691,7 +691,7 @@ const BusinessTab = ({ data, idea }) => {
                 <span className="biz-card-title"><FaExclamationTriangle style={{ color: '#ef4444' }} /> 1. Problem &amp; Friction</span>
                 <span className="biz-card-tag" style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)' }}>Pain Point</span>
               </div>
-              <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{problemText}</p>
+              <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: '1.6' }}>{problemText}</p>
             </div>
 
             {/* 2. Customer Segments */}
@@ -714,9 +714,9 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card uvp biz-canvas-card-highlight">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaRocket style={{ color: '#06b6d4' }} /> 3. Unique Value Proposition</span>
-                <span className="biz-card-tag" style={{ background: 'rgba(6,182,212,0.2)', color: '#38bdf8' }}>Core Moat</span>
+                <span className="biz-card-tag" style={{ background: 'rgba(6,182,212,0.2)', color: '#0284c7' }}>Core Moat</span>
               </div>
-              <p style={{ fontSize: '0.95rem', color: '#e0f2fe', lineHeight: '1.65', fontWeight: '500' }}>
+              <p style={{ fontSize: '0.95rem', color: '#0F172A', lineHeight: '1.65', fontWeight: '500' }}>
                 {valuePropText}
               </p>
             </div>
@@ -727,7 +727,7 @@ const BusinessTab = ({ data, idea }) => {
                 <span className="biz-card-title"><FaCheckCircle style={{ color: '#10b981' }} /> 4. Solution &amp; Workflows</span>
                 <span className="biz-card-tag" style={{ color: '#10b981', background: 'rgba(16,185,129,0.1)' }}>Product Engine</span>
               </div>
-              <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{solutionText}</p>
+              <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: '1.6' }}>{solutionText}</p>
             </div>
 
             {/* 5. Channels */}
@@ -752,7 +752,7 @@ const BusinessTab = ({ data, idea }) => {
                 <span className="biz-card-title"><FaLock style={{ color: '#f59e0b' }} /> 6. Unfair Advantage</span>
                 <span className="biz-card-tag" style={{ color: '#f59e0b', background: 'rgba(245,158,11,0.1)' }}>Barrier to Entry</span>
               </div>
-              <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: '1.6' }}>{unfairAdvantage}</p>
+              <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: '1.6' }}>{unfairAdvantage}</p>
             </div>
 
             {/* 7. Key Metrics */}
@@ -1163,10 +1163,10 @@ const BusinessTab = ({ data, idea }) => {
           
           {/* 1. VISUAL 4-STAGE VALUE CHAIN FLOW */}
           <div style={{ marginBottom: '1.75rem' }}>
-            <h4 style={{ color: '#f1f5f9', fontSize: '1.25rem', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h4 style={{ color: '#0F172A', fontSize: '1.25rem', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <FaNetworkWired style={{ color: '#0ea5e9' }} /> End-to-End Strategic Value Chain &amp; Ecosystem Map
             </h4>
-            <p style={{ color: '#94a3b8', fontSize: '0.88rem', margin: 0 }}>
+            <p style={{ color: '#475569', fontSize: '0.88rem', margin: 0 }}>
               How {title} coordinates upstream infrastructure, core operational workflows, downstream distribution, and regulatory guardians.
             </p>
           </div>
@@ -1362,16 +1362,16 @@ class BusinessTabErrorBoundary extends React.Component {
         <div style={{
           padding: '2.5rem',
           textAlign: 'center',
-          background: 'rgba(30, 41, 59, 0.7)',
-          border: '1px solid rgba(239, 68, 68, 0.3)',
+          background: '#FEF2F2',
+          border: '1px solid #FECACA',
           borderRadius: '16px',
           margin: '2rem 0'
         }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>💼</div>
-          <h3 style={{ color: '#f87171', marginBottom: '0.5rem', fontSize: '1.25rem' }}>
+          <h3 style={{ color: '#DC2626', marginBottom: '0.5rem', fontSize: '1.25rem' }}>
             Business Architecture Strategy
           </h3>
-          <p style={{ color: '#94a3b8', maxWidth: '480px', margin: '0 auto 1.25rem', fontSize: '0.92rem' }}>
+          <p style={{ color: '#64748B', maxWidth: '480px', margin: '0 auto 1.25rem', fontSize: '0.92rem' }}>
             A temporary display issue occurred while rendering this sub-view. Click below to reload.
           </p>
           <button

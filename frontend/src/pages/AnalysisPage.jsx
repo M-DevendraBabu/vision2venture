@@ -35,8 +35,8 @@ class TabErrorBoundary extends React.Component {
       return (
         <div className="analysis-loading" style={{ padding: '3rem 1.5rem', textAlign: 'center' }}>
           <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>⚠️</div>
-          <h3 style={{ color: '#f87171' }}>Unable to display {this.props.tabName} analysis</h3>
-          <p style={{ color: '#94a3b8', maxWidth: '460px', margin: '0.5rem auto 1.5rem' }}>
+          <h3 style={{ color: '#dc2626' }}>Unable to display {this.props.tabName} analysis</h3>
+          <p style={{ color: '#475569', maxWidth: '460px', margin: '0.5rem auto 1.5rem' }}>
             We encountered an unexpected presentation error for this section. Your data is safe.
           </p>
           <button

@@ -209,10 +209,10 @@ const RoadmapTab = ({ data, idea }) => {
       <div className="roadmap-command-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.85rem' }}>
           <div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#f1f5f9', margin: '0 0 0.35rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', margin: '0 0 0.35rem 0', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <FaMapSigns style={{ color: '#10b981' }} /> Implementation Roadmap &amp; Execution Blueprint
             </h3>
-            <p style={{ fontSize: '0.86rem', color: '#94a3b8', margin: 0, lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.86rem', color: '#475569', margin: 0, lineHeight: 1.5 }}>
               Phased strategic milestones strictly calibrated in Indian Rupees (₹) and mathematically synchronized with your CapEx &amp; OpEx financial model.
             </p>
           </div>
@@ -228,25 +228,25 @@ const RoadmapTab = ({ data, idea }) => {
         <div className="fin-kpi-grid">
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaTools style={{ color: '#0ea5e9' }} /> Setup CapEx Deployment</div>
-            <div className="fin-kpi-value text-info" style={{ color: '#38bdf8' }}>{formatCurrency(totalCapEx)}</div>
+            <div className="fin-kpi-value text-info" style={{ color: '#0284c7' }}>{formatCurrency(totalCapEx)}</div>
             <div className="fin-kpi-sub">Phases 1–3 Launch Budget</div>
           </div>
 
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaReceipt style={{ color: '#f59e0b' }} /> Phase 4 Monthly Burn</div>
-            <div className="fin-kpi-value" style={{ color: '#fbbf24' }}>{formatCurrency(monthlyOpEx)}<span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>/mo</span></div>
+            <div className="fin-kpi-value" style={{ color: '#d97706' }}>{formatCurrency(monthlyOpEx)}<span style={{ fontSize: '0.8rem', color: '#64748B' }}>/mo</span></div>
             <div className="fin-kpi-sub">Operational Run-Rate</div>
           </div>
 
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaBullseye style={{ color: '#10b981' }} /> Break-Even Target</div>
-            <div className="fin-kpi-value" style={{ color: '#34d399' }}>Month {breakEvenMonths}</div>
+            <div className="fin-kpi-value" style={{ color: '#059669' }}>Month {breakEvenMonths}</div>
             <div className="fin-kpi-sub">Operational Profitability</div>
           </div>
 
           <div className="fin-kpi-card">
             <div className="fin-kpi-label"><FaTrophy style={{ color: '#06b6d4' }} /> Total Milestones</div>
-            <div className="fin-kpi-value" style={{ color: '#38bdf8' }}>15 Milestones</div>
+            <div className="fin-kpi-value" style={{ color: '#0284c7' }}>15 Milestones</div>
             <div className="fin-kpi-sub">Across 5 Execution Phases</div>
           </div>
         </div>
@@ -368,7 +368,7 @@ const RoadmapTab = ({ data, idea }) => {
                   {/* Action Items Checklist */}
                   {phase.tasks && phase.tasks.length > 0 && (
                     <div>
-                      <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '0.75rem 0 0.35rem 0', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em', margin: '0.75rem 0 0.35rem 0', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                         <FaTools style={{ color: color }} /> Core Action Items &amp; Deliverables:
                       </div>
                       <div className="rm-task-grid">
@@ -423,10 +423,10 @@ const RoadmapTab = ({ data, idea }) => {
                   </div>
 
                   <div className="mb-sm">
-                    <div style={{ fontSize: '0.74rem', color: '#fbbf24', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <div style={{ fontSize: '0.74rem', color: '#d97706', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <FaTrophy /> Core Milestones:
                     </div>
-                    <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#cbd5e1', fontSize: '0.84rem', lineHeight: 1.5 }}>
+                    <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#334155', fontSize: '0.84rem', lineHeight: 1.5 }}>
                       {phase.milestones.map((m, mIdx) => (
                         <li key={mIdx}>{m}</li>
                       ))}
@@ -434,10 +434,10 @@ const RoadmapTab = ({ data, idea }) => {
                   </div>
 
                   <div className="mb-sm" style={{ borderTop: '1px solid #E2E8F0', paddingTop: '0.5rem' }}>
-                    <div style={{ fontSize: '0.74rem', color: '#38bdf8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <div style={{ fontSize: '0.74rem', color: '#0284c7', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <FaBullseye /> Success Target Metrics:
                     </div>
-                    <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#cbd5e1', fontSize: '0.84rem', lineHeight: 1.5 }}>
+                    <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#334155', fontSize: '0.84rem', lineHeight: 1.5 }}>
                       {phase.success_metrics.map((s, sIdx) => (
                         <li key={sIdx}>{s}</li>
                       ))}
@@ -493,8 +493,8 @@ const RoadmapTab = ({ data, idea }) => {
                   <tr key={idx}>
                     <td><strong style={{ color: phaseColors[idx % phaseColors.length] }}>{phase.name}</strong></td>
                     <td>{phase.duration}</td>
-                    <td><strong style={{ color: '#34d399' }}>{phase.estimated_cost}</strong></td>
-                    <td style={{ fontSize: '0.8rem', color: '#94a3b8' }}>{phase.financial_tab_tie}</td>
+                    <td><strong style={{ color: '#059669' }}>{phase.estimated_cost}</strong></td>
+                    <td style={{ fontSize: '0.8rem', color: '#64748B' }}>{phase.financial_tab_tie}</td>
                     <td>
                       <span className={`fin-badge ${idx < 3 ? 'currency' : (idx === 3 ? 'sector' : 'benchmark')}`}>
                         {idx < 3 ? 'Setup CapEx' : (idx === 3 ? 'Monthly OpEx' : 'Retained Profits')}
@@ -538,8 +538,8 @@ const RoadmapTab = ({ data, idea }) => {
                     <h5 style={{ color: color, fontSize: '1rem', fontWeight: 700, margin: 0 }}>
                       {phase.name} ({phase.duration})
                     </h5>
-                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                      Budget: <strong style={{ color: '#34d399' }}>{phase.estimated_cost}</strong>
+                    <span style={{ fontSize: '0.8rem', color: '#64748B' }}>
+                      Budget: <strong style={{ color: '#059669' }}>{phase.estimated_cost}</strong>
                     </span>
                   </div>
 

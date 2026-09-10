@@ -7,9 +7,9 @@
   background: #FFFFFF;
   border-right: 1px solid var(--border-color, #E2E8F0);
   padding: 20px 12px;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 64px);
   position: sticky;
-  top: 60px;
+  top: 64px;
 }
 
 .sidebar-nav {

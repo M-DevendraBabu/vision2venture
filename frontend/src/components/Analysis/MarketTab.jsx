@@ -526,7 +526,7 @@ const MarketTab = ({ data, idea }) => {
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaBullseye /> Buyer Demand Intensity
           </div>
-          <div className="metric-value text-info" style={{ color: '#fbbf24', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
+          <div className="metric-value text-info" style={{ color: '#d97706', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
             {demandLevel}
           </div>
           <div className="text-secondary text-xs mt-xs">Market Receptivity & Urgency</div>
@@ -537,8 +537,8 @@ const MarketTab = ({ data, idea }) => {
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaRocket /> Market Opportunity Index
           </div>
-          <div className="metric-value" style={{ color: '#f472b6', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
-            {opportunityScore}<span style={{ fontSize: '1rem', color: '#94a3b8' }}>/100</span>
+          <div className="metric-value" style={{ color: '#db2777', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
+            {opportunityScore}<span style={{ fontSize: '1rem', color: '#64748B' }}>/100</span>
           </div>
           <div className="text-secondary text-xs mt-xs">Venture Scale Viability Score</div>
         </div>
@@ -817,7 +817,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Impact of Inaction:</strong> Legacy alternatives force buyers into slow, error-prone manual workarounds or inflated third-party service fees.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#ef4444' }}>
-                  <span className="dim-action-label" style={{ color: '#f87171' }}>Value Wedge</span>
+                  <span className="dim-action-label" style={{ color: '#dc2626' }}>Value Wedge</span>
                   <span className="dim-action-content">
                     Position {startupTitle} directly around 10x faster execution and quantifiable cost savings in Indian Rupees (₹).
                   </span>
@@ -877,7 +877,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Recommended Tiers:</strong> {profile.pricingTiers}
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#f59e0b' }}>
-                  <span className="dim-action-label" style={{ color: '#fbbf24' }}>Pricing Strategy</span>
+                  <span className="dim-action-label" style={{ color: '#d97706' }}>Pricing Strategy</span>
                   <span className="dim-action-content">
                     Structure tiered packages (Starter, Growth, Enterprise) in ₹ to capture price-conscious early users while securing high-value annual contracts.
                   </span>
@@ -898,7 +898,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #f59e0b' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#d97706' }}>
                     <FaBullhorn />
                   </div>
                   <div>
@@ -916,7 +916,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Channel Efficiency:</strong> Focuses marketing budget directly where target buyers actively discover, evaluate, and procure {industryName} solutions.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#f59e0b' }}>
-                  <span className="dim-action-label" style={{ color: '#fbbf24' }}>Channel Execution</span>
+                  <span className="dim-action-label" style={{ color: '#d97706' }}>Channel Execution</span>
                   <span className="dim-action-content">
                     Allocate 60% of initial marketing capital to this primary channel before diversifying into secondary experimental avenues.
                   </span>
@@ -970,17 +970,17 @@ const MarketTab = ({ data, idea }) => {
               </div>
               <div className="dim-body">
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', borderLeft: '3px solid #38bdf8' }}>
-                    <strong style={{ color: '#38bdf8', fontSize: '0.85rem' }}>Top of Funnel (Awareness):</strong>
-                    <div style={{ color: '#cbd5e1', fontSize: '0.84rem' }}>{profile.funnel.top}</div>
+                  <div style={{ padding: '10px 14px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', borderLeft: '4px solid #0284c7' }}>
+                    <strong style={{ color: '#0284c7', fontSize: '0.85rem' }}>Top of Funnel (Awareness):</strong>
+                    <div style={{ color: '#334155', fontSize: '0.86rem', marginTop: '2px' }}>{profile.funnel.top}</div>
                   </div>
-                  <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', borderLeft: '3px solid #34d399' }}>
-                    <strong style={{ color: '#34d399', fontSize: '0.85rem' }}>Middle of Funnel (Trial/Demo):</strong>
-                    <div style={{ color: '#cbd5e1', fontSize: '0.84rem' }}>{profile.funnel.mid}</div>
+                  <div style={{ padding: '10px 14px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', borderLeft: '4px solid #059669' }}>
+                    <strong style={{ color: '#059669', fontSize: '0.85rem' }}>Middle of Funnel (Trial/Demo):</strong>
+                    <div style={{ color: '#334155', fontSize: '0.86rem', marginTop: '2px' }}>{profile.funnel.mid}</div>
                   </div>
-                  <div style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px', borderLeft: '3px solid #fbbf24' }}>
-                    <strong style={{ color: '#fbbf24', fontSize: '0.85rem' }}>Bottom of Funnel (Close):</strong>
-                    <div style={{ color: '#cbd5e1', fontSize: '0.84rem' }}>{profile.funnel.bot}</div>
+                  <div style={{ padding: '10px 14px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', borderLeft: '4px solid #d97706' }}>
+                    <strong style={{ color: '#d97706', fontSize: '0.85rem' }}>Bottom of Funnel (Close):</strong>
+                    <div style={{ color: '#334155', fontSize: '0.86rem', marginTop: '2px' }}>{profile.funnel.bot}</div>
                   </div>
                 </div>
               </div>
@@ -990,7 +990,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #ec4899' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(236, 72, 153, 0.15)', color: '#f472b6' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(236, 72, 153, 0.15)', color: '#db2777' }}>
                     <FaRupeeSign />
                   </div>
                   <div>
@@ -998,7 +998,7 @@ const MarketTab = ({ data, idea }) => {
                     <div className="dim-subtitle">Unit Economics & Payback Period</div>
                   </div>
                 </div>
-                <div className="dim-score-badge" style={{ color: '#f472b6', borderColor: '#ec4899', background: 'rgba(236, 72, 153, 0.15)' }}>
+                <div className="dim-score-badge" style={{ color: '#db2777', borderColor: '#ec4899', background: 'rgba(236, 72, 153, 0.15)' }}>
                   Unit Economics
                 </div>
               </div>
@@ -1010,7 +1010,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>LTV:CAC Ratio:</strong> Targeted at &gt;3.5x to preserve gross margins, enabling sustainable reinvestment of profits into growth.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#ec4899' }}>
-                  <span className="dim-action-label" style={{ color: '#f472b6' }}>Efficiency Target</span>
+                  <span className="dim-action-label" style={{ color: '#db2777' }}>Efficiency Target</span>
                   <span className="dim-action-content">
                     Keep payback below 6 months so cash generated from early cohorts finances subsequent acquisition cycles.
                   </span>
@@ -1091,7 +1091,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #f59e0b' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#d97706' }}>
                     <FaArrowUp />
                   </div>
                   <div>
@@ -1109,7 +1109,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Market Receptivity:</strong> Modern buyers reject opaque pricing and multi-week onboarding, favoring self-service access and clear Indian Rupee (₹) pricing tiers.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#f59e0b' }}>
-                  <span className="dim-action-label" style={{ color: '#fbbf24' }}>Differentiation</span>
+                  <span className="dim-action-label" style={{ color: '#d97706' }}>Differentiation</span>
                   <span className="dim-action-content">
                     Publish transparent pricing packages in ₹ with zero hidden onboarding fees to rapidly win over frustrated customers of legacy incumbents.
                   </span>
