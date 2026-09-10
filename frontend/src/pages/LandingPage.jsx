@@ -224,42 +224,6 @@ const LandingPage = () => {
             transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="workspace-layered-canvas">
-              
-              {/* Layer 3: Floating Insight Card - Growth (Top-Right) */}
-              <motion.div 
-                className="floating-depth-card floating-growth-card"
-                initial={{ opacity: 0, x: 20, y: -16 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.5 }}
-                whileHover={{ y: -3, scale: 1.02 }}
-              >
-                <div className="floating-card-icon-box bg-emerald-subtle">
-                  <FaChartLine className="floating-card-icon color-emerald" />
-                </div>
-                <div className="floating-card-meta">
-                  <span className="floating-card-value">{demoData.growth}</span>
-                  <span className="floating-card-caption">Market Sizing Velocity</span>
-                </div>
-                <span className="floating-live-badge">Verified</span>
-              </motion.div>
-
-              {/* Layer 3: Floating Insight Card - Risk Mitigation (Bottom-Left) */}
-              <motion.div 
-                className="floating-depth-card floating-risk-card"
-                initial={{ opacity: 0, x: -20, y: 16 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.6 }}
-                whileHover={{ y: -3, scale: 1.02 }}
-              >
-                <div className="floating-card-icon-box bg-cyan-subtle">
-                  <FaShieldAlt className="floating-card-icon color-cyan" />
-                </div>
-                <div className="floating-card-meta">
-                  <span className="floating-card-value">{demoData.risk} Risk Profile</span>
-                  <span className="floating-card-caption">Automated Mitigation Playbook</span>
-                </div>
-              </motion.div>
-
               {/* Layer 2: Main Workspace Cockpit Surface */}
               <div className="main-workspace-cockpit">
                 
@@ -474,6 +438,43 @@ const LandingPage = () => {
                 </div>
 
               </div>
+
+              {/* Layer 3: Dual Aligned Intelligence Badges (Market Sizing Velocity & Risk Profile) */}
+              <div className="workspace-intelligence-dock">
+                <motion.div 
+                  className="floating-depth-card floating-growth-card"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.35 }}
+                  whileHover={{ y: -3, scale: 1.01 }}
+                >
+                  <div className="floating-card-icon-box bg-emerald-subtle">
+                    <FaChartLine className="floating-card-icon color-emerald" />
+                  </div>
+                  <div className="floating-card-meta">
+                    <span className="floating-card-value">{demoData.growth}</span>
+                    <span className="floating-card-caption">Market Sizing Velocity</span>
+                  </div>
+                  <span className="floating-live-badge">Verified</span>
+                </motion.div>
+
+                <motion.div 
+                  className="floating-depth-card floating-risk-card"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.45 }}
+                  whileHover={{ y: -3, scale: 1.01 }}
+                >
+                  <div className="floating-card-icon-box bg-cyan-subtle">
+                    <FaShieldAlt className="floating-card-icon color-cyan" />
+                  </div>
+                  <div className="floating-card-meta">
+                    <span className="floating-card-value">{demoData.risk} Risk Profile</span>
+                    <span className="floating-card-caption">Automated Mitigation Playbook</span>
+                  </div>
+                </motion.div>
+              </div>
+
             </div>
           </motion.div>
 
