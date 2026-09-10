@@ -273,7 +273,7 @@ const RoadmapTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('timeline')}
             className={`roadmap-subtab-btn ${activeSubTab === 'timeline' ? 'active timeline-active' : ''}`}
           >
-            <FaCalendarAlt style={{ color: activeSubTab === 'timeline' ? '#ffffff' : '#34d399' }} /> Execution Timeline
+            <FaCalendarAlt style={{ color: activeSubTab === 'timeline' ? '#ffffff' : '#059669' }} /> Execution Timeline
           </button>
 
           <button
@@ -281,7 +281,7 @@ const RoadmapTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('milestones')}
             className={`roadmap-subtab-btn ${activeSubTab === 'milestones' ? 'active milestones-active' : ''}`}
           >
-            <FaTrophy style={{ color: activeSubTab === 'milestones' ? '#ffffff' : '#fbbf24' }} /> Milestones &amp; KPIs
+            <FaTrophy style={{ color: activeSubTab === 'milestones' ? '#ffffff' : '#d97706' }} /> Milestones &amp; KPIs
           </button>
 
           <button
@@ -289,7 +289,7 @@ const RoadmapTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('costs')}
             className={`roadmap-subtab-btn ${activeSubTab === 'costs' ? 'active costs-active' : ''}`}
           >
-            <FaCoins style={{ color: activeSubTab === 'costs' ? '#ffffff' : '#38bdf8' }} /> Phase Budgets &amp; CapEx Tie
+            <FaCoins style={{ color: activeSubTab === 'costs' ? '#ffffff' : '#0284c7' }} /> Phase Budgets &amp; CapEx Tie
           </button>
 
           <button
@@ -297,7 +297,7 @@ const RoadmapTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('tasks')}
             className={`roadmap-subtab-btn ${activeSubTab === 'tasks' ? 'active tasks-active' : ''}`}
           >
-            <FaClipboardList style={{ color: activeSubTab === 'tasks' ? '#ffffff' : '#38bdf8' }} /> Operational Checklist
+            <FaClipboardList style={{ color: activeSubTab === 'tasks' ? '#ffffff' : '#0284c7' }} /> Operational Checklist
           </button>
         </div>
 

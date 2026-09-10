@@ -601,7 +601,7 @@ const BusinessTab = ({ data, idea }) => {
       <div className="biz-executive-header">
         <div className="biz-header-top">
           <div className="biz-title-area">
-            <h3><FaBuilding style={{ color: '#38bdf8' }} /> {title} Business Architecture</h3>
+            <h3><FaBuilding style={{ color: '#0284c7' }} /> {title} Business Architecture</h3>
             <div className="biz-badge-group">
               <span className="biz-badge archetype"><FaRocket /> {archetype}</span>
               <span className="biz-badge delivery"><FaBolt /> {sector.toUpperCase()} DELIVERY</span>
@@ -614,13 +614,13 @@ const BusinessTab = ({ data, idea }) => {
         <div className="biz-kpi-grid">
           <div className="biz-kpi-card">
             <div className="biz-kpi-label"><FaChartLine style={{ color: '#10b981' }} /> Target Gross Margin</div>
-            <div className="biz-kpi-value" style={{ color: '#34d399' }}>{grossMargin}</div>
+            <div className="biz-kpi-value" style={{ color: '#059669' }}>{grossMargin}</div>
             <div className="biz-kpi-sub">Profitable Unit Economics</div>
           </div>
 
           <div className="biz-kpi-card">
             <div className="biz-kpi-label"><FaBullseye style={{ color: '#06b6d4' }} /> LTV : CAC Benchmark</div>
-            <div className="biz-kpi-value" style={{ color: '#38bdf8' }}>{ltvCac}</div>
+            <div className="biz-kpi-value" style={{ color: '#0284c7' }}>{ltvCac}</div>
             <div className="biz-kpi-sub">High Efficiency Ratio (&gt;3.0x)</div>
           </div>
 
@@ -631,8 +631,8 @@ const BusinessTab = ({ data, idea }) => {
           </div>
 
           <div className="biz-kpi-card">
-            <div className="biz-kpi-label"><FaCreditCard style={{ color: '#34d399' }} /> Monetization Engine</div>
-            <div className="biz-kpi-value" style={{ color: '#c084fc', fontSize: '1.1rem' }}>
+            <div className="biz-kpi-label"><FaCreditCard style={{ color: '#059669' }} /> Monetization Engine</div>
+            <div className="biz-kpi-value" style={{ color: '#7c3aed', fontSize: '1.1rem' }}>
               {ideaContext.pricing_model || 'Subscription (₹)'}
             </div>
             <div className="biz-kpi-sub">Recurring &amp; Predictable Cashflow</div>
@@ -791,7 +791,7 @@ const BusinessTab = ({ data, idea }) => {
             <div className="biz-canvas-card revenue">
               <div className="biz-card-header">
                 <span className="biz-card-title"><FaCreditCard style={{ color: '#10b981' }} /> 9. Revenue Streams (₹)</span>
-                <span className="biz-card-tag" style={{ background: 'rgba(16,185,129,0.2)', color: '#34d399' }}>Monetization</span>
+                <span className="biz-card-tag" style={{ background: 'rgba(16,185,129,0.2)', color: '#059669' }}>Monetization</span>
               </div>
               <ul className="biz-list">
                 {revenueStreams.map((rev, i) => (
@@ -825,7 +825,7 @@ const BusinessTab = ({ data, idea }) => {
               <button
                 onClick={() => setSwotFilter('strengths')}
                 className={`swot-filter-pill ${swotFilter === 'strengths' ? 'active' : ''}`}
-                style={{ color: swotFilter === 'strengths' ? '#fff' : '#34d399' }}
+                style={{ color: swotFilter === 'strengths' ? '#fff' : '#059669' }}
               >
                 Strengths ({strengthsList.length})
               </button>
@@ -839,7 +839,7 @@ const BusinessTab = ({ data, idea }) => {
               <button
                 onClick={() => setSwotFilter('opportunities')}
                 className={`swot-filter-pill ${swotFilter === 'opportunities' ? 'active' : ''}`}
-                style={{ color: swotFilter === 'opportunities' ? '#fff' : '#38bdf8' }}
+                style={{ color: swotFilter === 'opportunities' ? '#fff' : '#0284c7' }}
               >
                 Opportunities ({opportunitiesList.length})
               </button>
@@ -1049,7 +1049,7 @@ const BusinessTab = ({ data, idea }) => {
                   <ul className="biz-tier-features">
                     {features.map((feat, fIdx) => (
                       <li key={fIdx} className="biz-tier-feature-item">
-                        <FaCheckCircle style={{ color: isSelected ? '#10b981' : '#38bdf8' }} /> {feat}
+                        <FaCheckCircle style={{ color: isSelected ? '#10b981' : '#0284c7' }} /> {feat}
                       </li>
                     ))}
                   </ul>
@@ -1104,7 +1104,7 @@ const BusinessTab = ({ data, idea }) => {
           {/* UNIT ECONOMICS & PAYMENT RAILS SUMMARY */}
           <div className="biz-economics-grid">
             <div className="glass-card p-md" style={{ borderLeft: '4px solid #10b981' }}>
-              <h4 style={{ color: '#34d399', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h4 style={{ color: '#059669', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FaBalanceScale /> Unit Economics Breakdown
               </h4>
               <ul className="biz-list">
@@ -1128,7 +1128,7 @@ const BusinessTab = ({ data, idea }) => {
             </div>
 
             <div className="glass-card p-md" style={{ borderLeft: '4px solid #0ea5e9' }}>
-              <h4 style={{ color: '#38bdf8', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h4 style={{ color: '#0284c7', marginBottom: '0.6rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FaCreditCard /> Indian Payment & Billing Rails
               </h4>
               <ul className="biz-list">
@@ -1176,7 +1176,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* Step 1: Upstream */}
             <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="chain-step-num">1</div>
-              <div className="chain-node-title"><FaServer style={{ color: '#38bdf8' }} /> Upstream Rails</div>
+              <div className="chain-node-title"><FaServer style={{ color: '#0284c7' }} /> Upstream Rails</div>
               <div className="chain-node-desc">
                 AWS Mumbai ap-south-1 cloud hosting, NPCI payment switches, and core identity verification rails.
               </div>
@@ -1186,7 +1186,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* Step 2: Core Engine */}
             <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #10b981' }}>
               <div className="chain-step-num">2</div>
-              <div className="chain-node-title"><FaCogs style={{ color: '#a78bfa' }} /> Operational Engine</div>
+              <div className="chain-node-title"><FaCogs style={{ color: '#7c3aed' }} /> Operational Engine</div>
               <div className="chain-node-desc">
                 Proprietary workflow heuristics, automated scheduling &amp; routing logic, and client telemetry databases.
               </div>
@@ -1196,7 +1196,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* Step 3: Downstream */}
             <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #10b981' }}>
               <div className="chain-step-num">3</div>
-              <div className="chain-node-title"><FaRocket style={{ color: '#34d399' }} /> Channels &amp; GTM</div>
+              <div className="chain-node-title"><FaRocket style={{ color: '#059669' }} /> Channels &amp; GTM</div>
               <div className="chain-node-desc">
                 Direct institutional demos, B2B software app stores, and industry associations across Tier-1/2 trade hubs.
               </div>
@@ -1206,7 +1206,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* Step 4: Regulatory */}
             <div className="ecosystem-chain-node" style={{ borderTop: '3px solid #06b6d4' }}>
               <div className="chain-step-num">4</div>
-              <div className="chain-node-title"><FaCertificate style={{ color: '#38bdf8' }} /> Trust &amp; Compliance</div>
+              <div className="chain-node-title"><FaCertificate style={{ color: '#0284c7' }} /> Trust &amp; Compliance</div>
               <div className="chain-node-desc">
                 Adherence to Indian statutory mandates, GST e-invoicing, DPDP Act 2023, and annual CERT-In security audits.
               </div>
@@ -1217,7 +1217,7 @@ const BusinessTab = ({ data, idea }) => {
 
           {/* 2. 5-DIMENSION MOAT DEFENSIBILITY RADAR */}
           <div className="moat-radar-box">
-            <h4 style={{ color: '#38bdf8', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <h4 style={{ color: '#0284c7', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <FaShieldAlt /> 5-Dimension Moat Defensibility Analysis
             </h4>
 
@@ -1278,7 +1278,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* Key Partners */}
             <div className="biz-moat-card" style={{ borderTop: '3px solid #0ea5e9' }}>
               <div className="biz-moat-top">
-                <span className="biz-moat-title"><FaHandshake style={{ color: '#38bdf8' }} /> Ecosystem Partners</span>
+                <span className="biz-moat-title"><FaHandshake style={{ color: '#0284c7' }} /> Ecosystem Partners</span>
                 <span className="biz-moat-score">Alliances</span>
               </div>
               <ul className="biz-list">
@@ -1297,7 +1297,7 @@ const BusinessTab = ({ data, idea }) => {
             {/* Key Activities */}
             <div className="biz-moat-card" style={{ borderTop: '3px solid #10b981' }}>
               <div className="biz-moat-top">
-                <span className="biz-moat-title"><FaCogs style={{ color: '#a78bfa' }} /> Operational Workflows</span>
+                <span className="biz-moat-title"><FaCogs style={{ color: '#7c3aed' }} /> Operational Workflows</span>
                 <span className="biz-moat-score">Core Ops</span>
               </div>
               <ul className="biz-list">

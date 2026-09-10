@@ -399,7 +399,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('capex')}
             className={`fin-subtab-btn ${activeSubTab === 'capex' ? 'active capex-active' : ''}`}
           >
-            <FaTools style={{ color: activeSubTab === 'capex' ? '#ffffff' : '#38bdf8' }} /> CapEx Setup
+            <FaTools style={{ color: activeSubTab === 'capex' ? '#ffffff' : '#0284c7' }} /> CapEx Setup
           </button>
 
           <button
@@ -407,7 +407,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('opex')}
             className={`fin-subtab-btn ${activeSubTab === 'opex' ? 'active opex-active' : ''}`}
           >
-            <FaReceipt style={{ color: activeSubTab === 'opex' ? '#ffffff' : '#fbbf24' }} /> Monthly OpEx
+            <FaReceipt style={{ color: activeSubTab === 'opex' ? '#ffffff' : '#d97706' }} /> Monthly OpEx
           </button>
 
           <button
@@ -415,7 +415,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('income')}
             className={`fin-subtab-btn ${activeSubTab === 'income' ? 'active income-active' : ''}`}
           >
-            <FaCoins style={{ color: activeSubTab === 'income' ? '#ffffff' : '#34d399' }} /> Revenue Engine
+            <FaCoins style={{ color: activeSubTab === 'income' ? '#ffffff' : '#059669' }} /> Revenue Engine
           </button>
 
           <button
@@ -423,7 +423,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('unit')}
             className={`fin-subtab-btn ${activeSubTab === 'unit' ? 'active unit-active' : ''}`}
           >
-            <FaBalanceScale style={{ color: activeSubTab === 'unit' ? '#ffffff' : '#a78bfa' }} /> Unit Economics
+            <FaBalanceScale style={{ color: activeSubTab === 'unit' ? '#ffffff' : '#7c3aed' }} /> Unit Economics
           </button>
 
           <button
@@ -431,7 +431,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('breakeven')}
             className={`fin-subtab-btn ${activeSubTab === 'breakeven' ? 'active breakeven-active' : ''}`}
           >
-            <FaBullseye style={{ color: activeSubTab === 'breakeven' ? '#ffffff' : '#38bdf8' }} /> Break-Even Cockpit
+            <FaBullseye style={{ color: activeSubTab === 'breakeven' ? '#ffffff' : '#0284c7' }} /> Break-Even Cockpit
           </button>
 
           <button
@@ -439,7 +439,7 @@ const FinancialTab = ({ data, idea }) => {
             onClick={() => setActiveSubTab('sources')}
             className={`fin-subtab-btn ${activeSubTab === 'sources' ? 'active sources-active' : ''}`}
           >
-            <FaBookOpen style={{ color: activeSubTab === 'sources' ? '#ffffff' : '#60a5fa' }} /> Benchmark Citations
+            <FaBookOpen style={{ color: activeSubTab === 'sources' ? '#ffffff' : '#2563eb' }} /> Benchmark Citations
           </button>
         </div>
 
@@ -782,7 +782,7 @@ const FinancialTab = ({ data, idea }) => {
           
           <div className="fin-formula-box" style={{ borderLeft: '4px solid #10b981' }}>
             <div className="fin-formula-title">
-              <FaCalculator style={{ color: '#34d399' }} /> Monthly Recurring Revenue (MRR) Auto-Calculation Formula
+              <FaCalculator style={{ color: '#059669' }} /> Monthly Recurring Revenue (MRR) Auto-Calculation Formula
             </div>
             <div className="fin-formula-code">
               Monthly Revenue = (Average Order Value: {formatCurrency(pricePerUnit)}) × (Monthly Sales Volume: {monthlySalesVol.toLocaleString('en-IN')} orders) = {formatCurrency(mrr)} / month ({formatCurrency(arr)} ARR)

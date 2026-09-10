@@ -475,10 +475,10 @@ const MarketTab = ({ data, idea }) => {
           <FaGlobe /> Market Intelligence & Strategic TAM Opportunity
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <span className="tag" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8', borderColor: 'rgba(14, 165, 233, 0.3)' }}>
+          <span className="tag" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0284c7', borderColor: 'rgba(14, 165, 233, 0.3)' }}>
             <FaTag style={{ fontSize: '0.75rem' }} /> {industryName}
           </span>
-          <span className="tag" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', borderColor: 'rgba(16, 185, 129, 0.3)' }}>
+          <span className="tag" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#059669', borderColor: 'rgba(16, 185, 129, 0.3)' }}>
             <FaLayerGroup style={{ fontSize: '0.75rem' }} /> {sectorType.toUpperCase()}
           </span>
           <span className="tag" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24', borderColor: 'rgba(245, 158, 11, 0.3)' }}>
@@ -504,7 +504,7 @@ const MarketTab = ({ data, idea }) => {
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaRupeeSign /> Total Addressable Market (TAM)
           </div>
-          <div className="metric-value text-success" style={{ color: '#38bdf8', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
+          <div className="metric-value text-success" style={{ color: '#0284c7', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
             {marketSizing.tamStr}
           </div>
           <div className="text-secondary text-xs mt-xs">Total {industryName} Sector Spending Capacity</div>
@@ -515,7 +515,7 @@ const MarketTab = ({ data, idea }) => {
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaChartLine /> 5-Year CAGR Growth
           </div>
-          <div className="metric-value text-primary" style={{ color: '#34d399', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
+          <div className="metric-value text-primary" style={{ color: '#059669', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
             +{growthRate}% <span className="trend-indicator up text-xs ml-xs">↗ High Growth</span>
           </div>
           <div className="text-secondary text-xs mt-xs">Annual Compounded Industry Growth</div>
@@ -633,10 +633,10 @@ const MarketTab = ({ data, idea }) => {
             {/* TAM */}
             <div className="tam-card tam-tam">
               <div className="tam-header">
-                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#38bdf8', textTransform: 'uppercase' }}>
+                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#0284c7', textTransform: 'uppercase' }}>
                   Total Addressable Market
                 </span>
-                <span className="tam-badge" style={{ background: 'rgba(14, 165, 233, 0.2)', color: '#7dd3fc', border: '1px solid rgba(14, 165, 233, 0.4)' }}>
+                <span className="tam-badge" style={{ background: 'rgba(14, 165, 233, 0.2)', color: '#0284c7', border: '1px solid rgba(14, 165, 233, 0.4)' }}>
                   100% Industry Scope
                 </span>
               </div>
@@ -652,7 +652,7 @@ const MarketTab = ({ data, idea }) => {
             {/* SAM */}
             <div className="tam-card tam-sam">
               <div className="tam-header">
-                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c084fc', textTransform: 'uppercase' }}>
+                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase' }}>
                   Serviceable Addressable Market
                 </span>
                 <span className="tam-badge" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#d8b4fe', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
@@ -671,7 +671,7 @@ const MarketTab = ({ data, idea }) => {
             {/* SOM */}
             <div className="tam-card tam-som">
               <div className="tam-header">
-                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#34d399', textTransform: 'uppercase' }}>
+                <span className="dim-subtitle" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#059669', textTransform: 'uppercase' }}>
                   Serviceable Obtainable Market
                 </span>
                 <span className="tam-badge" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#6ee7b7', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
@@ -694,7 +694,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#a78bfa' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#7c3aed' }}>
                     <FaChartPie />
                   </div>
                   <div>
@@ -702,7 +702,7 @@ const MarketTab = ({ data, idea }) => {
                     <div className="dim-subtitle">Viability & Market Tailwinds Assessment</div>
                   </div>
                 </div>
-                <div className="dim-score-badge score-success" style={{ color: '#a78bfa', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
+                <div className="dim-score-badge score-success" style={{ color: '#7c3aed', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
                   {opportunityScore}/100 Viability
                 </div>
               </div>
@@ -714,7 +714,7 @@ const MarketTab = ({ data, idea }) => {
               <div className="dim-body">
                 <p className="dim-primary-text">{cleanedOpportunityExp}</p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
-                  <span className="dim-action-label" style={{ color: '#c084fc' }}>Venture Capital Perspective</span>
+                  <span className="dim-action-label" style={{ color: '#7c3aed' }}>Venture Capital Perspective</span>
                   <span className="dim-action-content">
                     Institutional investors look for addressable depth (TAM &gt; ₹10,000 Cr) and high compounding expansion (CAGR &gt; 12%). {startupTitle} qualifies with a healthy TAM of {marketSizing.tamStr} and +{growthRate}% annual sector growth.
                   </span>
@@ -726,7 +726,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#059669' }}>
                     <FaCalendarCheck />
                   </div>
                   <div>
@@ -734,7 +734,7 @@ const MarketTab = ({ data, idea }) => {
                     <div className="dim-subtitle">Why This Venture Succeeds Right Now</div>
                   </div>
                 </div>
-                <div className="dim-score-badge score-info" style={{ color: '#34d399', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
+                <div className="dim-score-badge score-info" style={{ color: '#059669', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
                   Prime Window
                 </div>
               </div>
@@ -748,7 +748,7 @@ const MarketTab = ({ data, idea }) => {
                   {profile.timingReason}
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
-                  <span className="dim-action-label" style={{ color: '#34d399' }}>Execution Priority</span>
+                  <span className="dim-action-label" style={{ color: '#059669' }}>Execution Priority</span>
                   <span className="dim-action-content">
                     Rapidly capture early beachhead customers ({marketSizing.somStr} Year 1–3 target) through agile product deployment before slower incumbents modernize their legacy systems.
                   </span>
@@ -769,7 +769,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #0ea5e9' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0284c7' }}>
                     <FaUsers />
                   </div>
                   <div>
@@ -829,7 +829,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#059669' }}>
                     <FaBullseye />
                   </div>
                   <div>
@@ -847,7 +847,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Conversion Driver:</strong> Buyers convert when presented with immediate proof of return on investment (ROI) and seamless setup without operational downtime.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
-                  <span className="dim-action-label" style={{ color: '#34d399' }}>GTM Playbook</span>
+                  <span className="dim-action-label" style={{ color: '#059669' }}>GTM Playbook</span>
                   <span className="dim-action-content">
                     Anchor sales copy and demo sessions around rapid time-to-first-value (&lt;15 minutes) and transparent pricing in Indian Rupees (₹).
                   </span>
@@ -928,7 +928,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#059669' }}>
                     <FaRocket />
                   </div>
                   <div>
@@ -946,7 +946,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Network Density:</strong> Every successful onboarding generates organic word-of-mouth recommendations, steadily reducing blended Customer Acquisition Cost (CAC).
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
-                  <span className="dim-action-label" style={{ color: '#34d399' }}>Viral Incentive</span>
+                  <span className="dim-action-label" style={{ color: '#059669' }}>Viral Incentive</span>
                   <span className="dim-action-content">
                     Implement built-in referral perks (e.g. 1 month free credit or bonus credits in ₹) whenever an existing user invites another account.
                   </span>
@@ -958,7 +958,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #0ea5e9' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0284c7' }}>
                     <FaLayerGroup />
                   </div>
                   <div>
@@ -1031,7 +1031,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#a78bfa' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#7c3aed' }}>
                     <FaLightbulb />
                   </div>
                   <div>
@@ -1049,7 +1049,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Strategic Advantage:</strong> Embeds automated machine intelligence into daily workflows, allowing {startupTitle} to execute at 10x lower overhead than legacy competitors.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
-                  <span className="dim-action-label" style={{ color: '#a78bfa' }}>R&D Focus</span>
+                  <span className="dim-action-label" style={{ color: '#7c3aed' }}>R&D Focus</span>
                   <span className="dim-action-content">
                     Continually refine core software algorithms to widen product defensibility and reduce manual human intervention.
                   </span>
@@ -1061,7 +1061,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #10b981' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34d399' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#059669' }}>
                     <FaCheckCircle />
                   </div>
                   <div>
@@ -1079,7 +1079,7 @@ const MarketTab = ({ data, idea }) => {
                   <strong>Compliance Catalyst:</strong> Regulatory modernization in {countryName} compels target customers to adopt compliant solutions, significantly shortening sales decision cycles.
                 </p>
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
-                  <span className="dim-action-label" style={{ color: '#34d399' }}>Compliance Moat</span>
+                  <span className="dim-action-label" style={{ color: '#059669' }}>Compliance Moat</span>
                   <span className="dim-action-content">
                     Build certified compliance and automated audit logging directly into the product to turn regulation into a competitive moat.
                   </span>
@@ -1121,7 +1121,7 @@ const MarketTab = ({ data, idea }) => {
             <div className="dimension-card-premium" style={{ borderLeft: '4px solid #0ea5e9' }}>
               <div className="dim-header">
                 <div className="dim-title-group">
-                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#38bdf8' }}>
+                  <div className="dim-icon" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0284c7' }}>
                     <FaCheckCircle />
                   </div>
                   <div>

@@ -826,7 +826,7 @@
 }
 
 .dimension-card-premium {
-  background: #FFFFFF;
+  background: #FFFFFF !important;
   border: 1px solid #E2E8F0;
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -835,14 +835,14 @@
   justify-content: space-between;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
 
 .dimension-card-premium:hover {
-  border-color: rgba(14, 165, 233, 0.45);
-  background: #16223b;
+  border-color: #0EA5E9;
+  background: #FFFFFF !important;
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
 }
 
 .dim-header {
@@ -1211,9 +1211,9 @@
 }
 
 .tech-copy-btn:hover {
-  background: rgba(14, 165, 233, 0.2);
-  border-color: #0ea5e9;
-  color: #fff;
+  background: #F0F9FF;
+  border-color: #0EA5E9;
+  color: #0284C7;
 }
 
 /* Sub-Tab Navigation Bar */
@@ -1229,7 +1229,7 @@
   padding: 8px 16px;
   border-radius: 8px;
   border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.03);
+  background: #F8FAFC;
   color: #475569;
   font-size: 0.85rem;
   font-weight: 600;
@@ -1241,8 +1241,9 @@
 }
 
 .tech-tab-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: #F1F5F9;
+  color: #0284C7;
+  border-color: #BAE6FD;
 }
 
 .tech-tab-btn.active {
@@ -1273,7 +1274,7 @@
 .tech-tier-node {
   flex: 1;
   min-width: 170px;
-  background: rgba(255, 255, 255, 0.02);
+  background: #FFFFFF;
   border: 1px solid #E2E8F0;
   border-radius: var(--radius-md);
   padding: 1.1rem;
@@ -1283,12 +1284,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
 .tech-tier-node:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+  background: #FFFFFF;
+  border-color: #0284C7;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .tech-node-step {
@@ -1566,7 +1569,7 @@
   overflow-x: auto;
   border: 1px solid #E2E8F0;
   border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.2);
+  background: #FFFFFF;
 }
 
 .tech-cost-table {
@@ -1575,12 +1578,12 @@
 }
 
 .tech-cost-table th {
-  background: rgba(255, 255, 255, 0.03);
+  background: #F8FAFC;
   padding: 12px 18px;
   text-align: left;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #475569;
+  color: #334155;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-bottom: 1px solid #E2E8F0;
@@ -1757,8 +1760,9 @@
 
 .biz-kpi-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(14, 165, 233, 0.4);
-  background: rgba(30, 41, 59, 0.7);
+  border-color: #0EA5E9;
+  background: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
 
 .biz-kpi-label {
@@ -1841,9 +1845,9 @@
 }
 
 .biz-subtab-btn:hover {
-  background: rgba(30, 41, 59, 0.8);
+  background: #F1F5F9;
   color: #0284C7;
-  border-color: rgba(14, 165, 233, 0.3);
+  border-color: #BAE6FD;
 }
 
 .biz-subtab-btn.active {
@@ -2061,9 +2065,9 @@
 }
 
 .swot-balance-tag {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #A7F3D0;
   font-size: 0.78rem;
   font-weight: 700;
   padding: 0.25rem 0.7rem;
@@ -2081,7 +2085,7 @@
   background: #FFFFFF;
   border-radius: 14px;
   padding: 1.25rem;
-  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -2089,22 +2093,22 @@
 }
 
 .swot-quadrant-card.strengths {
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid #A7F3D0;
   background: #FFFFFF;
 }
 
 .swot-quadrant-card.weaknesses {
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid #FECACA;
   background: #FFFFFF;
 }
 
 .swot-quadrant-card.opportunities {
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  border: 1px solid #BAE6FD;
   background: #FFFFFF;
 }
 
 .swot-quadrant-card.threats {
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid #FDE68A;
   background: #FFFFFF;
 }
 
@@ -2125,10 +2129,10 @@
   gap: 0.5rem;
 }
 
-.swot-quadrant-card.strengths h4 { color: #34d399; }
-.swot-quadrant-card.weaknesses h4 { color: #f87171; }
-.swot-quadrant-card.opportunities h4 { color: #38bdf8; }
-.swot-quadrant-card.threats h4 { color: #fbbf24; }
+.swot-quadrant-card.strengths h4 { color: #059669; }
+.swot-quadrant-card.weaknesses h4 { color: #DC2626; }
+.swot-quadrant-card.opportunities h4 { color: #0284C7; }
+.swot-quadrant-card.threats h4 { color: #D97706; }
 
 .swot-count-pill {
   font-size: 0.72rem;
@@ -2137,10 +2141,10 @@
   font-weight: 700;
 }
 
-.swot-quadrant-card.strengths .swot-count-pill { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-.swot-quadrant-card.weaknesses .swot-count-pill { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-.swot-quadrant-card.opportunities .swot-count-pill { background: rgba(6, 182, 212, 0.2); color: #38bdf8; }
-.swot-quadrant-card.threats .swot-count-pill { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+.swot-quadrant-card.strengths .swot-count-pill { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+.swot-quadrant-card.weaknesses .swot-count-pill { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+.swot-quadrant-card.opportunities .swot-count-pill { background: #F0F9FF; color: #0284C7; border: 1px solid #BAE6FD; }
+.swot-quadrant-card.threats .swot-count-pill { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
 
 .swot-items-container {
   display: flex;
@@ -2157,8 +2161,9 @@
 }
 
 .swot-item-box:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: #E2E8F0;
+  background: #FFFFFF;
+  border-color: #CBD5E1;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
 }
 
 .swot-item-top {
@@ -2312,9 +2317,9 @@
 
 .biz-pricing-card.selected {
   border: 2px solid #10b981 !important;
-  box-shadow: 0 10px 30px -6px rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 10px 30px -6px rgba(16, 185, 129, 0.25) !important;
   transform: translateY(-4px) scale(1.01);
-  background: linear-gradient(145deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+  background: #FFFFFF !important;
 }
 
 .biz-selected-plan-badge {
@@ -2588,23 +2593,24 @@
 
 .ecosystem-chain-node:hover {
   transform: translateY(-2px);
-  border-color: rgba(14, 165, 233, 0.4);
-  background: rgba(30, 41, 59, 0.75);
+  border-color: #0EA5E9;
+  background: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
 }
 
 .chain-step-num {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: rgba(14, 165, 233, 0.2);
-  color: #7dd3fc;
+  background: #F0F9FF;
+  color: #0284C7;
   font-size: 0.75rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0.65rem;
-  border: 1px solid rgba(14, 165, 233, 0.35);
+  border: 1px solid #BAE6FD;
 }
 
 .chain-node-title {
@@ -2892,9 +2898,9 @@
 }
 
 .fin-scroll-arrow:hover {
-  background: rgba(30, 41, 59, 0.95);
-  color: #0F172A;
-  border-color: rgba(14, 165, 233, 0.5);
+  background: #F1F5F9;
+  color: #0284C7;
+  border-color: #0EA5E9;
   transform: scale(1.05);
 }
 
@@ -2961,7 +2967,7 @@
 
 .fin-subtab-btn:hover {
   color: #0284C7;
-  background: rgba(255, 255, 255, 0.05);
+  background: #F1F5F9;
 }
 
 .fin-subtab-btn.active {
@@ -3095,17 +3101,18 @@
 }
 
 .fin-why-box {
-  background: rgba(0, 0, 0, 0.25);
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
   border-radius: 8px;
   padding: 0.65rem 0.8rem;
   margin-top: auto;
-  border-left: 3px solid #0ea5e9;
+  border-left: 3px solid #0284C7;
 }
 
 .fin-why-label {
   font-size: 0.72rem;
   font-weight: 700;
-  color: #38bdf8;
+  color: #0284C7;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 0.25rem;
@@ -3130,11 +3137,12 @@
 
 /* Break-Even Cockpit Hero Layout */
 .fin-breakeven-cockpit {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(14, 116, 144, 0.15));
-  border: 1px solid rgba(6, 182, 212, 0.35);
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
 }
 
 .fin-cockpit-header {
@@ -3160,9 +3168,9 @@
   font-weight: 700;
   padding: 0.35rem 0.85rem;
   border-radius: 9999px;
-  background: rgba(16, 185, 129, 0.2);
-  color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  background: #ECFDF5;
+  color: #059669;
+  border: 1px solid #A7F3D0;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -3171,12 +3179,12 @@
 .fin-meter-track {
   width: 100%;
   height: 12px;
-  background: rgba(0, 0, 0, 0.4);
+  background: #E2E8F0;
   border-radius: 9999px;
   overflow: hidden;
   margin: 0.8rem 0;
   position: relative;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #CBD5E1;
 }
 
 .fin-meter-fill {
@@ -3189,8 +3197,9 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.78rem;
-  color: #64748B;
+  color: #475569;
   margin-bottom: 1rem;
+  font-weight: 600;
 }
 
 .fin-breakeven-stats-grid {
@@ -3201,16 +3210,23 @@
 }
 
 .fin-stat-tile {
-  background: rgba(0, 0, 0, 0.3);
+  background: #F8FAFC;
   border: 1px solid #E2E8F0;
   border-radius: 10px;
   padding: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.fin-stat-tile:hover {
+  background: #FFFFFF;
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 .fin-stat-tile-label {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #64748B;
+  font-weight: 700;
+  color: #475569;
   margin-bottom: 0.25rem;
 }
 
@@ -3254,10 +3270,10 @@
 .fin-source-table th {
   text-align: left;
   padding: 0.65rem 0.85rem;
-  background: rgba(0, 0, 0, 0.35);
-  color: #475569;
-  font-weight: 600;
-  border-bottom: 1px solid #E2E8F0;
+  background: #F1F5F9;
+  color: #334155;
+  font-weight: 700;
+  border-bottom: 1px solid #CBD5E1;
 }
 
 .fin-source-table td {
@@ -3269,7 +3285,7 @@
 }
 
 .fin-source-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: #F8FAFC;
 }
 
 
@@ -3384,8 +3400,8 @@
 
 /* Strategic Advisory Callout */
 .fin-advisory-box {
-  background: rgba(30, 41, 59, 0.5);
-  border: 1px dashed rgba(14, 165, 233, 0.35);
+  background: #F0F9FF;
+  border: 1px dashed #7DD3FC;
   border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-bottom: 1.25rem;
@@ -3396,7 +3412,7 @@
 
 .fin-advisory-icon {
   font-size: 1.4rem;
-  color: #38bdf8;
+  color: #0284C7;
   flex-shrink: 0;
   margin-top: 0.2rem;
 }
@@ -3503,9 +3519,9 @@
 }
 
 .roadmap-scroll-arrow:hover {
-  background: rgba(30, 41, 59, 0.95);
-  color: #0F172A;
-  border-color: rgba(16, 185, 129, 0.5);
+  background: #F1F5F9;
+  color: #059669;
+  border-color: #10B981;
   transform: scale(1.05);
 }
 
@@ -3563,8 +3579,8 @@
 }
 
 .roadmap-subtab-btn:hover {
-  color: #0284C7;
-  background: rgba(255, 255, 255, 0.05);
+  color: #059669;
+  background: #F1F5F9;
 }
 
 .roadmap-subtab-btn.active {
@@ -3693,7 +3709,8 @@
 }
 
 .rm-why-box {
-  background: rgba(0, 0, 0, 0.25);
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
   border-radius: 8px;
   padding: 0.65rem 0.85rem;
   margin: 0.75rem 0;

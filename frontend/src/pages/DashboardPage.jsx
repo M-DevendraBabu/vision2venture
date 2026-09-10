@@ -246,7 +246,7 @@ const DashboardPage = () => {
         <div className="dashboard-header">
           <div className="dashboard-header-text">
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <h1 className="page-title" style={{ margin: 0 }}>Dashboard</h1>
+              <h1 className="page-title" style={{ margin: 0 }}>Executive Dashboard</h1>
               {isRefreshing && (
                 <span className="sync-badge">
                   Syncing...
@@ -254,11 +254,11 @@ const DashboardPage = () => {
               )}
             </div>
             <p className="dashboard-subtitle">
-              {user?.name ? `Welcome back, ${user.name}. ` : ''}Monitor and evaluate your startup portfolio.
+              {user?.name ? `Welcome back, ${user.name}. ` : ''}Monitor, evaluate, and benchmark your startup portfolio.
             </p>
           </div>
           <button className="btn-primary" onClick={() => navigate('/new-idea')}>
-            <FaPlus /> New Idea
+            <FaPlus /> Analyze New Idea
           </button>
         </div>
 

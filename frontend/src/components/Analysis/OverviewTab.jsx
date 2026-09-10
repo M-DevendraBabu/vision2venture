@@ -85,7 +85,7 @@ const OverviewTab = ({ data, idea }) => {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
             <FiLayers /> Business Domain
           </div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#a78bfa' }}>
+          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#7C3AED' }}>
             {data.business_domain || idea.business_type || 'General'}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>NLP-Detected Category</div>
@@ -96,7 +96,7 @@ const OverviewTab = ({ data, idea }) => {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
             <FaUsers /> Customer Demographic
           </div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#38bdf8' }}>
+          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0284C7' }}>
             {data.target_users || idea.target_customers || 'General Audience'}
           </div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Primary Target Buyer</div>
@@ -168,13 +168,13 @@ const OverviewTab = ({ data, idea }) => {
             <span 
               key={i} 
               style={{ 
-                background: i < 5 ? 'rgba(14, 165, 233, 0.15)' : 'rgba(14, 165, 233, 0.08)', 
-                color: i < 5 ? '#7dd3fc' : '#94a3b8',
-                border: `1px solid ${i < 5 ? 'rgba(14, 165, 233, 0.3)' : 'rgba(14, 165, 233, 0.15)'}`,
+                background: i < 5 ? '#F0F9FF' : '#F8FAFC', 
+                color: i < 5 ? '#0284C7' : '#475569',
+                border: `1px solid ${i < 5 ? '#BAE6FD' : '#E2E8F0'}`,
                 padding: '7px 16px', 
                 borderRadius: '20px', 
                 fontSize: '0.85rem', 
-                fontWeight: i < 5 ? 600 : 500,
+                fontWeight: i < 5 ? 700 : 500,
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px',
