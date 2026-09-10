@@ -255,7 +255,7 @@ const DashboardPage = () => {
                   </div>
                   <div className="idea-meta-row">
                     <div className="idea-meta">
-                      <span>{idea.industry}</span>
+                      <span className="idea-industry-text" title={idea.industry}>{idea.industry}</span>
                       <span className="idea-meta-bullet">•</span>
                       <span className={`sector-badge sector-badge-${idea.sector?.toLowerCase()}`}>{idea.sector}</span>
                     </div>
@@ -310,7 +310,7 @@ const DashboardPage = () => {
                     </div>
                     <div className="idea-meta-row">
                       <div className="idea-meta">
-                        <span>{idea.industry}</span>
+                        <span className="idea-industry-text" title={idea.industry}>{idea.industry}</span>
                         <span className="idea-meta-bullet">•</span>
                         <span className={`sector-badge sector-badge-${idea.sector?.toLowerCase()}`}>{idea.sector}</span>
                       </div>
