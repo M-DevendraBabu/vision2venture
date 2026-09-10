@@ -465,7 +465,7 @@ const RoadmapTab = ({ data, idea }) => {
               <FaCalculator style={{ color: '#059669' }} /> Capital Deployment Mathematical Reconciliation
             </div>
             <div className="fin-formula-code">
-              Phase 1 ({phases[0]?.estimated_cost}) + Phase 2 ({phases[1]?.estimated_cost}) + Phase 3 ({phases[2]?.estimated_cost}) = Setup CapEx: {formatCurrency(totalCapEx)} • Phase 4: {formatCurrency(monthlyOpEx)}/mo OpEx
+              Phase 1 (<span className="formula-val">{phases[0]?.estimated_cost}</span>) + Phase 2 (<span className="formula-val">{phases[1]?.estimated_cost}</span>) + Phase 3 (<span className="formula-val">{phases[2]?.estimated_cost}</span>) = <span className="formula-var">Setup CapEx:</span> <span className="formula-total">{formatCurrency(totalCapEx)}</span> • Phase 4: <span className="formula-val">{formatCurrency(monthlyOpEx)}/mo OpEx</span>
             </div>
             <div className="fin-formula-desc">
               Initial launch capital is disbursed across three controlled milestones prior to commercial scaling. Phase 4 onwards is funded directly from operating customer revenues.

@@ -8,7 +8,7 @@
    1. GLOBAL CANVAS & AMBIENT BACKGROUND SYSTEM
    ----------------------------------------------------------------- */
 .landing-page {
-  padding-top: 76px;
+  padding-top: 64px;
   overflow-x: hidden;
   position: relative;
   background-color: #FAFCFF;
@@ -107,16 +107,19 @@
 .hero-editorial-section {
   position: relative;
   z-index: 1;
-  padding: 32px 24px 80px;
+  padding: 36px 0 72px;
 }
 
 .hero-editorial-container {
-  max-width: 1340px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 32px;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.25fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: 3.5rem;
   align-items: center;
+  box-sizing: border-box;
 }
 
 /* Left Editorial Column */
@@ -348,40 +351,58 @@
 }
 
 /* -----------------------------------------------------------------
-   3. RIGHT WORKSPACE COLUMN (3-LAYER DEPTH SYSTEM)
+   3. RIGHT WORKSPACE COLUMN (BOUNDED HERO VISUAL STAGE)
    ----------------------------------------------------------------- */
-.hero-workspace-col {
+.hero-workspace-col,
+.hero-visual-stage {
   position: relative;
+  width: 100%;
+  padding: 20px 8px 24px 8px;
+  box-sizing: border-box;
 }
 
 .workspace-layered-canvas {
   position: relative;
+  width: 100%;
 }
 
-/* Layer 3: Floating Insight Cards Overlapping Main Panel */
+/* Layer 3: Floating Insight Cards in Reserved Safe Zones */
 .floating-depth-card {
   position: absolute;
   z-index: 12;
   background: #FFFFFF;
   border-radius: 14px;
-  padding: 10px 15px;
+  padding: 10px 16px;
   border: 1px solid rgba(15, 23, 42, 0.09);
-  box-shadow: 0 14px 35px -8px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.1), 0 2px 6px rgba(15, 23, 42, 0.04);
   display: flex;
   align-items: center;
   gap: 12px;
   backdrop-filter: blur(12px);
   cursor: default;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .floating-growth-card {
-  top: -18px;
-  right: -14px;
+  top: -10px;
+  right: 12px;
+  animation: gentleFloatGrowth 8s ease-in-out infinite alternate;
 }
 
 .floating-risk-card {
-  bottom: 24px;
-  left: -20px;
+  bottom: -14px;
+  left: 12px;
+  animation: gentleFloatRisk 7s ease-in-out infinite alternate;
+}
+
+@keyframes gentleFloatGrowth {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+@keyframes gentleFloatRisk {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
 }
 
 .floating-card-icon-box {
@@ -958,11 +979,13 @@
    4. SECTION LAYOUT & SHARED HEADINGS
    ----------------------------------------------------------------- */
 .section-inner {
-  max-width: 1200px;
+  max-width: 1320px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .section-label {
@@ -998,7 +1021,7 @@
    5. HOW IT WORKS (CONNECTED SEQUENCE ARCHITECTURE)
    ----------------------------------------------------------------- */
 .section-how {
-  padding: 88px 0;
+  padding: 80px 0;
   background: #FFFFFF;
   border-top: 1px solid rgba(15, 23, 42, 0.05);
   border-bottom: 1px solid rgba(15, 23, 42, 0.05);
@@ -1119,7 +1142,7 @@
    6. 9 POWERFUL MODULES (MODERN ASYMMETRIC GRID)
    ----------------------------------------------------------------- */
 .section-features {
-  padding: 88px 0;
+  padding: 80px 0;
   background: #FAFCFF;
 }
 
@@ -1201,7 +1224,7 @@
    7. COMPARISON MATRIX
    ----------------------------------------------------------------- */
 .section-compare {
-  padding: 88px 0;
+  padding: 80px 0;
   background: #FFFFFF;
   border-top: 1px solid rgba(15, 23, 42, 0.05);
 }
@@ -1324,9 +1347,10 @@
    8. CONVERSION CTA SECTION
    ----------------------------------------------------------------- */
 .section-cta {
-  padding: 80px 24px;
+  padding: 72px 0 88px;
   position: relative;
   overflow: hidden;
+  background: #FAFCFF;
 }
 
 .cta-ambient-mesh {
@@ -1397,9 +1421,20 @@
    9. RESPONSIVE BREAKPOINTS (1440px, 1280px, 1024px, 768px, 375px)
    ----------------------------------------------------------------- */
 @media (max-width: 1024px) {
+  .hero-editorial-container,
+  .section-inner {
+    padding: 0 24px;
+  }
+
+  .section-how,
+  .section-features,
+  .section-compare {
+    padding: 64px 0;
+  }
+
   .hero-editorial-container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   .hero-editorial-col {
@@ -1421,13 +1456,13 @@
   }
 
   .floating-growth-card {
-    right: 10px;
-    top: -12px;
+    right: 8px;
+    top: -8px;
   }
 
   .floating-risk-card {
-    left: 10px;
-    bottom: -12px;
+    left: 8px;
+    bottom: -10px;
   }
 
   .features-modular-grid {
@@ -1454,7 +1489,26 @@
 
 @media (max-width: 768px) {
   .hero-editorial-section {
-    padding: 24px 16px 56px;
+    padding: 20px 0 48px;
+  }
+
+  .hero-editorial-container,
+  .section-inner {
+    padding: 0 16px;
+  }
+
+  .section-how,
+  .section-features,
+  .section-compare {
+    padding: 48px 0;
+  }
+
+  .section-cta {
+    padding: 44px 0 60px;
+  }
+
+  .hero-visual-stage {
+    padding: 8px 0 12px 0;
   }
 
   .title-lead,
@@ -1480,6 +1534,9 @@
   .floating-depth-card {
     position: static;
     margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    animation: none !important;
   }
 
   .floating-risk-card {

@@ -218,7 +218,7 @@ const LandingPage = () => {
 
           {/* RIGHT SIDE: Layered Miniature Intelligence Workspace */}
           <motion.div 
-            className="hero-workspace-col"
+            className="hero-workspace-col hero-visual-stage"
             initial={{ opacity: 0, y: 28, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -486,7 +486,7 @@ const LandingPage = () => {
       <section className="section-how">
         <div className="section-inner">
           <motion.div 
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             viewport={{ once: true, amount: 0.05 }}
             variants={containerVariants}
@@ -568,7 +568,7 @@ const LandingPage = () => {
       <section className="section-features">
         <div className="section-inner">
           <motion.div 
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             viewport={{ once: true, amount: 0.05 }}
             variants={containerVariants}
@@ -605,7 +605,7 @@ const LandingPage = () => {
       <section className="section-compare">
         <div className="section-inner">
           <motion.div 
-            initial="hidden"
+            initial={false}
             whileInView="visible"
             viewport={{ once: true, amount: 0.05 }}
             variants={containerVariants}
@@ -670,7 +670,7 @@ const LandingPage = () => {
         <div className="cta-ambient-mesh"></div>
         <motion.div 
           className="section-inner"
-          initial="hidden"
+          initial={false}
           whileInView="visible"
           viewport={{ once: true, amount: 0.05 }}
           variants={containerVariants}

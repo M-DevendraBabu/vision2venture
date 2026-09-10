@@ -465,7 +465,7 @@ const FinancialTab = ({ data, idea }) => {
               <FaCalculator style={{ color: '#0ea5e9' }} /> Total Setup Capital (CapEx) Mathematical Formula
             </div>
             <div className="fin-formula-code">
-              Total CapEx = Product R&amp;D ({formatCurrency(devCost)}) + Machinery/Hardware ({formatCurrency(hwCost)}) + Legal/Filing ({formatCurrency(licCost)}) + Branding ({formatCurrency(brandCost)}) + Working Capital Reserve ({formatCurrency(invCost)}) = {formatCurrency(totalCapEx)}
+              <span className="formula-var">Total CapEx</span> = Product R&amp;D (<span className="formula-val">{formatCurrency(devCost)}</span>) + Machinery/Hardware (<span className="formula-val">{formatCurrency(hwCost)}</span>) + Legal/Filing (<span className="formula-val">{formatCurrency(licCost)}</span>) + Branding (<span className="formula-val">{formatCurrency(brandCost)}</span>) + Working Capital Reserve (<span className="formula-val">{formatCurrency(invCost)}</span>) = <span className="formula-total">{formatCurrency(totalCapEx)}</span>
             </div>
             <div className="fin-formula-desc">
               Upfront capital allocated prior to commercial launch to build production-grade infrastructure, secure corporate registrations, and ensure liquidity without early cashflow strain.
@@ -612,7 +612,7 @@ const FinancialTab = ({ data, idea }) => {
               <FaCalculator style={{ color: '#d97706' }} /> Monthly Operating Expense (OpEx Burn Rate) Formula
             </div>
             <div className="fin-formula-code">
-              Monthly OpEx = Staff Payroll ({formatCurrency(staffCost)}) + Rent ({formatCurrency(rentCost)}) + Cloud/APIs ({formatCurrency(cloudCost)}) + Marketing ({formatCurrency(mktCost)}) + Raw Materials ({formatCurrency(rawMaterialCost)}) + Utilities ({formatCurrency(utilCost)}) = {formatCurrency(totalOpExMonthly)} / month
+              <span className="formula-var">Monthly OpEx</span> = Staff Payroll (<span className="formula-val">{formatCurrency(staffCost)}</span>) + Rent (<span className="formula-val">{formatCurrency(rentCost)}</span>) + Cloud/APIs (<span className="formula-val">{formatCurrency(cloudCost)}</span>) + Marketing (<span className="formula-val">{formatCurrency(mktCost)}</span>) + Raw Materials (<span className="formula-val">{formatCurrency(rawMaterialCost)}</span>) + Utilities (<span className="formula-val">{formatCurrency(utilCost)}</span>) = <span className="formula-total">{formatCurrency(totalOpExMonthly)} / month</span>
             </div>
             <div className="fin-formula-desc">
               Reflects recurring monthly operational expenditures required to maintain consistent daily service delivery, server uptime, and customer satisfaction across India.
@@ -785,7 +785,7 @@ const FinancialTab = ({ data, idea }) => {
               <FaCalculator style={{ color: '#059669' }} /> Monthly Recurring Revenue (MRR) Auto-Calculation Formula
             </div>
             <div className="fin-formula-code">
-              Monthly Revenue = (Average Order Value: {formatCurrency(pricePerUnit)}) × (Monthly Sales Volume: {monthlySalesVol.toLocaleString('en-IN')} orders) = {formatCurrency(mrr)} / month ({formatCurrency(arr)} ARR)
+              <span className="formula-var">Monthly Revenue</span> = (Average Order Value: <span className="formula-val">{formatCurrency(pricePerUnit)}</span>) × (Monthly Sales Volume: <span className="formula-val">{monthlySalesVol.toLocaleString('en-IN')} orders</span>) = <span className="formula-total">{formatCurrency(mrr)} / month</span> ({formatCurrency(arr)} ARR)
             </div>
             <div className="fin-formula-desc">
               Steady-state monthly run-rate calculated from average ticket size and customer transaction frequency across Indian urban target markets.
@@ -904,7 +904,7 @@ const FinancialTab = ({ data, idea }) => {
               <FaBalanceScale style={{ color: '#7c3aed' }} /> Unit Economics &amp; Venture Efficiency Formulas
             </div>
             <div className="fin-formula-code">
-              LTV:CAC Ratio = LTV ({formatCurrency(ltv)}) ÷ CAC ({formatCurrency(cac)}) = {ltvCacRatio}x • Gross Margin: {grossMarginPct}% • CAC Payback: {cacPaybackMonths} mos
+              <span className="formula-var">LTV:CAC Ratio</span> = LTV (<span className="formula-val">{formatCurrency(ltv)}</span>) ÷ CAC (<span className="formula-val">{formatCurrency(cac)}</span>) = <span className="formula-total">{ltvCacRatio}x</span> • Gross Margin: <span className="formula-val">{grossMarginPct}%</span> • CAC Payback: <span className="formula-val">{cacPaybackMonths} mos</span>
             </div>
             <div className="fin-formula-desc">
               Measures customer lifetime cashflow contribution relative to marketing acquisition expenses. Ratios between 3.2x and 4.8x represent the gold standard for capital-efficient Indian startups.

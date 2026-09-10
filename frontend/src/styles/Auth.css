@@ -6,13 +6,17 @@
 .auth-page {
   min-height: calc(100dvh - 64px);
   min-height: calc(100vh - 64px);
+  padding-top: calc(64px + 36px);
+  padding-bottom: 48px;
+  padding-left: 16px;
+  padding-right: 16px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 32px 16px;
+  align-items: flex-start;
   background-color: var(--bg-color, #F8FAFC);
   position: relative;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .auth-page::before {
@@ -28,17 +32,17 @@
 }
 
 .auth-card {
-  width: min(100%, 440px);
-  padding: 28px 28px;
+  width: min(100%, 460px);
+  padding: 32px 30px;
   text-align: center;
   position: relative;
   z-index: 1;
   background: #FFFFFF !important;
   border: 1px solid var(--border-color, #E2E8F0) !important;
-  border-radius: var(--radius-lg, 14px) !important;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 35px -5px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.02) !important;
   box-sizing: border-box;
-  margin: auto 0;
+  margin: 0 auto;
 }
 
 .auth-brand-header {
@@ -202,6 +206,12 @@
   box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.16) !important;
 }
 
+.auth-form input.glass-input::placeholder {
+  color: #94A3B8 !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #94A3B8 !important;
+}
+
 /* Password Input */
 .password-input-wrapper {
   position: relative;
@@ -336,23 +346,26 @@
 /* Short-height screen protection (e.g. 768px/800px laptops) */
 @media (max-height: 750px) {
   .auth-page {
-    align-items: flex-start;
-    padding-top: 16px;
-    padding-bottom: 32px;
+    padding-top: calc(64px + 20px);
+    padding-bottom: 36px;
   }
 }
 
 /* Mobile responsive (375px - 640px) */
 @media (max-width: 640px) {
   .auth-page {
-    padding: 16px 14px 36px 14px;
+    padding-top: calc(60px + 20px);
+    padding-bottom: 36px;
+    padding-left: 14px;
+    padding-right: 14px;
     align-items: flex-start;
   }
   .auth-card {
     width: 100%;
-    max-width: 400px;
-    padding: 22px 16px;
-    border-radius: var(--radius-md, 10px) !important;
+    max-width: 440px;
+    padding: 24px 18px;
+    border-radius: 14px !important;
+    margin: 0 auto;
   }
   .auth-title {
     font-size: 1.35rem;
