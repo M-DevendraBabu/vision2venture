@@ -3980,3 +3980,39 @@
   line-height: 1.4;
   margin: 0;
 }
+
+/* ============================================================
+   REPORT TAB STYLES
+   ============================================================ */
+.report-container {
+  width: 100%;
+}
+
+.report-download-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4) !important;
+}
+
+.report-download-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.report-regenerate-btn:hover:not(:disabled) {
+  background: #F1F5F9 !important;
+  border-color: #94A3B8 !important;
+  transform: translateY(-1px);
+}
+
+.report-regenerate-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
