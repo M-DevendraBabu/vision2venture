@@ -5,14 +5,21 @@ const RadarChart = ({ data, options }) => {
   const defaultOptions = {
     scales: {
       r: {
-        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-        grid: { color: 'rgba(255, 255, 255, 0.1)' },
-        pointLabels: { color: '#a0aec0', font: { size: 12 } },
+        angleLines: { color: 'rgba(15, 23, 42, 0.08)' },
+        grid: { color: 'rgba(15, 23, 42, 0.08)' },
+        pointLabels: { color: '#475569', font: { size: 12, weight: '600' } },
         ticks: { display: false, min: 0, max: 100 }
       }
     },
     plugins: {
-      legend: { display: false }
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#FFFFFF',
+        titleColor: '#0F172A',
+        bodyColor: '#334155',
+        borderColor: '#E2E8F0',
+        borderWidth: 1
+      }
     }
   };
 

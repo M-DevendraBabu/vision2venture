@@ -551,9 +551,9 @@ const MarketTab = ({ data, idea }) => {
           style={{
             padding: '0.65rem 1.25rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'tam' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'tam' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : '#FFFFFF',
+            border: activeSubTab === 'tam' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'tam' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'tam' ? '600' : '400',
             display: 'flex',
@@ -570,9 +570,9 @@ const MarketTab = ({ data, idea }) => {
           style={{
             padding: '0.65rem 1.25rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'demographics' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'demographics' ? 'linear-gradient(135deg, #10b981, #059669)' : '#FFFFFF',
+            border: activeSubTab === 'demographics' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'demographics' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'demographics' ? '600' : '400',
             display: 'flex',
@@ -589,9 +589,9 @@ const MarketTab = ({ data, idea }) => {
           style={{
             padding: '0.65rem 1.25rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'channels' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'channels' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : '#FFFFFF',
+            border: activeSubTab === 'channels' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'channels' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'channels' ? '600' : '400',
             display: 'flex',
@@ -608,9 +608,9 @@ const MarketTab = ({ data, idea }) => {
           style={{
             padding: '0.65rem 1.25rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'trends' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'trends' ? 'linear-gradient(135deg, #10b981, #059669)' : '#FFFFFF',
+            border: activeSubTab === 'trends' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'trends' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'trends' ? '600' : '400',
             display: 'flex',
@@ -640,7 +640,7 @@ const MarketTab = ({ data, idea }) => {
                   100% Industry Scope
                 </span>
               </div>
-              <div className="tam-val" style={{ color: '#ffffff' }}>
+              <div className="tam-val" style={{ color: '#0F172A' }}>
                 {marketSizing.tamStr}
               </div>
               <div className="tam-sub">Total Industry Demand in {countryName}</div>
@@ -659,7 +659,7 @@ const MarketTab = ({ data, idea }) => {
                   {marketSizing.samPercent}% Serviceable
                 </span>
               </div>
-              <div className="tam-val" style={{ color: '#ffffff' }}>
+              <div className="tam-val" style={{ color: '#0F172A' }}>
                 {marketSizing.samStr}
               </div>
               <div className="tam-sub">Serviceable via {sectorType.toUpperCase()} Model</div>
@@ -678,7 +678,7 @@ const MarketTab = ({ data, idea }) => {
                   Year 1–3 Target
                 </span>
               </div>
-              <div className="tam-val" style={{ color: '#ffffff' }}>
+              <div className="tam-val" style={{ color: '#0F172A' }}>
                 {marketSizing.somStr}
               </div>
               <div className="tam-sub">Realistic Beachhead Capture ({marketSizing.somPercentOfSam} of SAM)</div>

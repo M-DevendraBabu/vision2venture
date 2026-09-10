@@ -30,7 +30,7 @@ const OverviewTab = ({ data, idea }) => {
       {/* ── Quick Summary Card ── */}
       <div className="glass-card-accent p-xl" style={{ borderLeft: '4px solid #0ea5e9', borderRadius: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', flexWrap: 'wrap' }}>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#fff', margin: 0 }}>{idea.title}</h2>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#0F172A', margin: 0 }}>{idea.title}</h2>
           <span className={`sector-badge sector-badge-${idea.sector || 'hybrid'}`}>
             {idea.sector || 'hybrid'}
           </span>

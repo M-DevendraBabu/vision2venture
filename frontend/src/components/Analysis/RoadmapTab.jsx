@@ -433,7 +433,7 @@ const RoadmapTab = ({ data, idea }) => {
                     </ul>
                   </div>
 
-                  <div className="mb-sm" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.5rem' }}>
+                  <div className="mb-sm" style={{ borderTop: '1px solid #E2E8F0', paddingTop: '0.5rem' }}>
                     <div style={{ fontSize: '0.74rem', color: '#38bdf8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                       <FaBullseye /> Success Target Metrics:
                     </div>
@@ -444,7 +444,7 @@ const RoadmapTab = ({ data, idea }) => {
                     </ul>
                   </div>
 
-                  <div className="fin-calc-text" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '0.4rem' }}>
+                  <div className="fin-calc-text" style={{ borderTop: '1px solid #E2E8F0', paddingTop: '0.4rem' }}>
                     Strategic Focus: {phase.focus}
                   </div>
                 </div>
@@ -533,7 +533,7 @@ const RoadmapTab = ({ data, idea }) => {
             {phases.map((phase, idx) => {
               const color = phaseColors[idx % phaseColors.length];
               return (
-                <div key={idx} style={{ marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: idx < phases.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
+                <div key={idx} style={{ marginBottom: '1.5rem', paddingBottom: '1.25rem', borderBottom: idx < phases.length - 1 ? '1px solid #E2E8F0' : 'none' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
                     <h5 style={{ color: color, fontSize: '1rem', fontWeight: 700, margin: 0 }}>
                       {phase.name} ({phase.duration})

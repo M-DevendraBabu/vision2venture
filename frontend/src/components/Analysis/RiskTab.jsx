@@ -317,15 +317,15 @@ const RiskTab = ({ data, idea }) => {
       </div>
 
       {/* Sub-Tab Navigation Bar */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.75rem' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.75rem' }}>
         <button
           onClick={() => setActiveSubTab('heatmap')}
           style={{
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'heatmap' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'heatmap' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : '#FFFFFF',
+            border: activeSubTab === 'heatmap' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'heatmap' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'heatmap' ? '600' : '400',
             display: 'flex',
@@ -341,9 +341,9 @@ const RiskTab = ({ data, idea }) => {
           style={{
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'feasibility' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'feasibility' ? 'linear-gradient(135deg, #10b981, #059669)' : '#FFFFFF',
+            border: activeSubTab === 'feasibility' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'feasibility' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'feasibility' ? '600' : '400',
             display: 'flex',
@@ -359,9 +359,9 @@ const RiskTab = ({ data, idea }) => {
           style={{
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'investor' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'investor' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : '#FFFFFF',
+            border: activeSubTab === 'investor' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'investor' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'investor' ? '600' : '400',
             display: 'flex',
@@ -450,7 +450,7 @@ const RiskTab = ({ data, idea }) => {
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
-                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#ffffff' }}>Overall Viability Assessment</h4>
+                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0F172A' }}>Overall Viability Assessment</h4>
                 <p style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   {overallExplanation}
                 </p>
@@ -523,7 +523,7 @@ const RiskTab = ({ data, idea }) => {
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
-                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#ffffff' }}>Venture Capital & Angel Readiness Assessment</h4>
+                <h4 style={{ margin: '0 0 6px 0', fontSize: '1.05rem', color: '#0F172A' }}>Venture Capital & Angel Readiness Assessment</h4>
                 <p style={{ margin: 0, color: '#cbd5e1', fontSize: '0.9rem', lineHeight: '1.6' }}>
                   {overallExplanation}
                 </p>

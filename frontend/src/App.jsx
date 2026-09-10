@@ -48,7 +48,7 @@ function App() {
       </main>
       {!hideFooter && <Footer />}
       {!hideFooter && <MobileBottomNav />}
-      <ToastContainer theme="dark" position="bottom-right" />
+      <ToastContainer theme="light" position="bottom-right" />
     </>
   );
 }

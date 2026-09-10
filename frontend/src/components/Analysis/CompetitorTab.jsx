@@ -17,15 +17,15 @@ const CompetitorTab = ({ data }) => {
       </div>
 
       {/* Sub-Tab Navigation Bar */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.75rem' }}>
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.75rem' }}>
         <button
           onClick={() => setActiveSubTab('matches')}
           style={{
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'matches' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'matches' ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : '#FFFFFF',
+            border: activeSubTab === 'matches' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'matches' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'matches' ? '600' : '400',
             display: 'flex',
@@ -41,9 +41,9 @@ const CompetitorTab = ({ data }) => {
           style={{
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'matrix' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'matrix' ? 'linear-gradient(135deg, #10b981, #059669)' : '#FFFFFF',
+            border: activeSubTab === 'matrix' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'matrix' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'matrix' ? '600' : '400',
             display: 'flex',
@@ -59,9 +59,9 @@ const CompetitorTab = ({ data }) => {
           style={{
             padding: '0.6rem 1.2rem',
             borderRadius: '8px',
-            border: 'none',
-            background: activeSubTab === 'gaps' ? 'linear-gradient(135deg, #10b981, #059669)' : 'rgba(255,255,255,0.05)',
-            color: '#fff',
+            background: activeSubTab === 'gaps' ? 'linear-gradient(135deg, #10b981, #059669)' : '#FFFFFF',
+            border: activeSubTab === 'gaps' ? 'none' : '1px solid #CBD5E1',
+            color: activeSubTab === 'gaps' ? '#fff' : '#334155',
             cursor: 'pointer',
             fontWeight: activeSubTab === 'gaps' ? '600' : '400',
             display: 'flex',
@@ -96,7 +96,7 @@ const CompetitorTab = ({ data }) => {
                       <span className="text-sm text-secondary">Similarity Score</span>
                       <span className="text-sm font-bold text-primary">{comp.similarity_score || comp.similarity || 50}%</span>
                     </div>
-                    <div className="progress-bar" style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div className="progress-bar" style={{ height: '6px', background: '#E2E8F0', borderRadius: '3px', overflow: 'hidden' }}>
                       <div style={{ width: `${comp.similarity_score || comp.similarity || 50}%`, background: 'linear-gradient(90deg, #0ea5e9, #06b6d4)', height: '100%' }}></div>
                     </div>
                   </div>

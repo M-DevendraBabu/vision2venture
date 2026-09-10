@@ -239,10 +239,10 @@ const AdminPage = () => {
                 {/* Mobile Cards View (<= 1200px) */}
                 <div className="mobile-user-cards" style={{ display: 'none', flexDirection: 'column', gap: '16px' }}>
                   {filteredUsers.map(u => (
-                    <div key={u.id} className="mobile-user-card" style={{ padding: '18px 16px', background: '#131b2e', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                    <div key={u.id} className="mobile-user-card" style={{ padding: '18px 16px', background: '#FFFFFF', borderRadius: '16px', border: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '14px', boxShadow: '0 2px 8px rgba(15,23,42,0.06)' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
                         <div style={{ minWidth: 0, flex: 1 }}>
-                          <div style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.15rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.name}</div>
+                          <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '1.15rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.name}</div>
                           <div style={{ fontSize: '0.88rem', color: '#94a3b8', marginTop: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email}</div>
                         </div>
                         {u.role === 'admin' ? (
@@ -255,14 +255,14 @@ const AdminPage = () => {
                           </span>
                         )}
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#cbd5e1', background: 'rgba(255,255,255,0.03)', padding: '10px 14px', borderRadius: '10px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.95rem', color: '#334155', background: '#F8FAFC', padding: '10px 14px', borderRadius: '10px' }}>
                         <span>Joined: {u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A'}</span>
                         <span style={{ fontWeight: 800, color: '#38bdf8' }}>Ideas: {u.idea_count || 0}</span>
                       </div>
                       <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
                         <button
                           onClick={() => fetchUserHistory(u.id)}
-                          style={{ flex: 1, minHeight: '48px', padding: '12px', background: selectedUser?.id === u.id ? '#0ea5e9' : '#1e293b', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                          style={{ flex: 1, minHeight: '48px', padding: '12px', background: selectedUser?.id === u.id ? 'linear-gradient(135deg, #0ea5e9, #0284c7)' : '#FFFFFF', color: selectedUser?.id === u.id ? '#ffffff' : '#334155', border: '1px solid #CBD5E1', borderRadius: '12px', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
                         >
                           <FaFileAlt size={14} /> View History
                         </button>

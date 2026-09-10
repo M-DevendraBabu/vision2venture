@@ -1,23 +1,13 @@
 /* ===================================
-   PREMIUM FOOTER
+   FOOTER — LIGHT / WHITE THEME
    =================================== */
 .footer {
   margin-top: var(--spacing-2xl);
   padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-md);
-  background: #0B1626;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border-top: 1px solid var(--border-color, #E2E8F0);
   position: relative;
   z-index: 1;
-}
-
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 240px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(33, 184, 242, 0.5), transparent);
 }
 
 .footer-content {
@@ -34,7 +24,7 @@
 }
 
 .footer-brand p {
-  color: var(--text-muted);
+  color: var(--text-muted, #64748B);
   margin: var(--spacing-md) 0;
   line-height: 1.7;
   font-size: 0.9rem;
@@ -47,13 +37,13 @@
 
 .social-links a {
   font-size: 1.2rem;
-  color: var(--text-muted);
-  transition: all var(--transition-spring);
+  color: var(--text-muted, #64748B);
+  transition: all var(--transition-fast);
 }
 
 .social-links a:hover {
-  color: var(--primary-light);
-  transform: translateY(-3px) scale(1.15);
+  color: var(--primary-dark, #0284C7);
+  transform: translateY(-2px);
 }
 
 .footer-links {
@@ -63,7 +53,7 @@
 }
 
 .link-group h3 {
-  color: var(--text-primary);
+  color: var(--text-primary, #0F172A);
   margin-bottom: var(--spacing-md);
   font-size: 0.95rem;
   font-weight: 600;
@@ -72,23 +62,23 @@
 
 .link-group a {
   display: block;
-  color: var(--text-muted);
+  color: var(--text-muted, #64748B);
   margin-bottom: 8px;
   font-size: 0.88rem;
   transition: all var(--transition-fast);
 }
 
 .link-group a:hover {
-  color: var(--primary-light);
-  transform: translateX(4px);
+  color: var(--primary-dark, #0284C7);
+  transform: translateX(3px);
 }
 
 .footer-bottom {
   max-width: 1200px;
   margin: var(--spacing-xl) auto 0;
   padding-top: var(--spacing-lg);
-  border-top: 1px solid rgba(255,255,255,0.03);
+  border-top: 1px solid var(--border-color, #E2E8F0);
   text-align: center;
-  color: var(--text-muted);
+  color: var(--text-muted, #64748B);
   font-size: 0.82rem;
 }

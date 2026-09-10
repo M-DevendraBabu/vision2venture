@@ -1653,7 +1653,7 @@ ${data?.reasoning || bp.ai_rationale}
         </div>
 
         {/* Action Button: Copy Blueprint */}
-        <div className="flex justify-between align-center mt-md pt-sm" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex justify-between align-center mt-md pt-sm" style={{ borderTop: '1px solid #E2E8F0' }}>
           <div className="text-muted text-xs flex align-center gap-xs">
             <FaInfoCircle /> Verified against 64,461 Stack Overflow developer benchmarks & real startup production topologies
           </div>

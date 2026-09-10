@@ -49,7 +49,7 @@ const LoadingSpinner = ({ text = 'Loading...' }) => {
           animation: spinnerPulse 2s ease-in-out infinite;
         }
         .spinner-text {
-          color: #94a3b8;
+          color: #475569;
           font-size: 0.88rem;
           font-weight: 500;
           letter-spacing: 0.04em;

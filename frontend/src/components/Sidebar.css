@@ -1,11 +1,11 @@
 /* =================================================================
-   SIDEBAR — CLEAN WITH SMOOTH TRANSITIONS
+   SIDEBAR — LIGHT / WHITE THEME
    ================================================================= */
 .sidebar {
   width: 220px;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.015);
-  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  background: #FFFFFF;
+  border-right: 1px solid var(--border-color, #E2E8F0);
   padding: 20px 12px;
   height: calc(100vh - 60px);
   position: sticky;
@@ -24,11 +24,11 @@
   gap: 10px;
   padding: 10px 14px;
   border-radius: 8px;
-  color: #94a3b8;
+  color: var(--text-secondary, #475569);
   text-decoration: none;
   font-size: 0.88rem;
   font-weight: 500;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
@@ -41,25 +41,24 @@
   transform: translateY(-50%);
   width: 3px;
   height: 0;
-  background: var(--primary-color);
+  background: var(--primary-color, #0EA5E9);
   border-radius: 0 3px 3px 0;
-  transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(33, 184, 242, 0.5);
+  transition: height 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-link:hover {
-  color: #F5F7FA;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary, #0F172A);
+  background: #F1F5F9;
 }
 
 .sidebar-link.active {
-  color: var(--primary-color);
-  background: rgba(33, 184, 242, 0.08);
+  color: var(--primary-dark, #0284C7);
+  background: #E0F2FE;
   font-weight: 600;
 }
 
 .sidebar-link.active::before {
-  height: 55%;
+  height: 60%;
 }
 
 .sidebar-link svg {
@@ -69,7 +68,7 @@
 }
 
 .sidebar-link:hover svg {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 @media (max-width: 1200px) {

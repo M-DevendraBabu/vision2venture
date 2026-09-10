@@ -1,5 +1,5 @@
 /* =================================================================
-   NAVBAR & MOBILE DRAWER — RESPONSIVE ADAPTIVE NAVIGATION
+   NAVBAR & MOBILE DRAWER — LIGHT / WHITE THEME
    ================================================================= */
 .navbar {
   position: fixed;
@@ -11,17 +11,17 @@
   height: 64px;
   display: flex;
   align-items: center;
-  background: rgba(5, 8, 17, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color, #E2E8F0);
   transition: all 0.3s ease;
 }
 
 .navbar.scrolled {
-  background: rgba(5, 8, 17, 0.96);
-  border-bottom-color: rgba(56, 189, 248, 0.18);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  background: #FFFFFF;
+  border-bottom-color: #CBD5E1;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
 }
 
 .navbar-container {
@@ -42,6 +42,7 @@
   font-weight: 800;
   text-decoration: none;
   letter-spacing: -0.01em;
+  color: var(--text-primary, #0F172A);
 }
 
 .logo-badge {
@@ -52,7 +53,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 14px rgba(33, 184, 242, 0.35);
+  box-shadow: 0 2px 10px rgba(14, 165, 233, 0.3);
   flex-shrink: 0;
   transition: transform 0.25s ease;
 }
@@ -74,11 +75,11 @@
 }
 
 .nav-link {
-  padding: 6px 14px;
+  padding: 7px 14px;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-secondary, #334155);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -87,14 +88,14 @@
 }
 
 .nav-link:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary, #0F172A);
+  background: #F1F5F9;
 }
 
 .nav-link.active {
-  color: var(--primary-color);
-  background: rgba(33, 184, 242, 0.08);
-  border: 1px solid rgba(33, 184, 242, 0.2);
+  color: var(--primary-dark, #0284C7);
+  background: #E0F2FE;
+  border: 1px solid #BAE6FD;
   font-weight: 600;
 }
 
@@ -104,16 +105,16 @@
   border-radius: var(--radius-sm);
   font-size: 0.88rem;
   font-weight: 600;
-  color: #f87171;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #DC2626;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
   cursor: pointer;
   transition: all var(--transition-fast);
   margin-left: 6px;
 }
 
 .nav-btn-logout:hover {
-  background: rgba(239, 68, 68, 0.18);
+  background: #FEE2E2;
 }
 
 .nav-btn-primary {
@@ -126,26 +127,27 @@
   text-decoration: none;
   transition: all var(--transition-fast);
   margin-left: 8px;
-  box-shadow: 0 2px 10px rgba(33, 184, 242, 0.28);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.28);
 }
 
 .nav-btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(33, 184, 242, 0.4);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.38);
   color: #ffffff;
 }
 
-/* Mobile Hamburger Button (<= 768px) */
+/* Mobile Hamburger Button (<= 1200px) */
 .mobile-hamburger {
   display: none;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #f8fafc;
+  background: #FFFFFF;
+  border: 1px solid var(--border-color, #E2E8F0);
+  color: var(--text-primary, #0F172A);
   font-size: 1.25rem;
   padding: 8px 12px;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: var(--shadow-xs);
 }
 
 .mobile-hamburger:active {
@@ -153,14 +155,14 @@
 }
 
 /* =================================================================
-   MOBILE DRAWER OVERLAY
+   MOBILE DRAWER OVERLAY (LIGHT THEME)
    ================================================================= */
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1050;
   animation: fadeIn 0.25s ease;
 }
@@ -171,9 +173,9 @@
   right: 0;
   bottom: 0;
   width: min(85vw, 320px);
-  background: #0B1626;
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.75);
+  background: #FFFFFF;
+  border-left: 1px solid var(--border-color, #E2E8F0);
+  box-shadow: -4px 0 24px rgba(15, 23, 42, 0.12);
   z-index: 1100;
   display: flex;
   flex-direction: column;
@@ -192,13 +194,17 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border-color, #E2E8F0);
+}
+
+.drawer-header .navbar-logo {
+  font-size: 1.15rem;
 }
 
 .drawer-close-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd5e1;
+  background: #F1F5F9;
+  border: 1px solid var(--border-color, #E2E8F0);
+  color: var(--text-secondary, #334155);
   font-size: 1.1rem;
   width: 34px;
   height: 34px;
@@ -227,8 +233,8 @@
   align-items: center;
   gap: 12px;
   padding: 12px 14px;
-  background: #0F1C2E;
-  border: 1px solid rgba(33, 184, 242, 0.18);
+  background: #F8FAFC;
+  border: 1px solid var(--border-color, #E2E8F0);
   border-radius: var(--radius-md);
 }
 
@@ -244,18 +250,18 @@
   font-weight: 700;
   font-size: 1.1rem;
   flex-shrink: 0;
-  box-shadow: 0 2px 10px rgba(33, 184, 242, 0.3);
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.28);
 }
 
 .drawer-user-name {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary, #0F172A);
 }
 
 .drawer-user-email {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: var(--text-muted, #64748B);
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 180px;
@@ -275,7 +281,7 @@
   gap: 14px;
   padding: 12px 14px;
   border-radius: var(--radius-sm);
-  color: var(--text-secondary);
+  color: var(--text-secondary, #334155);
   font-size: 0.95rem;
   font-weight: 500;
   text-decoration: none;
@@ -285,33 +291,37 @@
 
 .drawer-nav-link svg {
   font-size: 1.15rem;
-  color: var(--primary-color);
+  color: var(--primary-dark, #0284C7);
 }
 
 .drawer-nav-link:active {
-  background: rgba(33, 184, 242, 0.12);
-  color: #ffffff;
+  background: #F1F5F9;
+  color: var(--text-primary, #0F172A);
 }
 
 .drawer-nav-link.active {
-  background: rgba(33, 184, 242, 0.1);
-  color: var(--primary-color);
-  border: 1px solid rgba(33, 184, 242, 0.25);
+  background: #E0F2FE;
+  color: var(--primary-dark, #0284C7);
+  border: 1px solid #BAE6FD;
   font-weight: 600;
 }
 
 .drawer-nav-link.register-highlight {
-  background: linear-gradient(135deg, rgba(33, 184, 242, 0.15) 0%, rgba(20, 200, 168, 0.15) 100%);
-  border: 1px solid rgba(33, 184, 242, 0.3);
-  color: #ffffff;
+  background: var(--gradient-brand);
+  color: #ffffff !important;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);
+}
+
+.drawer-nav-link.register-highlight svg {
+  color: #ffffff !important;
 }
 
 /* Drawer Footer */
 .drawer-footer {
   margin-top: auto;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-color, #E2E8F0);
 }
 
 .drawer-logout-btn {
@@ -321,9 +331,9 @@
   justify-content: center;
   gap: 10px;
   padding: 12px;
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  color: #f87171;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #DC2626;
   border-radius: 12px;
   font-size: 0.95rem;
   font-weight: 700;
@@ -332,7 +342,7 @@
 }
 
 .drawer-logout-btn:active {
-  background: rgba(239, 68, 68, 0.25);
+  background: #FEE2E2;
 }
 
 /* Responsive Breakpoints */

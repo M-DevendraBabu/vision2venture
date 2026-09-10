@@ -1,5 +1,5 @@
 /* ============================================================
-   MOBILE BOTTOM NAVIGATION BAR — PRO MOBILE APP DESIGN
+   MOBILE BOTTOM NAVIGATION BAR — LIGHT / WHITE THEME
    ============================================================ */
 
 .mobile-bottom-nav {
@@ -9,11 +9,11 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(11, 22, 38, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.65);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-color, #E2E8F0);
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -40,7 +40,7 @@
   justify-content: center;
   flex: 1;
   height: 100%;
-  color: #94a3b8;
+  color: var(--text-muted, #64748B);
   text-decoration: none;
   font-size: 0.8rem;
   font-weight: 500;
@@ -71,14 +71,13 @@
 
 /* Active State */
 .mobile-nav-item.active {
-  color: var(--primary-color);
+  color: var(--primary-dark, #0284C7);
   font-weight: 600;
 }
 
 .mobile-nav-item.active .mobile-nav-icon {
-  color: var(--primary-color);
+  color: var(--primary-dark, #0284C7);
   transform: translateY(-2px);
-  filter: drop-shadow(0 0 6px rgba(33, 184, 242, 0.5));
 }
 
 .mobile-nav-item.active::after {
@@ -98,20 +97,19 @@
 }
 
 .mobile-nav-central-btn {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--gradient-brand);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.4);
   font-size: 24px;
-  box-shadow: 0 4px 16px rgba(33, 184, 242, 0.45), 0 0 0 3px #07111F;
   transition: all 0.2s ease;
-  margin-bottom: 2px;
 }
 
 .mobile-nav-item.central-action:active .mobile-nav-central-btn {
-  transform: scale(0.88);
+  transform: scale(0.92);
 }
