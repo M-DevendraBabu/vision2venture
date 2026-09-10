@@ -1,31 +1,35 @@
 /* =================================================================
-   NAVBAR & MOBILE DRAWER — LIGHT / WHITE THEME
+   FLOATING REFINED NAVBAR & MOBILE DRAWER — HIGH-END LIGHT SAAS
    ================================================================= */
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 14px;
+  left: 20px;
+  right: 20px;
+  max-width: 1320px;
+  margin: 0 auto;
   z-index: 1000;
-  padding: 0 24px;
-  height: 64px;
+  height: 58px;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-color, #E2E8F0);
-  transition: all 0.3s ease;
+  padding: 0 22px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 9999px;
+  box-shadow: 0 8px 30px -4px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar.scrolled {
-  background: #FFFFFF;
-  border-bottom-color: #CBD5E1;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 12px 35px -4px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .navbar-container {
-  max-width: 1400px;
+  max-width: 1320px;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -346,10 +350,18 @@
 }
 
 /* Responsive Breakpoints */
-@media (max-width: 1200px) {
+@media (max-width: 850px) {
   .navbar {
-    padding: 0 16px;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
     height: 60px;
+    padding: 0 16px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid #E2E8F0;
   }
   
   .desktop-nav {

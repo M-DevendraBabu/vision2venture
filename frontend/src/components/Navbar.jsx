@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { 
   FaRocket, FaRobot, FaBars, FaTimes, FaHome, 
   FaLightbulb, FaUser, FaShieldAlt, FaSignOutAlt, FaSignInAlt, FaUserPlus 
@@ -45,7 +46,12 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <motion.nav 
+        className={`navbar ${scrolled ? 'scrolled' : ''}`}
+        initial={{ opacity: 0, y: -14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      >
         <div className="navbar-container">
           <Link to="/" className="navbar-logo">
             <div className="logo-badge">
@@ -96,7 +102,7 @@ const Navbar = () => {
             <FaBars />
           </button>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Drawer Backdrop */}
       {drawerOpen && (
