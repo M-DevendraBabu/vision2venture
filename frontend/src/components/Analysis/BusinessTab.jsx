@@ -550,22 +550,34 @@ const BusinessTab = ({ data, idea }) => {
   const parseSwotQuadrant = (items, fallbackItems = []) => {
     if (Array.isArray(items) && items.length > 0) {
       return items.map((item, idx) => {
-        if (typeof item === 'object' && item.title) return item;
-        const str = String(item);
+        const fallback = fallbackItems[idx] || {};
+        if (typeof item === 'object' && item !== null) {
+          const title = item.title || item.name || item.heading || fallback.title || `Key Factor #${idx + 1}`;
+          const desc = item.desc || item.description || item.detail || item.text || item.point || item.explanation || fallback.desc || '';
+          const impact = item.impact || item.badge || item.priority || fallback.impact || 'Core Factor';
+          const action = item.action || item.recommendation || item.strategy || item.mitigation || fallback.action || 'Execute strategic focus.';
+          return {
+            title,
+            desc: desc || title,
+            impact,
+            action
+          };
+        }
+        const str = String(item || '').trim();
         const parts = str.split(/:\s*/);
-        if (parts.length > 1) {
+        if (parts.length > 1 && parts[0].length < 60) {
           return {
             title: parts[0].trim(),
             desc: parts.slice(1).join(': ').trim(),
-            impact: fallbackItems[idx]?.impact || 'Core Factor',
-            action: fallbackItems[idx]?.action || 'Execute strategic focus.'
+            impact: fallback.impact || 'Core Factor',
+            action: fallback.action || 'Execute strategic focus.'
           };
         }
         return {
-          title: `Key Factor #${idx + 1}`,
-          desc: str,
-          impact: fallbackItems[idx]?.impact || 'Core Factor',
-          action: fallbackItems[idx]?.action || 'Execute strategic focus.'
+          title: fallback.title || `Key Factor #${idx + 1}`,
+          desc: str || fallback.desc || 'Strategic market element to monitor.',
+          impact: fallback.impact || 'Core Factor',
+          action: fallback.action || 'Execute strategic focus.'
         };
       });
     }
@@ -820,33 +832,33 @@ const BusinessTab = ({ data, idea }) => {
                 onClick={() => setSwotFilter('all')}
                 className={`swot-filter-pill ${swotFilter === 'all' ? 'active' : ''}`}
               >
-                All 4 Quadrants (2x2 View)
+                All 4 Quadrants
               </button>
               <button
                 onClick={() => setSwotFilter('strengths')}
-                className={`swot-filter-pill ${swotFilter === 'strengths' ? 'active' : ''}`}
-                style={{ color: swotFilter === 'strengths' ? '#fff' : '#059669' }}
+                className={`swot-filter-pill ${swotFilter === 'strengths' ? 'active-strengths' : ''}`}
+                style={{ color: swotFilter === 'strengths' ? '#FFFFFF' : '#047857' }}
               >
                 Strengths ({strengthsList.length})
               </button>
               <button
                 onClick={() => setSwotFilter('weaknesses')}
-                className={`swot-filter-pill ${swotFilter === 'weaknesses' ? 'active' : ''}`}
-                style={{ color: swotFilter === 'weaknesses' ? '#fff' : '#f87171' }}
+                className={`swot-filter-pill ${swotFilter === 'weaknesses' ? 'active-weaknesses' : ''}`}
+                style={{ color: swotFilter === 'weaknesses' ? '#FFFFFF' : '#B91C1C' }}
               >
                 Weaknesses ({weaknessesList.length})
               </button>
               <button
                 onClick={() => setSwotFilter('opportunities')}
-                className={`swot-filter-pill ${swotFilter === 'opportunities' ? 'active' : ''}`}
-                style={{ color: swotFilter === 'opportunities' ? '#fff' : '#0284c7' }}
+                className={`swot-filter-pill ${swotFilter === 'opportunities' ? 'active-opportunities' : ''}`}
+                style={{ color: swotFilter === 'opportunities' ? '#FFFFFF' : '#0369A1' }}
               >
                 Opportunities ({opportunitiesList.length})
               </button>
               <button
                 onClick={() => setSwotFilter('threats')}
-                className={`swot-filter-pill ${swotFilter === 'threats' ? 'active' : ''}`}
-                style={{ color: swotFilter === 'threats' ? '#fff' : '#fbbf24' }}
+                className={`swot-filter-pill ${swotFilter === 'threats' ? 'active-threats' : ''}`}
+                style={{ color: swotFilter === 'threats' ? '#FFFFFF' : '#B45309' }}
               >
                 Threats ({threatsList.length})
               </button>
