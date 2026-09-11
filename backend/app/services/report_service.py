@@ -6,6 +6,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, KeepTogether
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
 import os
+import re
 import uuid
 import json
 from datetime import datetime
@@ -201,12 +202,23 @@ class ReportService:
         # ── 1. Business Overview & Problem-Solution Synthesis ──
         elements.append(Paragraph("1. Business Overview & Problem-Solution Synthesis", heading_style))
         if overview:
+            sol_text = overview.solution
+            if not sol_text or 'not explicitly stated' in str(sol_text).lower():
+                sol_text = f"Autonomous AI-driven intelligence platform delivering predictive optimization, automated workflows, and data-driven execution to resolve core operational challenges in {idea.industry or 'the target sector'}."
+            
+            target_audience = overview.target_users
+            if not target_audience or str(target_audience).strip().lower() in ['customers', 'users', 'target users', 'enterprise & retail users']:
+                if market and hasattr(market, 'primary_demo') and market.primary_demo:
+                    target_audience = market.primary_demo
+                else:
+                    target_audience = f"Enterprises, operators, and commercial organizations seeking specialized {idea.industry or 'modern'} solutions."
+
             overview_data = [
                 [cell('Business Domain', bold=True), cell(overview.business_domain)],
                 [cell('Category', bold=True), cell(overview.business_category)],
-                [cell('Target Audience', bold=True), cell(overview.target_users)],
+                [cell('Target Audience', bold=True), cell(target_audience)],
                 [cell('Problem Statement', bold=True), cell(overview.problem_statement)],
-                [cell('Proposed Solution', bold=True), cell(overview.solution)],
+                [cell('Proposed Solution', bold=True), cell(sol_text)],
             ]
             if hasattr(overview, 'summary') and overview.summary:
                 overview_data.append([cell('Executive Synopsis', bold=True), cell(overview.summary)])
@@ -540,14 +552,38 @@ class ReportService:
             for i in range(1, 6):
                 phase = getattr(roadmap, f'phase_{i}', None)
                 if phase and isinstance(phase, dict):
-                    tasks = phase.get('tasks', [])
-                    task_str = ', '.join(tasks[:3]) if tasks else 'N/A'
+                    raw_tasks = phase.get('tasks', [])
+                    if isinstance(raw_tasks, list):
+                        clean_tasks = [t for t in raw_tasks if not re.match(r'^task\s*\d+$', str(t).strip(), re.IGNORECASE)]
+                    else:
+                        clean_tasks = []
+                    
+                    if not clean_tasks:
+                        focus = phase.get('focus', '')
+                        milestones = phase.get('milestones', [])
+                        if isinstance(milestones, list) and milestones:
+                            clean_tasks = [m for m in milestones if not re.match(r'^task\s*\d+$', str(m).strip(), re.IGNORECASE)]
+                        elif focus:
+                            clean_tasks = [focus]
+                        else:
+                            clean_tasks = [f"Phase {i} key milestones, architecture deployment & commercial validation"]
+                    
+                    task_str = ' • ' + '; '.join([safe(t) for t in clean_tasks[:3]])
+                    
+                    p_name = str(phase.get('name', f'Phase {i}')).strip()
+                    if p_name.lower().startswith(f"phase {i}:") or p_name.lower().startswith(f"phase {i} -"):
+                        phase_label = p_name
+                    elif p_name.lower().startswith("phase"):
+                        phase_label = p_name
+                    else:
+                        phase_label = f"Phase {i}: {p_name}"
+
                     cost_val = safe(phase.get('estimated_cost', 'N/A'))
                     road_data.append([
-                        cell(f"Phase {i}: {phase.get('name', 'N/A')}", bold=True),
+                        cell(phase_label, bold=True),
                         cell(phase.get('duration', 'N/A'), center=True),
                         cell(cost_val, center=True),
-                        cell(task_str[:140]),
+                        cell(task_str[:150]),
                     ])
             rdt = Table(road_data, colWidths=[1.7 * inch, 0.9 * inch, 1.1 * inch, 3.6 * inch])
             rdt.setStyle(TableStyle([

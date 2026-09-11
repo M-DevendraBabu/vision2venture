@@ -106,7 +106,7 @@ export const analysisAPI = {
 // ============================================================
 export const reportAPI = {
   generate: (ideaId) => api.post(`/report/${ideaId}/generate`),
-  download: (ideaId) => api.get(`/report/${ideaId}/download`, { responseType: 'blob' }),
+  download: (ideaId) => api.get(`/report/${ideaId}/download?t=${Date.now()}`, { responseType: 'blob' }),
 };
 
 export default api;

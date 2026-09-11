@@ -29,19 +29,22 @@ def download_report(idea_id: str, current_user: User = Depends(get_current_user)
     if not idea:
         raise HTTPException(status_code=404, detail="Startup idea not found")
     
+    # Always generate a fresh, up-to-date PDF report incorporating latest ML analysis
+    pdf_path = ReportService.generate_pdf(idea_id, db)
+    if not pdf_path or not os.path.exists(pdf_path):
+        raise HTTPException(status_code=500, detail="Failed to generate PDF report")
+    
     report = db.query(Report).filter(Report.idea_id == idea_id).first()
-    if not report or not os.path.exists(report.pdf_location):
-        # Auto-generate PDF report on the fly if not generated yet
-        pdf_path = ReportService.generate_pdf(idea_id, db)
-        if not pdf_path:
-            raise HTTPException(status_code=500, detail="Failed to generate PDF report")
-        report = db.query(Report).filter(Report.idea_id == idea_id).first()
+    if report:
+        report.download_count += 1
+        db.commit()
     
-    if not report or not os.path.exists(report.pdf_location):
-        raise HTTPException(status_code=404, detail="Report file not found")
+    safe_title = "".join(c for c in idea.title if c.isalnum() or c in (' ', '_', '-')).strip().replace(' ', '_')
+    filename = f"Vision2Venture_Report_{safe_title or 'Startup'}.pdf"
+    return FileResponse(
+        path=pdf_path,
+        filename=filename,
+        media_type='application/pdf',
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'}
+    )
 
-    report.download_count += 1
-    db.commit()
-    
-    filename = f"Vision2Venture_Report_{idea.title.replace(' ', '_')}.pdf"
-    return FileResponse(path=report.pdf_location, filename=filename, media_type='application/pdf')
