@@ -1607,7 +1607,7 @@ ${data?.reasoning || bp.ai_rationale}
       <div className="tech-executive-header glass-card mb-xl">
         <div className="tech-header-top">
           <div className="tech-header-title-block">
-            <div className="flex align-center gap-sm mb-xs">
+            <div className="flex align-center gap-sm mb-xs flex-wrap tech-badge-row">
               <span className="tech-pill-badge tech-pill-sector">
                 <FaMicrochip /> {idea?.industry || 'Technology'} • {idea?.sector?.toUpperCase() || 'ONLINE'}
               </span>

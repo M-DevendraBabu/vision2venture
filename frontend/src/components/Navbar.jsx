@@ -54,9 +54,7 @@ const Navbar = () => {
       >
         <div className="navbar-container">
           <Link to="/" className="navbar-logo">
-            <div className="logo-badge">
-              <FaRocket className="logo-icon" />
-            </div>
+            <img src="/favicon.png" alt="Vision2Venture" className="navbar-brand-img" />
             <span className="gradient-text">Vision2Venture</span>
           </Link>
 
@@ -113,7 +111,7 @@ const Navbar = () => {
       <aside className={`mobile-drawer ${drawerOpen ? 'open' : ''}`}>
         <div className="drawer-header">
           <Link to="/" className="navbar-logo" onClick={() => setDrawerOpen(false)}>
-            <FaRocket className="logo-icon" />
+            <img src="/favicon.png" alt="Vision2Venture" className="navbar-brand-img" />
             <span className="gradient-text">Vision2Venture</span>
           </Link>
           <button 

@@ -90,7 +90,7 @@ const RegisterPage = () => {
       <div className="auth-card glass-card animate-scale-in">
         <div className="auth-brand-header">
           <div className="auth-brand-badge">
-            <FaBrain className="auth-brand-icon" />
+            <img src="/favicon.png" alt="Vision2Venture" className="auth-brand-img" />
           </div>
           <span className="auth-brand-name">Vision2Venture</span>
         </div>

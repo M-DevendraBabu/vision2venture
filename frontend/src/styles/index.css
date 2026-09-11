@@ -659,7 +659,7 @@ button:active, .btn-primary:active, .btn-secondary:active {
   }
 
   .main-content {
-    padding-bottom: max(84px, calc(72px + env(safe-area-inset-bottom, 16px)));
+    padding-bottom: max(96px, calc(68px + env(safe-area-inset-bottom, 16px) + 24px));
   }
   
   .main-content.no-scroll {
