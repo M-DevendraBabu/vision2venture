@@ -5,8 +5,11 @@ import logging
 import subprocess
 import urllib.parse
 import urllib.request
-from typing import List, Dict, Optional, Tuple
-from bs4 import BeautifulSoup
+from typing import List, Dict, Optional, Tuple, Any
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
 from app.config import settings
 
 logger = logging.getLogger("vision2venture.search")
@@ -158,43 +161,70 @@ class WebSearchService:
             return []
 
         try:
-            soup = BeautifulSoup(html, "html.parser")
-            for el in soup.find_all("div", class_="result"):
-                title_a = el.find("a", class_="result__a")
-                snippet_a = el.find("a", class_="result__snippet")
-                if not title_a:
-                    continue
+            if BeautifulSoup is not None:
+                soup = BeautifulSoup(html, "html.parser")
+                for el in soup.find_all("div", class_="result"):
+                    title_a = el.find("a", class_="result__a")
+                    snippet_a = el.find("a", class_="result__snippet")
+                    if not title_a:
+                        continue
 
-                title = title_a.get_text().strip()
-                link = title_a.get("href", "").strip()
-                snippet = snippet_a.get_text().strip() if snippet_a else ""
+                    title = title_a.get_text().strip()
+                    link = title_a.get("href", "").strip()
+                    snippet = snippet_a.get_text().strip() if snippet_a else ""
 
-                # Unquote DDG redirect URL if present
-                if "uddg=" in link:
-                    match = re.search(r'uddg=([^&]+)', link)
-                    if match:
-                        link = urllib.parse.unquote(match.group(1))
-                elif "ad_domain=" in link:
-                    match = re.search(r'ad_domain=([^&]+)', link)
-                    if match:
-                        link = f"https://www.{match.group(1)}/"
+                    # Unquote DDG redirect URL if present
+                    if "uddg=" in link:
+                        match = re.search(r'uddg=([^&]+)', link)
+                        if match:
+                            link = urllib.parse.unquote(match.group(1))
+                    elif "ad_domain=" in link:
+                        match = re.search(r'ad_domain=([^&]+)', link)
+                        if match:
+                            link = f"https://www.{match.group(1)}/"
 
-                if link and not link.startswith("http"):
-                    link = f"https://{link}"
+                    if link and not link.startswith("http"):
+                        link = f"https://{link}"
 
-                domain = cls.normalize_domain(link)
-                if not domain or any(exc in domain for exc in EXCLUDED_DOMAINS):
-                    continue
+                    domain = cls.normalize_domain(link)
+                    if not domain or any(exc in domain for exc in EXCLUDED_DOMAINS):
+                        continue
 
-                results.append({
-                    "title": title,
-                    "url": link,
-                    "snippet": snippet,
-                    "domain": domain,
-                    "provider": "DuckDuckGo HTML Engine"
-                })
-                if len(results) >= max_results:
-                    break
+                    results.append({
+                        "title": title,
+                        "url": link,
+                        "snippet": snippet,
+                        "domain": domain,
+                        "provider": "DuckDuckGo HTML Engine"
+                    })
+                    if len(results) >= max_results:
+                        break
+            else:
+                # Lightweight regex parser fallback if bs4 is missing
+                pattern = re.compile(r'<a[^>]*class="[^"]*result__a[^"]*"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.DOTALL)
+                for m in pattern.finditer(html):
+                    link = m.group(1).strip()
+                    raw_title = re.sub(r'<[^>]+>', '', m.group(2)).strip()
+                    if "uddg=" in link:
+                        u_match = re.search(r'uddg=([^&]+)', link)
+                        if u_match:
+                            link = urllib.parse.unquote(u_match.group(1))
+                    elif "ad_domain=" in link:
+                        u_match = re.search(r'ad_domain=([^&]+)', link)
+                        if u_match:
+                            link = f"https://www.{u_match.group(1)}/"
+                    domain = cls.normalize_domain(link)
+                    if not domain or any(exc in domain for exc in EXCLUDED_DOMAINS):
+                        continue
+                    results.append({
+                        "title": raw_title,
+                        "url": link,
+                        "snippet": "",
+                        "domain": domain,
+                        "provider": "DuckDuckGo HTML Engine"
+                    })
+                    if len(results) >= max_results:
+                        break
         except Exception as e:
             logger.warning(f"[WebSearchService] DDG HTML parsing error: {e}")
         return results
