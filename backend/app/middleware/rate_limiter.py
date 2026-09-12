@@ -7,27 +7,44 @@ import logging
 
 logger = logging.getLogger("vision2venture.ratelimit")
 
+import ipaddress
+import os
+
+def _is_valid_ip(candidate: str) -> bool:
+    if not candidate:
+        return False
+    try:
+        ipaddress.ip_address(candidate)
+        return True
+    except ValueError:
+        return False
+
 def get_client_ip(request: Request) -> str:
-    """Safely extracts real client IP behind reverse proxies (Render, Cloudflare, Vercel, Nginx)."""
-    # 1. Cloudflare
-    cf_ip = request.headers.get("cf-connecting-ip")
-    if cf_ip:
-        return cf_ip.strip()
-    
-    # 2. X-Forwarded-For (first IP in chain is original client)
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        client = xff.split(",")[0].strip()
-        if client:
-            return client
-            
-    # 3. X-Real-IP
-    x_real = request.headers.get("x-real-ip")
-    if x_real:
-        return x_real.strip()
+    """Safely extracts real client IP behind reverse proxies (Render, Cloudflare, Vercel, Nginx),
+    validating IP syntax and preventing spoofed/malformed header injection."""
+    trust_proxy = os.getenv("RENDER") or os.getenv("TRUST_PROXY", "true").lower() in ("1", "true", "yes")
+
+    if trust_proxy:
+        # 1. Cloudflare
+        cf_ip = request.headers.get("cf-connecting-ip")
+        if cf_ip and _is_valid_ip(cf_ip.strip()):
+            return cf_ip.strip()
+        
+        # 2. X-Forwarded-For (first valid IP in comma-separated chain)
+        xff = request.headers.get("x-forwarded-for")
+        if xff:
+            parts = [p.strip() for p in xff.split(",") if p.strip()]
+            for part in parts:
+                if _is_valid_ip(part):
+                    return part
+                
+        # 3. X-Real-IP
+        x_real = request.headers.get("x-real-ip")
+        if x_real and _is_valid_ip(x_real.strip()):
+            return x_real.strip()
 
     # 4. Direct socket
-    if request.client and request.client.host:
+    if request.client and request.client.host and _is_valid_ip(request.client.host):
         return request.client.host
 
     return "127.0.0.1"

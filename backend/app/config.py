@@ -5,6 +5,7 @@ from pathlib import Path
 _ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
 
 class Settings(BaseSettings):
+    ENVIRONMENT: str = "development"
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_USER: str = "root"
@@ -43,9 +44,14 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
         extra = "ignore"
 
+import os
 settings = Settings()
 
+is_production = settings.ENVIRONMENT.lower() in ("production", "prod") or bool(os.getenv("RENDER"))
+
 if not settings.SECRET_KEY:
+    if is_production:
+        raise RuntimeError("FATAL: SECRET_KEY is required in production environment.")
     import secrets
     import logging
     logging.getLogger("vision2venture.config").warning(
@@ -54,3 +60,15 @@ if not settings.SECRET_KEY:
         "Define SECRET_KEY in .env for persistent sessions."
     )
     settings.SECRET_KEY = secrets.token_hex(32)
+
+if is_production:
+    has_email = bool(
+        settings.GMAIL_WEBHOOK_URL or
+        settings.RESEND_API_KEY or
+        settings.BREVO_API_KEY or
+        settings.SENDGRID_API_KEY or
+        (settings.SMTP_USER and settings.SMTP_PASSWORD)
+    )
+    if not has_email:
+        raise RuntimeError("FATAL: At least one email provider credential (GMAIL_WEBHOOK_URL, RESEND_API_KEY, BREVO_API_KEY, SENDGRID_API_KEY, or SMTP_PASSWORD) must be configured in production.")
+
