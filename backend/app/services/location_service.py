@@ -12,9 +12,10 @@ class LocationService:
     """
 
     OVERPASS_ENDPOINTS = [
+        "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
         "https://overpass-api.de/api/interpreter",
-        "https://lz4.overpass-api.de/api/interpreter",
         "https://overpass.kumi.systems/api/interpreter",
+        "https://lz4.overpass-api.de/api/interpreter",
         "https://overpass.private.coffee/api/interpreter"
     ]
 
@@ -222,16 +223,24 @@ class LocationService:
 
         # 3. Query Overpass API with endpoint fallback
         elements = []
-        for endpoint in cls.OVERPASS_ENDPOINTS[:2]:
+        provider_status = "unreachable"
+        provider_error = ""
+
+        for endpoint in cls.OVERPASS_ENDPOINTS:
             try:
-                resp = requests.post(endpoint, data={"data": overpass_ql}, timeout=4.5)
+                resp = requests.post(endpoint, data={"data": overpass_ql}, timeout=(5.0, 10.0))
                 if resp.status_code == 200:
                     res_json = resp.json()
                     elements = res_json.get("elements", [])
-                    if elements:
-                        break
+                    provider_status = "live_osm_success"
+                    break
+                elif resp.status_code == 429:
+                    provider_error = f"Rate limited (HTTP 429) on {endpoint}"
+                else:
+                    provider_error = f"HTTP {resp.status_code} on {endpoint}"
             except Exception as e:
-                print(f"[LocationService] Overpass notice: {e}")
+                provider_error = str(e)
+                print(f"[LocationService] Overpass notice on {endpoint}: {e}")
                 continue
 
         # 4. Filter, parse, and score discovered businesses
@@ -356,61 +365,21 @@ class LocationService:
             if len(discovered) >= limit:
                 break
 
-        # Fallback: If public OSM servers were congested or returned 0 POIs, provide anchored local directory POIs
-        if not discovered:
-            city_prefix = display_name.split(",")[0].strip() if display_name else "Local"
-            templates = [
-                {"name": f"{city_prefix} Prime {category}", "offset": (0.007, 0.006), "phone": "+91 40 2345 6789", "hours": "09:00 - 21:00"},
-                {"name": f"Elite {category} Hub", "offset": (-0.008, 0.011), "phone": "+91 40 8765 4321", "hours": "10:00 - 22:00"},
-                {"name": f"Apex {category} Center", "offset": (0.012, -0.009), "phone": "Not available", "hours": "08:30 - 20:30"},
-                {"name": f"Standard {category} Co.", "offset": (-0.014, -0.012), "phone": "+91 40 9988 7766", "hours": "10:00 - 19:00"}
-            ]
-            for t in templates:
-                c_lat = round(lat + t["offset"][0], 6)
-                c_lon = round(lng + t["offset"][1], 6)
-                d_km = cls.haversine_distance(lat, lng, c_lat, c_lon)
-                if d_km <= radius_km:
-                    discovered.append({
-                        "name": t["name"],
-                        "business_type": "offline",
-                        "competitor_type": "direct" if d_km <= (radius_km * 0.5) else "indirect",
-                        "description": f"Established {category} provider situated {d_km} km from target center.",
-                        "website_url": "",
-                        "app_url": "",
-                        "location": f"Near {display_name}",
-                        "latitude": c_lat,
-                        "longitude": c_lon,
-                        "distance_km": d_km,
-                        "phone": t["phone"],
-                        "rating": None,
-                        "review_count": None,
-                        "opening_hours": t["hours"],
-                        "pricing_model": "In-store / Menu / Fixed Unit",
-                        "pricing_details": "Requires direct local inquiry or storefront visit.",
-                        "target_audience": f"Local residents within {radius_km} km radius.",
-                        "features": f"Category: {category} | Operational storefront.",
-                        "similarity_score": round(max(60.0, 90.0 - d_km * 3), 1),
-                        "relevance_score": round(max(60.0, 90.0 - d_km * 3), 1),
-                        "strengths": f"• Operational physical location {d_km} km from anchor.\n• Regular scheduled hours: {t['hours']}.",
-                        "weaknesses": "• Traditional manual workflow with limited digital integration.",
-                        "competitive_gap": "Differentiate with seamless online ordering and immediate digital fulfillment.",
-                        "usp": "Modern technology-driven localized alternative.",
-                        "analysis_explanation": f"Discovered via localized geographic directory anchor centered at {display_name}.",
-                        "source_urls": ["https://www.openstreetmap.org"],
-                        "data_sources": ["Local Business Directory", "Geographic Directory"],
-                        "data_freshness": "Localized Business Directory Anchor",
-                        "confidence_score": 88.0,
-                        "evidence_status": "Verified from source",
-                        "verified": True,
-                        "is_selected": True
-                    })
-
         # Sort by proximity first, then relevance
         discovered.sort(key=lambda x: (x["distance_km"], -x["relevance_score"]))
+
+        if discovered:
+            status_msg = f"Discovered {len(discovered)} verified businesses from OpenStreetMap within {radius_km} km."
+        elif provider_status == "live_osm_success":
+            status_msg = f"No verified physical {category} competitors found within {radius_km} km of {display_name}."
+        else:
+            status_msg = f"Location search provider temporarily unavailable ({provider_error or 'timeout'}). You can retry or add competitors manually."
 
         return {
             "startup_location": startup_loc,
             "radius_km": radius_km,
             "total_found": len(discovered),
-            "competitors": discovered
+            "competitors": discovered,
+            "status_message": status_msg,
+            "provider_status": provider_status
         }

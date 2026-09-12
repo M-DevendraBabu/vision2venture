@@ -197,6 +197,8 @@ def discover_competitors(
             "counts": discovery_result.get("counts"),
             "startup_location": discovery_result.get("startup_location"),
             "radius_km": radius,
+            "status_message": discovery_result.get("status_message", ""),
+            "provider_status": discovery_result.get("provider_status", "ok"),
             "competitors": [c.to_dict() if hasattr(c, 'to_dict') else _serialize_competitor(c) for c in db_competitors],
             "intelligence": intelligence_data
         }
@@ -264,7 +266,8 @@ def get_startup_competitor_data(
     idea = _get_authorized_idea(idea_id, current_user, db)
 
     competitors = db.query(Competitor).filter(Competitor.idea_id == idea.id).order_by(
-        Competitor.distance_km.asc().nulls_last(),
+        Competitor.distance_km.is_(None),
+        Competitor.distance_km.asc(),
         Competitor.relevance_score.desc()
     ).all()
 

@@ -1394,11 +1394,6 @@ class MLService:
         matches.sort(key=lambda x: x[0], reverse=True)
         top_matches = matches[:limit]
 
-        # In case no direct matches found, pick industry fallbacks
-        if not top_matches and _yc_competitors:
-            for c in _yc_competitors[:limit]:
-                top_matches.append((10, c, c.get('industry', 'Technology'), c.get('batch', 'Active')))
-
         results = []
         # Predefined varied strategic angles for competitor differentiation
         strengths_templates = [

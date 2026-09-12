@@ -37,6 +37,7 @@ const CompetitorTab = ({ data, idea }) => {
   const [startupLocation, setStartupLocation] = useState(null);
   const [selectedCompetitorId, setSelectedCompetitorId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   // Load initial competitor data
   const loadCompetitorData = useCallback(async () => {
@@ -48,6 +49,9 @@ const CompetitorTab = ({ data, idea }) => {
         const payload = res.data.data;
         setCompetitors(payload.competitors || []);
         setIntelligence(payload.intelligence || null);
+        if (payload.status_message) {
+          setStatusMessage(payload.status_message);
+        }
         if (payload.search_config?.startup_location) {
           setStartupLocation(payload.search_config.startup_location);
         }
@@ -90,6 +94,9 @@ const CompetitorTab = ({ data, idea }) => {
         const payload = res.data.data;
         setCompetitors(payload.competitors || []);
         setIntelligence(payload.intelligence || null);
+        if (payload.status_message) {
+          setStatusMessage(payload.status_message);
+        }
         if (payload.startup_location) {
           setStartupLocation(payload.startup_location);
         }
@@ -533,6 +540,23 @@ const CompetitorTab = ({ data, idea }) => {
 
             {/* Competitor Cards Feed */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%', minWidth: 0 }}>
+              {statusMessage && (
+                <div style={{
+                  padding: '10px 14px',
+                  borderRadius: '10px',
+                  background: statusMessage.toLowerCase().includes('temporarily') ? '#fffbeb' : '#f0fdf4',
+                  border: statusMessage.toLowerCase().includes('temporarily') ? '1px solid #fde68a' : '1px solid #bbf7d0',
+                  color: statusMessage.toLowerCase().includes('temporarily') ? '#b45309' : '#15803d',
+                  fontSize: '0.82rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}>
+                  <FaInfoCircle />
+                  <span>{statusMessage}</span>
+                </div>
+              )}
+
               {filteredCompetitors.length === 0 ? (
                 <div style={{
                   padding: '36px 20px',
@@ -544,7 +568,7 @@ const CompetitorTab = ({ data, idea }) => {
                 }}>
                   <p style={{ margin: '0 0 10px', fontSize: '1rem', fontWeight: '600' }}>No competitors found in this category.</p>
                   <p style={{ margin: 0, fontSize: '0.85rem' }}>
-                    Try expanding your search radius or click <strong>Add Competitor Manually</strong> above.
+                    Try expanding your search radius, adjusting category keywords, or click <strong>Add Competitor Manually</strong> above.
                   </p>
                 </div>
               ) : (

@@ -32,6 +32,8 @@ class CompetitorIntelligenceService:
         """
         b_type = (business_type or "online").lower()
         competitors = []
+        status_message = ""
+        provider_status = "ok"
         startup_location = {"lat": lat or 0.0, "lng": lng or 0.0, "display_name": location or "Not specified"}
 
         # 1. OFFLINE DISCOVERY
@@ -48,6 +50,8 @@ class CompetitorIntelligenceService:
                     limit=12 if b_type == "offline" else 8
                 )
                 startup_location = offline_res.get("startup_location", startup_location)
+                status_message = offline_res.get("status_message", "")
+                provider_status = offline_res.get("provider_status", "ok")
                 for comp in offline_res.get("competitors", []):
                     comp["business_type"] = "offline"
                     competitors.append(comp)
@@ -92,12 +96,20 @@ class CompetitorIntelligenceService:
             "hybrid": sum(1 for c in final_list if c.get("business_type") == "hybrid"),
         }
 
+        if not status_message:
+            if final_list:
+                status_message = f"Identified {len(final_list)} relevant competitors."
+            else:
+                status_message = "No competitors found matching the specified criteria. You can expand the search criteria or add competitors manually."
+
         return {
             "business_type": b_type,
             "startup_location": startup_location,
             "radius_km": radius_km,
             "counts": counts,
-            "competitors": final_list
+            "competitors": final_list,
+            "status_message": status_message,
+            "provider_status": provider_status
         }
 
     @classmethod
