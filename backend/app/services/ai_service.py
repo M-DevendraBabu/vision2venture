@@ -36,27 +36,11 @@ _init_clients()
 
 
 def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 6.0) -> str:
-    """Call NVIDIA first, with automatic failover to Groq."""
-    # 1. Try NVIDIA (primary - fast 8b model)
-    if _nvidia_client is not None:
-        try:
-            completion = _nvidia_client.chat.completions.create(
-                model="meta/llama-3.1-8b-instruct",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=max_tokens,
-            )
-            text = completion.choices[0].message.content
-            if text:
-                return text
-        except Exception as e:
-            print(f"[AI] NVIDIA call notice ({e}). Trying Groq failover...")
-
-    # 2. Try Groq Failover (groq/compound-mini)
+    """Call Groq using active high-speed model qwen/qwen3.8-27b."""
     if _groq_client is not None:
         try:
             completion = _groq_client.chat.completions.create(
-                model="groq/compound-mini",
+                model="qwen/qwen3.8-27b",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
                 max_tokens=max_tokens,
@@ -64,19 +48,32 @@ def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 6.0) -> str:
             )
             text = completion.choices[0].message.content
             if text:
-                # Remove thinking tags if present
                 import re
                 text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
-                print("[AI] Groq Failover SUCCESS!")
                 return text
         except Exception as e:
             print(f"[AI] Groq call notice: {e}")
+
+    # 2. Try NVIDIA Failover (active 70b instruct)
+    if _nvidia_client is not None:
+        try:
+            completion = _nvidia_client.chat.completions.create(
+                model="meta/llama-3.3-70b-instruct",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7,
+                max_tokens=max_tokens,
+            )
+            text = completion.choices[0].message.content
+            if text:
+                return text
+        except Exception as e:
+            print(f"[AI] NVIDIA failover notice: {e}")
 
     return ""
 
 
 def _parse_json(text: str) -> dict:
-    """Extract JSON from LLM response text."""
+    """Extract and sanitize JSON from LLM response text."""
     if not text:
         return {}
     
@@ -85,20 +82,40 @@ def _parse_json(text: str) -> dict:
     if not clean_text:
         clean_text = text
 
-    try:
-        match = re.search(r'```(?:json)?\s*(.*?)```', clean_text, re.DOTALL)
-        if match:
-            return json.loads(match.group(1).strip())
-        brace_match = re.search(r'\{.*\}', clean_text, re.DOTALL)
+    # Extract JSON string block
+    target = clean_text
+    match = re.search(r'```(?:json)?\s*([\s\S]*?)```', clean_text)
+    if match:
+        target = match.group(1).strip()
+    else:
+        brace_match = re.search(r'(\{[\s\S]*\})', clean_text)
         if brace_match:
-            return json.loads(brace_match.group(0))
-        return json.loads(clean_text.strip())
-    except json.JSONDecodeError as e:
+            target = brace_match.group(1).strip()
+
+    # Try direct parse
+    try:
+        return json.loads(target)
+    except Exception:
+        pass
+
+    # Clean trailing commas: [a, b, ] -> [a, b] or {"a": 1, } -> {"a": 1}
+    try:
+        sanitized = re.sub(r',\s*([\}\]])', r'\1', target)
+        return json.loads(sanitized)
+    except Exception as e:
         print(f"[AI] JSON parse notice: {e}")
         return {}
 
 
 class AIService:
+    @staticmethod
+    def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 6.0) -> str:
+        return _call_llm(prompt, max_tokens=max_tokens, timeout=timeout)
+
+    @staticmethod
+    def _parse_json(text: str) -> dict:
+        return _parse_json(text)
+
     @staticmethod
     def _generate(prompt: str, max_tokens: int = 700) -> dict:
         text = _call_llm(prompt, max_tokens=max_tokens, timeout=5.0)

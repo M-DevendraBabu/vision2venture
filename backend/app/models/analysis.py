@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Text, DECIMAL, Integer, DateTime, ForeignKey, JSON, Index
+from sqlalchemy import Column, String, Text, DECIMAL, Integer, DateTime, ForeignKey, JSON, Index, Boolean, Float
 from app.database.connection import Base
 
 class StartupAnalysis(Base):
@@ -39,13 +39,54 @@ class Competitor(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     idea_id = Column(String(36), ForeignKey('startup_ideas.id', ondelete='CASCADE'), nullable=False, index=True)
     name = Column(String(255), nullable=False)
-    similarity_score = Column(DECIMAL(5, 2), nullable=False)
+    business_type = Column(String(50), nullable=False, default='online')
+    competitor_type = Column(String(50), nullable=False, default='direct')
+    description = Column(Text, nullable=True)
+    website_url = Column(String(500), nullable=True)
+    app_url = Column(String(500), nullable=True)
+    location = Column(String(255), nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    distance_km = Column(Float, nullable=True)
+    phone = Column(String(50), nullable=True)
+    rating = Column(Float, nullable=True)
+    review_count = Column(Integer, nullable=True)
+    opening_hours = Column(String(255), nullable=True)
+    pricing_model = Column(String(100), nullable=True)
+    pricing_details = Column(Text, nullable=True)
+    target_audience = Column(Text, nullable=True)
+    features = Column(Text, nullable=True)
+    similarity_score = Column(DECIMAL(5, 2), nullable=False, default=50.0)
+    relevance_score = Column(DECIMAL(5, 2), nullable=True, default=50.0)
     strengths = Column(Text, nullable=False)
     weaknesses = Column(Text, nullable=False)
-    competitive_gap = Column(Text, nullable=False)
-    usp = Column(Text, nullable=False)
-    analysis_explanation = Column(Text, nullable=False)
+    competitive_gap = Column(Text, nullable=True)
+    usp = Column(Text, nullable=True)
+    analysis_explanation = Column(Text, nullable=True)
+    source_urls = Column(JSON, nullable=True)
+    data_sources = Column(JSON, nullable=True)
+    data_freshness = Column(String(50), nullable=True)
+    confidence_score = Column(DECIMAL(5, 2), nullable=True, default=80.0)
+    evidence_status = Column(String(50), nullable=True, default='AI inference')
+    verified = Column(Boolean, default=False)
+    is_selected = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class CompetitorIntelligence(Base):
+    __tablename__ = "competitor_intelligence"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    idea_id = Column(String(36), ForeignKey('startup_ideas.id', ondelete='CASCADE'), unique=True, nullable=False, index=True)
+    search_config = Column(JSON, nullable=True)
+    comparison_matrix = Column(JSON, nullable=True)
+    startup_advantages = Column(JSON, nullable=True)
+    startup_gaps = Column(JSON, nullable=True)
+    market_opportunities = Column(JSON, nullable=True)
+    competitive_risks = Column(JSON, nullable=True)
+    recommendations = Column(JSON, nullable=True)
+    data_limitations = Column(JSON, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 class TechnologyRecommendation(Base):
     __tablename__ = "technology_recommendations"

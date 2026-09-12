@@ -4272,3 +4272,37 @@
   animation: spin 1s linear infinite;
 }
 
+/* ============================================================
+   COMPETITOR INTELLIGENCE MODULE STYLES
+   ============================================================ */
+.competitor-intelligence-dashboard {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.custom-startup-map-pin,
+.custom-comp-map-pin {
+  background: transparent;
+  border: none;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .discovery-control-panel {
+    padding: 12px !important;
+  }
+
+  .discovery-control-panel button {
+    min-height: 44px;
+  }
+}
+
+

@@ -1356,6 +1356,7 @@ class MLService:
     @staticmethod
     def search_yc_competitors(industry: str, query: str = '', limit: int = 4) -> list:
         """Searches 5,997 YC startup companies with differentiated similarity scores, strengths, weaknesses, gaps, and USPs."""
+        ensure_ml_models_loaded()
         if not _yc_competitors:
             return []
 

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.database.connection import engine, Base, SessionLocal
-from app.routers import auth, startup, analysis, report, admin, chatbot
+from app.routers import auth, startup, analysis, report, admin, chatbot, competitors
 from app.middleware.cors import add_cors_middleware
 from app.middleware.rate_limiter import RateLimiterMiddleware
 from app.models.user import User
@@ -24,6 +24,7 @@ app.include_router(analysis.router, prefix="/api")
 app.include_router(report.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
 app.include_router(chatbot.router, prefix="/api")
+app.include_router(competitors.router, prefix="/api")
 
 import os
 import threading
@@ -64,9 +65,10 @@ def startup_tasks():
         print(f"[Startup] ML preload notice: {e}")
 
     try:
-        Base.metadata.create_all(bind=engine)
+        from app.database.migration_helper import ensure_competitor_tables_and_columns
+        ensure_competitor_tables_and_columns()
     except Exception as e:
-        print(f"[DB] Table creation notice: {e}")
+        print(f"[DB] Competitor table setup notice: {e}")
 
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "devendrababumotupalli@gmail.com")
     db = SessionLocal()

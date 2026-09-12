@@ -109,4 +109,16 @@ export const reportAPI = {
   download: (ideaId) => api.get(`/report/${ideaId}/download?t=${Date.now()}`, { responseType: 'blob' }),
 };
 
+// ============================================================
+// COMPETITOR INTELLIGENCE API
+// ============================================================
+export const competitorAPI = {
+  getStartupCompetitors: (ideaId) => api.get(`/competitors/startup/${ideaId}`),
+  discover: (data) => api.post('/competitors/discover', data),
+  analyze: (data) => api.post('/competitors/analyze', data),
+  addManual: (data) => api.post('/competitors/manual', data),
+  update: (id, data) => api.patch(`/competitors/${id}`, data),
+  delete: (id) => api.delete(`/competitors/${id}`),
+};
+
 export default api;
