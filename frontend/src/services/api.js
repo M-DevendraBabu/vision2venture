@@ -84,6 +84,7 @@ export const startupAPI = {
   list: () => api.get('/startup/list'),
   getById: (id) => api.get(`/startup/${id}`),
   delete: (id) => api.delete(`/startup/${id}`),
+  syncDemoIdeas: () => api.post('/startup/sync-demo-ideas'),
 };
 
 // ============================================================

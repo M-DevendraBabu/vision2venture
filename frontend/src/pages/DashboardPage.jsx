@@ -14,20 +14,37 @@ import {
   FaTrash, 
   FaRocket, 
   FaSearch, 
-  FaBrain 
+  FaBrain,
+  FaSync
 } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import '../styles/Dashboard.css';
+
+const STALE_IDEA_KEYWORDS = ['neurallogistics', 'solargrid', 'propmatch', 'vaultpay', 'skillcraft', 'greenbite'];
+
+const isIdeaStale = (idea) => {
+  if (!idea?.title) return false;
+  const t = idea.title.toLowerCase();
+  return STALE_IDEA_KEYWORDS.some(keyword => t.includes(keyword));
+};
 
 const DashboardPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   
-  // Instant Stale-While-Revalidate: Load from localStorage in 0ms
+  // Instant Stale-While-Revalidate: Load from localStorage with stale-cache invalidation
   const [ideas, setIdeas] = useState(() => {
     try {
       const cached = localStorage.getItem('cached_startup_ideas');
-      return cached ? JSON.parse(cached) : [];
+      if (!cached) return [];
+      const parsed = JSON.parse(cached);
+      if (!Array.isArray(parsed)) return [];
+      // Purge stale demo ideas immediately if found in browser cache
+      if (parsed.some(isIdeaStale)) {
+        localStorage.removeItem('cached_startup_ideas');
+        return [];
+      }
+      return parsed;
     } catch {
       return [];
     }
@@ -37,7 +54,9 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(() => {
     try {
       const cached = localStorage.getItem('cached_startup_ideas');
-      return !cached || JSON.parse(cached).length === 0;
+      if (!cached) return true;
+      const parsed = JSON.parse(cached);
+      return !parsed || parsed.length === 0 || parsed.some(isIdeaStale);
     } catch {
       return true;
     }
@@ -58,8 +77,8 @@ const DashboardPage = () => {
     return () => clearTimeout(safetyTimer);
   }, []);
 
-  const fetchIdeas = async () => {
-    const hasCached = ideas.length > 0;
+  const fetchIdeas = async (forceSync = false) => {
+    const hasCached = ideas.length > 0 && !forceSync;
     if (!hasCached) {
       setLoading(true);
     } else {
@@ -68,9 +87,26 @@ const DashboardPage = () => {
     setFetchError(false);
 
     try {
-      const res = await startupAPI.list();
-      setIdeas(res.data);
-      localStorage.setItem('cached_startup_ideas', JSON.stringify(res.data));
+      if (forceSync) {
+        localStorage.removeItem('cached_startup_ideas');
+        await startupAPI.syncDemoIdeas();
+      }
+      let res = await startupAPI.list();
+      let data = res.data || [];
+
+      // Auto-heal: If server returned stale ideas, automatically trigger server-side sync once
+      if (data.some(isIdeaStale)) {
+        console.log('[Dashboard] Stale ideas detected on server, synchronizing production portfolio...');
+        await startupAPI.syncDemoIdeas();
+        res = await startupAPI.list();
+        data = res.data || [];
+      }
+
+      setIdeas(data);
+      localStorage.setItem('cached_startup_ideas', JSON.stringify(data));
+      if (forceSync) {
+        toast.success('Portfolio synchronized with production database!');
+      }
     } catch (err) {
       if (!hasCached) {
         setFetchError(true);
@@ -257,9 +293,19 @@ const DashboardPage = () => {
               {user?.name ? `Welcome back, ${user.name}. ` : ''}Monitor, evaluate, and benchmark your startup portfolio.
             </p>
           </div>
-          <button className="btn-primary" onClick={() => navigate('/new-idea')}>
-            <FaPlus /> Analyze New Idea
-          </button>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <button 
+              className="btn-secondary" 
+              onClick={() => fetchIdeas(true)}
+              title="Synchronize portfolio with production database"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '10px 14px', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, color: '#334155' }}
+            >
+              <FaSync className={isRefreshing ? 'spin' : ''} /> Refresh Portfolio
+            </button>
+            <button className="btn-primary" onClick={() => navigate('/new-idea')}>
+              <FaPlus /> Analyze New Idea
+            </button>
+          </div>
         </div>
 
         {/* 2. EXECUTIVE KPI AREA */}

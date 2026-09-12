@@ -82,6 +82,13 @@ def startup_tasks():
             print(f"[ADMIN] {ADMIN_EMAIL} is already admin")
         else:
             print(f"[ADMIN] {ADMIN_EMAIL} not found yet - will be promoted on next restart after registration")
+
+        # 4. Synchronize production seed ideas (removes stale ideas like NeuralLogistics, etc. on Render cloud DB)
+        try:
+            from app.database.migration_helper import sync_production_seed_if_needed
+            sync_production_seed_if_needed(db)
+        except Exception as e:
+            print(f"[Startup] Production seed sync notice: {e}")
     except Exception as e:
         print(f"[ADMIN] Error initializing admin: {e}")
     finally:

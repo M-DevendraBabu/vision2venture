@@ -56,3 +56,14 @@ def delete_startup_idea(id: str, current_user: User = Depends(get_current_user),
     db.delete(idea)
     db.commit()
     return {"status": "success", "message": "Startup idea deleted successfully."}
+
+@router.post("/sync-demo-ideas")
+def sync_demo_ideas(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """
+    Forces synchronization of the clean 6 production startup ideas (2 Online, 2 Offline, 2 Hybrid)
+    with full analyses and competitors for the authenticated user.
+    """
+    from app.database.migration_helper import sync_production_seed_if_needed
+    res = sync_production_seed_if_needed(db, force=True, target_user=current_user)
+    return res
+
