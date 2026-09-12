@@ -9,7 +9,8 @@
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  width: 100vw !important;
+  width: 100% !important;
+  max-width: 100% !important;
   height: calc(100vh - 64px) !important;
   height: calc(100dvh - 64px) !important;
   background-color: #F8FAFC !important;
@@ -24,24 +25,19 @@
   position: absolute;
   pointer-events: none;
   z-index: 1;
-  border-radius: 50%;
-  filter: blur(100px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .gemini-ambient-glow.top-left {
-  top: -100px;
-  left: -80px;
-  width: 450px;
-  height: 450px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle at 0% 0%, rgba(14, 165, 233, 0.08) 0%, transparent 60%);
 }
 
 .gemini-ambient-glow.bottom-right {
-  bottom: -120px;
-  right: -80px;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle at 100% 100%, rgba(20, 184, 166, 0.06) 0%, transparent 60%);
 }
 
 .gemini-app-container {
@@ -1083,8 +1079,33 @@
   }
 
   .gemini-chat-topbar {
-    padding: 0 14px;
+    padding: 0 10px;
     height: 46px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .gemini-topbar-left {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .gemini-brand-title {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gemini-topbar-right {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .gemini-topbar-action-btn {
+    padding: 4px 8px;
+    font-size: 0.72rem;
   }
 
   .gemini-viewport {

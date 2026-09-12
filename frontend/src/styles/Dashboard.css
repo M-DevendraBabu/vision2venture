@@ -318,8 +318,8 @@
 }
 
 .dashboard-search-wrap {
-  flex: 1;
-  min-width: 260px;
+  flex: 1 1 220px;
+  min-width: 0;
   position: relative;
 }
 

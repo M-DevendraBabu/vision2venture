@@ -1356,7 +1356,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 800px;
+  width: min(800px, 100%);
+  max-width: 100%;
   height: 400px;
   background: radial-gradient(ellipse, rgba(59, 130, 246, 0.15) 0%, rgba(6, 182, 212, 0.08) 50%, transparent 70%);
   pointer-events: none;
@@ -1422,6 +1423,9 @@
   .hero-editorial-container,
   .section-inner {
     padding: 0 24px;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .section-how,
@@ -1431,8 +1435,19 @@
   }
 
   .hero-editorial-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 2rem;
+  }
+
+  .hero-editorial-col,
+  .hero-visual-stage,
+  .workspace-layered-canvas,
+  .main-workspace-cockpit,
+  .workspace-sector-toolbar,
+  .sector-pill-row {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .hero-editorial-col {
@@ -1488,6 +1503,29 @@
     box-sizing: border-box !important;
   }
 
+  .hero-editorial-container {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+
+  .hero-editorial-col,
+  .hero-visual-stage,
+  .workspace-layered-canvas,
+  .main-workspace-cockpit,
+  .workspace-sector-toolbar,
+  .sector-pill-row {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-editorial-col {
+    width: 100% !important;
+    max-width: 100% !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
   .section-how,
   .section-features,
   .section-compare {
@@ -1502,47 +1540,74 @@
     padding: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    margin-top: 18px !important;
+  }
+
+  /* Status Eyebrow Badge */
+  .hero-status-pill {
+    max-width: 100% !important;
+    white-space: normal !important;
+    text-align: center !important;
+    justify-content: center !important;
+    font-size: clamp(0.72rem, 3.2vw, 0.84rem) !important;
+    padding: 6px 14px !important;
+    margin: 0 auto 12px !important;
     box-sizing: border-box !important;
   }
 
-  /* Responsive Clamp Headline */
+  /* Responsive Fluid Headline */
   .hero-main-title {
-    font-size: clamp(2rem, 7.5vw, 3.8rem) !important;
+    font-size: clamp(1.75rem, 6.5vw, 2.6rem) !important;
     max-width: 100% !important;
+    width: 100% !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
     text-wrap: balance !important;
-    margin-bottom: 14px !important;
+    margin: 0 auto 14px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
   }
 
   .title-lead,
   .hero-gradient-text {
-    font-size: clamp(1.9rem, 7vw, 2.75rem) !important;
+    font-size: clamp(1.65rem, 6vw, 2.35rem) !important;
     line-height: 1.15 !important;
     word-break: break-word !important;
     overflow-wrap: break-word !important;
     display: block !important;
+    text-align: center !important;
+  }
+
+  .title-accent-wrap {
+    display: inline !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .hero-supporting-desc {
-    font-size: 1rem !important;
+    font-size: clamp(0.9rem, 3.8vw, 1.05rem) !important;
     line-height: 1.6 !important;
     max-width: 100% !important;
     width: 100% !important;
     padding: 0 4px !important;
     box-sizing: border-box !important;
     word-break: break-word !important;
-    margin-bottom: 22px !important;
+    margin: 0 auto 22px !important;
+    text-align: center !important;
   }
 
-  /* Stacked Vertical Hero CTAs (100% width, max 360px, 54px height) */
+  /* Stacked Vertical Hero CTAs (100% width, max 360px, 52px height) */
   .hero-cta-actions {
     display: flex !important;
     flex-direction: column !important;
     width: 100% !important;
+    max-width: 100% !important;
     align-items: center !important;
     gap: 12px !important;
-    margin-bottom: 24px !important;
+    margin: 0 auto 24px !important;
+    box-sizing: border-box !important;
   }
 
   .hero-cta-actions > div {
@@ -1556,9 +1621,9 @@
   .hero-btn-secondary {
     width: 100% !important;
     max-width: 360px !important;
-    height: 54px !important;
-    min-height: 54px !important;
-    font-size: 1.02rem !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    font-size: 1rem !important;
     font-weight: 700 !important;
     justify-content: center !important;
     box-sizing: border-box !important;
@@ -1569,9 +1634,9 @@
   /* Hero Intelligence Stats 2x2 Grid */
   .hero-intelligence-strip {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    padding: 16px 14px !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    padding: 14px 12px !important;
     width: 100% !important;
     max-width: 380px !important;
     margin: 0 auto !important;
@@ -1584,48 +1649,58 @@
   }
 
   .intel-number {
-    font-size: clamp(1.6rem, 5.5vw, 1.95rem) !important;
+    font-size: clamp(1.3rem, 5vw, 1.8rem) !important;
   }
 
   .intel-label {
-    font-size: 0.78rem !important;
+    font-size: clamp(0.68rem, 2.5vw, 0.76rem) !important;
   }
 
   /* Product Preview Workspace */
-  .main-workspace-cockpit {
+  .workspace-layered-canvas {
     width: 100% !important;
     max-width: 100% !important;
-    border-radius: 16px !important;
+    min-width: 0 !important;
     box-sizing: border-box !important;
   }
 
+  .main-workspace-cockpit {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
   .workspace-sector-toolbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 8px !important;
     padding: 10px 12px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
 
   .sector-pill-row {
     display: flex !important;
-    overflow-x: auto !important;
+    flex-wrap: wrap !important;
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     gap: 6px !important;
-    padding-bottom: 4px !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .sector-pill-row::-webkit-scrollbar {
-    display: none !important;
+    box-sizing: border-box !important;
   }
 
   .sector-tab-pill {
-    flex-shrink: 0 !important;
-    min-height: 44px !important;
-    padding: 8px 14px !important;
-    font-size: 0.84rem !important;
+    flex: 1 1 auto !important;
+    min-height: 40px !important;
+    padding: 6px 12px !important;
+    font-size: 0.8rem !important;
+    justify-content: center !important;
     white-space: nowrap !important;
     box-sizing: border-box !important;
   }
@@ -1645,12 +1720,47 @@
     display: block !important;
   }
 
+  .workspace-identity-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .dossier-left-meta {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .dossier-headline {
+    font-size: clamp(1rem, 4.5vw, 1.15rem) !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .dossier-badge-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .dossier-score-cockpit {
+    align-self: flex-start !important;
+  }
+
   .workspace-nav-menu {
     overflow-x: auto !important;
     white-space: nowrap !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     display: flex !important;
     gap: 4px !important;
     padding: 0 8px !important;
@@ -1668,6 +1778,24 @@
     box-sizing: border-box !important;
   }
 
+  .sector-pill-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .sector-tab-pill {
+    width: 100% !important;
+    min-height: 40px !important;
+    padding: 6px 8px !important;
+    font-size: clamp(0.72rem, 2.8vw, 0.8rem) !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
   /* Floating Depth Cards -> In-Flow Normal Static Cards */
   .workspace-intelligence-dock {
     display: flex !important;
@@ -1675,6 +1803,8 @@
     gap: 10px !important;
     margin-top: 12px !important;
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
     position: static !important;
   }
 
@@ -1688,20 +1818,18 @@
     margin: 0 !important;
   }
 
-  .workspace-identity-card {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 12px !important;
-    padding: 14px !important;
-  }
-
-  .dossier-score-cockpit {
-    align-self: flex-start !important;
-  }
-
   .cockpit-overview-matrix {
+    display: grid !important;
     grid-template-columns: 1fr !important;
     gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .kpi-cockpit-tile {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px 14px !important;
   }
 
   /* How It Works Vertical 01 -> 02 -> 03 */
@@ -1759,26 +1887,50 @@
     min-height: 52px !important;
     justify-content: center !important;
   }
+
+  .cta-button-group {
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 340px !important;
+    margin: 0 auto !important;
+    gap: 10px !important;
+  }
+
+  .cta-button-group .btn-primary,
+  .cta-button-group .btn-secondary {
+    width: 100% !important;
+    min-height: 50px !important;
+    justify-content: center !important;
+  }
 }
 
 @media (max-width: 480px) {
   .hero-editorial-container,
   .section-inner {
-    padding: 0 12px !important;
+    padding: 0 14px !important;
   }
 
   .hero-main-title {
-    font-size: clamp(1.85rem, 8vw, 2.4rem) !important;
+    font-size: clamp(1.6rem, 7vw, 2.1rem) !important;
   }
 
   .title-lead,
   .hero-gradient-text {
-    font-size: clamp(1.75rem, 7.5vw, 2.2rem) !important;
+    font-size: clamp(1.5rem, 6.5vw, 1.95rem) !important;
   }
 
   .hero-intelligence-strip {
     padding: 12px 10px !important;
     gap: 8px !important;
+    max-width: 100% !important;
+  }
+
+  .intel-number {
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem) !important;
+  }
+
+  .intel-label {
+    font-size: 0.68rem !important;
   }
 
   .workspace-chrome-header {
@@ -1787,6 +1939,57 @@
 
   .chrome-url-pill {
     display: none !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-editorial-container,
+  .section-inner {
+    padding: 0 10px !important;
+  }
+
+  .hero-status-pill {
+    font-size: 0.7rem !important;
+    padding: 4px 10px !important;
+  }
+
+  .hero-main-title {
+    font-size: clamp(1.45rem, 6.8vw, 1.85rem) !important;
+  }
+
+  .title-lead,
+  .hero-gradient-text {
+    font-size: clamp(1.35rem, 6.2vw, 1.75rem) !important;
+  }
+
+  .hero-intelligence-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    padding: 10px 6px !important;
+  }
+
+  .intel-number {
+    font-size: 1.15rem !important;
+  }
+
+  .intel-label {
+    font-size: 0.65rem !important;
+  }
+
+  .workspace-nav-menu {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 0 4px !important;
+    gap: 2px !important;
+    overflow-x: hidden !important;
+  }
+
+  .workspace-menu-item {
+    padding: 8px 2px !important;
+    font-size: 0.68rem !important;
+    flex: 1 1 0 !important;
+    text-align: center !important;
+    min-width: 0 !important;
   }
 }
 

@@ -1355,7 +1355,8 @@
 
 .tech-header-title-block {
   flex: 1;
-  min-width: 300px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .tech-pill-badge {

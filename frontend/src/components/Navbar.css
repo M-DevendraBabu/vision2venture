@@ -368,7 +368,7 @@
   }
 
   .navbar-container {
-    padding: 0 16px;
+    padding: 0 14px;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
@@ -378,6 +378,20 @@
     display: none !important;
   }
 
+  .navbar-logo {
+    min-width: 0;
+    flex-shrink: 1;
+    gap: 8px;
+  }
+
+  .navbar-logo .gradient-text {
+    font-size: clamp(0.92rem, 4.2vw, 1.25rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 110px);
+  }
+
   .mobile-hamburger {
     display: flex !important;
     min-width: 44px;
@@ -385,5 +399,6 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    flex-shrink: 0;
   }
 }
