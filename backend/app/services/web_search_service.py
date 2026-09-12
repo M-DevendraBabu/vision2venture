@@ -112,7 +112,7 @@ class WebSearchService:
                 parts = title.split(delim)
                 for candidate in [parts[0].strip(), parts[-1].strip()]:
                     if 2 < len(candidate) < 25:
-                        if not re.match(r'^(?i)(free|best|top|ai|online|resume|builder|maker|generator|official site|website|app|tools|for)+$', candidate):
+                        if not re.match(r'^(free|best|top|ai|online|resume|builder|maker|generator|official site|website|app|tools|for)+$', candidate, flags=re.IGNORECASE):
                             return candidate
 
         # Fallback to pretty domain name

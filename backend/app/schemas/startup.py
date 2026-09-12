@@ -18,6 +18,8 @@ class StartupIdeaBase(BaseModel):
     business_stage: str
     revenue_goal: Decimal
     funding_required: Decimal
+    location: Optional[str] = None
+    radius_km: Optional[float] = 5.0
 
 class StartupIdeaCreate(StartupIdeaBase):
     pass

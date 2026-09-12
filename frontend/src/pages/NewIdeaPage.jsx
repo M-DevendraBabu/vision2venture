@@ -50,6 +50,8 @@ const NewIdeaPage = () => {
     known_competitors: '',
     // Offline-specific
     specific_location: '',
+    location: '',
+    radius_km: 5,
     store_type: '',
     operating_hours: '',
     premises_size: '',
@@ -68,10 +70,65 @@ const NewIdeaPage = () => {
     funding_required: '',
   });
 
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState('');
+
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSectorSelect = (sector) => {
-    setFormData({ ...formData, sector, pricing_model: '', business_type: sector });
+    setFormData({
+      ...formData,
+      sector,
+      pricing_model: '',
+      business_type: sector,
+      radius_km: sector === 'online' ? null : (formData.radius_km || 5)
+    });
+    setLocError('');
+  };
+
+  const handleGetCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setLocError('Geolocation is not supported by your browser. Please enter your location manually.');
+      return;
+    }
+    setLocating(true);
+    setLocError('');
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const resp = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
+            { headers: { 'Accept-Language': 'en', 'User-Agent': 'Vision2Venture/1.0' } }
+          );
+          if (resp.ok) {
+            const data = await resp.json();
+            const city = data.address?.city || data.address?.town || data.address?.suburb || data.address?.county || '';
+            const state = data.address?.state || '';
+            const name = city ? `${city}, ${state}` : data.display_name.split(',').slice(0, 3).join(',');
+            setFormData(prev => ({ ...prev, specific_location: name, location: name }));
+            toast.success(`Location identified: ${name}`);
+          } else {
+            const coordStr = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
+            setFormData(prev => ({ ...prev, specific_location: coordStr, location: coordStr }));
+            toast.success(`Location set from GPS coordinates`);
+          }
+        } catch (err) {
+          toast.info('Coordinates detected. Please type your city/area name.');
+        } finally {
+          setLocating(false);
+        }
+      },
+      (err) => {
+        setLocating(false);
+        if (err.code === 1) { // PERMISSION_DENIED
+          setLocError('Location permission denied. Please enter your city or area manually below.');
+        } else {
+          setLocError('Could not retrieve current location. Please enter your city or area manually.');
+        }
+      },
+      { timeout: 8000 }
+    );
   };
 
   const nextStep = () => {
@@ -138,7 +195,9 @@ const NewIdeaPage = () => {
         team_size: parseInt(formData.team_size) || 1,
         business_stage: formData.business_stage,
         revenue_goal: parseFloat(formData.revenue_goal) || 0,
-        funding_required: parseFloat(formData.funding_required) || 0
+        funding_required: parseFloat(formData.funding_required) || 0,
+        location: formData.sector === 'online' ? null : (formData.location || formData.specific_location || formData.country),
+        radius_km: formData.sector === 'online' ? null : (parseFloat(formData.radius_km) || 5.0)
       };
 
       const res = await startupAPI.create(payload);
@@ -262,15 +321,116 @@ const NewIdeaPage = () => {
     </div>
   );
 
+  const renderLocationAndRadiusFields = () => (
+    <div className="location-setup-card mb-md" style={{
+      background: '#F8FAFC',
+      border: '1px solid #CBD5E1',
+      borderRadius: '12px',
+      padding: '16px',
+      marginBottom: '18px'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '10px' }}>
+        <div>
+          <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: '700', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <FaMapMarkerAlt style={{ color: '#0284c7' }} /> Target Physical Location & Search Radius
+          </h5>
+          <small style={{ color: '#64748b', fontSize: '0.78rem' }}>
+            Used to discover real brick-and-mortar competitors within your catchment area.
+          </small>
+        </div>
+        <button
+          type="button"
+          onClick={handleGetCurrentLocation}
+          disabled={locating}
+          style={{
+            background: '#e0f2fe',
+            color: '#0369a1',
+            border: '1px solid #bae6fd',
+            borderRadius: '8px',
+            padding: '7px 14px',
+            fontSize: '0.8rem',
+            fontWeight: '600',
+            cursor: locating ? 'wait' : 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <FaMapMarkerAlt /> {locating ? 'Detecting Location...' : '📍 Use My Current Location'}
+        </button>
+      </div>
+
+      {locError && (
+        <div style={{
+          padding: '8px 12px',
+          borderRadius: '8px',
+          background: '#fffbeb',
+          border: '1px solid #fde68a',
+          color: '#b45309',
+          fontSize: '0.8rem',
+          marginBottom: '12px'
+        }}>
+          ⚠️ {locError}
+        </div>
+      )}
+
+      <div className="form-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+        <div className="form-group floating-group" style={{ marginBottom: 0 }}>
+          <input
+            id="specific_location"
+            type="text"
+            name="specific_location"
+            className="floating-input"
+            value={formData.specific_location}
+            onChange={(e) => {
+              handleChange(e);
+              setFormData(prev => ({ ...prev, location: e.target.value }));
+            }}
+            placeholder=" "
+          />
+          <label htmlFor="specific_location" className="floating-label">City / Locality (e.g. Banjara Hills, Hyderabad)</label>
+          <small className="field-hint">City, neighborhood, or street address</small>
+        </div>
+
+        <div>
+          <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: '700', color: '#475569', marginBottom: '6px' }}>
+            SEARCH RADIUS: {formData.radius_km || 5} km
+          </label>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            {[1, 5, 10, 25, 50].map((r) => (
+              <button
+                type="button"
+                key={r}
+                onClick={() => setFormData(prev => ({ ...prev, radius_km: r }))}
+                style={{
+                  flex: 1,
+                  padding: '7px 2px',
+                  borderRadius: '6px',
+                  fontSize: '0.78rem',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  background: (formData.radius_km || 5) === r ? '#0f172a' : '#FFFFFF',
+                  color: (formData.radius_km || 5) === r ? '#FFFFFF' : '#475569',
+                  border: (formData.radius_km || 5) === r ? '1px solid #0f172a' : '1px solid #CBD5E1',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                {r}km
+              </button>
+            ))}
+          </div>
+          <small className="field-hint" style={{ marginTop: '4px', display: 'block' }}>Search radius for local rivals</small>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderOfflineFields = () => (
     <div className="sector-specific-section animate-fade-in">
       <h4 className="sector-specific-title"><FaMapMarkerAlt /> Physical Business Details</h4>
+      {renderLocationAndRadiusFields()}
       <div className="form-row">
-        <div className="form-group floating-group">
-          <input id="specific_location" type="text" name="specific_location" className="floating-input" value={formData.specific_location} onChange={handleChange} placeholder=" " />
-          <label htmlFor="specific_location" className="floating-label">Exact Location / Area</label>
-          <small className="field-hint">e.g. Kukatpally, Hyderabad — helps find real local competitors</small>
-        </div>
         <div className="form-group floating-group">
           <select id="store_type" name="store_type" className="floating-input" value={formData.store_type} onChange={handleChange}>
             <option value="" disabled hidden></option>
@@ -286,8 +446,6 @@ const NewIdeaPage = () => {
           </select>
           <label htmlFor="store_type" className="floating-label">Store / Premises Type</label>
         </div>
-      </div>
-      <div className="form-row">
         <div className="form-group floating-group">
           <select id="operating_hours" name="operating_hours" className="floating-input" value={formData.operating_hours} onChange={handleChange}>
             <option value="" disabled hidden></option>
@@ -302,6 +460,8 @@ const NewIdeaPage = () => {
           </select>
           <label htmlFor="operating_hours" className="floating-label">Operating Hours</label>
         </div>
+      </div>
+      <div className="form-row">
         <div className="form-group floating-group">
           <select id="premises_size" name="premises_size" className="floating-input" value={formData.premises_size} onChange={handleChange}>
             <option value="" disabled hidden></option>
@@ -314,8 +474,6 @@ const NewIdeaPage = () => {
           </select>
           <label htmlFor="premises_size" className="floating-label">Premises Size</label>
         </div>
-      </div>
-      <div className="form-row">
         <div className="form-group floating-group">
           <select id="target_audience" name="target_audience" className="floating-input" value={formData.target_audience} onChange={handleChange}>
             <option value="" disabled hidden></option>
@@ -323,16 +481,18 @@ const NewIdeaPage = () => {
           </select>
           <label htmlFor="target_audience" className="floating-label">Primary Audience</label>
         </div>
+      </div>
+      <div className="form-row">
         <div className="form-group floating-group">
           <input id="supply_needs" type="text" name="supply_needs" className="floating-input" value={formData.supply_needs} onChange={handleChange} placeholder=" " />
           <label htmlFor="supply_needs" className="floating-label">Key Supplies / Inventory Needed</label>
           <small className="field-hint">e.g. "Fresh vegetables, spices, cooking gas" or "Clothing inventory"</small>
         </div>
-      </div>
-      <div className="form-group floating-group">
-        <input id="unique_value" type="text" name="unique_value" className="floating-input" value={formData.unique_value} onChange={handleChange} placeholder=" " />
-        <label htmlFor="unique_value" className="floating-label">What makes your business unique?</label>
-        <small className="field-hint">e.g. "Secret family recipe", "Only organic salon in the area", "Home delivery under 20 min"</small>
+        <div className="form-group floating-group">
+          <input id="unique_value" type="text" name="unique_value" className="floating-input" value={formData.unique_value} onChange={handleChange} placeholder=" " />
+          <label htmlFor="unique_value" className="floating-label">What makes your business unique?</label>
+          <small className="field-hint">e.g. "Secret family recipe", "Only organic salon in the area", "Home delivery under 20 min"</small>
+        </div>
       </div>
     </div>
   );
@@ -340,12 +500,8 @@ const NewIdeaPage = () => {
   const renderHybridFields = () => (
     <div className="sector-specific-section animate-fade-in">
       <h4 className="sector-specific-title"><FaSync /> Hybrid Business Details</h4>
+      {renderLocationAndRadiusFields()}
       <div className="form-row">
-        <div className="form-group floating-group">
-          <input id="specific_location" type="text" name="specific_location" className="floating-input" value={formData.specific_location} onChange={handleChange} placeholder=" " />
-          <label htmlFor="specific_location" className="floating-label">Physical Location / Area</label>
-          <small className="field-hint">e.g. MG Road, Bangalore</small>
-        </div>
         <div className="form-group floating-group">
           <select id="target_platform" name="target_platform" className="floating-input" value={formData.target_platform} onChange={handleChange}>
             <option value="" disabled hidden></option>

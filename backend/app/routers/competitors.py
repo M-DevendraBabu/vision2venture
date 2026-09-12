@@ -50,6 +50,12 @@ class CompetitorPatch(BaseModel):
     strengths: Optional[str] = None
     weaknesses: Optional[str] = None
 
+def _resolve_operating_model(explicit_type: Optional[str], sector: Optional[str], b_type: Optional[str]) -> str:
+    for candidate in [explicit_type, sector, b_type]:
+        if candidate and str(candidate).lower().strip() in ["offline", "online", "hybrid"]:
+            return str(candidate).lower().strip()
+    return "online"
+
 # ----------------- Helper -----------------
 def _get_authorized_idea(idea_id: str, current_user: User, db: Session) -> StartupIdea:
     idea = db.query(StartupIdea).filter(
@@ -78,9 +84,9 @@ def discover_competitors(
     idea = _get_authorized_idea(payload.idea_id, current_user, db)
 
     # Resolve parameters
-    b_type = (payload.business_type or idea.business_type or idea.sector or "online").lower()
-    loc = payload.location or idea.country or ""
-    radius = float(payload.radius_km or 10.0)
+    b_type = _resolve_operating_model(payload.business_type, idea.sector, idea.business_type)
+    loc = payload.location or idea.location or idea.country or ""
+    radius = float(payload.radius_km or idea.radius_km or 5.0)
 
     # Run discovery
     discovery_result = CompetitorIntelligenceService.discover(
@@ -138,6 +144,8 @@ def discover_competitors(
             data_freshness=c.get("data_freshness", "Current"),
             confidence_score=float(c.get("confidence_score", 85.0)),
             evidence_status=c.get("evidence_status", "AI inference"),
+            source_type=c.get("source_type"),
+            source_label=c.get("source_label"),
             verified=bool(c.get("verified", False)),
             is_selected=bool(c.get("is_selected", True))
         )
@@ -191,6 +199,8 @@ def discover_competitors(
 
     db.commit()
 
+    serialized_comps = [c.to_dict() if hasattr(c, 'to_dict') else _serialize_competitor(c) for c in db_competitors]
+
     return {
         "status": "success",
         "data": {
@@ -199,7 +209,9 @@ def discover_competitors(
             "radius_km": radius,
             "status_message": discovery_result.get("status_message", ""),
             "provider_status": discovery_result.get("provider_status", "ok"),
-            "competitors": [c.to_dict() if hasattr(c, 'to_dict') else _serialize_competitor(c) for c in db_competitors],
+            "competitors": serialized_comps,
+            "physical_competitors": [c for c in serialized_comps if c.get("business_type") == "offline"],
+            "digital_competitors": [c for c in serialized_comps if c.get("business_type") in ["online", "hybrid"]],
             "intelligence": intelligence_data
         }
     }
@@ -273,29 +285,55 @@ def get_startup_competitor_data(
 
     intel = db.query(CompetitorIntelligence).filter(CompetitorIntelligence.idea_id == idea.id).first()
 
-    # If empty, trigger on-the-fly initial discovery
+    b_type = _resolve_operating_model(None, idea.sector, idea.business_type)
+
+    # If empty, trigger on-the-fly initial discovery using saved context
     if not competitors:
-        b_type = (idea.business_type or idea.sector or "online").lower()
         return discover_competitors(
             DiscoverRequest(
                 idea_id=idea.id,
                 business_type=b_type,
-                location=idea.country,
-                radius_km=10.0
+                location=idea.location or idea.country or "",
+                radius_km=float(idea.radius_km or 5.0)
             ),
             current_user=current_user,
             db=db
         )
 
-    comps_serialized = [_serialize_competitor(c) for c in competitors]
+    # Filter competitors strictly according to business type
+    if b_type == "offline":
+        valid_competitors = [c for c in competitors if getattr(c, "business_type", "") == "offline"]
+    elif b_type == "online":
+        valid_competitors = [c for c in competitors if getattr(c, "business_type", "") == "online"]
+    else:  # hybrid
+        valid_competitors = competitors
 
-    counts = {
-        "total": len(competitors),
-        "offline": sum(1 for c in competitors if getattr(c, "business_type", "") == "offline"),
-        "online": sum(1 for c in competitors if getattr(c, "business_type", "") == "online"),
-        "hybrid": sum(1 for c in competitors if getattr(c, "business_type", "") == "hybrid"),
-        "selected": sum(1 for c in competitors if getattr(c, "is_selected", True))
-    }
+    comps_serialized = [_serialize_competitor(c) for c in valid_competitors]
+
+    if b_type == "offline":
+        counts = {
+            "total": len(comps_serialized),
+            "offline": len(comps_serialized),
+            "online": 0,
+            "hybrid": 0,
+            "selected": sum(1 for c in comps_serialized if c.get("is_selected", True))
+        }
+    elif b_type == "online":
+        counts = {
+            "total": len(comps_serialized),
+            "offline": 0,
+            "online": len(comps_serialized),
+            "hybrid": 0,
+            "selected": sum(1 for c in comps_serialized if c.get("is_selected", True))
+        }
+    else:
+        counts = {
+            "total": len(comps_serialized),
+            "offline": sum(1 for c in comps_serialized if c.get("business_type") == "offline"),
+            "online": sum(1 for c in comps_serialized if c.get("business_type") == "online"),
+            "hybrid": sum(1 for c in comps_serialized if c.get("business_type") == "hybrid"),
+            "selected": sum(1 for c in comps_serialized if c.get("is_selected", True))
+        }
 
     intelligence_payload = {}
     if intel:
@@ -310,11 +348,14 @@ def get_startup_competitor_data(
         }
 
     search_cfg = (intel.search_config if intel and intel.search_config else {}) or {
-        "business_type": idea.business_type or idea.sector or "online",
-        "location": idea.country or "",
-        "radius_km": 10.0,
-        "startup_location": {"lat": 0.0, "lng": 0.0, "display_name": idea.country or "Global"}
+        "business_type": b_type,
+        "location": idea.location or idea.country or "",
+        "radius_km": float(idea.radius_km or 5.0) if b_type != "online" else None,
+        "startup_location": {"lat": 0.0, "lng": 0.0, "display_name": idea.location or idea.country or "Global"} if b_type != "online" else None
     }
+    if b_type == "online":
+        search_cfg["startup_location"] = None
+        search_cfg["radius_km"] = None
 
     return {
         "status": "success",
@@ -323,8 +364,11 @@ def get_startup_competitor_data(
                 "id": idea.id,
                 "title": idea.title,
                 "industry": idea.industry,
-                "business_type": idea.business_type or idea.sector or "online",
+                "business_type": b_type,
                 "country": idea.country,
+                "location": idea.location or idea.country or "",
+                "radius_km": float(idea.radius_km or 5.0) if b_type != "online" else None,
+                "target_customers": idea.target_customers or "",
                 "description": idea.description
             },
             "search_config": search_cfg,
@@ -440,11 +484,63 @@ def delete_competitor(
 
 def _serialize_competitor(c: Competitor) -> Dict[str, Any]:
     """Helper to convert SQLAlchemy Competitor model to JSON serializable dict."""
+    b_type = getattr(c, "business_type", "online") or "online"
+    raw_sources = getattr(c, "data_sources", None)
+    raw_source_type = getattr(c, "source_type", None)
+    raw_source_label = getattr(c, "source_label", None)
+    raw_evidence = getattr(c, "evidence_status", None)
+
+    # Derive accurate source attribution if legacy or missing
+    if not raw_source_type:
+        sources_str = " ".join(raw_sources).lower() if isinstance(raw_sources, list) else str(raw_sources or "").lower()
+        if "openstreetmap" in sources_str or "overpass" in sources_str or b_type == "offline":
+            raw_source_type = "openstreetmap"
+            raw_source_label = "OpenStreetMap / Overpass"
+            raw_evidence = raw_evidence or "source_verified"
+            if not raw_sources:
+                raw_sources = ["OpenStreetMap", "Overpass API"]
+        elif "live web" in sources_str or "duckduckgo" in sources_str or "tavily" in sources_str or "brave" in sources_str:
+            raw_source_type = "live_web"
+            raw_source_label = "Live Web Search"
+            raw_evidence = raw_evidence or "web_verified"
+            if not raw_sources:
+                raw_sources = ["Live Web Search"]
+        elif "yc" in sources_str or "y combinator" in sources_str:
+            raw_source_type = "yc_dataset"
+            raw_source_label = "YC Dataset"
+            raw_evidence = raw_evidence or "publicly_reported"
+            if not raw_sources:
+                raw_sources = ["YC Startup Knowledge Base"]
+        elif "user" in sources_str or raw_evidence == "User-provided":
+            raw_source_type = "manual"
+            raw_source_label = "Manual Entry"
+            raw_evidence = raw_evidence or "user_provided"
+            if not raw_sources:
+                raw_sources = ["User Provided"]
+        else:
+            raw_source_type = "llm"
+            raw_source_label = "LLM Inference"
+            raw_evidence = raw_evidence or "not_web_verified"
+            if not raw_sources:
+                raw_sources = ["AI Industry Synthesis"]
+
+    if not raw_sources:
+        if raw_source_type == "openstreetmap":
+            raw_sources = ["OpenStreetMap", "Overpass API"]
+        elif raw_source_type == "live_web":
+            raw_sources = ["Live Web Search"]
+        elif raw_source_type == "yc_dataset":
+            raw_sources = ["YC Startup Knowledge Base"]
+        elif raw_source_type == "manual":
+            raw_sources = ["User Provided"]
+        else:
+            raw_sources = ["AI Industry Synthesis"]
+
     return {
         "id": c.id,
         "idea_id": c.idea_id,
         "name": c.name,
-        "business_type": getattr(c, "business_type", "online") or "online",
+        "business_type": b_type,
         "competitor_type": getattr(c, "competitor_type", "direct") or "direct",
         "description": c.description or "",
         "website_url": getattr(c, "website_url", "") or "",
@@ -469,10 +565,12 @@ def _serialize_competitor(c: Competitor) -> Dict[str, Any]:
         "usp": c.usp or "",
         "analysis_explanation": c.analysis_explanation or "",
         "source_urls": getattr(c, "source_urls", []) or [],
-        "data_sources": getattr(c, "data_sources", []) or ["OpenStreetMap"],
+        "data_sources": raw_sources,
         "data_freshness": getattr(c, "data_freshness", "Current") or "Current",
         "confidence_score": float(getattr(c, "confidence_score", 85.0) or 85.0),
-        "evidence_status": getattr(c, "evidence_status", "AI inference") or "AI inference",
+        "evidence_status": raw_evidence or "not_web_verified",
+        "source_type": raw_source_type,
+        "source_label": raw_source_label,
         "verified": bool(getattr(c, "verified", False)),
         "is_selected": bool(getattr(c, "is_selected", True))
     }

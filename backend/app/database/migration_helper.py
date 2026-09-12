@@ -53,6 +53,8 @@ def ensure_competitor_tables_and_columns():
                 ("data_freshness", "VARCHAR(50) NULL"),
                 ("confidence_score", "DECIMAL(5, 2) DEFAULT 80.0"),
                 ("evidence_status", "VARCHAR(50) DEFAULT 'AI inference'"),
+                ("source_type", "VARCHAR(50) NULL"),
+                ("source_label", "VARCHAR(100) NULL"),
                 ("verified", "BOOLEAN DEFAULT FALSE"),
                 ("is_selected", "BOOLEAN DEFAULT TRUE"),
                 ("updated_at", "DATETIME NULL"),
@@ -66,7 +68,35 @@ def ensure_competitor_tables_and_columns():
                         print(f"[Migration] Added column '{col_name}' to 'competitors' table.")
                     except Exception as e:
                         print(f"[Migration] Notice adding {col_name}: {e}")
+
+            # Check existing columns on startup_ideas table
+            idea_cols = set()
+            if dialect == 'mysql':
+                res = conn.execute(text("SHOW COLUMNS FROM startup_ideas"))
+                idea_cols = {row[0] for row in res.fetchall()}
+            elif dialect == 'sqlite':
+                res = conn.execute(text("PRAGMA table_info(startup_ideas)"))
+                idea_cols = {row[1] for row in res.fetchall()}
+            else:
+                try:
+                    res = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name = 'startup_ideas'"))
+                    idea_cols = {row[0] for row in res.fetchall()}
+                except Exception:
+                    pass
+
+            idea_cols_to_add = [
+                ("location", "VARCHAR(255) NULL"),
+                ("radius_km", "FLOAT DEFAULT 5.0")
+            ]
+            for col_name, col_type in idea_cols_to_add:
+                if col_name not in idea_cols and idea_cols:
+                    try:
+                        conn.execute(text(f"ALTER TABLE startup_ideas ADD COLUMN {col_name} {col_type}"))
+                        conn.commit()
+                        print(f"[Migration] Added column '{col_name}' to 'startup_ideas' table.")
+                    except Exception as e:
+                        print(f"[Migration] Notice adding {col_name} to startup_ideas: {e}")
                         
-            print("[Migration] Competitor tables and columns verified successfully.")
+            print("[Migration] Competitor and startup tables/columns verified successfully.")
     except Exception as e:
         print(f"[Migration] Notice running migration check: {e}")

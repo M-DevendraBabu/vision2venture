@@ -15,7 +15,7 @@ class LocationService:
         "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
         "https://overpass-api.de/api/interpreter",
         "https://overpass.kumi.systems/api/interpreter",
-        "https://lz4.overpass-api.de/api/interpreter",
+        "https://overpass.osm.ch/api/interpreter",
         "https://overpass.private.coffee/api/interpreter"
     ]
 
@@ -99,8 +99,8 @@ class LocationService:
                 'node["shop"~"bakery|confectionery|deli"](around:{radius},{lat},{lng});'
             ]
 
-        # Grocery, Supermarket, Retail, Mart
-        if any(k in combined for k in ["grocery", "supermarket", "mart", "convenience", "kirana", "provision", "fruit", "vegetable"]):
+        # Grocery, Supermarket, Retail, Mart, Organic, Farm, Agriculture
+        if any(k in combined for k in ["grocery", "supermarket", "mart", "convenience", "kirana", "provision", "fruit", "vegetable", "organic", "farm", "agriculture"]):
             return [
                 'node["shop"~"supermarket|convenience|grocery|greengrocer"](around:{radius},{lat},{lng});',
                 'node["shop"~"general|chemist"](around:{radius},{lat},{lng});'
@@ -214,7 +214,7 @@ class LocationService:
         )
 
         overpass_ql = f"""
-        [out:json][timeout:5];
+        [out:json][timeout:12];
         (
           {rendered_statements}
         );
@@ -228,7 +228,12 @@ class LocationService:
 
         for endpoint in cls.OVERPASS_ENDPOINTS:
             try:
-                resp = requests.post(endpoint, data={"data": overpass_ql}, timeout=(5.0, 10.0))
+                resp = requests.post(
+                    endpoint,
+                    data={"data": overpass_ql},
+                    headers={"User-Agent": "curl/7.88.1", "Accept": "application/json, */*"},
+                    timeout=(5.0, 15.0)
+                )
                 if resp.status_code == 200:
                     res_json = resp.json()
                     elements = res_json.get("elements", [])
@@ -357,7 +362,9 @@ class LocationService:
                 "data_sources": ["OpenStreetMap", "Overpass API"],
                 "data_freshness": "Live OSM POI Snapshot",
                 "confidence_score": 92.0,
-                "evidence_status": "Verified from source",
+                "evidence_status": "source_verified",
+                "source_type": "openstreetmap",
+                "source_label": "OpenStreetMap / Overpass",
                 "verified": True,
                 "is_selected": True
             })

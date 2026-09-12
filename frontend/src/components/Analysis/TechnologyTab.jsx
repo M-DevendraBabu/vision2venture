@@ -1630,7 +1630,7 @@ ${data?.reasoning || bp.ai_rationale}
             </div>
             <div className="tech-metric-box">
               <div className="tech-metric-lbl">Peak Concurrency</div>
-              <div className="tech-metric-val text-primary">{bp.concurrency_target.split(' ')[0]}</div>
+              <div className="tech-metric-val text-primary">{bp.concurrency_target}</div>
             </div>
             <div className="tech-metric-box tech-metric-highlight">
               <div className="tech-metric-lbl">Est. Cloud OpEx</div>

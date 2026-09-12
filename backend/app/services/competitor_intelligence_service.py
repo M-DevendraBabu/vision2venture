@@ -88,24 +88,55 @@ class CompetitorIntelligenceService:
         unique_competitors.sort(key=lambda x: -float(x.get("relevance_score", 50.0)))
         final_list = unique_competitors[:limit]
 
-        # Counts by business type
-        counts = {
-            "total": len(final_list),
-            "offline": sum(1 for c in final_list if c.get("business_type") == "offline"),
-            "online": sum(1 for c in final_list if c.get("business_type") == "online"),
-            "hybrid": sum(1 for c in final_list if c.get("business_type") == "hybrid"),
-        }
-
-        if not status_message:
-            if final_list:
-                status_message = f"Identified {len(final_list)} relevant competitors."
-            else:
-                status_message = "No competitors found matching the specified criteria. You can expand the search criteria or add competitors manually."
+        # 5. STRICT COUNTS BY BUSINESS TYPE
+        if b_type == "offline":
+            startup_loc_result = startup_location
+            radius_result = radius_km
+            counts = {
+                "total": len(final_list),
+                "offline": len(final_list),
+                "online": 0,
+                "hybrid": 0,
+            }
+            if not status_message:
+                if final_list:
+                    status_message = f"Discovered {len(final_list)} verified physical businesses from OpenStreetMap within {radius_km} km."
+                else:
+                    search_loc_name = location or target_market or "selected location"
+                    status_message = f"No nearby physical {industry} competitors found within {radius_km} km of {search_loc_name}."
+        elif b_type == "online":
+            startup_loc_result = None
+            radius_result = None
+            counts = {
+                "total": len(final_list),
+                "offline": 0,
+                "online": len(final_list),
+                "hybrid": 0,
+            }
+            if not status_message:
+                if final_list:
+                    status_message = f"Discovered {len(final_list)} digital competitors via Live Web Search & Tech Registries."
+                else:
+                    status_message = f"No digital competitors found for {industry}. You can add competitors manually."
+        else:  # hybrid
+            startup_loc_result = startup_location
+            radius_result = radius_km
+            off_cnt = sum(1 for c in final_list if c.get("business_type") == "offline")
+            on_cnt = sum(1 for c in final_list if c.get("business_type") == "online")
+            hyb_cnt = sum(1 for c in final_list if c.get("business_type") == "hybrid")
+            counts = {
+                "total": len(final_list),
+                "offline": off_cnt,
+                "online": on_cnt,
+                "hybrid": hyb_cnt,
+            }
+            if not status_message:
+                status_message = f"Discovered {off_cnt} physical and {on_cnt + hyb_cnt} digital competitors for hybrid model."
 
         return {
             "business_type": b_type,
-            "startup_location": startup_location,
-            "radius_km": radius_km,
+            "startup_location": startup_loc_result,
+            "radius_km": radius_result,
             "counts": counts,
             "competitors": final_list,
             "status_message": status_message,

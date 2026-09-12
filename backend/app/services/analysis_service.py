@@ -1,15 +1,18 @@
 import re
+import uuid
 import concurrent.futures
 from sqlalchemy.orm import Session
 from app.models.startup_idea import StartupIdea
 from app.models.analysis import (
-    StartupAnalysis, MarketAnalysis, Competitor, TechnologyRecommendation,
+    StartupAnalysis, MarketAnalysis, Competitor, CompetitorIntelligence, TechnologyRecommendation,
     BusinessModel, SwotAnalysis, FinancialAnalysis, RiskAnalysis,
     FeasibilityAnalysis, InvestorReadiness, ImplementationRoadmap
 )
 from app.services.nlp_service import NLPService
 from app.services.ai_service import AIService
 from app.services.ml_service import MLService
+from app.services.competitor_intelligence_service import CompetitorIntelligenceService
+
 
 def safe_float(val, default=0.0):
     if val is None:
@@ -65,6 +68,7 @@ class AnalysisService:
             db.query(StartupAnalysis).filter(StartupAnalysis.idea_id == idea_id).delete()
             db.query(MarketAnalysis).filter(MarketAnalysis.idea_id == idea_id).delete()
             db.query(Competitor).filter(Competitor.idea_id == idea_id).delete()
+            db.query(CompetitorIntelligence).filter(CompetitorIntelligence.idea_id == idea_id).delete()
             db.query(TechnologyRecommendation).filter(TechnologyRecommendation.idea_id == idea_id).delete()
             db.query(BusinessModel).filter(BusinessModel.idea_id == idea_id).delete()
             db.query(SwotAnalysis).filter(SwotAnalysis.idea_id == idea_id).delete()
@@ -137,36 +141,95 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Market Analysis: {e}")
             db.rollback()
 
-        # ============ 3. COMPETITOR ANALYSIS (PURE YC DATASET) ============
+        # ============ 3. COMPETITOR INTELLIGENCE (OFFLINE / ONLINE / HYBRID) ============
         try:
-            print(f"[Analysis] 3/9 Running Competitor Analysis (YC Dataset)...")
-            yc_matches = MLService.search_yc_competitors(idea.industry, idea.title)
-            
-            # YC dataset now auto-generates strengths/weaknesses — no AI call needed
-            all_comps = yc_matches
-            if not all_comps:
-                all_comps = [
-                    {
-                        'name': f'Established {idea.industry} Providers',
-                        'similarity_score': 65.0,
-                        'strengths': 'Strong brand awareness and existing customer base',
-                        'weaknesses': 'Slower implementation speed and legacy cost structures',
-                        'competitive_gap': f'Opportunity for {idea.title} to deliver faster, cost-effective service',
-                        'usp': f'Modern {sector} approach tailored to current user needs',
-                        'analysis_explanation': f'Competitive analysis for {idea.industry} market.'
-                    }
-                ]
-            for c in all_comps[:5]:
+            print(f"[Analysis] 3/9 Running Competitor Intelligence Discovery...")
+            b_type = (idea.business_type or idea.sector or "online").lower()
+            loc = idea.location or idea.country or ""
+            radius = float(idea.radius_km or 5.0)
+            kw_str = " ".join(keywords) if isinstance(keywords, list) else str(keywords or "")
+
+            discovery_result = CompetitorIntelligenceService.discover(
+                idea_title=idea.title,
+                industry=idea.industry,
+                description=idea.description,
+                business_type=b_type,
+                location=loc,
+                radius_km=radius,
+                keywords=kw_str,
+                target_market=idea.country or "Global"
+            )
+            discovered_comps = discovery_result.get("competitors", [])
+
+            for c in discovered_comps:
                 db.add(Competitor(
+                    id=str(uuid.uuid4()),
                     idea_id=idea.id,
-                    name=str(c.get('name') or 'Industry Competitor'),
-                    similarity_score=safe_float(c.get('similarity_score'), 50.0),
-                    strengths=str(c.get('strengths') or 'Established presence'),
-                    weaknesses=str(c.get('weaknesses') or 'Legacy workflows'),
-                    competitive_gap=str(c.get('competitive_gap') or 'Market opportunity for differentiation'),
-                    usp=str(c.get('usp') or f'Unique value proposition of {idea.title}'),
-                    analysis_explanation=str(c.get('analysis_explanation') or 'Dataset competitor matching.')
+                    name=c["name"],
+                    business_type=c.get("business_type", b_type),
+                    competitor_type=c.get("competitor_type", "direct"),
+                    description=c.get("description", ""),
+                    website_url=c.get("website_url", ""),
+                    app_url=c.get("app_url", ""),
+                    location=c.get("location", loc),
+                    latitude=c.get("latitude"),
+                    longitude=c.get("longitude"),
+                    distance_km=c.get("distance_km"),
+                    phone=c.get("phone", "Not available"),
+                    rating=c.get("rating"),
+                    review_count=c.get("review_count"),
+                    opening_hours=c.get("opening_hours", "Not available"),
+                    pricing_model=c.get("pricing_model", "Not available"),
+                    pricing_details=c.get("pricing_details", ""),
+                    target_audience=c.get("target_audience", ""),
+                    features=c.get("features", ""),
+                    similarity_score=float(c.get("similarity_score", 50.0)),
+                    relevance_score=float(c.get("relevance_score", 50.0)),
+                    strengths=c.get("strengths", ""),
+                    weaknesses=c.get("weaknesses", ""),
+                    competitive_gap=c.get("competitive_gap", ""),
+                    usp=c.get("usp", ""),
+                    analysis_explanation=c.get("analysis_explanation", ""),
+                    source_urls=c.get("source_urls", []),
+                    data_sources=c.get("data_sources", []),
+                    data_freshness=c.get("data_freshness", "Current"),
+                    confidence_score=float(c.get("confidence_score", 85.0)),
+                    evidence_status=c.get("evidence_status", "not_web_verified"),
+                    source_type=c.get("source_type"),
+                    source_label=c.get("source_label"),
+                    verified=bool(c.get("verified", False)),
+                    is_selected=bool(c.get("is_selected", True))
                 ))
+
+            # Synthesize Intelligence
+            idea_context = {
+                "title": idea.title,
+                "industry": idea.industry,
+                "description": idea.description,
+                "business_type": b_type,
+                "location": loc,
+                "country": idea.country
+            }
+            intel_data = CompetitorIntelligenceService.synthesize_intelligence(idea_context, discovered_comps)
+            search_cfg = {
+                "business_type": b_type,
+                "location": loc,
+                "radius_km": radius if b_type != "online" else None,
+                "startup_location": discovery_result.get("startup_location") if b_type != "online" else None
+            }
+            intel_obj = CompetitorIntelligence(
+                id=str(uuid.uuid4()),
+                idea_id=idea.id,
+                search_config=search_cfg,
+                comparison_matrix=intel_data.get("comparison_matrix", []),
+                startup_advantages=intel_data.get("startup_advantages", []),
+                startup_gaps=intel_data.get("startup_gaps", []),
+                market_opportunities=intel_data.get("market_opportunities", []),
+                competitive_risks=intel_data.get("competitive_risks", []),
+                recommendations=intel_data.get("recommendations", []),
+                data_limitations=intel_data.get("data_limitations", [])
+            )
+            db.add(intel_obj)
             db.commit()
         except Exception as e:
             print(f"[Analysis] ERROR in Competitor Analysis: {e}")

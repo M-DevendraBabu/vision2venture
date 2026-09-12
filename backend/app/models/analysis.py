@@ -68,6 +68,8 @@ class Competitor(Base):
     data_freshness = Column(String(50), nullable=True)
     confidence_score = Column(DECIMAL(5, 2), nullable=True, default=80.0)
     evidence_status = Column(String(50), nullable=True, default='AI inference')
+    source_type = Column(String(50), nullable=True)
+    source_label = Column(String(100), nullable=True)
     verified = Column(Boolean, default=False)
     is_selected = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)

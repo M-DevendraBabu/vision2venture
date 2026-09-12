@@ -1,4 +1,4 @@
-﻿import re
+import re
 import json
 import logging
 import urllib.parse
@@ -95,7 +95,9 @@ class OnlineCompetitorService:
                         "data_sources": ["User Provided"],
                         "data_freshness": "Direct User Input",
                         "confidence_score": 88.0,
-                        "evidence_status": "User-provided",
+                        "evidence_status": "user_provided",
+                        "source_type": "manual",
+                        "source_label": "Manual Entry",
                         "verified": False,
                         "is_selected": True
                     })
@@ -169,7 +171,9 @@ class OnlineCompetitorService:
                     "data_sources": ["Live Web Search", provider_used],
                     "data_freshness": "Real-Time Web Search",
                     "confidence_score": 92.0,
-                    "evidence_status": "Web-verified",
+                    "evidence_status": "web_verified",
+                    "source_type": "live_web",
+                    "source_label": "Live Web Search",
                     "verified": True,
                     "is_selected": True
                 })
@@ -240,7 +244,9 @@ class OnlineCompetitorService:
                     "data_sources": ["YC Startup Knowledge Base", "Public Company Data"],
                     "data_freshness": "Curated Tech Ecosystem Registry",
                     "confidence_score": 92.0,
-                    "evidence_status": "Publicly reported",
+                    "evidence_status": "publicly_reported",
+                    "source_type": "yc_dataset",
+                    "source_label": "YC Dataset",
                     "verified": True,
                     "is_selected": True
                 })
@@ -344,7 +350,9 @@ CRITICAL RULES:
                         "data_sources": ["AI Industry Synthesis"],
                         "data_freshness": "Current Market Analysis (LLM Fallback)",
                         "confidence_score": 82.0,
-                        "evidence_status": "AI inference",
+                        "evidence_status": "not_web_verified",
+                        "source_type": "llm",
+                        "source_label": "LLM Inference",
                         "verified": False,
                         "is_selected": True
                     })
