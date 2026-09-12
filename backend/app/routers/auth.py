@@ -5,7 +5,7 @@ from app.database.connection import get_db
 from app.models.user import User, UserSession
 import random
 from app.schemas.auth import UserCreate, UserLogin, UserResponse, TokenResponse, ForgotPasswordRequest, VerifyResetOTPRequest
-from app.utils.security import hash_password, verify_password, create_access_token, get_current_user
+from app.utils.security import hash_password, verify_password, create_access_token, get_current_user, oauth2_scheme
 from app.services.email_service import send_reset_otp_email
 from app.config import settings
 import uuid
@@ -140,6 +140,20 @@ def google_auth(data: dict, db: Session = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 def get_profile(current_user: User = Depends(get_current_user)):
     return current_user
+
+@router.post("/logout")
+def logout(
+    token: str = Depends(oauth2_scheme),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Revokes the current active session token from the database.
+    Subsequent API requests with this token will be rejected with 401 Unauthorized.
+    """
+    db.query(UserSession).filter(UserSession.token == token).delete()
+    db.commit()
+    return {"status": "success", "message": "Successfully logged out and session revoked"}
 
 from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 

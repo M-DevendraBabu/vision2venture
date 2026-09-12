@@ -77,11 +77,18 @@ export const AuthProvider = ({ children }) => {
     return res.data;
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('cached_startup_ideas');
-    setUser(null);
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (err) {
+      // Non-blocking catch if user token was already expired or network blip
+      console.warn('Session logout notice:', err);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('cached_startup_ideas');
+      setUser(null);
+    }
   };
 
   return (

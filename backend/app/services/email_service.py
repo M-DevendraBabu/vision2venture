@@ -212,9 +212,13 @@ def send_reset_otp_email(to_email: str, otp_code: str, user_name: str = "User") 
     # 5. Direct SMTP (Port 465 SSL / Port 587 STARTTLS) - for local/VPS
     # ============================================================
     smtp_host = settings.SMTP_HOST or "smtp.gmail.com"
-    smtp_user = (settings.SMTP_USER.strip() if settings.SMTP_USER else "") or "devendrababumotupalli@gmail.com"
-    smtp_pass = (settings.SMTP_PASSWORD.strip() if settings.SMTP_PASSWORD else "") or "qhuvnrvgfdhuhlyn"
+    smtp_user = settings.SMTP_USER.strip() if settings.SMTP_USER else ""
+    smtp_pass = settings.SMTP_PASSWORD.strip() if settings.SMTP_PASSWORD else ""
     from_email = (settings.SMTP_FROM_EMAIL.strip() if settings.SMTP_FROM_EMAIL else "") or smtp_user
+
+    if not smtp_user or not smtp_pass:
+        print("[EMAIL SERVICE] Direct SMTP skipped: SMTP_USER or SMTP_PASSWORD not configured in environment.")
+        return (False, "SMTP credentials not configured.")
 
     msg = MIMEMultipart('alternative')
     msg['Subject'] = subject

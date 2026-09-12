@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = ""
     DB_NAME: str = "vision2venture_db"
     
-    SECRET_KEY: str = "v2v-prod-secret-key-change-in-production-2024"
+    SECRET_KEY: str = ""
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 30  # 30 days (43,200 minutes) - persistent session
     
@@ -22,9 +22,9 @@ class Settings(BaseSettings):
     # SMTP Configuration for sending OTP emails
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str = "devendrababumotupalli@gmail.com"
-    SMTP_PASSWORD: str = "qhuvnrvgfdhuhlyn"
-    SMTP_FROM_EMAIL: str = "devendrababumotupalli@gmail.com"
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = ""
 
     # Google OAuth Configuration
     VITE_GOOGLE_CLIENT_ID: str = ""
@@ -44,3 +44,13 @@ class Settings(BaseSettings):
         extra = "ignore"
 
 settings = Settings()
+
+if not settings.SECRET_KEY:
+    import secrets
+    import logging
+    logging.getLogger("vision2venture.config").warning(
+        "CRITICAL SECURITY NOTICE: SECRET_KEY is not set in environment or .env file. "
+        "Generating an ephemeral session key. All active user sessions will be invalidated on server restart. "
+        "Define SECRET_KEY in .env for persistent sessions."
+    )
+    settings.SECRET_KEY = secrets.token_hex(32)

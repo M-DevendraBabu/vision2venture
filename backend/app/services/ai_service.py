@@ -136,47 +136,33 @@ Return ONLY valid JSON (all currency values MUST be in Indian Rupees ₹ / ₹ C
         if res and res.get('market_size'):
             return res
 
-        # Fallback dynamic market generator based on industry & sector
-        title = context['title']
-        ind = context['industry']
-        country = context.get('country', 'Global')
+        # Fallback to ML market model and verified benchmarks
+        try:
+            from app.services.ml_service import MLService
+            ml_res = MLService.calculate_market_analysis(context)
+            if ml_res and ml_res.get('market_size'):
+                return ml_res
+        except Exception as e:
+            print(f"[AI Service] ML market fallback notice: {e}")
+
         sec = context.get('sector', 'online')
-
-        h_val = sum(ord(c) * (i + 1) for i, c in enumerate(str(title) + str(ind))) % 23
-        
-        if sec == 'offline':
-            m_size = f"₹{float(context.get('budget', 50000))*85:,.0f} Local Market Size in {country}"
-            g_rate = round(8.5 + (h_val % 7) * 0.8, 1)
-            opp_score = round(max(58.0, min(92.0, 72.0 + (h_val % 13) - 4.0)), 1)
-            demo = f"Local residents and foot traffic in {country} seeking quality {ind} services."
-            pain = f"Inconsistent quality and long waiting times in traditional {ind} outlets."
-            channel = "Local Hyperlocal Ads, Storefront Signage, Google Maps SEO & Direct Referral"
-            trigger = "Urgent local service need or convenience recommendation"
-        else:
-            m_size = f"₹{round((6.2 + (h_val % 9) * 1.5) * 8300):,d} Cr Addressable Market"
-            g_rate = round(14.2 + (h_val % 8) * 1.1, 1)
-            opp_score = round(max(62.0, min(96.0, 78.0 + (h_val % 15) - 5.0)), 1)
-            demo = f"Tech-savvy professionals and digital businesses in {country} and globally."
-            pain = f"High friction, slow manual workflows, and expensive legacy solutions in {ind}."
-            channel = "Digital Marketing, SEO Content Strategy, B2B Cold Email & Targeted LinkedIn Ads"
-            trigger = "Need for cost reduction, automation, and workflow acceleration"
-
+        ind = context.get('industry', 'Technology')
         return {
-            "market_size": m_size,
-            "growth_rate": g_rate,
-            "demand_level": "High" if opp_score > 78 else "Medium",
-            "opportunity_score": opp_score,
+            "market_size": "Estimate unavailable (Model offline)",
+            "growth_rate": 10.0,
+            "demand_level": "Medium",
+            "opportunity_score": 65.0,
             "industry_trends": [
-                f"Rapid adoption of AI automation in {ind}",
-                f"Shift towards cloud-native and mobile-first {ind} solutions",
-                f"Increasing demand for personalized customer experience"
+                f"Market transition to technology-driven {ind} operations",
+                f"Customer demand for enhanced service reliability and speed",
+                f"Regulatory compliance and standard operational best practices"
             ],
-            "primary_demo": demo,
-            "key_pain_point": pain,
-            "acquisition_channel": channel,
-            "purchase_trigger": trigger,
-            "opportunity_explanation": f"{title} targets an attractive {m_size} market expanding at {g_rate}% CAGR with an Opportunity Score of {opp_score}/100.",
-            "market_analysis_explanation": f"Quantitative market opportunity model for {title} in {ind}. High growth momentum ({g_rate}% CAGR) driven by underserved demographic demands in {country}."
+            "primary_demo": f"Commercial and retail clients in {ind}",
+            "key_pain_point": f"Manual overhead and fragmentation in legacy {ind} solutions",
+            "acquisition_channel": "Direct B2B outreach and targeted digital marketing",
+            "purchase_trigger": "Productivity gains and cost reduction",
+            "opportunity_explanation": f"Baseline market opportunity metrics for {context.get('title', 'startup')}.",
+            "market_analysis_explanation": "Baseline market analysis generated from benchmark standards when AI is offline."
         }
 
     @staticmethod
@@ -394,112 +380,43 @@ Return ONLY valid JSON with numeric values:
 {{"monthly_recurring_revenue": 5000, "customer_acquisition_cost": 45, "lifetime_value": 450, "churn_rate": 4.5, "rent_cost": 0, "staff_cost": 2500, "marketing_cost": 1500, "development_cost": 8000, "monthly_operating_cost": 4000, "roi": 145, "profit_margins": 25, "break_even_analysis": "Break-even projected in 8 months based on CAC and growth trajectory", "detailed_explanation": "Detailed financial assessment."}}"""
         res = AIService._generate(prompt)
 
-        # Dynamic financial computation engine based on industry sector & budget
-        b_input = float(context.get('budget') or 0)
-        r_input = float(context.get('revenue_goal') or 0)
+        # Fallback to deterministic ML financial projections
+        try:
+            from app.services.ml_service import MLService
+            ml_fin = MLService.calculate_financial_projections(context)
+            if ml_fin and ml_fin.get('monthly_recurring_revenue') is not None:
+                return ml_fin
+        except Exception as e:
+            print(f"[AI Service] ML financial fallback notice: {e}")
+
+        # Grounded formula fallback if MLService unavailable
+        b_val = float(context.get('budget') or 25000.0)
+        r_val = float(context.get('revenue_goal') or b_val * 2.5)
         sec = str(context.get('sector', 'online')).lower()
-        ind = str(context['industry']).lower()
-
-        # If user didn't know or enter budget/revenue, auto-calculate from industry standards
-        if b_input <= 0:
-            if sec == 'offline': b_input = 45000.0
-            elif 'health' in ind or 'fintech' in ind or 'ai' in ind: b_input = 65000.0
-            else: b_input = 25000.0
-
-        if r_input <= 0:
-            r_input = b_input * 2.8
-
-        budget = b_input
-        rev_goal = r_input
-
-        # Transparent CapEx Breakdown
-        capex_dev = round(budget * 0.35, 2)
-        capex_hw = round(budget * 0.25, 2) if sec == 'offline' or 'health' in ind else round(budget * 0.15, 2)
-        capex_lic = round(budget * 0.10, 2)
-        capex_brand = round(budget * 0.10, 2)
-        total_capex = capex_dev + capex_hw + capex_lic + capex_brand
-
-        # Transparent OpEx Breakdown (Monthly)
-        opex_staff = round(budget * 0.18, 2)
-        opex_rent = round(budget * 0.12, 2) if sec == 'offline' else 0.0
-        opex_cloud = round(budget * 0.08, 2) if sec == 'online' else 350.0
-        opex_mkt = round(budget * 0.14, 2)
-        opex_util = round(budget * 0.05, 2)
-        monthly_ops = opex_staff + opex_rent + opex_cloud + opex_mkt + opex_util
-
-        # Income & Unit Economics derived dynamically from title & industry
-        h_val = sum(ord(c) for c in str(context['title']) + ind) % 19
-        
-        mrr = round(rev_goal / 12, 2)
-        
-        # Unit Pricing customized by sector & industry
-        if sec == 'offline':
-            price_per_unit = round(35.0 + (h_val * 4.5), 2)
-        elif 'fintech' in ind or 'cyber' in ind:
-            price_per_unit = round(199.0 + (h_val * 15.0), 2)
-        elif 'health' in ind or 'med' in ind:
-            price_per_unit = round(149.0 + (h_val * 12.0), 2)
-        elif 'ai' in ind or 'data' in ind:
-            price_per_unit = round(79.0 + (h_val * 8.0), 2)
-        else:
-            price_per_unit = round(49.0 + (h_val * 5.0), 2)
-
-        monthly_sales_vol = max(10, int(mrr / price_per_unit))
-        
-        # Sector-specific CAC & LTV Multipliers
-        cac_multiplier = 0.35 + (h_val % 7) * 0.05
-        cac = round(max(15.0, (opex_mkt / max(5, monthly_sales_vol)) * cac_multiplier), 2)
-        
-        ltv_multiplier = round(3.2 + (h_val % 6) * 0.6, 1)  # 3.2x to 6.2x LTV:CAC
-        ltv = round(cac * ltv_multiplier, 2)
-
-        year1_rev = round(mrr * 12, 2)
-        year2_rev = round(year1_rev * (1.6 + (h_val % 5) * 0.15), 2)
-        year3_rev = round(year2_rev * (1.5 + (h_val % 4) * 0.12), 2)
-
-        # Dynamic ROI % based on net 3-year cash flow
-        total_3yr_profit = (year1_rev + year2_rev + year3_rev) - (monthly_ops * 36 + total_capex)
-        roi_pct = round(max(38.5, min(340.0, (total_3yr_profit / total_capex) * 35.0)), 1)
-
-        # Dynamic Net Profit Margin %
-        net_annual_income = year1_rev - (monthly_ops * 12)
-        margin_pct = round(max(14.2, min(68.5, (net_annual_income / year1_rev) * 100)), 1)
-
-        payback_months = round(total_capex / max(800.0, (mrr - monthly_ops * 0.6)), 1)
-        if payback_months < 3.0 or payback_months > 36.0:
-            payback_months = round(6.5 + (h_val % 8) * 0.8, 1)
-
+        mrr = round(r_val / 12, 2)
+        cac = round(max(25.0, b_val * 0.015), 2)
+        ltv = round(cac * 3.5, 2)
         return {
-            "subscription_revenue": round(year1_rev * 0.80, 2),
-            "freemium_conversion": round(3.5 + (h_val % 4) * 0.8, 1) if sec == 'online' else 0.0,
+            "subscription_revenue": round(r_val * 0.8, 2),
+            "freemium_conversion": 4.0 if sec == 'online' else 0.0,
             "monthly_recurring_revenue": mrr,
             "customer_acquisition_cost": cac,
             "lifetime_value": ltv,
-            "churn_rate": round(2.1 + (h_val % 5) * 0.5, 1),
-            "daily_customers_estimate": max(15, int(monthly_sales_vol / 30)) if sec == 'offline' else 0,
-            "average_order_value": price_per_unit,
+            "churn_rate": 3.5,
+            "daily_customers_estimate": max(10, int(mrr / (30 * 50))) if sec == 'offline' else 0,
+            "average_order_value": 50.0 if sec == 'offline' else 100.0,
             "monthly_revenue": mrr,
-            "rent_cost": opex_rent,
-            "staff_cost": opex_staff,
-            "raw_material_cost": round(budget * 0.08, 2) if sec == 'offline' else 0.0,
-            "utility_cost": opex_util,
-            "marketing_cost": opex_mkt,
-            "development_cost": capex_dev,
-            "hardware_equipment_cost": capex_hw,
-            "licensing_legal_cost": capex_lic,
-            "branding_design_cost": capex_brand,
-            "monthly_operating_cost": monthly_ops,
-            "total_capex": total_capex,
-            "unit_price": price_per_unit,
-            "monthly_sales_volume": monthly_sales_vol,
-            "year1_revenue": year1_rev,
-            "year2_revenue": year2_rev,
-            "year3_revenue": year3_rev,
-            "payback_period_months": payback_months,
-            "break_even_analysis": f"Based on initial capital setup of ₹{total_capex:,.0f} and projected MRR of ₹{mrr:,.0f}, break-even is achieved in Month {payback_months}. Unit LTV:CAC ratio stands at {ltv_multiplier}x.",
-            "roi": roi_pct,
-            "profit_margins": margin_pct,
-            "detailed_explanation": f"Transparent financial model for {context['title']}. Capital setup (₹{total_capex:,.0f}) is allocated: {capex_dev/total_capex*100:.0f}% Software R&D, {capex_hw/total_capex*100:.0f}% Infrastructure/Equipment, and {capex_brand/total_capex*100:.0f}% Branding. Projected revenue expands from ₹{year1_rev:,.0f} (Year 1) to ₹{year3_rev:,.0f} (Year 3) with {margin_pct}% net margin."
+            "rent_cost": round(b_val * 0.1, 2) if sec == 'offline' else 0.0,
+            "staff_cost": round(b_val * 0.25, 2),
+            "raw_material_cost": round(b_val * 0.1, 2) if sec == 'offline' else 0.0,
+            "utility_cost": round(b_val * 0.05, 2),
+            "marketing_cost": round(b_val * 0.15, 2),
+            "development_cost": round(b_val * 0.25, 2),
+            "monthly_operating_cost": round(b_val * 0.75 / 12, 2),
+            "break_even_analysis": "Estimated break-even within 12-18 months based on standard capital utilization.",
+            "roi": round(max(15.0, (r_val - b_val) / max(b_val, 1) * 100), 1),
+            "profit_margins": 25.0,
+            "detailed_explanation": "Baseline financial projections generated from budget inputs. AI LLM analysis was offline."
         }
 
     @staticmethod

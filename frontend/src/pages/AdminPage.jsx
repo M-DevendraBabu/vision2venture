@@ -6,7 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { toast } from 'react-toastify';
 import { 
   FaUsers, FaTrash, FaShieldAlt, FaUserSlash, FaSearch, 
-  FaRocket, FaCrown, FaCheckCircle, FaClock, FaCalendarAlt, FaFileAlt
+  FaRocket, FaCrown, FaCheckCircle, FaClock, FaCalendarAlt, FaFileAlt, FaLightbulb
 } from 'react-icons/fa';
 import api from '../services/api';
 import '../styles/Admin.css';

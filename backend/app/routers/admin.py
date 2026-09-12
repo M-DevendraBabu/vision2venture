@@ -28,7 +28,9 @@ def get_users(db: Session = Depends(get_db), admin: User = Depends(get_admin_use
         User.role,
         User.created_at,
         func.count(StartupIdea.id).label('idea_count')
-    ).outerjoin(StartupIdea, User.id == StartupIdea.user_id).group_by(User.id).all()
+    ).outerjoin(StartupIdea, User.id == StartupIdea.user_id).group_by(
+        User.id, User.name, User.email, User.role, User.created_at
+    ).all()
     
     return [
         {
@@ -62,20 +64,52 @@ def get_stats(db: Session = Depends(get_db), admin: User = Depends(get_admin_use
     total_completed = db.query(func.count(StartupIdea.id)).filter(StartupIdea.analysis_status == 'completed').scalar()
     
     # ML dataset status
-    data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
-    total_samples = 155500
+    backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    data_dir = os.path.join(backend_dir, 'data')
+    ml_models_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'ml_models')
+    
+    total_samples = 0
     dataset_files = []
     if os.path.exists(data_dir):
-        dataset_files = [f for f in os.listdir(data_dir) if f.endswith('.csv') or f.endswith('.xlsx')]
+        for f in sorted(os.listdir(data_dir)):
+            if f.endswith('.csv') or f.endswith('.xlsx'):
+                dataset_files.append(f)
+                try:
+                    fpath = os.path.join(data_dir, f)
+                    with open(fpath, 'r', encoding='utf-8', errors='ignore') as dfile:
+                        line_count = sum(1 for _ in dfile) - 1
+                        if line_count > 0:
+                            total_samples += line_count
+                except Exception:
+                    pass
+
+    # Read verified model metrics from saved metadata
+    model_version = "v2.0-StackingEnsemble"
+    model_accuracy = "Trained on verified datasets (Cross-Validated)"
+    metadata_path = os.path.join(ml_models_dir, 'feature_metadata.json')
+    if os.path.exists(metadata_path):
+        try:
+            with open(metadata_path, 'r', encoding='utf-8') as mf:
+                meta = json.load(mf)
+                metrics = meta.get("metrics")
+                if metrics and "test_accuracy" in metrics:
+                    acc = metrics['test_accuracy'] * 100
+                    cv = metrics.get('cv_accuracy', 0) * 100
+                    model_accuracy = f"{acc:.2f}% Test (CV: {cv:.2f}%)"
+                    model_version = metrics.get("model_version", model_version)
+                elif "feature_cols" in meta:
+                    model_accuracy = f"Trained with {len(meta['feature_cols'])} verified features"
+        except Exception:
+            pass
 
     return {
         "total_users": total_users,
         "total_ideas": total_ideas,
         "total_completed": total_completed,
-        "ml_model_version": "v2.4-RandomForest-Balanced",
+        "ml_model_version": model_version,
         "dataset_sample_count": total_samples,
         "dataset_files": dataset_files,
-        "model_accuracy": "97.87% (Raw) / 88.15% (Balanced)"
+        "model_accuracy": model_accuracy
     }
 
 @router.post("/retrain-models")

@@ -1,9 +1,17 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Dict
+import time
+from collections import defaultdict
 from app.config import settings
+from app.middleware.rate_limiter import get_client_ip
 
 router = APIRouter(prefix="/chatbot", tags=["chatbot"])
+
+_chatbot_ip_timestamps = defaultdict(list)
+CHATBOT_LIMIT_PER_WINDOW = 20
+CHATBOT_WINDOW_SECONDS = 60
 
 class ChatMessage(BaseModel):
     message: str
@@ -49,7 +57,23 @@ def _init_chat():
 _init_chat()
 
 @router.post("/message")
-async def chat_message(payload: ChatMessage) -> Dict[str, str]:
+async def chat_message(payload: ChatMessage, request: Request):
+    client_ip = get_client_ip(request)
+    now = time.time()
+    
+    # Prune old timestamps
+    _chatbot_ip_timestamps[client_ip] = [
+        t for t in _chatbot_ip_timestamps[client_ip] if now - t < CHATBOT_WINDOW_SECONDS
+    ]
+    
+    if len(_chatbot_ip_timestamps[client_ip]) >= CHATBOT_LIMIT_PER_WINDOW:
+        return JSONResponse(
+            status_code=429,
+            content={"reply": "You're asking questions very quickly! Please wait a moment before sending another message."}
+        )
+        
+    _chatbot_ip_timestamps[client_ip].append(now)
+
     if not payload.message.strip():
         return {"reply": "Please type a startup question."}
     
