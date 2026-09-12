@@ -39,6 +39,11 @@ class Settings(BaseSettings):
     # Google Apps Script Webhook (sends through Gmail's own servers - 100% delivery)
     GMAIL_WEBHOOK_URL: str = ""
 
+    # Search Engine Configuration for Online Competitor Discovery
+    TAVILY_API_KEY: str = ""
+    BRAVE_API_KEY: str = ""
+    SEARCH_PROVIDER: str = "auto"  # 'auto', 'tavily', 'brave', 'duckduckgo'
+
     class Config:
         env_file = str(_ENV_FILE)
         env_file_encoding = "utf-8"

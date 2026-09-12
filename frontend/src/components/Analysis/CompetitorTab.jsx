@@ -620,12 +620,89 @@ const CompetitorTab = ({ data, idea }) => {
                                 padding: '2px 7px',
                                 borderRadius: '4px',
                                 fontWeight: '700',
-                                background: isDirect ? '#fef2f2' : '#fffbeb',
-                                color: isDirect ? '#991b1b' : '#92400e',
+                                background: (comp.competitor_type || '').toLowerCase() === 'alternative' ? '#f0fdf4' : (isDirect ? '#fef2f2' : '#fffbeb'),
+                                color: (comp.competitor_type || '').toLowerCase() === 'alternative' ? '#166534' : (isDirect ? '#991b1b' : '#92400e'),
                                 textTransform: 'uppercase'
                               }}>
                                 {comp.competitor_type || 'Direct'}
                               </span>
+
+                              {/* Source Attribution Badge */}
+                              {(() => {
+                                const sources = Array.isArray(comp.data_sources) ? comp.data_sources : [comp.data_sources || ''];
+                                const sourcesStr = sources.join(' ').toLowerCase();
+                                if (sourcesStr.includes('live web') || sourcesStr.includes('duckduckgo') || sourcesStr.includes('tavily') || sourcesStr.includes('brave')) {
+                                  return (
+                                    <span style={{
+                                      fontSize: '0.68rem',
+                                      padding: '2px 7px',
+                                      borderRadius: '4px',
+                                      fontWeight: '700',
+                                      background: '#ecfeff',
+                                      color: '#0e7490',
+                                      border: '1px solid #a5f3fc',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '4px'
+                                    }}>
+                                      🌐 Live Web Search
+                                    </span>
+                                  );
+                                }
+                                if (sourcesStr.includes('yc') || sourcesStr.includes('y combinator')) {
+                                  return (
+                                    <span style={{
+                                      fontSize: '0.68rem',
+                                      padding: '2px 7px',
+                                      borderRadius: '4px',
+                                      fontWeight: '700',
+                                      background: '#fff7ed',
+                                      color: '#c2410c',
+                                      border: '1px solid #fed7aa',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '4px'
+                                    }}>
+                                      🚀 YC Dataset
+                                    </span>
+                                  );
+                                }
+                                if (sourcesStr.includes('user') || comp.evidence_status === 'User-provided') {
+                                  return (
+                                    <span style={{
+                                      fontSize: '0.68rem',
+                                      padding: '2px 7px',
+                                      borderRadius: '4px',
+                                      fontWeight: '700',
+                                      background: '#f1f5f9',
+                                      color: '#475569',
+                                      border: '1px solid #cbd5e1',
+                                      display: 'inline-flex',
+                                      alignItems: 'center',
+                                      gap: '4px'
+                                    }}>
+                                      👤 Manual Entry
+                                    </span>
+                                  );
+                                }
+                                return (
+                                  <span style={{
+                                    fontSize: '0.68rem',
+                                    padding: '2px 7px',
+                                    borderRadius: '4px',
+                                    fontWeight: '700',
+                                    background: '#faf5ff',
+                                    color: '#7e22ce',
+                                    border: '1px solid #e9d5ff',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px'
+                                  }}>
+                                    🧠 LLM Inference
+                                  </span>
+                                );
+                              })()}
+
                               {comp.distance_km && (
                                 <span style={{ fontSize: '0.72rem', color: '#0284c7', fontWeight: '700' }}>
                                   📍 {comp.distance_km} km
