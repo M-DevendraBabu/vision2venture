@@ -452,7 +452,7 @@ const MarketTab = ({ data, idea }) => {
 
   if (!data) return <div className="text-center p-8 animate-fade-in">Loading market analysis...</div>;
 
-  const opportunityScore = Math.round(data.opportunity_score || 82);
+  const opportunityScore = data.opportunity_score != null ? Math.round(data.opportunity_score) : null;
   const growthRate = data.growth_rate ? Number(data.growth_rate).toFixed(1) : String(profile.cagr);
   const demandLevel = data.demand_level || profile.demand;
 
@@ -464,7 +464,7 @@ const MarketTab = ({ data, idea }) => {
 
   const cleanedOpportunityExp = cleanExplanationText(
     data.opportunity_explanation || 
-    `Market Opportunity Score for ${startupTitle} is evaluated at ${opportunityScore}/100 based on verified sector scale (${marketSizing.tamStr}), robust CAGR (${growthRate}%), and high buyer adoption tailwinds in ${industryName}.`
+    `Market Opportunity Score for ${startupTitle} is evaluated at ${opportunityScore !== null ? opportunityScore : 'Pending'}/100 based on verified sector scale (${marketSizing.tamStr}), robust CAGR (${growthRate}%), and high buyer adoption tailwinds in ${industryName}.`
   );
 
   return (
@@ -538,7 +538,7 @@ const MarketTab = ({ data, idea }) => {
             <FaRocket /> Market Opportunity Index
           </div>
           <div className="metric-value" style={{ color: '#db2777', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
-            {opportunityScore}<span style={{ fontSize: '1rem', color: '#64748B' }}>/100</span>
+            {opportunityScore !== null ? <>{opportunityScore}<span style={{ fontSize: '1rem', color: '#64748B' }}>/100</span></> : 'Pending'}
           </div>
           <div className="text-secondary text-xs mt-xs">Venture Scale Viability Score</div>
         </div>
@@ -703,12 +703,12 @@ const MarketTab = ({ data, idea }) => {
                   </div>
                 </div>
                 <div className="dim-score-badge score-success" style={{ color: '#7c3aed', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
-                  {opportunityScore}/100 Viability
+                  {opportunityScore !== null ? `${opportunityScore}/100 Viability` : 'Pending'}
                 </div>
               </div>
 
               <div className="dim-progress-track">
-                <div className="dim-progress-fill" style={{ width: `${opportunityScore}%`, background: 'linear-gradient(90deg, #10b981, #10b981)' }}></div>
+                <div className="dim-progress-fill" style={{ width: `${opportunityScore || 0}%`, background: 'linear-gradient(90deg, #10b981, #10b981)' }}></div>
               </div>
 
               <div className="dim-body">

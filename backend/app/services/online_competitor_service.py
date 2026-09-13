@@ -155,18 +155,27 @@ class OnlineCompetitorService:
                 c_type = wc.get("competitor_type", "direct")
                 sim_score = float(wc.get("similarity_score") or (88.0 if c_type == "direct" else (76.0 if c_type == "indirect" else 68.0)))
 
-                name_seed = abs(hash(c_name))
-                cust_rating = float(wc.get("rating") or round(4.2 + (name_seed % 7) * 0.1, 1))
-                cust_reviews = int(wc.get("review_count") or (350 + (name_seed % 2800)))
-                cust_sentiment = wc.get("customer_sentiment") or f"{int(84 + (name_seed % 12))}% Positive Feedback ({cust_reviews:,} Reviews)"
+                # Use real data only — do NOT fabricate ratings or review counts
+                cust_rating = float(wc.get("rating")) if wc.get("rating") is not None else None
+                cust_reviews = int(wc.get("review_count")) if wc.get("review_count") is not None else None
+                cust_sentiment = wc.get("customer_sentiment") or (f"{cust_rating}★ ({cust_reviews:,} reviews)" if cust_rating and cust_reviews else None)
 
-                raw_praise = wc.get("customer_praise") or f"Customer reviews praise the intuitive interface, robust feature set, and reliable customer service on {c_dom}."
-                raw_complaint = wc.get("customer_complaints") or "Users complain about unexpected paywalls during export and subscription auto-renewal terms."
-                praise_clean = raw_praise.replace("• Customer Praise:", "").replace("Customer Praise:", "").replace("•", "").strip()
-                complaint_clean = raw_complaint.replace("• Customer Complaints:", "").replace("Customer Complaints:", "").replace("•", "").strip()
-
-                strengths_text = f"• Customer Praise: Rated {cust_rating}★ across {cust_reviews:,} verified reviews for core {industry} capabilities.\n• Customer Praise: {praise_clean}"
-                weaknesses_text = f"• Customer Complaints: {complaint_clean}\n• Customer Complaints: Limited flexibility in free tiers; requires monthly upgrade for full functionality."
+                raw_praise = wc.get("customer_praise")
+                raw_complaint = wc.get("customer_complaints")
+                
+                if raw_praise:
+                    praise_clean = raw_praise.replace("• Customer Praise:", "").replace("Customer Praise:", "").replace("•", "").strip()
+                    strengths_text = f"• {praise_clean}"
+                    if cust_rating is not None:
+                        strengths_text = f"• Rated {cust_rating}★ for core {industry} capabilities.\n" + strengths_text
+                else:
+                    strengths_text = f"• Established player in {industry} space." if not cust_rating else f"• Rated {cust_rating}★ in {industry} space."
+                
+                if raw_complaint:
+                    complaint_clean = raw_complaint.replace("• Customer Complaints:", "").replace("Customer Complaints:", "").replace("•", "").strip()
+                    weaknesses_text = f"• {complaint_clean}"
+                else:
+                    weaknesses_text = "• Detailed weakness data not available — verify on official website."
 
                 competitors.append({
                     "name": c_name,
@@ -196,9 +205,9 @@ class OnlineCompetitorService:
                     "usp": f"Specialized next-generation platform designed to overcome legacy friction in {c_name}.",
                     "analysis_explanation": f"Discovered via live search engine intelligence ({c_dom}, {cust_rating}★ customer rating).",
                     "source_urls": wc.get("source_urls", []),
-                    "data_sources": ["Live Web Search", provider_used, "Customer Review Feedback"],
-                    "data_freshness": "Real-Time Web & Review Search",
-                    "confidence_score": 92.0,
+                    "data_sources": ["Live Web Search", provider_used],
+                    "data_freshness": "Real-Time Web Search",
+                    "confidence_score": 80.0,
                     "evidence_status": "web_verified",
                     "source_type": "live_web",
                     "source_label": "Live Web Search",
@@ -245,9 +254,9 @@ class OnlineCompetitorService:
                 one_liner = m.get("one_liner") or m.get("description") or f"Technology venture in {industry}."
                 sim_score = float(m.get("similarity_score") or 75.0)
                 c_type = "direct" if sim_score >= 70 else "indirect"
-                cust_rating = float(m.get("rating") or 4.3)
-                cust_rev = int(m.get("review_count") or 150)
-                cust_sentiment = m.get("customer_sentiment") or f"85% Positive Feedback ({cust_rev} Reviews)"
+                cust_rating = float(m.get("rating")) if m.get("rating") is not None else None
+                cust_rev = int(m.get("review_count")) if m.get("review_count") is not None else None
+                cust_sentiment = m.get("customer_sentiment") or None
 
                 competitors.append({
                     "name": c_name,
@@ -277,9 +286,9 @@ class OnlineCompetitorService:
                     "usp": m.get("usp") or f"Next-generation approach to {title} overcoming traditional complexity.",
                     "analysis_explanation": m.get("analysis_explanation") or f"Matched from curated YC enterprise intelligence database on {industry}.",
                     "source_urls": [website] if website else ["https://www.ycombinator.com/companies"],
-                    "data_sources": ["YC Startup Knowledge Base", "Public Company Data", "Customer Review Feedback"],
+                    "data_sources": ["YC Startup Knowledge Base"],
                     "data_freshness": "Curated Tech Ecosystem Registry",
-                    "confidence_score": 92.0,
+                    "confidence_score": 75.0,
                     "evidence_status": "publicly_reported",
                     "source_type": "yc_dataset",
                     "source_label": "YC Dataset",

@@ -259,86 +259,20 @@ const CompetitorTab = ({ data, idea }) => {
                   </span>
 
                   {/* Accurate Source Attribution Badge */}
-                  {isOsm && (
-                    <span style={{
-                      fontSize: '0.68rem',
-                      padding: '2px 7px',
-                      borderRadius: '4px',
-                      fontWeight: '700',
-                      background: '#f0fdf4',
-                      color: '#15803d',
-                      border: '1px solid #bbf7d0',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      📍 OpenStreetMap / Overpass
-                    </span>
-                  )}
-                  {isLiveWeb && (
-                    <span style={{
-                      fontSize: '0.68rem',
-                      padding: '2px 7px',
-                      borderRadius: '4px',
-                      fontWeight: '700',
-                      background: '#ecfeff',
-                      color: '#0e7490',
-                      border: '1px solid #a5f3fc',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      🌐 Live Web Search
-                    </span>
-                  )}
-                  {isYc && (
-                    <span style={{
-                      fontSize: '0.68rem',
-                      padding: '2px 7px',
-                      borderRadius: '4px',
-                      fontWeight: '700',
-                      background: '#fff7ed',
-                      color: '#c2410c',
-                      border: '1px solid #fed7aa',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      🚀 YC Dataset
-                    </span>
-                  )}
-                  {isManual && (
-                    <span style={{
-                      fontSize: '0.68rem',
-                      padding: '2px 7px',
-                      borderRadius: '4px',
-                      fontWeight: '700',
-                      background: '#f1f5f9',
-                      color: '#475569',
-                      border: '1px solid #cbd5e1',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      👤 Manual Entry
-                    </span>
-                  )}
-                  {!isOsm && !isLiveWeb && !isYc && !isManual && (
-                    <span style={{
-                      fontSize: '0.68rem',
-                      padding: '2px 7px',
-                      borderRadius: '4px',
-                      fontWeight: '700',
-                      background: '#faf5ff',
-                      color: '#7e22ce',
-                      border: '1px solid #e9d5ff',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      🧠 Market Intelligence
-                    </span>
-                  )}
+                  <span style={{
+                    fontSize: '0.68rem',
+                    padding: '2px 7px',
+                    borderRadius: '4px',
+                    fontWeight: '700',
+                    background: '#f8fafc',
+                    color: '#475569',
+                    border: '1px solid #cbd5e1',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    {comp.source_label || comp.source_type || 'Market Intelligence'}
+                  </span>
 
                   {/* Distance: Only for physical competitors */}
                   {isOffline && comp.distance_km != null && (
@@ -353,7 +287,7 @@ const CompetitorTab = ({ data, idea }) => {
             {/* Relevance Score Pill */}
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
               <div style={{ fontSize: '0.95rem', fontWeight: '800', color: '#0284c7' }}>
-                {Math.round(comp.relevance_score || comp.similarity_score || 75)}%
+                {(comp.relevance_score != null || comp.similarity_score != null) ? Math.round(comp.relevance_score || comp.similarity_score) + '%' : "—"}
               </div>
               <div style={{ fontSize: '0.62rem', color: '#94a3b8', fontWeight: '700', textTransform: 'uppercase' }}>
                 Relevance
@@ -376,8 +310,8 @@ const CompetitorTab = ({ data, idea }) => {
             gap: '6px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span style={{ color: '#eab308', fontWeight: '800', fontSize: '0.85rem' }}>★ {comp.rating?.toFixed(1) || '4.4'}</span>
-              <span style={{ color: '#64748b', fontWeight: '600' }}>({comp.review_count ? `${comp.review_count.toLocaleString()} customer reviews` : 'Verified Public Reviews'})</span>
+              <span style={{ color: '#eab308', fontWeight: '800', fontSize: '0.85rem' }}>{comp.rating != null ? `★ ${comp.rating.toFixed(1)}` : 'No rating data'}</span>
+              <span style={{ color: '#64748b', fontWeight: '600' }}>({comp.review_count ? `${comp.review_count.toLocaleString()} customer reviews` : 'Not available'})</span>
             </div>
             <span style={{
               fontSize: '0.68rem',
@@ -388,7 +322,7 @@ const CompetitorTab = ({ data, idea }) => {
               borderRadius: '999px',
               fontWeight: '700'
             }}>
-              {comp.customer_sentiment || '88% Positive Feedback'}
+              {comp.customer_sentiment || 'Not available'}
             </span>
           </div>
 

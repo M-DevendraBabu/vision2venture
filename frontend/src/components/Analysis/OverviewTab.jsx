@@ -5,7 +5,7 @@ import { FaHashtag, FaIndustry, FaUsers, FaCalculator, FaBullseye, FaChartLine }
 const OverviewTab = ({ data, idea }) => {
   if (!data || !idea) return <div className="text-center p-8 animate-fade-in">Loading overview...</div>;
 
-  const score = data.overall_score || data.score || 78;
+  const score = data.overall_score || data.score || null;
 
   // Extract keywords from API response (supports array, string, or fallback)
   let keywordsList = data.keywords || [];
@@ -13,11 +13,12 @@ const OverviewTab = ({ data, idea }) => {
     keywordsList = keywordsList.split(',').map(s => s.trim()).filter(Boolean);
   }
   if (!Array.isArray(keywordsList) || keywordsList.length === 0) {
-    keywordsList = [idea.industry || 'Technology', idea.sector || 'SaaS', 'Startup', 'Innovation'];
+    keywordsList = [idea.industry, idea.sector].filter(Boolean);
   }
 
   // Score color helper
   const getScoreColor = (s) => {
+    if (s === null) return '#94a3b8';
     if (s >= 80) return '#10b981';
     if (s >= 60) return '#0ea5e9';
     if (s >= 40) return '#f59e0b';
@@ -48,7 +49,7 @@ const OverviewTab = ({ data, idea }) => {
       }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '80px' }}>
           <span style={{ fontSize: '2.8rem', fontWeight: 800, color: getScoreColor(score), lineHeight: 1 }}>
-            {score}
+            {score !== null ? score : 'Pending'}
           </span>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '4px' }}>
             / 100
@@ -60,7 +61,8 @@ const OverviewTab = ({ data, idea }) => {
           </h4>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
             <strong>Calculation:</strong> Feasibility (30%) + Market Fit (30%) + Investor Readiness (25%) + Risk Mitigation (15%).
-            {score >= 80 ? ' Strong overall startup viability with favorable unit economics.' :
+            {score === null ? ' Analysis in progress.' :
+             score >= 80 ? ' Strong overall startup viability with favorable unit economics.' :
              score >= 60 ? ' Moderate viability — focus on strengthening weaker dimensions.' :
              ' Needs improvement across multiple dimensions before launch.'}
           </p>
@@ -133,7 +135,7 @@ const OverviewTab = ({ data, idea }) => {
             <FiAlertCircle /> Core Problem Statement
           </h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7, margin: '0 0 16px 0' }}>
-            {data.problem_statement || "High friction, manual overhead, or inefficient service delivery in the current market."}
+            {data.problem_statement || "Analysis in progress — detailed problem statement will appear when AI analysis completes."}
           </p>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontStyle: 'italic', paddingTop: '10px', borderTop: '1px dashed rgba(255,255,255,0.08)' }}>
             <strong>Analysis Explanation:</strong> Highlights the precise market friction your venture addresses to justify customer demand.
@@ -146,7 +148,7 @@ const OverviewTab = ({ data, idea }) => {
             <FiCheckCircle /> Value Proposition & Solution
           </h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7, margin: '0 0 16px 0' }}>
-            {data.solution || "Automated, scalable solution offering superior speed, lower cost, and enhanced customer convenience."}
+            {data.solution || "Solution details will appear when AI analysis completes."}
           </p>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontStyle: 'italic', paddingTop: '10px', borderTop: '1px dashed rgba(255,255,255,0.08)' }}>
             <strong>Analysis Explanation:</strong> Details how your product directly solves customer pain points to drive conversion.

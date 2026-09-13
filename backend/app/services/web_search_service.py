@@ -440,7 +440,7 @@ CRITICAL RULES:
 2. Under NO circumstances return generic developer tools or unrelated YC startups (DO NOT return CodeStream, DeepSource, ReadMe, Paragon, Hoss).
 3. Provide the actual, real root domain and URL (e.g. "rezi.ai", "tealhq.com", "kickresume.com").
 4. Classify competitor_type: 'direct', 'indirect', or 'alternative'.
-5. Synthesize authentic CUSTOMER REVIEWS (What customers praise & What customers complain about).
+5. Do NOT fabricate customer reviews, ratings, or review counts. Set rating and review_count to null if you do not know the actual values.
 
 Output strictly valid JSON:
 {{
@@ -451,11 +451,11 @@ Output strictly valid JSON:
       "website_url": "https://www.company.com/",
       "competitor_type": "direct",
       "description": "Accurate 1-2 sentence description of what the product actually does.",
-      "rating": 4.5,
-      "review_count": 1250,
-      "customer_sentiment": "88% Positive Feedback",
-      "customer_praise": "Customers praise the intuitive ATS resume scanner, high-quality formatting templates, and quick export.",
-      "customer_complaints": "Reviews frequently complain about sudden paywalls when downloading PDFs and recurring billing.",
+      "rating": null,
+      "review_count": null,
+      "customer_sentiment": null,
+      "customer_praise": null,
+      "customer_complaints": null,
       "pricing_model": "Freemium / Monthly SaaS",
       "pricing_details": "Free basic tier with premium export subscription starting at $15/month.",
       "target_audience": "Job seekers, professionals, and recent graduates.",
@@ -478,23 +478,23 @@ Output strictly valid JSON:
                     "source_urls": [url],
                     "description": c.get("description", f"Digital platform operating on {dom}."),
                     "competitor_type": c.get("competitor_type", "direct"),
-                    "rating": float(c.get("rating", 4.4)),
-                    "review_count": int(c.get("review_count", 850)),
-                    "customer_sentiment": c.get("customer_sentiment", "85% Positive Feedback"),
-                    "customer_praise": c.get("customer_praise", "Customers praise the streamlined user experience and modern feature set."),
-                    "customer_complaints": c.get("customer_complaints", "Reviews note paywall friction and limited free-tier options."),
-                    "pricing_model": c.get("pricing_model", "Freemium / Tiered SaaS"),
-                    "pricing_details": c.get("pricing_details", "Freemium tiers with premium upgrades."),
-                    "target_audience": c.get("target_audience", f"Target users in {industry}."),
-                    "features": f"Category: {industry} | Cloud Platform | Verified Market Leader",
-                    "similarity_score": float(c.get("similarity_score", 85.0)),
-                    "source": "Live Market Intelligence",
-                    "data_sources": ["Live Web Search", "Market Intelligence Index"],
-                    "evidence_status": "web_verified",
-                    "source_type": "live_web",
-                    "source_label": "Live Web Search",
-                    "verified": True,
-                    "confidence_score": 92.0
+                    "rating": float(c.get("rating")) if c.get("rating") is not None else None,
+                    "review_count": int(c.get("review_count")) if c.get("review_count") is not None else None,
+                    "customer_sentiment": c.get("customer_sentiment") or None,
+                    "customer_praise": c.get("customer_praise") or None,
+                    "customer_complaints": c.get("customer_complaints") or None,
+                    "pricing_model": c.get("pricing_model") or "Pricing not verified",
+                    "pricing_details": c.get("pricing_details") or "Verify on official website.",
+                    "target_audience": c.get("target_audience") or f"Users in {industry}.",
+                    "features": f"Category: {industry} | AI-Identified Competitor",
+                    "similarity_score": float(c.get("similarity_score", 75.0)),
+                    "source": "AI Market Intelligence",
+                    "data_sources": ["AI Market Intelligence"],
+                    "evidence_status": "llm_inferred",
+                    "source_type": "llm_inference",
+                    "source_label": "AI Market Intelligence",
+                    "verified": False,
+                    "confidence_score": 65.0
                 })
         except Exception as e:
             logger.warning(f"[WebSearchService] AI Search Grounding notice: {e}")
@@ -580,15 +580,15 @@ Output strictly valid JSON:
                         "pricing_model": "Freemium / Monthly SaaS" if "saas" in combined_q else "Direct Marketplace",
                         "pricing_details": "Transparent tiered public pricing published online.",
                         "target_audience": f"Consumers and businesses seeking {industry} solutions.",
-                        "features": f"Category: {industry} | Verified Industry Leader | Live Web Verified",
+                        "features": f"Category: {industry} | Known Industry Player",
                         "similarity_score": round(max(75.0, 95.0 - (len(results) * 3.0)), 1),
                         "source": "Live Market Intelligence",
-                        "data_sources": ["Verified Industry Registry", "Live Public Reviews"],
-                        "evidence_status": "web_verified",
-                        "source_type": "live_web",
-                        "source_label": "Live Web Search",
-                        "verified": True,
-                        "confidence_score": 94.0
+                        "data_sources": ["Curated Industry Registry"],
+                        "evidence_status": "curated_not_live_verified",
+                        "source_type": "curated_registry",
+                        "source_label": "Curated Industry Registry",
+                        "verified": False,
+                        "confidence_score": 70.0
                     })
                     if len(results) >= limit:
                         break

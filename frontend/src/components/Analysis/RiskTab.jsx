@@ -26,7 +26,7 @@ const RiskTab = ({ data, idea }) => {
     if (r && typeof r === 'object') {
       return {
         title: label,
-        score: r.score || 35,
+        score: r.score !== undefined ? r.score : null,
         severity: r.severity || 'Low',
         explanation: r.detailed_explanation || r.explanation || fallbackDesc,
         mitigation: r.mitigation_strategy || 'Develop a contingency plan.'
@@ -34,7 +34,7 @@ const RiskTab = ({ data, idea }) => {
     }
     return {
       title: label,
-      score: typeof r === 'number' ? r : 35,
+      score: typeof r === 'number' ? r : null,
       severity: 'Low',
       explanation: fallbackDesc,
       mitigation: 'Develop a contingency plan.'
@@ -60,6 +60,7 @@ const RiskTab = ({ data, idea }) => {
   };
 
   const getScoreColor = (score) => {
+    if (score === null) return 'info';
     if (score >= 70) return 'danger';
     if (score >= 45) return 'warning';
     if (score >= 25) return 'info';
@@ -67,6 +68,7 @@ const RiskTab = ({ data, idea }) => {
   };
 
   const getBadgeClass = (score) => {
+    if (score === null) return 'score-info';
     if (score >= 70) return 'score-success';
     if (score >= 50) return 'score-info';
     if (score >= 35) return 'score-warning';
@@ -74,6 +76,7 @@ const RiskTab = ({ data, idea }) => {
   };
 
   const getProgressGradient = (score) => {
+    if (score === null) return 'linear-gradient(90deg, #94a3b8, #cbd5e1)';
     if (score >= 70) return 'linear-gradient(90deg, #10b981, #34d399)';
     if (score >= 50) return 'linear-gradient(90deg, #0ea5e9, #38bdf8)';
     if (score >= 35) return 'linear-gradient(90deg, #f59e0b, #fbbf24)';
@@ -123,10 +126,10 @@ const RiskTab = ({ data, idea }) => {
     const rawExp = feasData.explanation || '';
     const cleanOverall = cleanOverallText(rawExp, 'feasibility');
 
-    const techScore = Math.round(feasData.technical_score ?? 75);
-    const mktScore = Math.round(feasData.market_score ?? 75);
-    const finScore = Math.round(feasData.financial_score ?? 70);
-    const innScore = Math.round(feasData.innovation_score ?? 68);
+    const techScore = feasData.technical_score != null ? Math.round(feasData.technical_score) : null;
+    const mktScore = feasData.market_score != null ? Math.round(feasData.market_score) : null;
+    const finScore = feasData.financial_score != null ? Math.round(feasData.financial_score) : null;
+    const innScore = feasData.innovation_score != null ? Math.round(feasData.innovation_score) : null;
 
     const techExp = feasData.technical_explanation ||
       extractSection(rawExp, 'Technical Buildability', ['Financial Viability', 'Innovation Index', 'Market Access', 'Overall Feasibility', 'Methodology']) ||
@@ -134,7 +137,7 @@ const RiskTab = ({ data, idea }) => {
         ? `High technical buildability (${techScore}/100): The proposed architecture utilizes proven technologies and modern framework standards. Technical execution risks are minimal with realistic MVP delivery cycles.`
         : techScore > 50
         ? `Moderate technical complexity (${techScore}/100): Building a secure, high-uptime system requires careful third-party API integration, data protection, and robust backend handling.`
-        : `Demanding engineering requirements (${techScore}/100): Specialized engineering talent and customized infrastructure are necessary. Timelines should prioritize security audits and latency testing.`);
+        : `Demanding engineering requirements (${techScore !== null ? techScore : '—'}/100): Specialized engineering talent and customized infrastructure are necessary. Timelines should prioritize security audits and latency testing.`);
 
     const mktExp = feasData.market_explanation ||
       extractSection(rawExp, 'Market Access', ['Technical Buildability', 'Financial Viability', 'Innovation Index', 'Overall Feasibility', 'Methodology']) ||
@@ -142,7 +145,7 @@ const RiskTab = ({ data, idea }) => {
         ? `Strong market receptivity (${mktScore}/100): Target customer demand is clearly identified with accessible digital acquisition channels and favorable customer adoption dynamics.`
         : mktScore > 50
         ? `Moderate market accessibility (${mktScore}/100): Target customer segments exist, but conversion requires sharp positioning, clear differentiation from incumbents, and educational onboarding.`
-        : `Challenging market adoption (${mktScore}/100): Customer switching friction or established incumbent habits require a focused niche beachhead strategy before expanding broadly.`);
+        : `Challenging market adoption (${mktScore !== null ? mktScore : '—'}/100): Customer switching friction or established incumbent habits require a focused niche beachhead strategy before expanding broadly.`);
 
     const finExp = feasData.financial_explanation ||
       extractSection(rawExp, 'Financial Viability', ['Innovation Index', 'Technical Buildability', 'Market Access', 'Overall Feasibility', 'Methodology']) ||
@@ -150,7 +153,7 @@ const RiskTab = ({ data, idea }) => {
         ? `Healthy financial feasibility (${finScore}/100): Initial budget provides adequate runway for early validation. Unit economics indicate a sustainable path to positive gross margins and payback.`
         : finScore > 50
         ? `Viable financial structure (${finScore}/100): Capital structure supports lean development with disciplined milestone-based spending to achieve break-even within 8–14 months.`
-        : `Capital-constrained financial model (${finScore}/100): Tight operating margins require strict cost control. Prioritize early revenue validation and customer pre-orders to extend operational runway.`);
+        : `Capital-constrained financial model (${finScore !== null ? finScore : '—'}/100): Tight operating margins require strict cost control. Prioritize early revenue validation and customer pre-orders to extend operational runway.`);
 
     const innExp = feasData.innovation_explanation ||
       extractSection(rawExp, 'Innovation Index', ['Overall Feasibility', 'Methodology', 'Technical Buildability', 'Market Access', 'Financial Viability']) ||
@@ -158,7 +161,7 @@ const RiskTab = ({ data, idea }) => {
         ? `Strong innovation differentiation (${innScore}/100): Distinctive feature set and workflow optimizations create defensible competitive advantages against traditional solutions.`
         : innScore > 50
         ? `Practical innovation focus (${innScore}/100): Differentiation is driven by execution quality, streamlined UX, and responsive customer workflows rather than complex proprietary technology.`
-        : `Standard industry template (${innScore}/100): Business model closely tracks conventional industry standards. Consider developing proprietary features or unique data integrations.`);
+        : `Standard industry template (${innScore !== null ? innScore : '—'}/100): Business model closely tracks conventional industry standards. Consider developing proprietary features or unique data integrations.`);
 
     return {
       overallExplanation: cleanOverall,
@@ -216,10 +219,10 @@ const RiskTab = ({ data, idea }) => {
     const rawExp = investorData.explanation || '';
     const cleanOverall = cleanOverallText(rawExp, 'investor readiness');
 
-    const scalScore = Math.round(investorData.scalability ?? 70);
-    const innScore = Math.round(investorData.innovation ?? 65);
-    const bizScore = Math.round(investorData.business_model ?? 70);
-    const mktScore = Math.round(investorData.market ?? 70);
+    const scalScore = investorData.scalability != null ? Math.round(investorData.scalability) : null;
+    const innScore = investorData.innovation != null ? Math.round(investorData.innovation) : null;
+    const bizScore = investorData.business_model != null ? Math.round(investorData.business_model) : null;
+    const mktScore = investorData.market != null ? Math.round(investorData.market) : null;
 
     const scalExp = investorData.scalability_explanation ||
       extractSection(rawExp, 'Scalability', ['Innovation', 'Business Model', 'Market Appeal', 'Overall Score', 'Methodology']) ||
@@ -227,7 +230,7 @@ const RiskTab = ({ data, idea }) => {
         ? `High exponential scalability (${scalScore}/100): Digital architecture enables rapid user and revenue expansion with minimal marginal cost increases per customer.`
         : scalScore > 50
         ? `Moderate scalability potential (${scalScore}/100): Growth is achievable across primary segments, though operational onboarding and customer support require structured workflows as volume increases.`
-        : `Constrained scaling velocity (${scalScore}/100): Variable delivery costs or localized dependencies require automated processes before rapid venture scaling is feasible.`);
+        : `Constrained scaling velocity (${scalScore !== null ? scalScore : '—'}/100): Variable delivery costs or localized dependencies require automated processes before rapid venture scaling is feasible.`);
 
     const innExp = investorData.innovation_explanation ||
       extractSection(rawExp, 'Innovation', ['Business Model', 'Market Appeal', 'Scalability', 'Overall Score', 'Methodology']) ||
@@ -235,7 +238,7 @@ const RiskTab = ({ data, idea }) => {
         ? `Strong defensibility moat (${innScore}/100): Significant competitive barrier through proprietary technology, specialized domain data, or unique partner integrations that resist copycat replication.`
         : innScore > 50
         ? `Moderate competitive moat (${innScore}/100): Differentiation relies primarily on superior execution speed, clean UX, and customer loyalty rather than patentable IP.`
-        : `Low barrier to entry (${innScore}/100): Concept is susceptible to fast followers. Recommend building proprietary algorithms, data flywheels, or exclusive supplier channels.`);
+        : `Low barrier to entry (${innScore !== null ? innScore : '—'}/100): Concept is susceptible to fast followers. Recommend building proprietary algorithms, data flywheels, or exclusive supplier channels.`);
 
     const bizExp = investorData.business_model_explanation ||
       extractSection(rawExp, 'Business Model', ['Market Appeal', 'Innovation', 'Scalability', 'Overall Score', 'Methodology']) ||
@@ -243,7 +246,7 @@ const RiskTab = ({ data, idea }) => {
         ? `Robust business model (${bizScore}/100): Clear monetization mechanics with healthy projected customer lifetime value (LTV) relative to customer acquisition cost (CAC).`
         : bizScore > 50
         ? `Viable commercial model (${bizScore}/100): Revenue generation paths are established; live cohort retention data and pricing elasticity will be key proofs during investor due diligence.`
-        : `Unvalidated unit economics (${bizScore}/100): Demonstrating proven customer willingness-to-pay and repeat engagement is needed before approaching institutional venture investors.`);
+        : `Unvalidated unit economics (${bizScore !== null ? bizScore : '—'}/100): Demonstrating proven customer willingness-to-pay and repeat engagement is needed before approaching institutional venture investors.`);
 
     const mktExp = investorData.market_explanation ||
       extractSection(rawExp, 'Market Appeal', ['Overall Score', 'Methodology', 'Business Model', 'Innovation', 'Scalability']) ||
@@ -251,7 +254,7 @@ const RiskTab = ({ data, idea }) => {
         ? `High market appeal (${mktScore}/100): Expansive addressable market (TAM) with strong industry tailwinds, matching the profile venture investors seek for outsized returns.`
         : mktScore > 50
         ? `Focused vertical market (${mktScore}/100): Healthy addressable segment with clear expansion potential into adjacent industries as product maturity increases.`
-        : `Niche market scope (${mktScore}/100): Target market is specialized. Investors will look for a clear plan on how the solution scales beyond the initial wedge segment.`);
+        : `Niche market scope (${mktScore !== null ? mktScore : '—'}/100): Target market is specialized. Investors will look for a clear plan on how the solution scales beyond the initial wedge segment.`);
 
     return {
       overallExplanation: cleanOverall,
@@ -304,7 +307,8 @@ const RiskTab = ({ data, idea }) => {
     };
   };
 
-  const overallRisk = riskData.overall_risk || Math.round(risks.reduce((acc, r) => acc + r.score, 0) / risks.length);
+  const validRisks = risks.filter(r => r.score !== null);
+  const overallRisk = riskData.overall_risk != null ? Math.round(riskData.overall_risk) : (validRisks.length > 0 ? Math.round(validRisks.reduce((acc, r) => acc + r.score, 0) / validRisks.length) : null);
   const overallColor = getScoreColor(overallRisk);
 
   return (
@@ -313,7 +317,7 @@ const RiskTab = ({ data, idea }) => {
       
       <div className="explanation-box mb-xl" style={{ borderLeft: '4px solid #f59e0b' }}>
         <strong>AI Risk Profiling:</strong> We've evaluated 5 key vulnerability vectors in your business model. 
-        Your overall risk score is evaluated at <strong>{overallRisk}/100 ({overallRisk > 60 ? 'HIGH' : overallRisk > 35 ? 'MEDIUM' : 'LOW'})</strong> based on 155,500 historical startup records.
+        Your overall risk score is evaluated at <strong>{overallRisk !== null ? `${overallRisk}/100 (${overallRisk > 60 ? 'HIGH' : overallRisk > 35 ? 'MEDIUM' : 'LOW'})` : 'Pending'}</strong> based on 155,500 historical startup records.
       </div>
 
       {/* Sub-Tab Navigation Bar */}
@@ -333,7 +337,7 @@ const RiskTab = ({ data, idea }) => {
             gap: '0.5rem'
           }}
         >
-          <FaShieldAlt /> 1. 5-Vector Risk Heatmap ({Math.round(overallRisk)} Risk Score)
+          <FaShieldAlt /> 1. 5-Vector Risk Heatmap ({overallRisk !== null ? Math.round(overallRisk) : '—'} Risk Score)
         </button>
 
         <button
@@ -351,7 +355,7 @@ const RiskTab = ({ data, idea }) => {
             gap: '0.5rem'
           }}
         >
-          <FaTachometerAlt /> 2. Feasibility Ratings ({Math.round(feasData.overall_feasibility || 80)}/100)
+          <FaTachometerAlt /> 2. Feasibility Ratings ({feasData.overall_feasibility != null ? Math.round(feasData.overall_feasibility) : '—'}/100)
         </button>
 
         <button
@@ -369,7 +373,7 @@ const RiskTab = ({ data, idea }) => {
             gap: '0.5rem'
           }}
         >
-          <FaBriefcase /> 3. Investor Readiness ({Math.round(investorData.investor_score || 80)}/100)
+          <FaBriefcase /> 3. Investor Readiness ({investorData.investor_score != null ? Math.round(investorData.investor_score) : '—'}/100)
         </button>
       </div>
 
@@ -384,20 +388,20 @@ const RiskTab = ({ data, idea }) => {
                   className="score-gauge-progress" 
                   cx="50" cy="50" r="45" 
                   stroke={`var(--${overallColor})`}
-                  strokeDasharray={`${overallRisk * 2.82} 282`} 
+                  strokeDasharray={`${(overallRisk || 0) * 2.82} 282`} 
                 />
               </svg>
               <div className="score-gauge-text">
-                <div className={`val text-${overallColor}`}>{Math.round(overallRisk)}</div>
+                <div className={`val text-${overallColor}`}>{overallRisk !== null ? Math.round(overallRisk) : '—'}</div>
                 <div className="lbl">Risk Score</div>
               </div>
             </div>
             <div>
-              <h3 className="mb-sm">Overall Risk: {overallRisk > 60 ? '🚨 HIGH RISK' : overallRisk > 35 ? '⚠️ MEDIUM RISK' : '✅ LOW RISK'}</h3>
+              <h3 className="mb-sm">Overall Risk: {overallRisk !== null ? (overallRisk > 60 ? '🚨 HIGH RISK' : overallRisk > 35 ? '⚠️ MEDIUM RISK' : '✅ LOW RISK') : 'Pending'}</h3>
               <p className="text-secondary">Scale: 0 (Extremely Safe) to 100 (Extremely Risky)</p>
               <div className="mt-md">
                 <span className={`score-badge ${overallColor}`}>
-                  {overallRisk > 60 ? 'Requires active mitigation plan' : 'Manageable risk profile'}
+                  {overallRisk !== null ? (overallRisk > 60 ? 'Requires active mitigation plan' : 'Manageable risk profile') : 'Pending analysis'}
                 </span>
               </div>
             </div>
@@ -414,7 +418,7 @@ const RiskTab = ({ data, idea }) => {
                     <div>
                       <h4 className="risk-title" style={{ margin: 0 }}>{risk.title}</h4>
                     </div>
-                    <div className={`score-badge ${scoreColor}`} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{sev.icon} {risk.severity} ({risk.score}/100)</div>
+                    <div className={`score-badge ${scoreColor}`} style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{sev.icon} {risk.severity} ({risk.score !== null ? `${risk.score}/100` : '—'})</div>
                   </div>
 
                   <div className="mb-md">
@@ -435,7 +439,7 @@ const RiskTab = ({ data, idea }) => {
       {/* SUB-TAB 2: FEASIBILITY RATINGS (2x2 GRID + HIGHLIGHTED SCORES) */}
       {activeSubTab === 'feasibility' && (() => {
         const { overallExplanation, dimensions } = getFeasibilityItems();
-        const overallScore = Math.round(feasData.overall_feasibility || 80);
+        const overallScore = feasData.overall_feasibility != null ? Math.round(feasData.overall_feasibility) : null;
         const overallBadgeClass = getBadgeClass(overallScore);
 
         return (
@@ -444,9 +448,9 @@ const RiskTab = ({ data, idea }) => {
             <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #10b981', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
                 <div style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Overall Feasibility</div>
-                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#059669', lineHeight: '1.1' }}>{overallScore}/100</div>
+                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#059669', lineHeight: '1.1' }}>{overallScore !== null ? `${overallScore}/100` : '—'}</div>
                 <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
-                  {overallScore > 70 ? 'High Feasibility' : overallScore > 50 ? 'Moderate Feasibility' : 'High Execution Challenge'}
+                  {overallScore !== null ? (overallScore > 70 ? 'High Feasibility' : overallScore > 50 ? 'Moderate Feasibility' : 'High Execution Challenge') : 'Pending'}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
@@ -478,14 +482,20 @@ const RiskTab = ({ data, idea }) => {
                         </div>
                       </div>
                       <div className={`dim-score-badge ${badgeClass}`}>
-                        <span>{dim.score}</span>
-                        <span className="score-denom">/100</span>
+                        {dim.score !== null ? (
+                          <>
+                            <span>{dim.score}</span>
+                            <span className="score-denom">/100</span>
+                          </>
+                        ) : (
+                          <span>—</span>
+                        )}
                       </div>
                     </div>
 
                     {/* Progress Bar Indicator */}
                     <div className="dim-progress-track">
-                      <div className="dim-progress-fill" style={{ width: `${dim.score}%`, background: progressGrad }} />
+                      <div className="dim-progress-fill" style={{ width: `${dim.score || 0}%`, background: progressGrad }} />
                     </div>
 
                     {/* Rich Content Body */}
@@ -508,7 +518,7 @@ const RiskTab = ({ data, idea }) => {
       {/* SUB-TAB 3: INVESTOR READINESS (2x2 GRID + HIGHLIGHTED SCORES) */}
       {activeSubTab === 'investor' && (() => {
         const { overallExplanation, dimensions } = getInvestorItems();
-        const overallScore = Math.round(investorData.investor_score || 80);
+        const overallScore = investorData.investor_score != null ? Math.round(investorData.investor_score) : null;
         const overallBadgeClass = getBadgeClass(overallScore);
 
         return (
@@ -517,9 +527,9 @@ const RiskTab = ({ data, idea }) => {
             <div className="glass-card mb-xl p-lg" style={{ borderLeft: '4px solid #0ea5e9', display: 'flex', alignItems: 'center', gap: '1.75rem', flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center', minWidth: '140px' }}>
                 <div style={{ fontSize: '0.78rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px', fontWeight: '600' }}>Investor Score</div>
-                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#0284c7', lineHeight: '1.1' }}>{overallScore}/100</div>
+                <div style={{ fontSize: '2.4rem', fontWeight: '800', color: '#0284c7', lineHeight: '1.1' }}>{overallScore !== null ? `${overallScore}/100` : '—'}</div>
                 <div className={`dim-score-badge ${overallBadgeClass} mt-xs`} style={{ display: 'inline-flex', fontSize: '0.75rem', padding: '2px 8px' }}>
-                  {overallScore > 70 ? 'Venture Ready' : overallScore > 50 ? 'Angel / Seed Stage' : 'Pre-Seed Development'}
+                  {overallScore !== null ? (overallScore > 70 ? 'Venture Ready' : overallScore > 50 ? 'Angel / Seed Stage' : 'Pre-Seed Development') : 'Pending'}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: '260px' }}>
@@ -551,14 +561,20 @@ const RiskTab = ({ data, idea }) => {
                         </div>
                       </div>
                       <div className={`dim-score-badge ${badgeClass}`}>
-                        <span>{dim.score}</span>
-                        <span className="score-denom">/100</span>
+                        {dim.score !== null ? (
+                          <>
+                            <span>{dim.score}</span>
+                            <span className="score-denom">/100</span>
+                          </>
+                        ) : (
+                          <span>—</span>
+                        )}
                       </div>
                     </div>
 
                     {/* Progress Bar Indicator */}
                     <div className="dim-progress-track">
-                      <div className="dim-progress-fill" style={{ width: `${dim.score}%`, background: progressGrad }} />
+                      <div className="dim-progress-fill" style={{ width: `${dim.score || 0}%`, background: progressGrad }} />
                     </div>
 
                     {/* Rich Content Body */}

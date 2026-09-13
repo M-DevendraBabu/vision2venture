@@ -243,7 +243,7 @@ const AnalysisPage = () => {
               <div className="score-display">
                 <span className="label">V2V Score</span>
                 <span className={`value text-${analysisData['Overview'].overall_score > 80 ? 'success' : analysisData['Overview'].overall_score > 60 ? 'primary' : 'warning'}`}>
-                  {analysisData['Overview'].overall_score || 85}
+                  {analysisData['Overview'].overall_score || 'Pending'}
                 </span>
               </div>
             </div>

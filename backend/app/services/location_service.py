@@ -102,7 +102,7 @@ class LocationService:
                         item_lng = float(item["lon"])
 
                         # Canonicalize Vadlamudi hub in Guntur (Pin 522213 or Gowdapalem/Suddapalli coordinates)
-                        if postcode == "522213" or locality.lower() in ["gowdapalem", "suddapalli"] or (16.20 <= item_lat <= 16.27 and 80.51 <= item_lng <= 80.59):
+                        if postcode == "522213" or locality.lower() in ["gowdapalem", "suddapalli"]:
                             locality = "Vadlamudi"
                             district = "Guntur"
                             state = "Andhra Pradesh"
@@ -346,136 +346,7 @@ class LocationService:
             'node["amenity"~"restaurant|cafe|fast_food|bank|pharmacy|marketplace"](around:{radius},{lat},{lng});'
         ]
 
-    @classmethod
-    def _build_authentic_reviews(
-        cls,
-        name: str,
-        amenity: str,
-        category: str,
-        dist_km: float,
-        rating: float,
-        reviews: int,
-        idx: int = 0
-    ) -> tuple:
-        """
-        Generates realistic, varied, evidence-backed customer review praise and friction points
-        tailored to the business category and individual competitor entity.
-        Ensures zero identical copy-paste sentences across competitors.
-        """
-        c_lower = f"{amenity} {category} {name}".lower()
-        seed = abs(hash(name)) + idx * 11
 
-        if any(k in c_lower for k in ["bake", "cake", "pastry", "bread"]):
-            praise_pool = [
-                f"Patrons commend {name}'s crusty artisanal sourdough and flaky butter croissants baked fresh every morning.",
-                f"Customer reviews highlight {name}'s custom celebration cakes, delicate crumb structure, and premium cocoa glazes.",
-                f"Regulars praise the warm neighborhood atmosphere, fresh oven aroma, and complimentary cookie samples at {name}.",
-                f"Shoppers rate {name} highly for spotless bakery hygiene, artisan loaves, and prompt counter packaging.",
-                f"Patrons praise {name}'s wide variety of authentic European breads and seasonal fruit pastries."
-            ]
-            complaint_pool = [
-                f"Customer reviews report popular sourdough and brioche varieties selling out by noon at {name}.",
-                f"Feedback notes cramped indoor cafe seating and slow token billing during weekend morning rushes at {name}.",
-                f"Several patrons cite limited storefront parking and tight vehicle access along the main road near {name}.",
-                f"Customers note {name} lacks an online mobile app for advance slot reservations and custom cake order tracking.",
-                f"Reviews highlight inconsistent pastry freshness on late evening walk-in visits at {name}."
-            ]
-        elif any(k in c_lower for k in ["gym", "fitness", "crossfit", "workout"]):
-            praise_pool = [
-                f"Members praise {name}'s knowledgeable personal trainers, clean Olympic lifting platforms, and motivating community vibe.",
-                f"Reviews highlight well-maintained dumbbell racks, modern cardio equipment, and spacious ventilation at {name}.",
-                f"Gym-goers commend {name}'s energizing HIIT group batches, certified diet counseling, and flexible morning hours.",
-                f"Clients appreciate {name}'s dedicated strength training zones and sanitized locker and shower facilities.",
-                f"Members value {name}'s personalized form-correction coaching and encouraging peer workout culture."
-            ]
-            complaint_pool = [
-                f"Reviews cite peak-hour bench press and squat rack congestion (6:30 PM - 8:30 PM) at {name}.",
-                f"Customer feedback mentions limited weekend operating hours and crowded free-weight floor zones at {name}.",
-                f"Several members report delayed maintenance on treadmill touchscreens and occasional locker shortages at {name}.",
-                f"Customers note {name} lacks an automated workout tracking app and flexible digital day-pass passes.",
-                f"Reviews mention noisy peak hours and lack of quiet stretching space at {name}."
-            ]
-        elif any(k in c_lower for k in ["biryani", "dum biryani", "rice"]):
-            praise_pool = [
-                f"Foodies praise {name}'s authentic aromatic dum biryani, tender marinated meat, and rich flavorful salan.",
-                f"Students and locals applaud {name}'s generous student-friendly portion sizes and sizzling hot parcel service.",
-                f"Customer reviews highlight {name}'s authentic spicy Andhra masala balance and signature chicken dum recipe.",
-                f"Patrons commend {name} for quick table service, fresh raita sides, and consistent culinary spice quality.",
-                f"Regulars love {name}'s pocket-friendly student biryani combos and late evening meal availability."
-            ]
-            complaint_pool = [
-                f"Customer reviews cite long queue waiting times during peak student dinner hours (8 PM - 9:30 PM) at {name}.",
-                f"Feedback mentions limited sit-down dining space and heavy two-wheeler parking congestion outside {name}.",
-                f"A few reviews note occasional inconsistencies in spice levels between lunch and dinner batches at {name}.",
-                f"Patrons report {name} lacks direct doorstep app delivery, relying purely on walk-in takeaway counters.",
-                f"Customer feedback notes noisy dining environment during exam-week student rushes at {name}."
-            ]
-        elif any(k in c_lower for k in ["restaurant", "food", "dining", "eatery", "cafe"]):
-            praise_pool = [
-                f"Patrons applaud {name}'s rich authentic culinary flavors, generous family thali portions, and swift service.",
-                f"Reviews commend {name}'s courteous serving staff, hygienic open kitchen, and reliable everyday meal combos.",
-                f"Diners praise {name}'s flavorful regional curries, tandoori starters, and vibrant family dining ambiance.",
-                f"Customers note {name} delivers excellent food quality and consistent taste across weekday business lunches.",
-                f"Visitors appreciate {name}'s comfortable seating layout and authentic homestyle preparation."
-            ]
-            complaint_pool = [
-                f"Reviews complain about weekend dinner table waiting delays of 25-35 minutes at {name}.",
-                f"Customer feedback notes tight roadside car parking and noisy indoor acoustics during peak dining hours at {name}.",
-                f"A few reviews mention slower parcel packaging during high-order delivery rushes at {name}.",
-                f"Patrons highlight the lack of a real-time digital table reservation system for {name}.",
-                f"Diners cite peak-hour order turnaround delays for specialty tandoori items at {name}."
-            ]
-        elif any(k in c_lower for k in ["clinic", "doctor", "health", "hospital", "medical"]):
-            praise_pool = [
-                f"Patients appreciate {name}'s thorough physician consultations, compassionate nursing care, and calm clinical environment.",
-                f"Reviews highlight {name}'s accurate digital pathology reporting, sanitized patient rooms, and gentle specialist care.",
-                f"Families commend {name}'s pediatric and general physician attentiveness and transparent consultation pricing.",
-                f"Visitors praise {name} for comprehensive health checkup packages and organized appointment reception desk.",
-                f"Patients commend {name}'s well-equipped diagnostic facilities and clear doctor follow-up instructions."
-            ]
-            complaint_pool = [
-                f"Patient reviews report OPD consultation waiting times of 40+ minutes past scheduled appointment tokens at {name}.",
-                f"Feedback notes crowded reception waiting lounge and limited visitor parking outside {name}.",
-                f"A few reviews mention delayed lab report printouts during evening doctor shift changeovers at {name}.",
-                f"Patients report {name} lacks a unified mobile app for instant lab report downloads and contactless token check-in.",
-                f"Feedback mentions occasional pharmacy counter queues during morning OPD peak hours at {name}."
-            ]
-        elif any(k in c_lower for k in ["grocery", "supermarket", "mart", "store", "produce", "organic"]):
-            praise_pool = [
-                f"Shoppers appreciate {name}'s wide assortment of fresh farm produce, organic pantry staples, and fair MRP discounts.",
-                f"Reviews praise {name}'s well-organized grocery aisles, prompt barcode scanning, and fresh daily dairy stock.",
-                f"Neighborhood regulars commend {name}'s courteous staff, clean vegetable racks, and convenient carry-bag service.",
-                f"Customers highlight {name}'s monthly saver deals, imported gourmet ingredients, and fast express billing.",
-                f"Patrons value {name}'s dependable daily staples and high-turnover fresh fruit section."
-            ]
-            complaint_pool = [
-                f"Customer reviews note congested checkout lanes and shopping cart shortages during evening peak hours at {name}.",
-                f"Feedback mentions occasional out-of-stock notices for specialized organic produce varieties at {name}.",
-                f"A few shoppers cite narrow parking bays and crowded billing counters on weekend afternoons at {name}.",
-                f"Customers note {name} lacks a 10-minute hyperlocal delivery app or real-time shelf stock inventory checker.",
-                f"Reviews complain about long weekend billing counter queues at {name}."
-            ]
-        else:
-            praise_pool = [
-                f"Customers praise {name}'s honest local customer care, dependable service standards, and transparent pricing.",
-                f"Reviews highlight {name}'s knowledgeable staff, prompt responsiveness, and convenient neighborhood location.",
-                f"Patrons commend {name} for trustworthy quality, competitive rates, and reliable customer satisfaction.",
-                f"Clients appreciate {name}'s clean establishment, courteous demeanor, and consistent follow-through.",
-                f"Customers recommend {name} for reliable everyday service and fair value."
-            ]
-            complaint_pool = [
-                f"Customer feedback notes peak-hour queue delays and limited digital payment options during internet lags at {name}.",
-                f"A few reviews cite limited dedicated parking space along the commercial street for {name}.",
-                f"Customer reviews mention occasional delays in custom inquiries and absence of online appointment booking at {name}.",
-                f"Patrons note {name} lacks an interactive web portal or digital loyalty reward program for regular shoppers.",
-                f"Feedback mentions slower service turnaround during festive peak seasons at {name}."
-            ]
-
-        p1 = praise_pool[seed % len(praise_pool)]
-        p2 = praise_pool[(seed + 1) % len(praise_pool)]
-        c1 = complaint_pool[seed % len(complaint_pool)]
-        c2 = complaint_pool[(seed + 1) % len(complaint_pool)]
-        return [f"Customer Praise: {p1}", f"Customer Praise: {p2}"], [f"Customer Complaints: {c1}", f"Customer Complaints: {c2}"]
 
     @classmethod
     def search_offline_competitors(
@@ -642,25 +513,22 @@ class LocationService:
 
             relevance = round(min(98.0, max(50.0, prox_score + cat_score + completeness)), 1)
 
-            # Synthesize realistic Customer Review Ratings & Feedback Sentiment
-            name_seed = abs(hash(clean_name))
-            cust_rating = round(4.0 + (name_seed % 9) * 0.1, 1)  # 4.0 to 4.8
-            cust_review_count = int(35 + (name_seed % 215))       # 35 to 250
-            pos_pct = int(82 + (name_seed % 15))
-            cust_sentiment = f"{pos_pct}% Positive Sentiment ({cust_review_count} Reviews)"
+            # Ratings and reviews are NOT available from OpenStreetMap
+            cust_rating = None
+            cust_review_count = None
+            cust_sentiment = "Rating data not available from OpenStreetMap"
 
-            # Category-specific authentic Customer Review Praises & Complaints
-            strengths_list, weaknesses_list = cls._build_authentic_reviews(
-                name=clean_name,
-                amenity=amenity_type,
-                category=category,
-                dist_km=dist_km,
-                rating=cust_rating,
-                reviews=cust_review_count,
-                idx=len(discovered)
-            )
+            # Evidence-based strengths from OSM data only
+            strengths_list = []
+            weaknesses_list = []
             if website:
-                strengths_list.append(f"Customer Praise: Transparent official website ({website}) for public inquiries.")
+                strengths_list.append(f"Has a public website: {website}")
+            if hours != "Not available":
+                strengths_list.append(f"Published operating hours: {hours}")
+            if phone != "Not available":
+                strengths_list.append(f"Listed contact phone: {phone}")
+            if not strengths_list:
+                strengths_list.append("Verified physical presence on OpenStreetMap.")
 
             osm_id = el.get("id")
             source_url = f"https://www.openstreetmap.org/node/{osm_id}" if osm_id else "https://www.openstreetmap.org"
@@ -669,7 +537,7 @@ class LocationService:
                 "name": clean_name,
                 "business_type": "offline",
                 "competitor_type": comp_type,
-                "description": f"Local {amenity_type.replace('_', ' ').title()} operating {dist_km} km from {display_name}. {cust_sentiment}.",
+                "description": f"Local {amenity_type.replace('_', ' ').title()} operating {dist_km} km from {display_name}.",
                 "website_url": website,
                 "app_url": "",
                 "location": full_address,
@@ -691,11 +559,11 @@ class LocationService:
                 "weaknesses": "\n".join([f"• {w}" for w in weaknesses_list]),
                 "competitive_gap": f"Capture demand with streamlined online ordering, faster fulfillment, and modern rewards compared to {clean_name}.",
                 "usp": f"Hyper-localized service with transparent modern customer experience versus traditional {clean_name}.",
-                "analysis_explanation": f"Discovered via OpenStreetMap geographic query centered at {display_name} within {dist_km} km ({cust_rating}★ customer rating).",
+                "analysis_explanation": f"Discovered via OpenStreetMap geographic query centered at {display_name} within {dist_km} km. Rating data not available from OSM.",
                 "source_urls": [source_url],
-                "data_sources": ["OpenStreetMap", "Overpass API", "Customer Review Feedback"],
-                "data_freshness": "Live OSM POI Snapshot & Review Synthesis",
-                "confidence_score": 92.0,
+                "data_sources": ["OpenStreetMap", "Overpass API"],
+                "data_freshness": "Live OpenStreetMap POI Data",
+                "confidence_score": 85.0,
                 "evidence_status": "source_verified",
                 "source_type": "openstreetmap",
                 "source_label": "OpenStreetMap / Overpass",
@@ -706,127 +574,13 @@ class LocationService:
             if len(discovered) >= limit:
                 break
 
-        # If fewer than 3 competitors found within initial radius (e.g. semi-urban/rural catchment),
-        # supplement with realistic commercial establishments based on category in this local catchment
-        if len(discovered) < 3:
-            fallback_templates = {
-                "biryani": [
-                    ("Vignan Student Dum Biryani & Meals", "Campus-favourite quick dining spot serving spicy chicken dum biryani, fried rice, and tiffins.", 0.6, 4.5, 340),
-                    ("Chebrolu Andhra Spices Biryani Point", "Local hot spot famous for pot biryani, chicken fry piece biryani, and parcel combos.", 2.2, 4.3, 210),
-                    ("Grand Highway Biryani & Fast Food", "Family dining and takeaway counter offering mutton dum biryani and chicken starters.", 3.4, 4.4, 185)
-                ],
-                "bakery": [
-                    ("Sri Lakshmi Bakery & Sweets", "Freshly baked bread, hot puffs, pastries, and regional sweets.", 1.2, 4.4, 110),
-                    ("Vignan Campus Bake Hub", "Student-focused bakery serving fresh puffs, cakes, and chilled juices.", 1.8, 4.6, 185),
-                    ("Chebrolu Iyengar Bakery", "Traditional bakery renowned for warm eggless pastries, toast, and biscuits.", 2.9, 4.3, 94),
-                    ("Tenali Road Cake & Pastry Studio", "Custom celebration cakes, brownies, and evening snacks.", 4.1, 4.5, 142)
-                ],
-                "gym": [
-                    ("Vignan Power Fitness Center", "Equipped gym offering heavy free-weights, cardio machines, and coaching.", 1.1, 4.5, 160),
-                    ("Chebrolu Fit Zone & Gym", "Strength training, functional fitness, and personalized diet programs.", 2.4, 4.3, 88),
-                    ("Tenali Road Muscle Hub", "Spacious fitness center with modern Olympic bars and crossfit floor.", 3.7, 4.6, 210)
-                ],
-                "cafe": [
-                    ("The Campus Brew & Snacks", "Espresso, hot filter coffee, tea, and quick bites popular with students.", 0.8, 4.5, 230),
-                    ("Green Leaf Tea Lounge", "Specialty milk teas, filter coffee, and evening snack station.", 1.6, 4.2, 75),
-                    ("Highway Bistro Cafe", "Casual hangout cafe with burgers, shakes, sandwiches, and iced beverages.", 3.2, 4.4, 150)
-                ],
-                "restaurant": [
-                    ("Sri Venkateswara Grand Family Dining", "Traditional South Indian meals, thalis, and spicy biryanis.", 1.3, 4.4, 310),
-                    ("Ruchulu Andhra Restaurant", "Authentic regional spicy curries, tandoori, and executive lunch platters.", 2.1, 4.3, 195),
-                    ("Spice Junction Dhaba & Meals", "Popular dining hub with quick table service and takeout counter.", 3.5, 4.2, 140)
-                ],
-                "clinic": [
-                    ("Vadlamudi Community Health Clinic", "Outpatient consultations, routine checkups, and diagnostic testing.", 0.9, 4.5, 120),
-                    ("Sri Sai Multispeciality Care", "Physician consultations, pediatrics, and preventive wellness screenings.", 2.2, 4.4, 85),
-                    ("Chebrolu Family Medical Center", "General medicine, basic lab tests, and first-aid emergency care.", 3.1, 4.3, 95)
-                ],
-                "salon": [
-                    ("Elegance Hair Studio & Salon", "Professional haircuts, beard grooming, and facial skincare treatments.", 1.0, 4.4, 140),
-                    ("Glow & Grace Beauty Parlour", "Women's bridal makeup, threading, waxing, and hair spa services.", 1.7, 4.5, 115),
-                    ("Style Men's Grooming Lounge", "Contemporary hair styling, head massage, and facial hygiene grooming.", 2.8, 4.2, 78)
-                ],
-                "grocery": [
-                    ("Sri Balaji Supermart & Kirana", "Daily fresh vegetables, pulses, spices, packaged goods, and toiletries.", 0.7, 4.5, 280),
-                    ("Farm Fresh Daily Mart", "Locally sourced organic produce, dairy, fruits, and household staples.", 1.5, 4.4, 165),
-                    ("Chebrolu Provision & General Store", "Wholesale and retail grain supplies, cooking oils, and daily essentials.", 2.7, 4.3, 130)
-                ]
-            }
-
-            # Find best matching fallback category
-            matched_fb = None
-            cat_lower = f"{category} {keywords} {title} {description}".lower()
-            for k, items in fallback_templates.items():
-                if k in cat_lower:
-                    matched_fb = items
-                    break
-            if not matched_fb:
-                matched_fb = [
-                    (f"Sri Sai {category.title()} Hub", f"Local neighborhood commercial provider specializing in {category}.", 1.2, 4.4, 120),
-                    (f"Chebrolu {category.title()} Enterprise", f"Established regional service and retail shop serving the catchment.", 2.5, 4.3, 85),
-                    (f"Tenali Road {category.title()} Center", f"High-footfall commercial facility operating along main transit corridor.", 3.8, 4.5, 160)
-                ]
-
-            for fb_name, fb_desc, fb_dist, fb_rate, fb_rev in matched_fb:
-                if fb_dist > radius_km:
-                    continue
-                
-                # Slight realistic coordinate offset around user lat/lng
-                offset_lat = lat + (fb_dist * 0.007 * (1 if abs(hash(fb_name)) % 2 == 0 else -1))
-                offset_lng = lng + (fb_dist * 0.007 * (1 if abs(hash(fb_name)) % 3 == 0 else -1))
-                pos_pct = int(80 + (abs(hash(fb_name)) % 15))
-                cust_sentiment = f"{pos_pct}% Positive Sentiment ({fb_rev} Reviews)"
-
-                fb_strengths, fb_weaknesses = cls._build_authentic_reviews(
-                    name=fb_name,
-                    amenity=category,
-                    category=category,
-                    dist_km=fb_dist,
-                    rating=fb_rate,
-                    reviews=fb_rev,
-                    idx=len(discovered)
-                )
-
-                discovered.append({
-                    "name": fb_name,
-                    "business_type": "offline",
-                    "competitor_type": "direct" if fb_dist <= (radius_km * 0.5) else "indirect",
-                    "description": f"{fb_desc} Located {fb_dist} km from {display_name}. {cust_sentiment}.",
-                    "website_url": "",
-                    "app_url": "",
-                    "location": f"Main Commercial Road, near {display_name}",
-                    "latitude": round(offset_lat, 6),
-                    "longitude": round(offset_lng, 6),
-                    "distance_km": fb_dist,
-                    "phone": "On-site contact listed",
-                    "rating": fb_rate,
-                    "review_count": fb_rev,
-                    "customer_sentiment": cust_sentiment,
-                    "opening_hours": "8:00 AM - 9:30 PM",
-                    "pricing_model": "In-store / Fixed Unit",
-                    "pricing_details": "Standard competitive market rates; on-site pricing.",
-                    "target_audience": f"Local residents and commuters within {round(radius_km, 1)} km radius of {display_name}.",
-                    "features": f"Category: {category} | High footfall catchment | Established presence",
-                    "similarity_score": round(max(60.0, 92.0 - (fb_dist * 4.0)), 1),
-                    "relevance_score": round(max(60.0, 92.0 - (fb_dist * 4.0)), 1),
-                    "strengths": "\n".join([f"• {s}" for s in fb_strengths]),
-                    "weaknesses": "\n".join([f"• {w}" for w in fb_weaknesses]),
-                    "competitive_gap": f"Capture demand with streamlined online ordering, faster fulfillment, and modern digital rewards compared to {fb_name}.",
-                    "usp": f"Next-generation digital ordering experience with doorstep fulfillment outmaneuvering traditional {fb_name}.",
-                    "analysis_explanation": f"Discovered in the {display_name} commercial catchment ({fb_dist} km away, {fb_rate}★ customer rating).",
-                    "source_urls": ["https://www.openstreetmap.org"],
-                    "data_sources": ["Catchment Commercial Registry", "Customer Review Feedback"],
-                    "data_freshness": "Catchment POI Verification",
-                    "confidence_score": 90.0,
-                    "evidence_status": "source_verified",
-                    "source_type": "openstreetmap",
-                    "source_label": "Catchment Commercial Registry",
-                    "verified": True,
-                    "is_selected": True
-                })
-
-            if discovered:
-                provider_status = "live_osm_success"
+        # Honest reporting when few competitors found
+        if len(discovered) < 3 and provider_status == "live_osm_success":
+            status_note = f"Found {len(discovered)} verified physical competitors within {radius_km} km of {display_name}. Consider expanding the search radius for more results."
+        elif provider_status != "live_osm_success":
+            status_note = f"Overpass API returned status: {provider_status}. {provider_error}. {len(discovered)} competitors discovered before interruption."
+        else:
+            status_note = f"Discovered {len(discovered)} verified physical competitors within {radius_km} km of {display_name}."
 
         discovered.sort(key=lambda x: (x["distance_km"], -x["relevance_score"]))
 
@@ -835,19 +589,12 @@ class LocationService:
             f"Radius: {radius_km} km | Found: {len(discovered)} competitors"
         )
 
-        if discovered:
-            status_msg = f"Discovered {len(discovered)} verified physical competitors from OpenStreetMap within {radius_km} km of {display_name}."
-        elif provider_status == "live_osm_success":
-            status_msg = f"No verified physical {category} competitors found within {radius_km} km of {display_name}. You can expand radius or add competitors manually."
-        else:
-            status_msg = f"Location search provider temporarily unavailable ({provider_error or 'timeout'}). You can retry or add competitors manually."
-
         return {
             "startup_location": startup_loc,
             "radius_km": radius_km,
             "total_found": len(discovered),
             "competitors": discovered,
-            "status_message": status_msg,
+            "status_message": status_note,
             "provider_status": provider_status,
             "debug_info": {
                 "location_searched": location_query,
