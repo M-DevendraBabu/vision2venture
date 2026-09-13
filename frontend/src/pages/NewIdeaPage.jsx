@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
 import { startupAPI, analysisAPI } from '../services/api';
 import { toast } from 'react-toastify';
 import { FaLaptopCode, FaStore, FaSync, FaChartLine, FaCheckCircle, FaRocket, FaMapMarkerAlt, FaGlobe, FaCogs, FaBullhorn, FaHandshake, FaClipboardList } from 'react-icons/fa';
@@ -108,8 +107,7 @@ const NewIdeaPage = () => {
           if (resp.ok) {
             const data = await resp.json();
             const addr = data.address || {};
-            // Village & neighbourhood first to avoid jumping straight to county/mandal
-            const locality = (
+            let locality = (
               addr.village ||
               addr.suburb ||
               addr.neighbourhood ||
@@ -119,9 +117,17 @@ const NewIdeaPage = () => {
               addr.hamlet ||
               ''
             );
-            const district = addr.state_district || addr.county || addr.district || '';
-            const state = addr.state || '';
+            let district = addr.state_district || addr.county || addr.district || '';
+            let state = addr.state || '';
             const country = addr.country || '';
+            const postcode = String(addr.postcode || '');
+
+            // Canonicalize Vadlamudi hub in Guntur (PIN 522213 or Gowdapalem/Suddapalli coordinates)
+            if (postcode === '522213' || locality.toLowerCase() === 'gowdapalem' || locality.toLowerCase() === 'suddapalli' || (latitude >= 16.20 && latitude <= 16.27 && longitude >= 80.51 && longitude <= 80.59)) {
+              locality = 'Vadlamudi';
+              district = 'Guntur';
+              state = 'Andhra Pradesh';
+            }
 
             const parts = [locality, district, state].filter(Boolean);
             const resolvedName = parts.length > 0 ? parts.join(', ') : (data.display_name ? data.display_name.split(',').slice(0, 3).join(', ') : `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
@@ -693,9 +699,8 @@ const NewIdeaPage = () => {
   };
 
   return (
-    <div className="page-layout">
-      <Sidebar />
-      <div className="page-content">
+    <div className="page-layout full-width-layout" style={{ maxWidth: '1080px', margin: '0 auto', padding: '24px 20px', paddingTop: 'calc(64px + 24px)' }}>
+      <div className="page-content" style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }}>
 
         <div className="wizard-header stagger-1">
           <h1 className="page-title"><FaRocket className="title-icon" /> New Business Plan</h1>

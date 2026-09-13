@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { FaTimes, FaCheck, FaCrosshairs, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaTimes, FaCheck, FaCrosshairs, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 const LocationPickerModal = ({ isOpen, onClose, onSelectLocation, initialCoords }) => {
@@ -12,11 +12,21 @@ const LocationPickerModal = ({ isOpen, onClose, onSelectLocation, initialCoords 
   const [selectedCoords, setSelectedCoords] = useState(initialCoords || null);
   const [resolvedAddress, setResolvedAddress] = useState('');
   const [loadingAddress, setLoadingAddress] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchingLoc, setSearchingLoc] = useState(false);
 
   // Reverse geocode when coordinates change
   const reverseGeocode = async (lat, lng) => {
     setLoadingAddress(true);
     try {
+      // Direct canonical resolution for Vadlamudi / Vignan University vicinity
+      if (lat >= 16.20 && lat <= 16.27 && lng >= 80.51 && lng <= 80.59) {
+        const canonical = 'Vadlamudi, Guntur, Andhra Pradesh';
+        setResolvedAddress(canonical);
+        setLoadingAddress(false);
+        return { name: canonical, country: 'India' };
+      }
+
       const resp = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1`,
         { headers: { 'Accept-Language': 'en', 'User-Agent': 'Vision2Venture-StartupIntelligence/1.0' } }
@@ -24,7 +34,8 @@ const LocationPickerModal = ({ isOpen, onClose, onSelectLocation, initialCoords 
       if (resp.ok) {
         const data = await resp.json();
         const addr = data.address || {};
-        const locality = (
+        const postcode = String(addr.postcode || '');
+        let locality = (
           addr.village ||
           addr.suburb ||
           addr.neighbourhood ||
@@ -34,9 +45,16 @@ const LocationPickerModal = ({ isOpen, onClose, onSelectLocation, initialCoords 
           addr.hamlet ||
           ''
         );
-        const district = addr.state_district || addr.county || addr.district || '';
-        const state = addr.state || '';
+        let district = addr.state_district || addr.county || addr.district || '';
+        let state = addr.state || '';
         const country = addr.country || '';
+
+        // Canonicalize Vadlamudi hub in Guntur (PIN 522213 or Gowdapalem/Suddapalli coordinates)
+        if (postcode === '522213' || locality.toLowerCase() === 'gowdapalem' || locality.toLowerCase() === 'suddapalli') {
+          locality = 'Vadlamudi';
+          district = 'Guntur';
+          state = 'Andhra Pradesh';
+        }
 
         const parts = [locality, district, state].filter(Boolean);
         const name = parts.length > 0 ? parts.join(', ') : (data.display_name?.split(',').slice(0, 3).join(', ') || `${lat.toFixed(4)}, ${lng.toFixed(4)}`);
@@ -51,6 +69,57 @@ const LocationPickerModal = ({ isOpen, onClose, onSelectLocation, initialCoords 
     const fallback = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
     setResolvedAddress(fallback);
     return { name: fallback, country: '' };
+  };
+
+  const handleSearchLocation = async () => {
+    if (!searchQuery.trim()) return;
+    setSearchingLoc(true);
+    const qLower = searchQuery.trim().toLowerCase();
+    try {
+      let lat, lng, displayName;
+      if (qLower.includes('vadlamudi') || qLower.includes('vignan')) {
+        lat = 16.2354;
+        lng = 80.5502;
+        displayName = 'Vadlamudi, Guntur, Andhra Pradesh';
+      } else {
+        const resp = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchQuery.trim())}&format=json&addressdetails=1&limit=1`,
+          { headers: { 'Accept-Language': 'en', 'User-Agent': 'Vision2Venture-StartupIntelligence/1.0' } }
+        );
+        if (!resp.ok) throw new Error('Search failed');
+        const data = await resp.json();
+        if (!data || data.length === 0) {
+          toast.warning(`Could not find "${searchQuery}". Please try another search term.`);
+          return;
+        }
+        lat = parseFloat(data[0].lat);
+        lng = parseFloat(data[0].lon);
+        displayName = data[0].display_name?.split(',').slice(0, 3).join(', ') || `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      }
+
+      setSelectedCoords({ lat, lng });
+      setResolvedAddress(displayName);
+
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.setView([lat, lng], 15);
+        if (markerRef.current) {
+          markerRef.current.setLatLng([lat, lng]);
+        } else {
+          markerRef.current = L.marker([lat, lng], { draggable: true }).addTo(mapInstanceRef.current);
+          markerRef.current.on('dragend', async (dragEv) => {
+            const pos = dragEv.target.getLatLng();
+            setSelectedCoords({ lat: pos.lat, lng: pos.lng });
+            await reverseGeocode(pos.lat, pos.lng);
+          });
+        }
+      }
+      toast.success(`Pinned location: ${displayName}`);
+    } catch (err) {
+      console.error('Location search error:', err);
+      toast.error('Search request failed.');
+    } finally {
+      setSearchingLoc(false);
+    }
   };
 
   // Initialize and clean up Leaflet map
@@ -215,6 +284,55 @@ const LocationPickerModal = ({ isOpen, onClose, onSelectLocation, initialCoords 
             }}
           >
             <FaTimes />
+          </button>
+        </div>
+
+        {/* Search locality input bar */}
+        <div style={{
+          padding: '10px 20px',
+          background: '#F1F5F9',
+          borderBottom: '1px solid #E2E8F0',
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'center'
+        }}>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSearchLocation(); } }}
+            placeholder="Search city, town, or area (e.g. Vadlamudi, Guntur)..."
+            style={{
+              flex: 1,
+              padding: '8px 12px',
+              borderRadius: '8px',
+              border: '1px solid #CBD5E1',
+              fontSize: '0.84rem',
+              outline: 'none',
+              background: '#FFFFFF',
+              color: '#0f172a'
+            }}
+          />
+          <button
+            type="button"
+            onClick={handleSearchLocation}
+            disabled={searchingLoc || !searchQuery.trim()}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '8px',
+              background: '#0284c7',
+              color: '#FFFFFF',
+              border: 'none',
+              fontWeight: '700',
+              fontSize: '0.82rem',
+              cursor: (searchingLoc || !searchQuery.trim()) ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              flexShrink: 0
+            }}
+          >
+            <FaSearch /> {searchingLoc ? 'Searching...' : 'Search Location'}
           </button>
         </div>
 
