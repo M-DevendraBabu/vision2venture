@@ -157,11 +157,13 @@ class OnlineCompetitorService:
                 cust_reviews = int(wc.get("review_count") or (350 + (name_seed % 2800)))
                 cust_sentiment = wc.get("customer_sentiment") or f"{int(84 + (name_seed % 12))}% Positive Feedback ({cust_reviews:,} Reviews)"
 
-                praise = wc.get("customer_praise") or f"Customer reviews praise the intuitive interface, robust feature set, and reliable customer service on {c_dom}."
-                complaint = wc.get("customer_complaints") or "Users complain about unexpected paywalls during export and subscription auto-renewal terms."
+                raw_praise = wc.get("customer_praise") or f"Customer reviews praise the intuitive interface, robust feature set, and reliable customer service on {c_dom}."
+                raw_complaint = wc.get("customer_complaints") or "Users complain about unexpected paywalls during export and subscription auto-renewal terms."
+                praise_clean = raw_praise.replace("• Customer Praise:", "").replace("Customer Praise:", "").replace("•", "").strip()
+                complaint_clean = raw_complaint.replace("• Customer Complaints:", "").replace("Customer Complaints:", "").replace("•", "").strip()
 
-                strengths_text = f"• Customer Praise: Rated {cust_rating}★ across {cust_reviews:,} verified reviews for core {industry} capabilities.\n• Customer Praise: {praise}"
-                weaknesses_text = f"• Customer Complaints: {complaint}\n• Customer Complaints: Limited flexibility in free tiers; requires monthly upgrade for full functionality."
+                strengths_text = f"• Customer Praise: Rated {cust_rating}★ across {cust_reviews:,} verified reviews for core {industry} capabilities.\n• Customer Praise: {praise_clean}"
+                weaknesses_text = f"• Customer Complaints: {complaint_clean}\n• Customer Complaints: Limited flexibility in free tiers; requires monthly upgrade for full functionality."
 
                 competitors.append({
                     "name": c_name,

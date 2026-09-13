@@ -778,9 +778,11 @@ const CompetitorTab = ({ data, idea }) => {
           </div>
         </div>
         <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', padding: '12px 16px', borderRadius: '12px' }}>
-          <div style={{ fontSize: '0.72rem', color: '#86198f', fontWeight: '700', textTransform: 'uppercase' }}>Hybrid / Omni</div>
-          <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#86198f' }}>
-            {businessType === 'hybrid' ? competitors.filter(c => (c.business_type || '').toLowerCase() === 'hybrid').length : 0}
+          <div style={{ fontSize: '0.72rem', color: '#86198f', fontWeight: '700', textTransform: 'uppercase' }}>
+            {businessType === 'hybrid' ? 'Omnichannel Split' : 'Hybrid / Omni'}
+          </div>
+          <div style={{ fontSize: '1.2rem', fontWeight: '800', color: '#86198f' }}>
+            {businessType === 'hybrid' ? `${physicalCompetitors.length} Phys + ${digitalCompetitors.length} Dig` : competitors.filter(c => (c.business_type || '').toLowerCase() === 'hybrid').length}
           </div>
         </div>
         <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', padding: '12px 16px', borderRadius: '12px' }}>
@@ -901,14 +903,17 @@ const CompetitorTab = ({ data, idea }) => {
                   </button>
                 </div>
               ) : (
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                  gap: '20px',
-                  alignItems: 'start'
-                }}>
-                  {/* Interactive Map */}
-                  <div style={{ position: 'sticky', top: '80px', width: '100%', height: '440px', minHeight: '340px' }}>
+                <div>
+                  {/* Interactive Map (Full-Width Catchment Overview) */}
+                  <div style={{
+                    width: '100%',
+                    height: '380px',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    border: '1px solid #E2E8F0',
+                    boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)',
+                    marginBottom: '22px'
+                  }}>
                     <CompetitorMap
                       startupLocation={startupLocation}
                       radiusKm={radiusKm}
@@ -919,8 +924,14 @@ const CompetitorTab = ({ data, idea }) => {
                     />
                   </div>
 
-                  {/* Physical Cards Feed */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%', minWidth: 0 }}>
+                  {/* Physical Cards Multi-Column Grid (Zero Empty Space) */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+                    gap: '20px',
+                    alignItems: 'stretch',
+                    width: '100%'
+                  }}>
                     {physicalCompetitors.map(renderCompetitorCard)}
                   </div>
                 </div>
@@ -982,23 +993,29 @@ const CompetitorTab = ({ data, idea }) => {
               {/* Category Filter Pills for Hybrid */}
               <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#64748b' }}>Filter View:</span>
-                {['all', 'offline', 'online', 'hybrid'].map(f => (
+                {[
+                  { id: 'all', label: `All Competitors (${competitors.length})` },
+                  { id: 'offline', label: `Physical Stores (${physicalCompetitors.length})` },
+                  { id: 'online', label: `Digital Apps (${digitalCompetitors.length})` },
+                  ...(competitors.some(c => (c.business_type || '').toLowerCase() === 'hybrid')
+                    ? [{ id: 'hybrid', label: `Hybrid (${competitors.filter(c => (c.business_type || '').toLowerCase() === 'hybrid').length})` }]
+                    : [])
+                ].map(opt => (
                   <button
-                    key={f}
-                    onClick={() => setFilterType(f)}
+                    key={opt.id}
+                    onClick={() => setFilterType(opt.id)}
                     style={{
-                      padding: '5px 12px',
+                      padding: '5px 14px',
                       borderRadius: '20px',
-                      border: filterType === f ? '1px solid #0284c7' : '1px solid #E2E8F0',
-                      background: filterType === f ? '#e0f2fe' : '#FFFFFF',
-                      color: filterType === f ? '#0369a1' : '#64748b',
+                      border: filterType === opt.id ? '1px solid #0284c7' : '1px solid #E2E8F0',
+                      background: filterType === opt.id ? '#e0f2fe' : '#FFFFFF',
+                      color: filterType === opt.id ? '#0369a1' : '#64748b',
                       fontSize: '0.78rem',
-                      fontWeight: '600',
-                      cursor: 'pointer',
-                      textTransform: 'capitalize'
+                      fontWeight: '700',
+                      cursor: 'pointer'
                     }}
                   >
-                    {f} ({f === 'all' ? competitors.length : competitors.filter(c => (c.business_type || '').toLowerCase() === f).length})
+                    {opt.label}
                   </button>
                 ))}
               </div>
@@ -1009,13 +1026,16 @@ const CompetitorTab = ({ data, idea }) => {
                   <h4 style={{ margin: '0 0 14px', fontSize: '1.05rem', color: '#065f46', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <FaStore /> Physical Competitors ({physicalCompetitors.length})
                   </h4>
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-                    gap: '20px',
-                    alignItems: 'start'
-                  }}>
-                    <div style={{ position: 'sticky', top: '80px', width: '100%', height: '380px', minHeight: '300px' }}>
+                  <div>
+                    <div style={{
+                      width: '100%',
+                      height: '380px',
+                      borderRadius: '16px',
+                      overflow: 'hidden',
+                      border: '1px solid #E2E8F0',
+                      boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)',
+                      marginBottom: '20px'
+                    }}>
                       <CompetitorMap
                         startupLocation={startupLocation}
                         radiusKm={radiusKm}
@@ -1025,7 +1045,13 @@ const CompetitorTab = ({ data, idea }) => {
                         onToggleSelect={handleToggleSelect}
                       />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%', minWidth: 0 }}>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+                      gap: '20px',
+                      alignItems: 'stretch',
+                      width: '100%'
+                    }}>
                       {physicalCompetitors.map(renderCompetitorCard)}
                     </div>
                   </div>

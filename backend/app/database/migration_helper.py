@@ -120,7 +120,8 @@ PROD_TITLES = {
     "CloudCost Sentinel FinOps Platform",
     "CarePoint Omnichannel Smart Clinic",
     "FreshFarm Organics Hyperlocal Grocery",
-    "Artisan Crust & Crumb Bakery"
+    "Artisan Crust & Crumb Bakery",
+    "Biryani Point near Vignan University, Vadlamudi"
 }
 
 def _clean_attrs(model_cls, data_dict, overrides=None):
@@ -145,8 +146,8 @@ def _clean_attrs(model_cls, data_dict, overrides=None):
 
 def sync_production_seed_if_needed(db, force=False, target_user=None):
     """
-    Ensures that the admin user on production (Render / Cloud DB) has the 6 clean production
-    startup ideas (2 Online, 2 Offline, 2 Hybrid) and all their associated analyses,
+    Ensures that the admin user on production (Render / Cloud DB) has the 7 clean production
+    startup ideas (2 Online, 3 Offline, 2 Hybrid) and all their associated analyses,
     benchmarks, and competitors.
     """
     try:
@@ -168,11 +169,21 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
         has_stale = any(i.title.lower().startswith(stale_prefixes) for i in current_ideas)
         is_exact_match = (current_titles == PROD_TITLES)
 
-        if not force and is_exact_match and not has_stale:
-            print(f"[SeedSync] Admin user {admin_user.email} already has the 6 verified production ideas. No action needed.")
+        # Check for duplicate matrix strings in existing intelligence
+        has_legacy_intel = False
+        if is_exact_match:
+            for idea in current_ideas:
+                intel = db.query(CompetitorIntelligence).filter(CompetitorIntelligence.idea_id == idea.id).first()
+                if intel and intel.comparison_matrix:
+                    if any("legacy technical debt" in str(r.get("advantage", "")) for r in intel.comparison_matrix):
+                        has_legacy_intel = True
+                        break
+
+        if not force and is_exact_match and not has_stale and not has_legacy_intel:
+            print(f"[SeedSync] Admin user {admin_user.email} already has the 7 verified production ideas with fresh data. No action needed.")
             return {"status": "ok", "message": "already synchronized", "count": len(current_ideas)}
 
-        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale})...")
+        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel})...")
 
         for idea in current_ideas:
             db.delete(idea)

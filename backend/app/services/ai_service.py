@@ -35,15 +35,17 @@ def _init_clients():
 _init_clients()
 
 
-def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 6.0) -> str:
-    """Call Groq using active high-speed model qwen/qwen3.8-27b."""
+def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 8.0) -> str:
+    """Call Groq using active high-speed model qwen/qwen3.8-27b with failover to NVIDIA."""
+    safe_max_tokens = min(int(max_tokens or 500), 750)
+    
     if _groq_client is not None:
         try:
             completion = _groq_client.chat.completions.create(
                 model="qwen/qwen3.8-27b",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
-                max_tokens=max_tokens,
+                max_tokens=safe_max_tokens,
                 timeout=timeout,
             )
             text = completion.choices[0].message.content
@@ -54,14 +56,15 @@ def _call_llm(prompt: str, max_tokens: int = 500, timeout: float = 6.0) -> str:
         except Exception as e:
             print(f"[AI] Groq call notice: {e}")
 
-    # 2. Try NVIDIA Failover (active 70b instruct)
+    # 2. Try NVIDIA Failover (active gemma-3-12b-it)
     if _nvidia_client is not None:
         try:
             completion = _nvidia_client.chat.completions.create(
-                model="meta/llama-3.3-70b-instruct",
+                model="google/gemma-3-12b-it",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
-                max_tokens=max_tokens,
+                max_tokens=safe_max_tokens,
+                timeout=timeout,
             )
             text = completion.choices[0].message.content
             if text:
