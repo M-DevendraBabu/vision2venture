@@ -30,3 +30,5 @@ Thumbs.db
 # Reports
 backend/reports/*.pdf
 frontend_qa/
+*.db
+*.sqlite
