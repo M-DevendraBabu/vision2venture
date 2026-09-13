@@ -98,8 +98,42 @@ def ensure_competitor_tables_and_columns():
                         print(f"[Migration] Added column '{col_name}' to 'startup_ideas' table.")
                     except Exception as e:
                         print(f"[Migration] Notice adding {col_name} to startup_ideas: {e}")
+
+            # 3. Allow NULL scores on startup_analysis and market_analysis
+            if dialect == 'mysql':
+                try:
+                    conn.execute(text("ALTER TABLE startup_analysis MODIFY overall_score DECIMAL(5, 2) NULL DEFAULT NULL"))
+                    conn.commit()
+                except Exception as e:
+                    print(f"[Migration] startup_analysis.overall_score null update notice: {e}")
+
+                try:
+                    conn.execute(text("ALTER TABLE market_analysis MODIFY growth_rate DECIMAL(5, 2) NULL DEFAULT NULL"))
+                    conn.execute(text("ALTER TABLE market_analysis MODIFY opportunity_score DECIMAL(5, 2) NULL DEFAULT NULL"))
+                    conn.commit()
+                except Exception as e:
+                    print(f"[Migration] market_analysis score null update notice: {e}")
+
+            # 4. Add data_source column to analysis tables if missing
+            analysis_tables = ["market_analysis", "business_models", "swot_analysis", "financial_analysis"]
+            for tbl in analysis_tables:
+                try:
+                    tbl_cols = set()
+                    if dialect == 'mysql':
+                        res = conn.execute(text(f"SHOW COLUMNS FROM {tbl}"))
+                        tbl_cols = {row[0] for row in res.fetchall()}
+                    elif dialect == 'sqlite':
+                        res = conn.execute(text(f"PRAGMA table_info({tbl})"))
+                        tbl_cols = {row[1] for row in res.fetchall()}
+
+                    if "data_source" not in tbl_cols and tbl_cols:
+                        conn.execute(text(f"ALTER TABLE {tbl} ADD COLUMN data_source VARCHAR(100) NULL"))
+                        conn.commit()
+                        print(f"[Migration] Added 'data_source' column to '{tbl}' table.")
+                except Exception as e:
+                    print(f"[Migration] Notice adding data_source to {tbl}: {e}")
                         
-            print("[Migration] Competitor and startup tables/columns verified successfully.")
+            print("[Migration] All database tables and columns verified successfully.")
     except Exception as e:
         print(f"[Migration] Notice running migration check: {e}")
 
