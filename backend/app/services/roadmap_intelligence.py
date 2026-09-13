@@ -900,6 +900,344 @@ ROADMAP_DOMAIN_TEMPLATES = {
                 'Gross margin sustained above 32%'
             ]
         }
+    },
+
+    'artisan_bakery': {
+        'phase_1': {
+            'name': 'Phase 1: Legal Incorporation, Sourdough Starter & High-Street Lease',
+            'duration': 'Months 1–2',
+            'weeks': 'Weeks 1–8',
+            'focus': 'FSSAI License, High-Footfall Commercial Lease & Kitchen Ventilation',
+            'tasks': [
+                'Incorporate entity (MCA Pvt Ltd / LLP) and secure FSSAI Manufacturing/Retail License & GSTIN',
+                'Finalize commercial high-street retail lease (800–1,200 sq.ft) with heavy electrical & water supply',
+                'Cultivate and stabilize proprietary 36-hour wild-yeast sourdough mother starter',
+                'Design 3D bakery cafe layout: glass bread display counter, open deck ovens, coffee bar & prep tables',
+                'Establish direct supply agreements with specialty stone-ground flour mills and imported high-fat butter distributors'
+            ],
+            'milestones': [
+                'Commercial bakery lease executed with municipal trade clearance',
+                'FSSAI food manufacturing license active',
+                'Architectural kitchen exhaust & electrical load plan approved'
+            ],
+            'success_metrics': [
+                '100% statutory licensing clearance',
+                'Sourdough mother starter consistency verified across 14 test fermentation cycles'
+            ]
+        },
+        'phase_2': {
+            'name': 'Phase 2: Deck Oven Commissioning, Spiral Mixers & Pastry Sheeter Fit-out',
+            'duration': 'Months 3–5',
+            'weeks': 'Weeks 9–20',
+            'focus': 'Commercial Bakery Machinery Setup, Barista Station & Recipe Standardization',
+            'tasks': [
+                'Install commercial multi-deck stone ovens with steam injection, spiral dough mixers, and reversible pastry sheeters',
+                'Commission commercial refrigeration, proofing cabinets, and espresso machine coffee station',
+                'Hire Master Baker / Head Pastry Chef (@ ₹40k) and 2 assistant bakers / front-of-house staff',
+                'Standardize recipes for country sourdough, seeded loaves, French butter croissants, and seasonal pastries',
+                'Conduct comprehensive baking trial runs to dial in deck oven humidity, crust blistering, and crumb structure'
+            ],
+            'milestones': [
+                'All commercial deck ovens and baking machinery calibrated and operational',
+                'Core baking and barista team hired and trained',
+                '10 core signature recipes standardized with zero deviation SOPs'
+            ],
+            'success_metrics': [
+                'Bake failure/wastage rate controlled below 3.0%',
+                'Croissant lamination achieving 27 distinct flaky butter layers'
+            ]
+        },
+        'phase_3': {
+            'name': 'Phase 3: Morning Dawn Bake Soft Launch, Tasting Table & Crust Club Pre-Orders',
+            'duration': 'Months 6–7',
+            'weeks': 'Weeks 21–28',
+            'focus': 'Neighborhood Soft Opening, Fresh Aroma Morning Rush & Subscription Enrollments',
+            'tasks': [
+                'Procure 30-day opening stock of premium flours, French butter, chocolate, and eco-packaging sleeves',
+                'Host invite-only bread-and-butter tasting sessions for neighborhood residents, food writers, and local cafes',
+                'Launch early-morning 7:00 AM fresh bake doors and neighborhood WhatsApp broadcast for daily specials',
+                'Introduce the Crust Club weekly bread box subscription with free doorstep delivery',
+                'Gather initial customer feedback to optimize high-velocity morning pastry and coffee pairings'
+            ],
+            'milestones': [
+                'Grand opening selling out 100% of morning sourdough bake by 2:00 PM',
+                'First 75 recurring weekly bread box subscribers enrolled',
+                'Google My Business rating established at 4.8+ stars across first 100 customer reviews'
+            ],
+            'success_metrics': [
+                'Average customer ticket size at target ₹380+',
+                'Weekly repeat purchase rate exceeding 38%'
+            ]
+        },
+        'phase_4': {
+            'name': 'Phase 4: Sourdough Bread Subscription Run-Rate & Cafe Margin Optimization',
+            'duration': 'Months 8–10',
+            'weeks': 'Weeks 29–40',
+            'focus': 'Operational Break-Even, Specialty Coffee Margin Boost & Wholesale Cafe Supply',
+            'tasks': [
+                'Scale daily production to 120+ loaves and 250+ pastries to surpass operational break-even',
+                'Expand high-margin pour-over and specialty espresso coffee sales to reach 65%+ gross margin',
+                'Supply wholesale daily sourdough bread to 5 nearby premium boutique cafes and restaurants',
+                'Introduce custom pre-ordered celebration cakes and dessert platters for weekend events',
+                'Achieve monthly cashflow profitability covering commercial rent, baker payroll, and power'
+            ],
+            'milestones': [
+                'Operational break-even achieved with positive monthly net cashflow',
+                'Over 200 active weekly bread subscription members enrolled',
+                'B2B wholesale cafe accounts contributing 25% of morning bakery production'
+            ],
+            'success_metrics': [
+                'Ingredient food cost maintained strictly under 28% of revenue',
+                'Daily sell-through rate sustained at > 92%'
+            ]
+        },
+        'phase_5': {
+            'name': 'Phase 5: CapEx Recoup, Designer Celebration Atelier & 2nd Outlet Planning',
+            'duration': 'Months 11–12',
+            'weeks': 'Weeks 41–52',
+            'focus': 'Capital Payback, Luxury Custom Cake Atelier & Central Prep Kitchen Scout',
+            'tasks': [
+                'Fully recoup initial bakery fit-out and deck oven CapEx from accumulated operating cashflows',
+                'Launch dedicated weekend hands-on sourdough masterclasses for neighborhood food enthusiasts',
+                'Expand custom celebratory cake atelier with premium tasting consultations',
+                'Scout location and initiate feasibility study for 2nd boutique retail outlet powered by existing bakery prep'
+            ],
+            'milestones': [
+                'Initial equipment setup CapEx 100% recouped from operating profits',
+                'Net operating margin sustained at 20–24%',
+                'Second neighborhood retail outlet location identified under Letter of Intent'
+            ],
+            'success_metrics': [
+                'Customer retention rate exceeding 72% month-over-month',
+                'Annualized revenue run-rate exceeding ₹45,00,000'
+            ]
+        }
+    },
+
+    'cloud_finops': {
+        'phase_1': {
+            'name': 'Phase 1: MCA Incorporation, AWS/Azure Partner Network & Architecture Blueprint',
+            'duration': 'Months 1–2',
+            'weeks': 'Weeks 1–8',
+            'focus': 'Corporate Incorporation, Cloud Provider Partner Registration & Security Blueprint',
+            'tasks': [
+                'Incorporate entity (MCA Pvt Ltd) and register for DPIIT Startup India tax benefits & GSTIN',
+                'Enroll in AWS Partner Network (APN) and Microsoft Azure Marketplace Partner Programs',
+                'Design multi-cloud telemetry ingestion architecture using read-only IAM Cross-Account Roles and Cost Explorer APIs',
+                'Establish SOC-2 Type 1 readiness framework and data privacy safeguards for cloud billing metadata',
+                'Conduct discovery interviews with 25 DevOps leads and engineering directors managing >₹5L/mo cloud spend'
+            ],
+            'milestones': [
+                'Entity incorporated with corporate bank account and GSTIN',
+                'AWS Partner Network status approved',
+                'Security architecture whitepaper and IAM cross-account connector validated'
+            ],
+            'success_metrics': [
+                'Zero access to customer data payloads (metadata-only billing access)',
+                'Architecture validation confirmed by 3 enterprise cloud architects'
+            ]
+        },
+        'phase_2': {
+            'name': 'Phase 2: Multi-Cloud Billing Ingestion Engine & Kubernetes Cost Daemon Build',
+            'duration': 'Months 3–5',
+            'weeks': 'Weeks 9–20',
+            'focus': 'Core Platform Engineering, Billing Ingestion Pipeline & Anomaly Algorithms',
+            'tasks': [
+                'Build high-throughput billing data ingestion workers for AWS CUR (Cost and Usage Report) and Azure Cost Management',
+                'Develop Kubernetes (EKS/GKE) container-level resource allocation daemon for pod-level cost attribution',
+                'Implement statistical anomaly detection engine alerting engineers on unexpected cloud spend spikes via Slack/WhatsApp',
+                'Build interactive FinOps executive dashboard with RI/Savings Plan recommendations and idle resource cleanup scripts',
+                'Execute internal integration tests validating 99.9% billing reconciliation accuracy against raw provider invoices'
+            ],
+            'milestones': [
+                'Production MVP live supporting AWS and Azure cross-account billing sync',
+                'Kubernetes pod-level cost telemetry functional',
+                'Real-time Slack spend spike alert webhook operational'
+            ],
+            'success_metrics': [
+                'Billing ingestion latency under 15 minutes post-provider report publication',
+                'Reconciliation variance versus official AWS invoice under 0.2%'
+            ]
+        },
+        'phase_3': {
+            'name': 'Phase 3: Alpha Customer Deployment, Anomaly Detection & FinOps Playbook Launch',
+            'duration': 'Months 6–7',
+            'weeks': 'Weeks 21–28',
+            'focus': 'Design Partner Deployment, Immediate Cloud Savings Demonstration & Case Studies',
+            'tasks': [
+                'Onboard initial cohort of 10 tech startups and mid-market SaaS design partners managing ₹20L+ combined cloud spend',
+                'Execute automated waste audits identifying orphaned EBS volumes, idle NAT Gateways, and unattached Elastic IPs',
+                'Demonstrate verified 18–28% cloud cost reduction within first 14 days of agent deployment',
+                'Publish quantified customer case studies and ROI calculators showcasing net monthly dollar savings',
+                'Refine self-serve onboarding wizard enabling non-technical CTOs to connect AWS in under 3 minutes'
+            ],
+            'milestones': [
+                '10 active company workspaces connected with zero downtime or security incidents',
+                'Over ₹12,00,000 in annualized cloud waste identified across pilot cohort',
+                'Customer Net Promoter Score (NPS) established at +70'
+            ],
+            'success_metrics': [
+                'Average identified savings per customer > 22% of monthly cloud bill',
+                'Time-to-first-savings-recommendation under 30 minutes post-connection'
+            ]
+        },
+        'phase_4': {
+            'name': 'Phase 4: Enterprise POC Conversions, Savings-Share Monetization & Break-Even',
+            'duration': 'Months 8–10',
+            'weeks': 'Weeks 29–40',
+            'focus': 'Commercial Expansion, Tiered SaaS Subscriptions & Operational Break-Even',
+            'tasks': [
+                'Convert alpha design partners into paying annual enterprise tier contracts with savings-guarantee SLAs',
+                'Launch self-serve Developer (₹3,999/mo) and Scale (₹12,999/mo) tiered subscription plans via Razorpay AutoPay',
+                'Integrate CI/CD pipeline cost estimation (GitHub Actions / GitLab CI) to show cost impact of Terraform pull requests',
+                'Partner with leading Indian cloud managed service providers (MSPs) for channel distribution',
+                'Surpass operational break-even covering cloud hosting, developer payroll, and security tooling'
+            ],
+            'milestones': [
+                'Operational break-even achieved with positive monthly net cashflow',
+                '45+ paying enterprise organizations onboarded',
+                'Over ₹1.5 Cr in annualized cloud spend actively monitored and optimized'
+            ],
+            'success_metrics': [
+                'Net Revenue Retention (NRR) > 125% driven by client cloud spend growth',
+                'Gross customer monthly churn rate under 1.5%'
+            ]
+        },
+        'phase_5': {
+            'name': 'Phase 5: Series-A Scale, Automated Cloud Remediation & Multi-Tenant Global Expansion',
+            'duration': 'Months 11–12',
+            'weeks': 'Weeks 41–52',
+            'focus': 'Setup Payback, 1-Click Auto-Remediation Bots & International Market Launch',
+            'tasks': [
+                'Fully recoup initial platform development and infrastructure CapEx from accumulated operating profits',
+                'Deploy 1-click automated remediation bots to automatically right-size over-provisioned EC2 instances and RDS clusters',
+                'Launch Google Cloud Platform (GCP) and Snowflake/Databricks cost governance modules',
+                'Expand outbound enterprise sales targeting US and Southeast Asian mid-market engineering teams',
+                'Prepare institutional Series-A investment documentation to scale global FinOps market leadership'
+            ],
+            'milestones': [
+                'Initial setup CapEx 100% recouped from operational profits',
+                'Annual Recurring Revenue (ARR) surpassing ₹60,00,000',
+                'AWS and Azure marketplace co-sell status active'
+            ],
+            'success_metrics': [
+                'LTV to CAC ratio exceeding 5.2x',
+                'Gross margin sustained above 82%'
+            ]
+        }
+    },
+
+    'career_tech': {
+        'phase_1': {
+            'name': 'Phase 1: MCA Incorporation, Domain Acquisition & ATS Resume Parser Blueprint',
+            'duration': 'Months 1–2',
+            'weeks': 'Weeks 1–8',
+            'focus': 'Legal Incorporation, ATS Parsing Architecture & High-Intent SEO Strategy',
+            'tasks': [
+                'Incorporate entity (MCA Pvt Ltd) and secure DPIIT Startup India recognition & GSTIN',
+                'Acquire premium domain (.in / .com) and provision secure cloud VPC on AWS Mumbai',
+                'Architect ATS resume parsing pipeline based on standard Workday, Taleo, and Greenhouse resume schemas',
+                'Design 12 modern, mobile-responsive resume templates and personal portfolio microsite themes',
+                'Conduct usability interviews with 50 job seekers, recent college graduates, and HR recruiters'
+            ],
+            'milestones': [
+                'Entity incorporated and corporate bank account active',
+                'ATS parsing and keyword scoring engine architecture validated',
+                'Prototype interactive resume builder tested with 50 job seekers'
+            ],
+            'success_metrics': [
+                '100% regulatory documentation clearance',
+                'Resume parsing accuracy > 94% on standard PDF/DOCX candidate profiles'
+            ]
+        },
+        'phase_2': {
+            'name': 'Phase 2: LLM Fine-Tuning, Dynamic LaTeX PDF Engine & Interactive Portfolio Builder',
+            'duration': 'Months 3–5',
+            'weeks': 'Weeks 9–20',
+            'focus': 'AI Bullet Point Generation, Pixel-Perfect PDF Export & UPI AutoPay Integration',
+            'tasks': [
+                'Implement fine-tuned AI bullet point rewrite models optimized for action verbs and quantified impact metrics',
+                'Build sub-second LaTeX / SVG rendering pipeline generating clean, ATS-compliant PDF downloads',
+                'Develop 1-click personal web portfolio generator with custom subdomains (username.v2v.me)',
+                'Integrate Razorpay payment gateway for instant UPI, credit card, and recurring subscription checkout',
+                'Deploy job description keyword matcher providing instant ATS match score (0–100%) against job postings'
+            ],
+            'milestones': [
+                'Production MVP live with resume builder, portfolio generator, and ATS scoring',
+                'Seamless sub-2 second PDF export operational',
+                'Payment gateway live with UPI AutoPay support'
+            ],
+            'success_metrics': [
+                'ATS match score engine calibrated against 5,000 live Indian and global job descriptions',
+                'PDF generation latency under 1.8 seconds'
+            ]
+        },
+        'phase_3': {
+            'name': 'Phase 3: College Campus Beta Launch, Student Placement Drive & Viral Referral Engine',
+            'duration': 'Months 6–7',
+            'weeks': 'Weeks 21–28',
+            'focus': 'Campus Placements Beta, Viral Growth Engine & Freemium User Acquisition',
+            'tasks': [
+                'Launch campus ambassador program across 15 engineering and management colleges in Hyderabad, Bangalore & Pune',
+                'Deploy free resume review campaign for final-year students ahead of campus placement season',
+                'Implement viral referral mechanics: free Pro resume export for referring 2 college classmates',
+                'Publish high-intent SEO guides on resume writing for software engineers, product managers, and freshers',
+                'Gather candidate interview callback feedback to optimize AI resume suggestions'
+            ],
+            'milestones': [
+                'Over 15,000 registered job seekers onboarded during campus launch',
+                '50,000+ resumes generated and exported',
+                'Viral referral K-factor achieving 1.3'
+            ],
+            'success_metrics': [
+                'Candidate reported interview shortlist rate improvement of > 32%',
+                'Organic user acquisition accounting for > 65% of total signups'
+            ]
+        },
+        'phase_4': {
+            'name': 'Phase 4: Job Seeker Pro Subscription Scaling & University Career Cell Enterprise Tiers',
+            'duration': 'Months 8–10',
+            'weeks': 'Weeks 29–40',
+            'focus': 'Paid Conversion Optimization, Career Cell Institutional SaaS & Break-Even',
+            'tasks': [
+                'Scale Job Seeker Pro subscriptions (₹499/mo, ₹1,499/yr) featuring unlimited AI rewrites and interview prep',
+                'Launch institutional Career Services portal for universities (₹25,000/college/yr) with batch resume reviews',
+                'Add AI cover letter generator and LinkedIn profile optimization toolkit to increase average revenue per user',
+                'Introduce direct 1-click job application tracker with automated interview reminder alerts',
+                'Achieve monthly cashflow profitability covering cloud servers, AI inference tokens, and staff'
+            ],
+            'milestones': [
+                'Operational break-even achieved with positive monthly net cashflow',
+                '1,200+ active paying Pro subscribers enrolled',
+                '8 university institutional campus placement contracts secured'
+            ],
+            'success_metrics': [
+                'Monthly recurring revenue (MRR) exceeds operational expenditures',
+                'Pro subscriber conversion rate from free tier > 4.2%'
+            ]
+        },
+        'phase_5': {
+            'name': 'Phase 5: Break-Even Expansion, Employer Direct Match Marketplace & Mobile Native Apps',
+            'duration': 'Months 11–12',
+            'weeks': 'Weeks 41–52',
+            'focus': 'CapEx Recoup, Direct Recruiter Sourcing & Native iOS/Android Apps',
+            'tasks': [
+                '100% recovery of initial software engineering and platform setup CapEx from operating profits',
+                'Launch curated candidate talent pool allowing verified employers to directly message top ATS-ranked applicants',
+                'Deploy native iOS and Android companion apps for mobile resume editing and instant interview updates',
+                'Expand outbound marketing into Southeast Asia and Middle East job seeker markets',
+                'Position venture for institutional seed/Series-A round to scale recruitment marketplace'
+            ],
+            'milestones': [
+                'Initial setup CapEx 100% recouped from operational free cashflow',
+                'Employer direct sourcing portal live with 50+ hiring partner companies',
+                'Over 100,000 total active candidate profiles on the platform'
+            ],
+            'success_metrics': [
+                'Gross margin sustained above 80%',
+                'Customer lifetime value to CAC ratio exceeding 4.5x'
+            ]
+        }
     }
 }
 
@@ -933,27 +1271,25 @@ def generate_roadmap_analysis(idea_dict: dict, fin_data: dict = None) -> dict:
     break_even_units = int(fin_data.get('break_even_units_monthly') or 160)
     break_even_rev = float(fin_data.get('break_even_revenue_monthly') or 240000.0)
 
-    category = resolve_financial_sector(industry, title, sector)
-    template = ROADMAP_DOMAIN_TEMPLATES.get(category)
-
-    # Deterministic domain-specific fallback (ensures gyms get fitness, clinics get health, groceries get agri)
-    if not template:
-        combo_text = f"{industry} {title} {sector}".lower()
-        if any(k in combo_text for k in ['fitness', 'gym', 'crossfit', 'workout', 'wellness', 'calisthenics', 'trainer']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('fitness_wellness')
-        elif any(k in combo_text for k in ['health', 'clinic', 'medical', 'doctor', 'patient', 'telemedicine']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('healthtech')
-        elif any(k in combo_text for k in ['food', 'restaurant', 'bakery', 'biryani', 'beverage', 'cafe', 'dining', 'catering', 'qsr']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('food & beverage')
-        elif any(k in combo_text for k in ['grocery', 'produce', 'farm', 'agri', 'organic', 'vegetable', 'fruit']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('agritech')
-        elif any(k in combo_text for k in ['fintech', 'payment', 'banking', 'finance', 'upi']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('fintech')
-        elif any(k in combo_text for k in ['logistic', 'freight', 'truck', 'courier', 'shipping', 'fleet']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('logistics')
-        elif any(k in combo_text for k in ['clean', 'solar', 'energy', 'carbon', 'renewable']):
-            template = ROADMAP_DOMAIN_TEMPLATES.get('cleantech')
-        else:
+    combo_text = f"{industry} {title} {sector}".lower()
+    if any(k in combo_text for k in ['bakery', 'sourdough', 'patisserie', 'croissant', 'artisan bread', 'crust & crumb', 'pastry']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('artisan_bakery')
+    elif any(k in combo_text for k in ['fitness', 'gym', 'crossfit', 'workout', 'wellness', 'calisthenics', 'trainer']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('fitness_wellness')
+    elif any(k in combo_text for k in ['finops', 'cloud cost', 'cloud spend', 'aws cost', 'azure cost', 'gcp cost', 'cloudcost']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('cloud_finops')
+    elif any(k in combo_text for k in ['resume', 'portfolio', 'jobseeker', 'ats resume', 'ats', 'cv builder', 'career']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('career_tech')
+    elif any(k in combo_text for k in ['clinic', 'smart clinic', 'carepoint', 'doctor', 'patient', 'telemedicine']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('healthtech')
+    elif any(k in combo_text for k in ['grocery', 'produce', 'farm', 'freshfarm', 'hyperlocal grocery', 'organic']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('agritech')
+    elif any(k in combo_text for k in ['biryani', 'restaurant', 'food service', 'qsr', 'dhaba', 'canteen']):
+        template = ROADMAP_DOMAIN_TEMPLATES.get('food & beverage')
+    else:
+        category = resolve_financial_sector(industry, title, sector)
+        template = ROADMAP_DOMAIN_TEMPLATES.get(category)
+        if not template:
             template = ROADMAP_DOMAIN_TEMPLATES.get('b2b_saas')
 
     # Phase Cost Allocations strictly tied to Financial Tab

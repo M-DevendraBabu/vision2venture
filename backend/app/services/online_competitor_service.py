@@ -206,7 +206,9 @@ class OnlineCompetitorService:
                     "is_selected": True
                 })
 
-                if len(competitors) >= limit:
+                # Reserve slots so YC dataset competitors are also actively included
+                target_web = max(3, limit - 3) if limit >= 6 else max(2, limit - 1)
+                if len(competitors) >= target_web:
                     break
 
         except Exception as e:
@@ -216,77 +218,77 @@ class OnlineCompetitorService:
         # 3. YC STARTUP KNOWLEDGE BASE (5,997 Verified Tech Startups)
         # =========================================================================
         try:
-            # Only query YC if we still need more competitors to reach limit
-            if len(competitors) < limit:
-                yc_matches = MLService.search_yc_competitors(
-                    industry=industry,
-                    query=f"{title} {keywords}",
-                    limit=limit - len(competitors)
-                )
-                for m in yc_matches:
-                    c_name = m.get("name")
-                    if not c_name:
-                        continue
-                    n_key = cls._normalize_name(c_name)
-                    website = m.get("website") or m.get("url") or ""
-                    dom = WebSearchService.normalize_domain(website) if website else ""
+            # Actively query YC dataset for top startup peers
+            target_yc = max(3, limit - len(competitors))
+            yc_matches = MLService.search_yc_competitors(
+                industry=industry,
+                query=f"{title} {keywords}",
+                limit=target_yc
+            )
+            for m in yc_matches:
+                c_name = m.get("name")
+                if not c_name:
+                    continue
+                n_key = cls._normalize_name(c_name)
+                website = m.get("website") or m.get("url") or ""
+                dom = WebSearchService.normalize_domain(website) if website else ""
 
-                    if dom and dom in seen_domains:
-                        continue
-                    if n_key in seen_names:
-                        continue
+                if dom and dom in seen_domains:
+                    continue
+                if n_key in seen_names:
+                    continue
 
-                    if dom:
-                        seen_domains.add(dom)
-                    seen_names.add(n_key)
+                if dom:
+                    seen_domains.add(dom)
+                seen_names.add(n_key)
 
-                    one_liner = m.get("one_liner") or m.get("description") or f"Technology venture in {industry}."
-                    sim_score = float(m.get("similarity_score") or 75.0)
-                    c_type = "direct" if sim_score >= 70 else "indirect"
-                    cust_rating = float(m.get("rating") or 4.3)
-                    cust_rev = int(m.get("review_count") or 150)
-                    cust_sentiment = m.get("customer_sentiment") or f"85% Positive Feedback ({cust_rev} Reviews)"
+                one_liner = m.get("one_liner") or m.get("description") or f"Technology venture in {industry}."
+                sim_score = float(m.get("similarity_score") or 75.0)
+                c_type = "direct" if sim_score >= 70 else "indirect"
+                cust_rating = float(m.get("rating") or 4.3)
+                cust_rev = int(m.get("review_count") or 150)
+                cust_sentiment = m.get("customer_sentiment") or f"85% Positive Feedback ({cust_rev} Reviews)"
 
-                    competitors.append({
-                        "name": c_name,
-                        "business_type": "online",
-                        "competitor_type": c_type,
-                        "description": f"{one_liner} {cust_sentiment}.",
-                        "website_url": website if website.startswith("http") else (f"https://{website}" if website else ""),
-                        "app_url": "",
-                        "location": "Global / US",
-                        "latitude": None,
-                        "longitude": None,
-                        "distance_km": None,
-                        "phone": "Not available",
-                        "rating": cust_rating,
-                        "review_count": cust_rev,
-                        "customer_sentiment": cust_sentiment,
-                        "opening_hours": "24/7 Digital Cloud Service",
-                        "pricing_model": "SaaS / Freemium / Tiered",
-                        "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
-                        "target_audience": f"Global businesses & consumers in {industry}.",
-                        "features": f"Sector tags: {m.get('tags', industry)} | YC Verified Venture.",
-                        "similarity_score": sim_score,
-                        "relevance_score": sim_score,
-                        "strengths": m.get("strengths") or f"• Customer Praise: Rated {cust_rating}★ for YC-backed platform reliability.",
-                        "weaknesses": m.get("weaknesses") or "• Customer Complaints: Reviews cite complex enterprise onboarding.",
-                        "competitive_gap": m.get("competitive_gap") or "Target underserved niche segments with lower barrier-to-entry pricing.",
-                        "usp": m.get("usp") or f"Next-generation approach to {title} overcoming traditional complexity.",
-                        "analysis_explanation": m.get("analysis_explanation") or f"Matched from curated YC enterprise intelligence database on {industry}.",
-                        "source_urls": [website] if website else ["https://www.ycombinator.com/companies"],
-                        "data_sources": ["YC Startup Knowledge Base", "Public Company Data", "Customer Review Feedback"],
-                        "data_freshness": "Curated Tech Ecosystem Registry",
-                        "confidence_score": 92.0,
-                        "evidence_status": "publicly_reported",
-                        "source_type": "yc_dataset",
-                        "source_label": "YC Dataset",
-                        "verified": True,
-                        "is_selected": True
-                    })
+                competitors.append({
+                    "name": c_name,
+                    "business_type": "online",
+                    "competitor_type": c_type,
+                    "description": f"{one_liner} {cust_sentiment}.",
+                    "website_url": website if website.startswith("http") else (f"https://{website}" if website else ""),
+                    "app_url": "",
+                    "location": "Global / US",
+                    "latitude": None,
+                    "longitude": None,
+                    "distance_km": None,
+                    "phone": "Not available",
+                    "rating": cust_rating,
+                    "review_count": cust_rev,
+                    "customer_sentiment": cust_sentiment,
+                    "opening_hours": "24/7 Digital Cloud Service",
+                    "pricing_model": "SaaS / Freemium / Tiered",
+                    "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
+                    "target_audience": f"Global businesses & consumers in {industry}.",
+                    "features": f"Sector tags: {m.get('tags', industry)} | YC Verified Venture.",
+                    "similarity_score": sim_score,
+                    "relevance_score": sim_score,
+                    "strengths": m.get("strengths") or f"• Customer Praise: Rated {cust_rating}★ for YC-backed platform reliability.",
+                    "weaknesses": m.get("weaknesses") or "• Customer Complaints: Reviews cite complex enterprise onboarding.",
+                    "competitive_gap": m.get("competitive_gap") or "Target underserved niche segments with lower barrier-to-entry pricing.",
+                    "usp": m.get("usp") or f"Next-generation approach to {title} overcoming traditional complexity.",
+                    "analysis_explanation": m.get("analysis_explanation") or f"Matched from curated YC enterprise intelligence database on {industry}.",
+                    "source_urls": [website] if website else ["https://www.ycombinator.com/companies"],
+                    "data_sources": ["YC Startup Knowledge Base", "Public Company Data", "Customer Review Feedback"],
+                    "data_freshness": "Curated Tech Ecosystem Registry",
+                    "confidence_score": 92.0,
+                    "evidence_status": "publicly_reported",
+                    "source_type": "yc_dataset",
+                    "source_label": "YC Dataset",
+                    "verified": True,
+                    "is_selected": True
+                })
 
-                    if len(competitors) >= limit:
-                        break
+                if len(competitors) >= limit:
+                    break
 
         except Exception as e:
             logger.warning(f"[OnlineCompetitorService] YC lookup notice: {e}")

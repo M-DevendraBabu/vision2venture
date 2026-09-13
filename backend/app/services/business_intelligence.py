@@ -22,6 +22,16 @@ def resolve_business_sector(industry: str = '', title: str = '', sector: str = '
 
     if matches(['ev', 'electric vehicle', 'charging', 'battery swap', 'fleet electrification', 'scooter', 'fast charger']):
         return 'ev_mobility'
+    if matches(['finops', 'cloud cost', 'cloud spend', 'aws cost', 'azure cost', 'gcp cost', 'kubernetes cost', 'cloud optimization']):
+        return 'cloud_finops'
+    if matches(['resume', 'portfolio', 'jobseeker', 'ats resume', 'ats', 'cv builder', 'career accelerator']):
+        return 'career_tech'
+    if matches(['smart clinic', 'omnichannel clinic', 'polyclinic', 'carepoint']):
+        return 'smart_clinic'
+    if matches(['grocery', 'freshfarm', 'farm to table', 'organic grocery', 'supermarket', 'fresh produce']):
+        return 'hyperlocal_grocery'
+    if matches(['bakery', 'sourdough', 'patisserie', 'croissant', 'artisan bread', 'crust & crumb', 'pastry']):
+        return 'artisan_bakery'
     if matches(['law', 'laws', 'legal', 'contract', 'contracts', 'compliance', 'advocate', 'vakil', 'court', 'ndas', 'litigation', 'trademark']):
         return 'legaltech'
     if matches(['pet', 'pets', 'dog', 'cat', 'veterinary', 'vet', 'grooming', 'animal']):
@@ -509,6 +519,441 @@ SECTOR_PROFILES = {
             ],
             "overall_assessment": "{title} possesses outstanding commercial potential in Food & Beverage. By combining an authentic signature culinary identity with rapid counter throughput and direct catering orders, the brand builds strong localized defensibility."
         }
+    },
+
+    "career_tech": {
+        "archetype": "AI-Native Career Tech & Placement Acceleration SaaS",
+        "gross_margin": "82% – 88%",
+        "ltv_cac": "4.5x – 5.2x",
+        "payback_months": "4 – 6 Months",
+        "problem": "Severe ATS resume rejection rates (>75%), lack of personalized job description tailoring, and generic static portfolios causing candidates to miss top-tier job opportunities across India and globally.",
+        "solution": "AI-powered career suite featuring automated job description keyword optimization, ATS resume scoring, dynamic developer portfolio generators with live demo hosting, and automated cover letters for {title}.",
+        "customer_segments": [
+            "Primary ICP: Job seekers, software engineers, and mid-career professionals actively interviewing",
+            "College Graduates: Final-year engineering and MBA students preparing for campus placements",
+            "Career Switchers: Non-tech professionals transitioning into data, product, or software roles",
+            "Institutional Buyers: College placement cells and coding bootcamps providing placement software"
+        ],
+        "value_proposition": "Increases interview invitation rates by 2.4x with automated ATS-optimized resumes, creates instant developer portfolios with live demo showcases, and slashes job application prep time by 80%.",
+        "channels": [
+            "Organic LinkedIn viral growth and student placement community word-of-mouth",
+            "Inbound SEO targeting 'ATS resume checker', 'developer portfolio builder', and 'free AI resume generator'",
+            "Placement cell partnerships with tier-1/2 engineering colleges across India",
+            "YouTube and Tech Influencer resume review livestreams and placement preparation guides"
+        ],
+        "key_partners": [
+            "OpenAI & DeepSeek LLM inference infrastructure for sub-second text tailoring",
+            "Razorpay & Stripe for seamless domestic UPI and international multi-currency subscription collection",
+            "College placement boards and tech recruitment communities",
+            "AWS Mumbai & Vercel edge networks for zero-latency portfolio hosting"
+        ],
+        "key_activities": [
+            "Continuous refinement of LLM prompts for high-scoring ATS keyword extraction",
+            "Expanding modern developer portfolio templates with interactive GitHub project widgets",
+            "User acquisition funnel optimization and freemium-to-paid conversion experiments",
+            "Placement season promotional campaigns (August–November & January–April)"
+        ],
+        "key_resources": [
+            "Proprietary resume parsing and ATS scoring algorithm trained on 50k+ job descriptions",
+            "Dynamic portfolio rendering engine with custom subdomain hosting",
+            "Agile full-stack engineering team with deep generative AI expertise",
+            "Initial growth runway of ₹{budget:,.0f} deployed for product development and organic SEO"
+        ],
+        "cost_structure": [
+            "LLM API Token Inference & Cloud Edge Hosting (26% of total spend)",
+            "Product Engineering, Full-Stack Development & UI/UX Design (38%)",
+            "Growth Marketing, Content Creation & Campus Ambassador Programs (22%)",
+            "Payment Gateway Processing Fees & Corporate Legal Compliance (8%)",
+            "Customer Support & Community Management (6%)"
+        ],
+        "revenue_streams": [
+            "Free Explorer Tier: ₹0 (1 AI resume, 3 ATS scans/mo, basic web portfolio)",
+            "Jobseeker Pro: ₹499 / month (₹3,990 / year, unlimited tailoring, custom domain, cover letter AI)",
+            "Career Accelerator VIP: ₹1,499 / quarter (₹3,999 / year, AI mock interviews, recruiter matching)",
+            "Institutional Placement License: ₹45,000 – ₹1,50,000 / college / annual placement cycle"
+        ],
+        "key_metrics": [
+            "Monthly Active Users (MAU) & Free-to-Paid Conversion Rate (Target >4.2%)",
+            "ATS Score Improvement Rate (Average +32 points post-tailoring)",
+            "Customer Acquisition Cost (CAC < ₹350 via viral referral loops)",
+            "Monthly Recurring Revenue (MRR Growth > 25% MoM)"
+        ],
+        "unfair_advantage": "Combined ATS keyword optimization with instant interactive portfolio hosting, providing candidates a complete personal branding engine rather than just a static PDF exporter.",
+        "detailed_explanation": "{title} operates a high-margin freemium software model with virality embedded in shared portfolio URLs. By monetizing high-intent job seekers during critical career transitions, the business achieves high gross margins (85%+) and rapid payback.",
+        "pricing_tiers": [
+            {"tier": "Free Explorer", "price": "₹0", "monthly_price": "₹0", "annual_price": "₹0", "period": "/ forever free", "target": "Students & active job seekers", "features": "1 AI resume, 3 ATS keyword scans/mo, standard PDF export, basic web portfolio link"},
+            {"tier": "Jobseeker Pro", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹3,990", "period": "/ month", "target": "Ambitious professionals & active job hunters", "features": "Unlimited AI resume tailoring, 50+ ATS optimization scans, custom portfolio domain, AI cover letter generator, LinkedIn keyword optimizer", "popular": True},
+            {"tier": "Career Accelerator VIP", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹3,999", "period": "/ quarter", "target": "Senior executives, tech talent & career switchers", "features": "AI mock interview simulator, direct recruiter match alerts, high-score ATS guarantee, custom portfolio domain hosting, priority 24-hr expert resume review"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "Organic Viral Growth Loop", "desc": "Every public developer portfolio created on the platform contains a 'Built with {title}' attribution link, generating free compounding top-of-funnel traffic.", "impact": "Viral Acquisition", "action": "Incentivize portfolio sharing with 5 free premium ATS scans per referral signup."},
+                {"title": "High Software Gross Margins (>82%)", "desc": "Pure SaaS economics with low marginal serving cost per user enables healthy reinvestment into organic product marketing.", "impact": "Unit Economics", "action": "Maintain lean cloud infrastructure and cache common ATS keyword embeddings to minimize LLM token costs."},
+                {"title": "Immediate Time-to-Value", "desc": "Users achieve a tailored, professional resume in under 3 minutes, driving instant product satisfaction.", "impact": "User Delight", "action": "Implement 1-click LinkedIn profile import for instant zero-effort resume onboarding."}
+            ],
+            "weaknesses": [
+                {"title": "Inherent Customer Lifecycle Churn", "desc": "Once a job seeker lands a job, their immediate need for active resume tailoring diminishes until their next career search.", "impact": "Churn Exposure", "action": "Introduce continuous career portfolio monitoring, quarterly compensation benchmark alerts, and skill gap trackers to sustain year-round engagement."},
+                {"title": "Sensitivity to Free Alternatives", "desc": "Casual users may initially experiment with generic free AI tools before understanding specialized ATS formatting nuances.", "impact": "Conversion Friction", "action": "Clearly showcase real-world recruiter ATS parsing diffs to prove why generic tools fail automated applicant filters."}
+            ],
+            "opportunities": [
+                {"title": "B2B College Placement Cell Licensing", "desc": "Over 4,000 engineering and management colleges in India require placement readiness software for accreditation.", "impact": "Enterprise Scale", "action": "Launch institutional campus dashboard with bulk student resume audits and placement analytics."},
+                {"title": "Direct Employer Recruitment Marketplace", "desc": "Closing the loop by connecting verified high-scoring candidates with tech recruiters creates a secondary monetization channel.", "impact": "New Revenue Stream", "action": "Monetize recruiter candidate discovery with verified ATS skill tags."},
+                {"title": "Global English-Speaking Market Expansion", "desc": "Software developers and professionals across the US, UK, and Europe pay higher subscription rates ($15–$29/mo).", "impact": "ARPU Multiplier", "action": "Enable Stripe multi-currency checkout targeting international software engineers."}
+            ],
+            "threats": [
+                {"title": "Commoditization from General Purpose LLMs", "desc": "Base AI models (ChatGPT, Claude) could improve native document formatting features.", "impact": "Competitive Pressure", "action": "Double down on real-time recruiter ATS parsing rules, interactive live-demo portfolio hosting, and verified recruiter networks that general LLMs cannot replicate."},
+                {"title": "Changing Recruiter Screening Algorithms", "desc": "Enterprise ATS vendors (Workday, Greenhouse, Lever) continuously update screening heuristics.", "impact": "Technical Risk", "action": "Continuously benchmark outputs against major enterprise ATS engines with automated weekly regression testing."}
+            ],
+            "overall_assessment": "{title} is positioned in a high-demand, high-velocity consumer SaaS segment. By solving the acute pain of job search rejection with automated ATS optimization and viral portfolio hosting, the platform builds a capital-efficient, high-margin venture."
+        }
+    },
+
+    "cloud_finops": {
+        "archetype": "Autonomous Cloud FinOps & Infrastructure Cost Optimization SaaS",
+        "gross_margin": "84% – 90%",
+        "ltv_cac": "5.5x – 6.2x",
+        "payback_months": "5 – 7 Months",
+        "problem": "Uncontrolled cloud sprawl, surprise AWS/Azure/GCP bills, idle compute resources, and lack of engineering accountability leading to 30%+ wasted cloud expenditure for tech companies across India and globally.",
+        "solution": "Agentic cloud FinOps platform providing automated anomaly detection, idle resource shutoff, shift-left CI/CD pull request cost diffs, and automated spot/RI arbitrage for {title}.",
+        "customer_segments": [
+            "Primary ICP: Growth-stage software companies and tech startups spending ₹3L–₹35L ($4k–$40k) monthly on cloud",
+            "Engineering Leadership: CTOs, VP of Engineering, and DevOps Leads accountable for cloud budgets",
+            "Finance & Operations: CFOs and FinOps practitioners seeking automated departmental cost allocation",
+            "Cloud Consultancies: MSPs and system integrators managing multi-tenant client cloud environments"
+        ],
+        "value_proposition": "Instantly reduces multi-cloud bills by 22–35% through autonomous waste elimination, detects cost anomalies within 15 minutes, and prevents expensive infrastructure misconfigurations before deployment.",
+        "channels": [
+            "Product-Led Growth (PLG) via GitHub / GitLab Marketplace apps and free read-only cloud cost audits",
+            "High-intent DevOps community content on 'AWS cost optimization', 'Kubernetes FinOps', and 'Terraform cost diff'",
+            "Direct B2B Outbound targeting CTOs of Series-A and Series-B venture-backed tech startups",
+            "Cloud Marketplace listings on AWS Marketplace, GCP Marketplace, and Microsoft Azure"
+        ],
+        "key_partners": [
+            "AWS Partner Network (APN), Google Cloud Partner Advantage, and Microsoft Azure Partner Ecosystem",
+            "Datadog, New Relic, and Prometheus ecosystem connectors for observability data ingestion",
+            "Payment Aggregators supporting automated enterprise invoicing and card mandates",
+            "Indian and global FinOps Foundation chapters and open-source community groups"
+        ],
+        "key_activities": [
+            "Continuous optimization of automated cloud billing telemetry ingestion and anomaly ML models",
+            "Developing zero-risk autonomous resource rightsizing algorithms (idle EBS, unattached IPs, oversized RDS)",
+            "Enterprise security compliance maintenance (SOC 2 Type II, ISO 27001, read-only IAM policies)",
+            "Customer success onboarding reviews and quarterly cloud architecture cost optimization reports"
+        ],
+        "key_resources": [
+            "Proprietary cloud cost attribution engine with container/pod-level Kubernetes breakdown",
+            "SOC 2 certified secure cloud infrastructure with zero access to client customer data",
+            "Specialized FinOps engineering team and certified AWS/GCP cloud architects",
+            "Initial capitalization of ₹{budget:,.0f} deployed for enterprise engineering and SOC 2 audits"
+        ],
+        "cost_structure": [
+            "Core Product Engineering, Infrastructure Security & CI/CD Tooling (42% of total spend)",
+            "Enterprise B2B Sales, Account Executives & DevOps Community Marketing (28%)",
+            "Cloud Ingestion Servers, Big Data Analytics & Elastic Storage on AWS Mumbai (15%)",
+            "SOC 2 Audits, Cyber Insurance & Regulatory Legal Counsel (10%)",
+            "Customer Success & 24/7 Enterprise SLA Support (5%)"
+        ],
+        "revenue_streams": [
+            "Cloud Starter Tier: ₹2,999 / month (₹28,790 / year, up to ₹3L cloud spend, anomaly alerts, 1 account)",
+            "Growth FinOps Tier: ₹8,999 / month (₹86,390 / year, up to ₹25L spend, K8s allocation, CI/CD diffs, 5 accounts)",
+            "Enterprise Sentinel: ₹24,999 / month (₹2,39,990 / year, unlimited spend, autonomous arbitrage, dedicated architect)",
+            "Gain-Share Performance Fee: 15% of validated hard net cloud savings above guaranteed threshold"
+        ],
+        "key_metrics": [
+            "Total Cloud Spend Under Management (CSUM)",
+            "Net Revenue Retention (NRR > 125% via cloud spend expansion)",
+            "Average Monthly Client Cloud Savings (Target >25% hard cost reduction)",
+            "Customer Acquisition Cost (CAC) Payback Velocity (<6 months)"
+        ],
+        "unfair_advantage": "Shift-left developer integration with pull request cost diffs combined with non-invasive read-only IAM permissions, eliminating enterprise security friction while catching waste before code merges.",
+        "detailed_explanation": "{title} addresses an urgent, high-budget operational pain point with undeniable ROI. By delivering 4x–8x hard cash savings relative to software subscription cost, the platform achieves industry-leading retention and capital-efficient growth.",
+        "pricing_tiers": [
+            {"tier": "Cloud Starter", "price": "₹2,999", "monthly_price": "₹2,999", "annual_price": "₹28,790", "period": "/ month", "target": "Early startups spending <₹3L monthly on cloud", "features": "Real-time cost anomaly alerts, idle compute resource detection, daily Slack/WhatsApp budget digest, 1 cloud account"},
+            {"tier": "Growth FinOps", "price": "₹8,999", "monthly_price": "₹8,999", "annual_price": "₹86,390", "period": "/ month", "target": "Scaling engineering teams spending ₹3L–₹25L/mo", "features": "Automated RI/Savings Plans recommendations, Kubernetes pod-level allocation, CI/CD pull request cost diff checks, 5 cloud accounts", "popular": True},
+            {"tier": "Enterprise Sentinel", "price": "₹24,999", "monthly_price": "₹24,999", "annual_price": "₹2,39,990", "period": "/ month", "target": "High-scale tech companies spending >₹25L/mo", "features": "Automated spot instance arbitrage, custom FinOps governance policies, role-based departmental chargeback, dedicated FinOps cloud architect, 99.9% SLA"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "Undeniable Hard-Dollar ROI", "desc": "Clients typically save ₹50,000–₹3,00,000/month while paying ₹8,999/month, making subscription renewal a straightforward financial decision.", "impact": "High Retention", "action": "Quantify and prominently display verified cumulative net cash saved on the customer executive dashboard."},
+                {"title": "Zero-Risk Read-Only Architecture", "desc": "Platform requires only read-only cloud metadata permissions without touching sensitive customer database records.", "impact": "Low Security Friction", "action": "Feature one-click CloudFormation / Terraform read-only IAM deployment scripts."},
+                {"title": "Expansion Revenue Model", "desc": "As client companies grow and their cloud consumption increases, FinOps tier upgrades occur naturally.", "impact": "Net Negative Churn", "action": "Structure contract pricing tied to cloud spend brackets with automatic volume tiering."}
+            ],
+            "weaknesses": [
+                {"title": "Enterprise Security Audit Gatekeeping", "desc": "Large corporate clients require extensive InfoSec questionnaires and vendor risk approvals before granting cloud access.", "impact": "Sales Cycle Delay", "action": "Complete SOC 2 Type II compliance and publish self-serve security whitepapers."},
+                {"title": "Multi-Cloud Complexity Maintenance", "desc": "Simultaneously maintaining accurate billing logic across AWS, GCP, Azure, and Oracle Cloud requires continuous engineering vigilance.", "impact": "Engineering Overhead", "action": "Prioritize AWS and GCP billing adapters first before expanding into niche cloud platforms."}
+            ],
+            "opportunities": [
+                {"title": "AI Workload Cost Surge (GPU / LLM FinOps)", "desc": "Explosive enterprise adoption of generative AI is creating massive, unmonitored GPU cloud spending spikes.", "impact": "Massive Market Tailwind", "action": "Launch dedicated OpenAI, Anthropic, and AWS Bedrock API spend tracking and prompt cost optimization module."},
+                {"title": "Cloud Marketplace Co-Selling", "desc": "Enterprises can use their committed AWS EDP or Google Cloud enterprise discount budgets to purchase software.", "impact": "Frictionless Procurement", "action": "List platform on AWS and GCP Marketplace to allow clients to burn pre-committed cloud credits."},
+                {"title": "Cross-Border Enterprise Expansion", "desc": "US and European mid-market companies face identical FinOps pressures and pay 3x–4x higher software fees in USD.", "impact": "Global Revenue", "action": "Expand inbound SEO and B2B outbound targeting US engineering leadership."}
+            ],
+            "threats": [
+                {"title": "Native Cloud Provider Cost Tools", "desc": "AWS Cost Explorer and Azure Cost Management continuously release basic incremental cost analysis features.", "impact": "Feature Encroachment", "action": "Differentiate on cross-cloud unified visibility, sub-hour anomaly detection, and CI/CD pull request cost prevention that native single-cloud tools cannot provide."},
+                {"title": "Entrenched Legacy Competitors", "desc": "Established US enterprise tools (CloudHealth, Spot by NetApp) hold large legacy enterprise accounts.", "impact": "Enterprise Competition", "action": "Win agile engineering teams on modern developer-friendly UI, rapid setup (<10 mins), and transparent pricing without multi-year lock-ins."}
+            ],
+            "overall_assessment": "{title} occupies an exceptional commercial niche in enterprise software. By turning complex cloud billing data into automated, actionable savings, the company builds deep customer reliance and exceptional unit economics."
+        }
+    },
+
+    "smart_clinic": {
+        "archetype": "Omnichannel Phygital Healthcare & Smart Clinic Network",
+        "gross_margin": "58% – 66%",
+        "ltv_cac": "4.2x – 4.9x",
+        "payback_months": "5 – 7 Months",
+        "problem": "Chaotic clinic waiting rooms (45+ min wait times), fragmented paper prescriptions, lack of preventative follow-up, and disconnected in-clinic vs digital consultation records frustrating Indian families.",
+        "solution": "Integrated omnichannel smart clinic blending high-efficiency physical outpatient care (OPD) with 24/7 digital teleconsults, ABDM ABHA health record sync, and chronic care management for {title}.",
+        "customer_segments": [
+            "Primary ICP: Working urban families requiring reliable, hygienic neighborhood outpatient care for children & seniors",
+            "Chronic Care Patients: Individuals managing diabetes, hypertension, and thyroid requiring monthly monitoring",
+            "Corporate Tech Workers: Professionals seeking zero-wait in-clinic appointments or instant video consults",
+            "Local Neighborhood Residents: Walk-in patients seeking immediate qualified physician care and diagnostics"
+        ],
+        "value_proposition": "Eliminates clinic waiting room delays to under 10 minutes with smart digital tokens, unifies in-person visits with 24/7 follow-up teleconsults, and delivers full ABDM digital health record compliance.",
+        "channels": [
+            "Hyperlocal residential apartment health screening camps and doctor wellness talks",
+            "Google Business Profile localized search targeting 'clinic near me', 'pediatrician near me', and 'smart clinic'",
+            "Corporate employee wellness tie-ups with nearby business parks and IT corridors",
+            "Satisfied patient word-of-mouth and family referral passes with diagnostic discounts"
+        ],
+        "key_partners": [
+            "Certified Diagnostic Pathology Chains (Thyrocare, Lal PathLabs) for fast laboratory sample processing",
+            "National Health Authority (NHA) for Ayushman Bharat Digital Mission (ABDM) compliance",
+            "Pharmaceutical Distributors for direct inventory supply of authentic medicines",
+            "Medical Equipment Suppliers for digital vitals monitors, ECG machines, and point-of-care analyzers"
+        ],
+        "key_activities": [
+            "Delivering high-standard outpatient clinical consultations across general medicine and pediatrics",
+            "Maintaining spotless clinical hygiene, calibrated diagnostic equipment, and cold-chain vaccine storage",
+            "Managing patient digital queues, electronic health records, and automated WhatsApp follow-up alerts",
+            "Executing monthly preventative health checkup drives in local residential societies"
+        ],
+        "key_resources": [
+            "Modern, welcoming physical clinic facility (800–1,500 sq.ft) with consultation rooms and observation bay",
+            "Roster of licensed, empathetic MBBS/MD physicians and certified nursing staff",
+            "Proprietary smart queue management software and ABDM-certified EMR system",
+            "Initial capital reserves of ₹{budget:,.0f} deployed for clinical fit-out, equipment, and operating runway"
+        ],
+        "cost_structure": [
+            "Physician & Certified Clinical Staff Payroll (34% of monthly operating budget)",
+            "Commercial Clinic Property Lease & High-Street Location Rent (22%)",
+            "Pharmacy Inventory, Rapid Diagnostic Test Kits & Medical Consumables (18%)",
+            "Clinic Facility Utilities, High-Speed Internet & Medical Waste Management (10%)",
+            "Hyperlocal Marketing, Community Health Camps & Digital Operations (16%)"
+        ],
+        "revenue_streams": [
+            "Walk-In OPD & Tele-Consult: ₹499 / visit (in-person doctor consultation or 24/7 video call + 3-day chat)",
+            "Family Health & Preventive Care Pass: ₹2,499 / year (4 free OPD visits, unlimited teleconsults, 20% lab discount)",
+            "Comprehensive Chronic Care VIP: ₹4,999 / year (dedicated family doctor, IoT vitals, free home sample collection)",
+            "In-Clinic Rapid Diagnostics & Pharmacy Fulfillment: ₹250 – ₹1,800 per transaction"
+        ],
+        "key_metrics": [
+            "Daily In-Clinic Footfall & Average Wait Time (<10 minutes target)",
+            "Annual Family Care Plan Renewal Rate (Target >78%)",
+            "Average Revenue Per Patient (ARPP > ₹1,850 via integrated pharmacy & lab tests)",
+            "Net Promoter Score (NPS > +65 based on clinic hygiene and empathy)"
+        ],
+        "unfair_advantage": "Seamless phygital integration combining neighborhood physical clinic trust with instant 24/7 digital telemedicine and ABDM digital record portability, delivering higher patient retention than pure online apps or disorganized standalone clinics.",
+        "detailed_explanation": "{title} bridges the gap between disconnected telemedicine apps and crowded traditional clinics. By capturing upfront recurring revenue through annual family health passes and monetizing in-house pharmacy and diagnostic tests, the clinic achieves high customer lifetime value and rapid unit profitability.",
+        "pricing_tiers": [
+            {"tier": "Walk-in OPD & Tele-Consult", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹499", "period": "/ consultation", "target": "Walk-in patients & quick virtual consults", "features": "In-person doctor consultation or 24/7 video call, digital ABDM ABHA prescription, instant WhatsApp vitals summary, 3-day free follow-up chat"},
+            {"tier": "Family Health Pass", "price": "₹2,499", "monthly_price": "₹249", "annual_price": "₹2,499", "period": "/ year", "target": "Urban families (up to 4 members)", "features": "4 free in-clinic OPD consultations/yr, unlimited 24/7 teleconsults, 20% discount on in-house diagnostics & pharmacy, smart clinic queue jump, annual preventative blood screening", "popular": True},
+            {"tier": "Chronic Care VIP", "price": "₹4,999", "monthly_price": "₹499", "annual_price": "₹4,999", "period": "/ year", "target": "Diabetic, hypertension & senior citizen patients", "features": "Dedicated personal family physician, continuous IoT glucose & BP vitals monitoring, monthly free home blood sample collection, doorstep medicine delivery with 15% discount, emergency priority OPD triage"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "High Trust Phygital Model", "desc": "Patients trust physical doctors significantly more than faceless online telemedicine apps, while valuing the digital convenience of instant chat follow-ups.", "impact": "Competitive Moat", "action": "Position clinic as the permanent family healthcare home for local residents."},
+                {"title": "Compounding Annual Membership Cashflows", "desc": "Upfront family health pass subscriptions generate predictable recurring cashflows independent of seasonal illness spikes.", "impact": "Financial Stability", "action": "Drive annual membership conversions at every first-time walk-in OPD consultation."},
+                {"title": "Integrated Ancillary Margins", "desc": "On-site pharmacy fulfillment and diagnostic laboratory tie-ups generate 40–50% gross margins on top of doctor consultation fees.", "impact": "Margin Expansion", "action": "Standardize doctor prescription links to instant in-clinic medicine dispensation."}
+            ],
+            "weaknesses": [
+                {"title": "High Reliance on Quality Physician Talent", "desc": "Patient loyalty is closely tied to the interpersonal empathy and clinical competence of the primary consulting doctors.", "impact": "Operational Risk", "action": "Institute competitive doctor profit-share incentives and structured clinical standard operating procedures."},
+                {"title": "Physical Clinic Capacity Constraints", "desc": "Consultation room capacity is physically capped during evening rush hours (6:00–9:00 PM).", "impact": "Revenue Ceiling", "action": "Incentivize afternoon visits and routine follow-up video consults during off-peak hours."}
+            ],
+            "opportunities": [
+                {"title": "Cashless Outpatient (OPD) Health Insurance", "desc": "Indian health insurance providers are aggressively rolling out OPD insurance coverage that requires digital EMR integration.", "impact": "Massive Demand", "action": "Partner with major TPAs and health insurers to become a preferred cashless OPD network clinic."},
+                {"title": "Chronic Disease AI Management Programs", "desc": "India has over 100 million diabetic and hypertensive patients requiring lifelong structured management.", "impact": "High LTV", "action": "Launch dedicated diabetic reversal and cardiac wellness annual care cohorts."},
+                {"title": "Multi-Hub Hub-and-Spoke Expansion", "desc": "Proving the unit economics in the first neighborhood unlocks rapid expansion into adjacent residential clusters.", "impact": "Scale", "action": "Codify clinical and operational playbooks for turnkey second clinic launch."}
+            ],
+            "threats": [
+                {"title": "Aggressive Hospital Chain Polyclinics", "desc": "Large corporate hospital chains (Apollo Clinic, Manipal Clinic) possess deep corporate marketing budgets.", "impact": "Brand Competition", "action": "Compete on warmer neighborhood community relationships, transparent pricing, and sub-10 minute wait times."},
+                {"title": "Stringent Medical Regulatory Norms", "desc": "Clinical Establishment Acts and bio-medical waste disposal regulations require strict compliance.", "impact": "Compliance Overhead", "action": "Maintain dedicated quarterly regulatory audit checklists and certified medical waste disposal contracts."}
+            ],
+            "overall_assessment": "{title} represents the future of Indian outpatient healthcare. By pairing the deep human trust of a modern physical clinic with the friction-free efficiency of digital health subscriptions, the venture achieves exceptional customer loyalty and durable profitability."
+        }
+    },
+
+    "hyperlocal_grocery": {
+        "archetype": "Direct Farm-to-Table Hyperlocal Grocery & Phygital Retail",
+        "gross_margin": "26% – 34%",
+        "ltv_cac": "3.6x – 4.2x",
+        "payback_months": "4 – 6 Months",
+        "problem": "Pesticide-laden produce, multi-day supply chain delays causing nutritional loss, inflated middleman markups, and frustrating delivery delays for urban households seeking fresh organic food in India.",
+        "solution": "Farm-to-fork hyperlocal supply network connecting regional organic farmer cooperatives directly with neighborhood micro-hubs, offering 30-minute doorstep delivery and walk-in retail for {title}.",
+        "customer_segments": [
+            "Primary ICP: Health-conscious urban families and young parents seeking certified chemical-free organic groceries",
+            "Fitness & Wellness Enthusiasts: Individuals prioritizing pesticide-free vegetables, cold-pressed oils, and farm milk",
+            "Daily Kitchen Shoppers: Households requiring daily morning deliveries of fresh greens, herbs, and unadulterated dairy",
+            "Commercial Buyers: Local artisanal cafes and boutique bakeries seeking farm-fresh organic ingredients"
+        ],
+        "value_proposition": "Delivers freshly harvested pesticide-free organic produce directly from certified farms to kitchen counters in under 30 minutes at honest, transparent farm-gate prices.",
+        "channels": [
+            "Hyperlocal apartment resident association (RWA) morning sample tasting booths",
+            "Localized Instagram and Meta video campaigns showcasing partner organic farms and harvest stories",
+            "Google Local Business listing and high-visibility storefront signage in prime residential neighborhoods",
+            "Neighbor referral loyalty programs: 'Gift a Fresh Organic Basket' with mutual wallet credits"
+        ],
+        "key_partners": [
+            "Certified Organic Farmer Producer Organizations (FPOs) and regional agricultural cooperatives",
+            "Electric Two-Wheeler (EV) fleet operators for zero-emission neighborhood delivery",
+            "Biodegradable and eco-friendly packaging manufacturers for plastic-free vegetable crates",
+            "Third-party organic certification and pesticide residue testing laboratories"
+        ],
+        "key_activities": [
+            "Daily early morning farm harvest aggregation, quality grading, and cold-chain transit to micro-hub",
+            "Strict chemical residue screening and freshness sorting before customer dispatch",
+            "Micro-hub store inventory management, weight-based barcode scanning, and order packing (<4 mins)",
+            "Customer subscription management for daily morning milk and curated vegetable baskets"
+        ],
+        "key_resources": [
+            "Prime neighborhood ground-floor micro-hub (1,000–1,800 sq.ft) with cold-room storage and walk-in counter",
+            "Direct procurement tie-ups with 20+ verified organic agricultural farms",
+            "Dedicated, trained delivery fleet equipped with insulated temperature-controlled crates",
+            "Initial capital reserves of ₹{budget:,.0f} deployed for cold-chain staging, store setup, and working inventory"
+        ],
+        "cost_structure": [
+            "Direct Farm Produce Procurement & COGS (64% of gross revenue)",
+            "Storefront Lease & Cold-Chain Micro-Hub Rent (12%)",
+            "Delivery Fleet Rider Payouts, EV Charging & Logistics (11%)",
+            "Store Operations Staff & Produce Handling Payroll (7%)",
+            "Eco-Packaging, Quality Audits & Hyperlocal Marketing (6%)"
+        ],
+        "revenue_streams": [
+            "Everyday Farm Fresh Shopper: ₹0 pay-per-order (direct farm-gate rates, free delivery >₹499)",
+            "FreshClub Monthly Prime: ₹299 / month (₹2,499 / year, unlimited free 30-min delivery, 5% cashback, early slots)",
+            "Farm-to-Table Family Annual VIP: ₹2,499 / year (daily milk/greens before 7 AM, quarterly fruit box, concierge)",
+            "Private-Label Organic Pantry Staples: ₹150 – ₹850 per unit (cold-pressed oils, stone-ground flours, wild honey)"
+        ],
+        "key_metrics": [
+            "Daily Order Volume & Average Order Value (Target AOV > ₹480)",
+            "Produce Transit & Sorting Spoilage Rate (Strictly controlled under 3.5%)",
+            "Order Dispatch Latency (<4 minutes from order ping to delivery rider bag)",
+            "30-Day Customer Retention Rate (>65% for FreshClub subscribers)"
+        ],
+        "unfair_advantage": "Direct-from-farm procurement cutting out 3 traditional intermediary mandis, guaranteeing sub-12 hour harvest-to-table freshness while capturing 10–12% higher gross margin than conventional grocery aggregators.",
+        "detailed_explanation": "{title} combines high-frequency daily kitchen essentials with high-margin organic staples. By pairing high-density delivery routes around neighborhood micro-hubs with upfront annual Prime subscriptions, the business achieves sustainable unit economics and rapid inventory turnover.",
+        "pricing_tiers": [
+            {"tier": "Everyday Farm Fresh Shopper", "price": "₹0", "monthly_price": "₹0", "annual_price": "₹0", "period": "/ pay-per-order", "target": "Casual walk-in retail shoppers & periodic app orders", "features": "Direct farm-gate organic vegetables & fruits, zero subscription commitment, free in-store click-and-collect, free doorstep delivery on orders above ₹499"},
+            {"tier": "FreshClub Monthly Prime", "price": "₹299", "monthly_price": "₹299", "annual_price": "₹2,499", "period": "/ month", "target": "Weekly active households & organic cooking enthusiasts", "features": "Unlimited free 30-minute doorstep delivery, 5% cashback on all organic staples, early-morning harvest delivery slots (6:00–8:00 AM), zero peak-hour surge fees", "popular": True},
+            {"tier": "Farm-to-Table Family Annual VIP", "price": "₹2,499", "monthly_price": "₹249", "annual_price": "₹2,499", "period": "/ year", "target": "Health-conscious families with daily kitchen consumption", "features": "Daily unadulterated farm milk & fresh greens delivery before 7:00 AM, weekly curated seasonal organic fruit box, dedicated WhatsApp nutritionist concierge, invitation to weekend farm tours"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "Irreplaceable Harvest Freshness", "desc": "Produce reaches consumer kitchens within 12 hours of harvest compared to 48–72 hours for traditional supermarket chains.", "impact": "Core Product Moat", "action": "Stamp exact harvest time and partner farm name on every delivery parcel."},
+                {"title": "High Order Frequency & Habitual Purchasing", "desc": "Households reorder fresh groceries 3–4 times per week, driving continuous cashflow velocity.", "impact": "High Customer LTV", "action": "Incentivize recurring automated morning milk and green vegetable subscription calendars."},
+                {"title": "High-Margin Organic Private Label Add-Ons", "desc": "Packaging stone-ground flours, pure cow ghee, and cold-pressed oils yields 45%+ gross margins to subsidize fresh produce.", "impact": "Margin Multiplier", "action": "Prominently display private-label organic pantry staples at the checkout counter and app cart screen."}
+            ],
+            "weaknesses": [
+                {"title": "Perishable Inventory Spoilage Risk", "desc": "Leafy greens and soft fruits degrade quickly if daily demand forecasting is inaccurate.", "impact": "Margin Erosion", "action": "Deploy dynamic evening flash sales and convert surplus produce into in-house cold-pressed juices."},
+                {"title": "Agricultural Climate & Seasonality Dependency", "desc": "Monsoon rains or unseasonal heatwaves can temporarily disrupt specific vegetable yields.", "impact": "Supply Volatility", "action": "Diversify agricultural sourcing across 3 geographically distinct farming clusters."}
+            ],
+            "opportunities": [
+                {"title": "Rising Consumer Demand for Clean Organic Food", "desc": "The Indian organic food market is growing at a 22% CAGR driven by health consciousness in Tier-1/2 metro cities.", "impact": "Market Expansion", "action": "Position brand as the ultimate trusted family source for verified chemical-free nutrition."},
+                {"title": "B2B Supply to Premium Cafes & Cloud Kitchens", "desc": "High-end restaurants and health cafes pay premium contracted rates for reliable daily organic produce supply.", "impact": "Bulk Volume", "action": "Launch B2B institutional supply division with scheduled commercial morning deliveries."},
+                {"title": "Micro-Hub Franchise Replicability", "desc": "A proven dark-store micro-hub model can be replicated across 20+ neighborhood catchments within the same city.", "impact": "Geographic Scale", "action": "Standardize micro-hub setup blueprint, cold-chain specs, and inventory SOPs."}
+            ],
+            "threats": [
+                {"title": "Fierce Quick-Commerce Aggregator Competition", "desc": "Blinkit, Zepto, and Instamart compete aggressively with massive investor capital reserves.", "impact": "Price Pressure", "action": "Compete on authentic certified organic quality, farm traceability, and taste rather than subsidized junk food speed."},
+                {"title": "Commodity Wholesale Price Fluctuations", "desc": "Spikes in wholesale vegetable prices during off-seasons can compress retail gross margins.", "impact": "Cost Squeeze", "action": "Sign seasonal fixed-price contracts with partner FPOs to insulate margins from spot mandi price spikes."}
+            ],
+            "overall_assessment": "{title} thrives by capturing the massive shift toward health-conscious, clean-label household consumption. By bypassing exploitative mandis and monetizing high-frequency grocery deliveries with private-label pantry staples, the business builds an enduring hyperlocal franchise."
+        }
+    },
+
+    "artisan_bakery": {
+        "archetype": "Artisanal Sourdough, French Patisserie & Specialty Cafe",
+        "gross_margin": "64% – 72%",
+        "ltv_cac": "3.8x – 4.5x",
+        "payback_months": "4 – 6 Months",
+        "problem": "Mass-produced factory bread packed with chemical emulsifiers and artificial preservatives, lack of authentic European slow-fermented sourdough, and stale commercial bakery goods frustrating discerning consumers in India.",
+        "solution": "Craft bakery atelier specializing in 36-hour slow-fermented sourdough breads, handcrafted French laminated butter croissants, artisanal patisserie desserts, and specialty pour-over coffee for {title}.",
+        "customer_segments": [
+            "Primary ICP: Neighborhood residents, working professionals, and food connoisseurs seeking fresh artisanal bread",
+            "Weekend Brunch Crowd: Families and couples seeking a charming European-style cafe ambiance",
+            "Celebration & Event Hosts: Clients seeking custom designer celebration cakes and dessert tables",
+            "Gourmet Cafes & Tech Offices: Local establishments seeking wholesale daily sourdough and pastry supply"
+        ],
+        "value_proposition": "Delivers European-standard artisanal breads slow-fermented for 36 hours with zero artificial additives, flaky French butter viennoiserie baked fresh daily at dawn, and bespoke celebration patisserie.",
+        "channels": [
+            "High-visibility street-level storefront with open bakery display counter and intoxicating baking aroma",
+            "Hyperlocal Instagram & Meta Reels showcasing sourdough ear blisters, croissant crumb cross-sections, and live baking",
+            "Direct neighborhood WhatsApp morning broadcast for daily freshly baked specials and limited-edition pastries",
+            "Selective listing on food apps (Swiggy Gourmet / Zomato) used strictly for brand discovery"
+        ],
+        "key_partners": [
+            "Specialized Flour Mills for organic unbleached stone-ground wheat, rye, and ancient grains",
+            "Imported French & New Zealand Butter Importers for high-fat (84%) lamination butter sheets",
+            "Specialty Coffee Roasters for single-origin Arabica espresso beans and pour-over roasts",
+            "Custom Eco-Friendly Packaging Suppliers for biodegradable bakery boxes, bread sleeves, and cafe cups"
+        ],
+        "key_activities": [
+            "Daily pre-dawn sourdough dough shaping, long cold-fermentation, and high-heat deck oven baking",
+            "Precision temperature-controlled butter lamination for 27-layer French croissants and cruffins",
+            "Handcrafting high-end patisserie entremets, tarts, and custom designer celebration cakes",
+            "Maintaining spotless HACCP kitchen hygiene, sourdough mother starter health, and equipment maintenance"
+        ],
+        "key_resources": [
+            "Charming commercial cafe and bakery facility (800–1,400 sq.ft) with high-footfall street frontage",
+            "Commercial multi-deck stone ovens with steam injection, high-capacity spiral dough mixers, and reversible sheeters",
+            "Master Baker & Pastry Chef with specialized culinary expertise in wild-yeast sourdough and French viennoiserie",
+            "Initial capital reserves of ₹{budget:,.0f} deployed for bakery machinery, cafe fit-out, and initial ingredients"
+        ],
+        "cost_structure": [
+            "Artisanal Ingredients: Specialty Flours, High-Fat Butter, Belgian Chocolate & Dairy (28% of revenue)",
+            "Master Baker, Pastry Chefs & Front-of-House Barista Payroll (24%)",
+            "Storefront Commercial Lease & High-Street High-Footfall Rent (18%)",
+            "Commercial Bakery Electricity, Deck Oven Power & Clean Water Filtration (12%)",
+            "Eco-Packaging, Waste Contingency & Local Performance Branding (18%)"
+        ],
+        "revenue_streams": [
+            "Daily Loaf & Coffee Combo: ₹349 (freshly baked sourdough loaf or butter croissant + specialty coffee)",
+            "Weekly Sourdough & Patisserie Box: ₹1,299 / week (2 signature sourdough loaves + 4 artisanal pastries, morning delivery)",
+            "Custom Celebration & Luxury Atelier: ₹3,499 / order (1.5kg tiered designer artisanal cake, custom flavor profiling)",
+            "Artisanal Spreads & Pantry Retail: ₹280 – ₹750 (house-made cultured butter, berry jams, sourdough crackers)"
+        ],
+        "key_metrics": [
+            "Daily Sell-Through Rate (Target >92% of morning bake sold out by 7 PM)",
+            "Average Transaction Value (AOV > ₹460 via coffee & pastry pairing)",
+            "Ingredient Food Cost Percentage (Strictly controlled under 30%)",
+            "Weekly Repeat Customer Rate (>40% neighborhood customer retention)"
+        ],
+        "unfair_advantage": "Living 5-year-old wild yeast sourdough mother starter delivering an irreplaceable, deep flavor profile and crust texture that commercial factory bakeries cannot replicate with commercial yeast.",
+        "detailed_explanation": "{title} marries the irresistible aroma of freshly baked craft bread with high-margin specialty coffee and luxury celebratory cakes. By maintaining lean morning bake cycles and establishing direct weekly sourdough subscription deliveries, the bakery maximizes revenue per square foot and achieves rapid operational break-even.",
+        "pricing_tiers": [
+            {"tier": "Daily Loaf & Coffee Combo", "price": "₹349", "monthly_price": "₹349", "annual_price": "₹349", "period": "/ combo", "target": "Walk-in neighborhood breakfast & brunch patrons", "features": "Freshly baked sourdough loaf or butter croissant, artisanal pour-over specialty coffee, freshly whipped cultured butter, eco-friendly carry bag"},
+            {"tier": "Weekly Sourdough Box", "price": "₹1,299", "monthly_price": "₹4,899", "annual_price": "₹1,299", "period": "/ week", "target": "Local households & gourmet connoisseurs", "features": "2 specialty sourdough loaves (seeded/rye/country), 4 handcrafted French patisserie pastries, weekly rotating seasonal preserves, free doorstep morning delivery", "popular": True},
+            {"tier": "Luxury Celebration Atelier", "price": "₹3,499", "monthly_price": "₹3,499", "annual_price": "₹3,499", "period": "/ order", "target": "Celebrations, birthdays, anniversaries & tastings", "features": "1.5kg tiered designer artisanal celebration cake, custom flavor profiling (Belgian chocolate / Madagascar vanilla), dessert table presentation box, chef's tasting sampler"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "Signature Craft Quality & Irreplaceable Aroma", "desc": "Real sourdough baking creates a potent sensory draw that drives organic foot traffic and customer delight.", "impact": "Sensory Moat", "action": "Time oven bakes to align with morning (7:30 AM) and evening (5:00 PM) commuter rushes."},
+                {"title": "High-Margin Specialty Coffee Pairing", "desc": "Pour-over and espresso coffee sales deliver 75%+ gross margins on top of bread purchases.", "impact": "Margin Expansion", "action": "Train baristas on latte art and offer bundled coffee-and-croissant breakfast deals."},
+                {"title": "Lucrative Celebration Cake Bookings", "desc": "Pre-ordered designer celebration cakes command high average order values (₹3,500+) with zero ingredient wastage.", "impact": "Profit Driver", "action": "Feature a dedicated custom cake consultation corner in the front retail area."}
+            ],
+            "weaknesses": [
+                {"title": "Daily Perishability of Fresh Baked Goods", "desc": "Artisanal breads baked without chemical preservatives must be sold on the day of baking.", "impact": "Inventory Risk", "action": "Repurpose unsold day-old sourdough into high-margin gourmet croutons, bread pudding, and sourdough crisps."},
+                {"title": "High Dependency on Specialized Head Baker", "desc": "Lamination and sourdough fermentation require nuanced technical mastery of dough temperature and humidity.", "impact": "Talent Risk", "action": "Codify exact hydration percentages, dough temperatures, and baking schedules into clear visual standard operating procedures (SOPs)."}
+            ],
+            "opportunities": [
+                {"title": "Weekly Sourdough Subscription Model", "desc": "Delivering fresh artisan loaves to subscribed residential apartments every Tuesday and Friday locks in recurring revenue.", "impact": "Predictable Cashflow", "action": "Launch the 'Crust Club' weekly sourdough subscription pass with free doorstep delivery."},
+                {"title": "B2B Wholesale Supply to Boutique Cafes", "desc": "Independent local cafes and boutique hotels prefer outsourcing premium bread rather than operating expensive bakery machinery.", "impact": "Bulk Volume", "action": "Offer early-morning wholesale bread deliveries to 10 non-competing specialty cafes."},
+                {"title": "Weekend Sourdough & Baking Masterclasses", "desc": "Food enthusiasts enthusiastically pay ₹2,500–₹4,000 for hands-on weekend bread-making workshops during quiet mid-day hours.", "impact": "High-Margin Community", "action": "Host monthly Sunday afternoon sourdough masterclasses to build passionate brand advocates."}
+            ],
+            "threats": [
+                {"title": "Rising Imported Ingredient Costs", "desc": "Fluctuations in the price of imported butter, specialty cocoa, and European chocolate can compress margins.", "impact": "Cost Squeeze", "action": "Partner directly with emerging Indian craft dairy and chocolate makers for premium domestic alternatives."},
+                {"title": "Commercial Bakery Imitators", "desc": "Industrial bakeries market factory-produced commercial bread with caramel coloring under misleading 'sourdough' labels.", "impact": "Market Confusion", "action": "Educate patrons through transparent open-kitchen tours showcasing the live 36-hour slow-fermentation process."}
+            ],
+            "overall_assessment": "{title} occupies a prestigious and highly profitable position in modern urban gastronomy. By blending authentic European baking craftsmanship with high-margin specialty coffee and recurring weekly bread subscriptions, the bakery establishes a defensible, beloved neighborhood institution."
+        }
     }
 }
 
@@ -741,12 +1186,12 @@ def get_universal_business_profile(context: dict, sector_key: str) -> dict:
                 {"tier": "Standard Walk-in / Base Pass", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,990", "period": "/ month", "target": "Regular local customers & walk-ins", "features": f"Core on-premise {ind} access, standard service fulfillment, digital receipt"},
                 {"tier": "Preferred Regular Member", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,390", "period": "/ month", "target": "High-frequency local patrons", "features": f"Unlimited monthly access, priority queue booking, 10% discount on add-ons, personalized service", "popular": True},
                 {"tier": "VIP / Corporate Package", "price": "₹3,999", "monthly_price": "₹3,999", "annual_price": "₹39,990", "period": "/ month", "target": "VIP clients & corporate group accounts", "features": f"Dedicated relationship coordinator, zero-waiting priority slots, custom requested accommodations, complimentary hospitality perks"}
-            ] if ('offline' in str(context.get('sector', '')).lower() or 'physical' in str(context.get('sector', '')).lower()) else (
+            ] if ('offline' in (str(context.get('sector', '')) + ' ' + str(context.get('business_type', ''))).lower() or 'physical' in (str(context.get('sector', '')) + ' ' + str(context.get('business_type', ''))).lower()) else (
             [
-                {"tier": "Basic Digital + Store Pass", "price": "₹399", "monthly_price": "₹399", "annual_price": "₹3,830", "period": "/ month", "target": "Periodic shoppers & digital users", "features": f"Digital app access, storefront express pickup, standard tracking alerts"},
-                {"tier": "Omnichannel Prime Pass", "price": "₹999", "monthly_price": "₹999", "annual_price": "₹9,590", "period": "/ month", "target": "Weekly active patrons", "features": f"Free doorstep fulfillment, priority in-store service counter, 5% cashback on all orders, WhatsApp concierge", "popular": True},
+                {"tier": "Basic Digital + Store Pass", "price": "₹299", "monthly_price": "₹299", "annual_price": "₹2,870", "period": "/ month", "target": "Periodic shoppers & digital users", "features": f"Digital app access, storefront express pickup, standard tracking alerts"},
+                {"tier": "Omnichannel Prime Pass", "price": "₹899", "monthly_price": "₹899", "annual_price": "₹8,630", "period": "/ month", "target": "Weekly active patrons", "features": f"Free doorstep fulfillment, priority in-store service counter, 5% cashback on all orders, WhatsApp concierge", "popular": True},
                 {"tier": "Family All-Access Executive", "price": "₹2,499", "monthly_price": "₹2,499", "annual_price": "₹23,990", "period": "/ month", "target": "Full household accounts", "features": f"Unlimited free doorstep deliveries, zero surge fees during peak hours, dedicated relationship manager, priority slots"}
-            ] if ('hybrid' in str(context.get('sector', '')).lower() or 'phygital' in str(context.get('sector', '')).lower()) else
+            ] if ('hybrid' in (str(context.get('sector', '')) + ' ' + str(context.get('business_type', ''))).lower() or 'phygital' in (str(context.get('sector', '')) + ' ' + str(context.get('business_type', ''))).lower()) else
             [
                 {"tier": "Starter", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Early adopters & small teams", "features": f"Core {ind} toolkit, standard analytics, email & chat support, 2 user seats"},
                 {"tier": "Professional", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Growing businesses & active operators", "features": "Advanced workflows, multi-seat collaboration, automated reporting, priority support", "popular": True},

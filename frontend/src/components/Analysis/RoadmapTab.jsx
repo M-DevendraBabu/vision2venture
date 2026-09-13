@@ -92,23 +92,178 @@ const RoadmapTab = ({ data, idea }) => {
     }
   }
 
-  // If no phases in data, build fallback phases
+  // If no phases in data, build domain-tailored fallback phases
   if (phases.length === 0) {
+    const textCombo = `${title} ${industry} ${sector}`.toLowerCase();
+    const isGym = /gym|fitness|crossfit|workout|strength/.test(textCombo);
+    const isBakery = /bakery|sourdough|bread|pastry|croissant|crust/.test(textCombo);
+    const isClinic = /clinic|healthcare|medical|doctor|carepoint|opd/.test(textCombo);
+    const isGrocery = /grocery|farm|produce|freshfarm|agri|organic/.test(textCombo);
+    const isFinOps = /finops|cloud cost|aws cost|cloud spend/.test(textCombo);
+    const isResume = /resume|portfolio|job|career|ats/.test(textCombo);
+    const isDining = /biryani|restaurant|food|dining|qsr|catering/.test(textCombo);
+
+    const p1Name = isGym
+      ? 'Phase 1: Legal Incorporation, Commercial Lease & Gym Floor Blueprint'
+      : isBakery
+      ? 'Phase 1: Legal Incorporation, Sourdough Starter & High-Street Lease'
+      : isClinic
+      ? 'Phase 1: Legal Incorporation, Clinical Registration & Facility Lease'
+      : isGrocery
+      ? 'Phase 1: Legal Incorporation, Farm Sourcing & Dark Store Lease'
+      : isFinOps
+      ? 'Phase 1: Corporate Incorporation, AWS Partner Status & IAM Architecture'
+      : isResume
+      ? 'Phase 1: MCA Incorporation, Domain Acquisition & ATS Engine Blueprint'
+      : isDining
+      ? 'Phase 1: Legal Incorporation, Concept Finalization & FSSAI Licensing'
+      : 'Phase 1: Legal Incorporation, Architecture Blueprint & Foundation';
+
+    const p1Focus = isGym
+      ? 'Statutory Licensing, High-Street Commercial Lease & Rig Floor Plan'
+      : isBakery
+      ? 'FSSAI License, Commercial Retail Lease & Kitchen Ventilation'
+      : isClinic
+      ? 'Clinical Establishment Clearances, Doctor Roster & EMR Architecture'
+      : isGrocery
+      ? 'Farm-Gate Agreements, APMC Licensing & Micro-Warehouse Lease'
+      : isFinOps
+      ? 'AWS/Azure Marketplace Partner Onboarding & SOC-2 Framework'
+      : isResume
+      ? 'ATS Schema Mapping, LaTeX Engine Blueprint & DPIIT Startup India'
+      : isDining
+      ? 'FSSAI Food License, Municipal Health Trade License & Kitchen Layout'
+      : 'Statutory Licensing, Cloud Infrastructure & Product Blueprint';
+
+    const p1Tasks = isGym
+      ? [
+          'Incorporate entity with MCA (Pvt Ltd / LLP) and secure GSTIN & PAN',
+          'Execute commercial property lease (2,500–4,000 sq.ft) with structural clearance for CrossFit drop zones',
+          'Apply for Municipal Health Trade License, Fire Department NOC & building clearances',
+          'Design 3D architectural floor layout: free weights zone, modular CrossFit rig, cardio deck & locker rooms'
+        ]
+      : isBakery
+      ? [
+          'Incorporate entity with MCA (Pvt Ltd / LLP) and secure FSSAI Food Manufacturing License & GSTIN',
+          'Finalize high-street commercial lease (800–1,200 sq.ft) with heavy electrical & clean water supply',
+          'Cultivate and stabilize proprietary 36-hour wild-yeast sourdough mother starter',
+          'Design 3D bakery cafe layout: glass bread display, open deck ovens, coffee station & prep tables'
+        ]
+      : isClinic
+      ? [
+          'Incorporate entity with MCA and register under State Clinical Establishment Act',
+          'Execute commercial lease for modern clinic facility (800–1,500 sq.ft) in high-density residential hub',
+          'Design clinical layout: consultation rooms, observation bay, pharmacy counter & cold-chain storage',
+          'Establish physician onboarding roster and register for ABDM (Ayushman Bharat Digital Mission) compliance'
+        ]
+      : isGrocery
+      ? [
+          'Incorporate entity with MCA and secure APMC mandi exemption, FSSAI retail license & GSTIN',
+          'Execute lease for 1,200–2,000 sq.ft ground-floor neighborhood dark store / fulfillment hub',
+          'Sign direct farm-gate procurement agreements with 15+ farmer producer organizations (FPOs)',
+          'Design cold room (4-8°C), ambient produce sorting tables, and digital precision scale stations'
+        ]
+      : isFinOps
+      ? [
+          'Incorporate entity with MCA and register for DPIIT Startup India tax benefits & GSTIN',
+          'Enroll in AWS Partner Network (APN) and Microsoft Azure Marketplace Partner Programs',
+          'Design multi-cloud telemetry ingestion architecture using read-only IAM Cross-Account Roles and Cost Explorer APIs',
+          'Establish SOC-2 Type 1 readiness framework and data privacy safeguards for cloud billing metadata'
+        ]
+      : isResume
+      ? [
+          'Incorporate entity with MCA (Pvt Ltd) and secure DPIIT Startup India recognition & GSTIN',
+          'Acquire premium domain (.in / .com) and provision secure cloud VPC on AWS Mumbai',
+          'Architect ATS resume parsing pipeline based on standard Workday, Taleo, and Greenhouse resume schemas',
+          'Design 12 modern, mobile-responsive resume templates and personal portfolio microsite themes'
+        ]
+      : isDining
+      ? [
+          'Incorporate entity with MCA (Pvt Ltd / LLP) and secure PAN/TAN/GSTIN',
+          'Apply for FSSAI State Food License, Municipal Health Trade License & Fire NOC',
+          'Finalize commercial high-street lease and execute 3-month rental deposit',
+          'Architectural interior design layout, 3D floor plan & commercial kitchen exhaust schematic'
+        ]
+      : [
+          'Incorporate entity with MCA (Pvt Ltd / LLP) and secure GSTIN & PAN',
+          'Apply for industry statutory approvals (DPIIT recognition, Trademark Class 9/42)',
+          'High-fidelity UI/UX wireframing, architecture blueprint & customer discovery interviews',
+          'Domain acquisition (.in / .com) and cloud staging VPC provisioning'
+        ];
+
+    const p2Name = isGym
+      ? 'Phase 2: High-Density Flooring, Rig Fit-out & Coach Onboarding'
+      : isBakery
+      ? 'Phase 2: Deck Oven Commissioning, Spiral Mixers & Pastry Sheeter Fit-out'
+      : isClinic
+      ? 'Phase 2: Clinical Fit-Out, Diagnostic Calibration & EMR Deployment'
+      : isGrocery
+      ? 'Phase 2: Cold-Chain Storage, Sorting Line & Hyperlocal POS Deployment'
+      : isFinOps
+      ? 'Phase 2: Multi-Cloud Billing Ingestion Engine & Kubernetes Cost Daemon Build'
+      : isResume
+      ? 'Phase 2: LLM Fine-Tuning, Dynamic LaTeX PDF Engine & Interactive Portfolio Builder'
+      : 'Phase 2: Core Infrastructure Build, Equipment Setup & MVP Development';
+
+    const p2Tasks = isGym
+      ? [
+          'Install high-density acoustic rubber drop flooring and specialized Olympic lifting platforms',
+          'Erect custom steel CrossFit rig with pull-up bars, gymnastic rings, and squat stations',
+          'Procure Olympic barbells, bumper plate sets, kettlebells, Concept2 rowers, and Assault air bikes',
+          'Hire Head Coach (CrossFit Level-1/2) and 2 certified strength trainers; standardize class SOPs'
+        ]
+      : isBakery
+      ? [
+          'Install commercial multi-deck stone ovens with steam injection, spiral dough mixers, and pastry sheeters',
+          'Commission commercial refrigeration, proofing cabinets, and espresso machine coffee station',
+          'Hire Master Baker / Head Pastry Chef (@ ₹40k) and 2 assistant bakers / front-of-house staff',
+          'Standardize recipes for country sourdough, seeded loaves, French butter croissants, and seasonal pastries'
+        ]
+      : isClinic
+      ? [
+          'Complete clinical civil interior fit-out, medical gas lines, and calibrated diagnostic equipment',
+          'Deploy ABDM-certified Electronic Medical Record (EMR) software and WhatsApp queue alerts',
+          'Stock dispensary with essential generic medicines and rapid diagnostic test kits',
+          'Onboard 2 MBBS general physicians and certified nursing staff for multi-shift coverage'
+        ]
+      : isGrocery
+      ? [
+          'Install commercial cold-room storage and ethylene absorption filters for fresh produce shelf-life extension',
+          'Deploy digital precision scale barcode scanners and batch-traceability inventory POS software',
+          'Procure eco-friendly biodegradable packaging and insulated delivery crates',
+          'Onboard and train 8 dedicated delivery partners with electric two-wheelers (EVs)'
+        ]
+      : isFinOps
+      ? [
+          'Build high-throughput billing data ingestion workers for AWS CUR and Azure Cost Management',
+          'Develop Kubernetes (EKS/GKE) container-level resource allocation daemon for pod-level cost attribution',
+          'Implement statistical anomaly detection engine alerting engineers on unexpected cloud spend spikes',
+          'Build interactive FinOps executive dashboard with RI/Savings Plan recommendations'
+        ]
+      : isResume
+      ? [
+          'Implement fine-tuned AI bullet point rewrite models optimized for action verbs and quantified metrics',
+          'Build sub-second LaTeX / SVG rendering pipeline generating clean, ATS-compliant PDF downloads',
+          'Develop 1-click personal web portfolio generator with custom subdomains (username.v2v.me)',
+          'Integrate Razorpay payment gateway for instant UPI, credit card, and recurring subscription checkout'
+        ]
+      : [
+          'Execute core product engineering sprint / commercial interior fit-out',
+          'Procure high-performance developer workstations / commercial equipment machinery',
+          'Implement core database schemas, APIs, and payment gateway webhooks (Razorpay)',
+          'Hire core founding personnel aligned with Indian market salary standards'
+        ];
+
     phases.push(
       {
         id: 1,
-        name: 'Phase 1: Legal Incorporation, Discovery & Architecture',
+        name: p1Name,
         duration: 'Months 1–2',
         weeks: 'Weeks 1–8',
-        focus: 'Statutory Licensing, Lease/Cloud Setup & Product Blueprint',
-        tasks: [
-          'Incorporate entity with MCA (Pvt Ltd / LLP) and secure GSTIN & PAN',
-          'Apply for industry statutory approvals (DPIIT recognition, Trademark Class 9/42 or FSSAI)',
-          'High-fidelity UI/UX wireframing, architecture blueprint & customer discovery interviews',
-          'Domain acquisition (.in / .com) and cloud staging VPC provisioning'
-        ],
-        milestones: ['Entity incorporated with corporate bank account', 'System architecture blueprint validated with 30 target users'],
-        success_metrics: ['100% regulatory documentation clearance', 'Prototype validation score > 85%'],
+        focus: p1Focus,
+        tasks: p1Tasks,
+        milestones: ['Entity incorporated with corporate bank account', 'Facility lease executed / Architecture blueprint validated'],
+        success_metrics: ['100% regulatory documentation clearance', 'Pre-launch validation confirmed'],
         estimated_cost: formatCurrency(fb.phase_1_cost),
         cost_numeric: fb.phase_1_cost,
         cost_rationale: 'Covers statutory government incorporation fees, trademark filing, CA retainers, and initial branding assets.',
@@ -116,18 +271,13 @@ const RoadmapTab = ({ data, idea }) => {
       },
       {
         id: 2,
-        name: 'Phase 2: Core Infrastructure Build, Machinery & MVP Setup',
+        name: p2Name,
         duration: 'Months 3–5',
         weeks: 'Weeks 9–20',
-        focus: 'Engineering Sprint, Store Fit-out / Production Infrastructure',
-        tasks: [
-          'Execute core product engineering sprint / commercial interior fit-out',
-          'Procure high-performance developer workstations / commercial equipment machinery',
-          'Implement core database schemas, APIs, and payment gateway webhooks (Razorpay)',
-          'Hire core founding personnel aligned with Indian market salary standards'
-        ],
-        milestones: ['Production MVP / Commercial facility 100% ready', 'First end-to-end transaction test successful'],
-        success_metrics: ['Zero critical security or operational vulnerabilities', 'System test coverage > 85%'],
+        focus: 'Equipment Commissioning, Core Build & Operational Setup',
+        tasks: p2Tasks,
+        milestones: ['Production MVP / Commercial facility 100% ready', 'First end-to-end operational dry-run successful'],
+        success_metrics: ['Zero critical safety or operational defects', 'Facility/system operational readiness > 95%'],
         estimated_cost: formatCurrency(fb.phase_2_cost),
         cost_numeric: fb.phase_2_cost,
         cost_rationale: 'Covers production-grade infrastructure build/fit-out and high-performance equipment machinery.',
@@ -135,21 +285,21 @@ const RoadmapTab = ({ data, idea }) => {
       },
       {
         id: 3,
-        name: 'Phase 3: Beta Launch, Soft Opening & Feedback Validation',
+        name: 'Phase 3: Soft Opening, Beta Cohort & Launch Campaign',
         duration: 'Months 6–7',
         weeks: 'Weeks 21–28',
-        focus: 'Beta Pilot, User Feedback & Opening Collateral',
+        focus: 'Beta Pilot, User Feedback & Launch Collateral',
         tasks: [
           'Deploy opening consumable inventory buffer and staging cloud reserve',
           'Host invite-only closed beta test / soft opening with pilot cohort',
           'Launch digital marketing teaser campaigns and regional PR outreach',
           'Iterate on user feedback, edge-case bottlenecks, and customer support SOPs'
         ],
-        milestones: ['First 100 paying customers successfully onboarded', 'Net Promoter Score (NPS) established at > +45'],
-        success_metrics: ['Average Order Value at target ticket size', '30-day user retention rate > 30%'],
+        milestones: ['First 100 paying customers successfully onboarded', 'Customer satisfaction rating established at > 4.6★'],
+        success_metrics: ['Average Order Value at target ticket size', '30-day user retention rate > 35%'],
         estimated_cost: formatCurrency(fb.phase_3_cost),
         cost_numeric: fb.phase_3_cost,
-        cost_rationale: 'Covers opening inventory buffer, pilot staging cloud reserve, launch collateral, and initial customer onboarding tests.',
+        cost_rationale: 'Covers opening inventory buffer, pilot staging reserve, launch collateral, and initial customer onboarding tests.',
         financial_tab_tie: 'Synchronized with Financial Tab: Allocates 100% of Inventory/Staging CapEx + 40% of Branding CapEx.'
       },
       {
@@ -162,7 +312,7 @@ const RoadmapTab = ({ data, idea }) => {
           'Scale monthly sales volume to surpass the operational break-even threshold',
           'Deploy performance marketing campaigns on Meta & Google Ads at target blended CAC',
           'Optimize procurement and operational workflows to maintain healthy gross margins',
-          'Achieve monthly cashflow profitability covering all staff salaries, rent, and cloud'
+          'Achieve monthly cashflow profitability covering all staff salaries, rent, and overhead'
         ],
         milestones: ['Operational break-even surpassed with positive monthly net operating profit', 'Customer Acquisition Cost (CAC) fully recouped within 4 months'],
         success_metrics: ['Monthly revenue exceeds monthly operating costs', 'LTV:CAC ratio exceeding 3.8x'],

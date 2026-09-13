@@ -1368,18 +1368,38 @@ class MLService:
             'solutions', 'solution', 'tools', 'tool', 'system', 'systems', 'and', 'the', 'for',
             'with', 'inc', 'com', 'co', 'ai', 'artificial', 'intelligence', 'startup', 'startups',
             'digital', 'global', 'india', 'united', 'states', 'market', 'product', 'products',
-            'builder', 'builders', 'maker', 'makers', 'generator', 'generators', 'saas', 'cloud',
-            'creator', 'creators', 'suite', 'hub', 'space', 'management', 'developer', 'dev'
+            'maker', 'makers', 'generator', 'generators', 'suite', 'hub', 'space', 'management',
+            'computing', 'computer', 'company', 'companies', 'enterprise', 'group', 'business'
         }
         all_words = set(re.findall(r'\w+', f"{ind_clean} {query_clean}"))
         domain_keywords = {w for w in all_words if len(w) > 2 and w not in STOP_WORDS}
+        
+        # High-value domain triggers with differentiated weights
+        combined_text = f"{ind_clean} {query_clean}"
+        ultra_priority_tokens = [
+            'resume', 'resumes', 'finops', 'cloud cost', 'cloud spend', 'aws cost', 'kubernetes cost',
+            'ats', 'cv builder', 'crossfit', 'sourdough', 'patisserie', 'croissant', 'smart clinic',
+            'quick commerce', 'farm to table', 'dum biryani'
+        ]
+        standard_priority_tokens = [
+            'jobseeker', 'job seekers', 'career', 'portfolio', 'billing', 'telemedicine', 'primary care',
+            'patient', 'doctor', 'grocery', 'organic food', 'fresh farm', 'gym', 'fitness',
+            'workout', 'strength training', 'biryani', 'restaurant', 'food delivery', 'cloud kitchen',
+            'bakery', 'artisan bread', 'pastry'
+        ]
+
+        active_ultra_tokens = [p for p in ultra_priority_tokens if p in combined_text]
+        active_std_tokens = [p for p in standard_priority_tokens if p in combined_text]
+
         matches = []
 
         for c in _yc_competitors:
             c_name = c.get('name', 'Competitor')
             c_ind = str(c.get('industry', '')).lower()
             c_tags_raw = str(c.get('tags', ''))
-            c_desc = str(c.get('one_liner', '')).lower()
+            c_one_liner = str(c.get('one_liner', '')).lower()
+            c_long_desc = str(c.get('long_description', '')).lower()
+            c_desc = f"{c_one_liner} {c_long_desc}".strip()
             c_batch = c.get('batch', 'Active')
 
             # Clean up tags formatting (remove raw python list characters)
@@ -1391,25 +1411,68 @@ class MLService:
             raw_score = 0
             domain_matched = False
 
-            if domain_keywords:
-                for word in domain_keywords:
-                    if word in c_name.lower():
+            def match_token(token, target):
+                if not target:
+                    return False
+                if len(token) <= 4:
+                    return bool(re.search(r'\b' + re.escape(token) + r'\b', target))
+                return token in target
+
+            # 1. Ultra priority domain tokens (Direct domain hits)
+            if active_ultra_tokens:
+                for up in active_ultra_tokens:
+                    if match_token(up, c_name.lower()):
+                        raw_score += 70
+                        domain_matched = True
+                    if match_token(up, c_one_liner):
+                        raw_score += 60
+                        domain_matched = True
+                    elif match_token(up, c_desc):
+                        raw_score += 45
+                        domain_matched = True
+                    if match_token(up, c_tags_raw.lower()):
+                        raw_score += 40
+                        domain_matched = True
+
+            # 2. Standard priority tokens
+            if active_std_tokens:
+                for sp in active_std_tokens:
+                    if match_token(sp, c_name.lower()):
+                        raw_score += 40
+                        domain_matched = True
+                    if match_token(sp, c_one_liner):
                         raw_score += 35
                         domain_matched = True
-                    if word in c_desc:
-                        raw_score += 30
-                        domain_matched = True
-                    if word in c_tags_raw.lower():
+                    elif match_token(sp, c_desc):
                         raw_score += 25
+                        domain_matched = True
+                    if match_token(sp, c_tags_raw.lower()):
+                        raw_score += 20
+                        domain_matched = True
+
+            # 3. Domain keywords
+            if domain_keywords:
+                for word in domain_keywords:
+                    if match_token(word, c_name.lower()):
+                        raw_score += 20
+                        domain_matched = True
+                    if match_token(word, c_one_liner):
+                        raw_score += 15
+                        domain_matched = True
+                    elif match_token(word, c_desc):
+                        raw_score += 10
+                        domain_matched = True
+                    if match_token(word, c_tags_raw.lower()):
+                        raw_score += 10
                         domain_matched = True
 
                 # If domain keywords exist, do not return companies that have zero domain match
-                if not domain_matched or raw_score < 45:
+                if not domain_matched or raw_score < 35:
                     continue
             else:
                 if ind_clean and ind_clean in c_ind:
                     raw_score += 20
-                if raw_score < 35:
+                if raw_score < 30:
                     continue
 
             matches.append((raw_score, c, formatted_tags, c_batch))
@@ -1440,6 +1503,10 @@ class MLService:
             results.append({
                 "name": c_name,
                 "url": c.get('website', ''),
+                "one_liner": one_liner,
+                "description": c.get('long_description') or one_liner,
+                "tags": formatted_tags,
+                "batch": batch,
                 "similarity_score": round(assigned_score, 1),
                 "rating": cust_rating,
                 "review_count": cust_rev,

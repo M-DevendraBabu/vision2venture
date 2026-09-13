@@ -85,10 +85,29 @@ class CompetitorIntelligenceService:
             seen_names.add(norm_name)
             unique_competitors.append(c)
 
-        # 4. RE-SCORE & SORT
-        # Relevance: ensure selected status is preserved
-        unique_competitors.sort(key=lambda x: -float(x.get("relevance_score", 50.0)))
-        final_list = unique_competitors[:limit]
+        # 4. RE-SCORE & BALANCED SORT
+        if b_type == "hybrid":
+            # For hybrid ventures, guarantee balanced representation of both physical local and online/YC competitors
+            offline_pool = [c for c in unique_competitors if c.get("business_type") == "offline"]
+            online_pool = [c for c in unique_competitors if c.get("business_type") in ["online", "hybrid"]]
+            
+            offline_pool.sort(key=lambda x: -float(x.get("relevance_score", 50.0)))
+            online_pool.sort(key=lambda x: -float(x.get("relevance_score", 50.0)))
+
+            target_off = min(len(offline_pool), max(3, limit // 2))
+            target_on = min(len(online_pool), limit - target_off)
+            
+            # If one pool has fewer, let the other fill up to limit
+            if len(online_pool) < target_on:
+                target_off = min(len(offline_pool), limit - len(online_pool))
+            elif len(offline_pool) < target_off:
+                target_on = min(len(online_pool), limit - len(offline_pool))
+
+            final_list = offline_pool[:target_off] + online_pool[:target_on]
+            final_list.sort(key=lambda x: -float(x.get("relevance_score", 50.0)))
+        else:
+            unique_competitors.sort(key=lambda x: -float(x.get("relevance_score", 50.0)))
+            final_list = unique_competitors[:limit]
 
         # 5. STRICT COUNTS BY BUSINESS TYPE
         if b_type == "offline":
@@ -295,46 +314,54 @@ CRITICAL RULES:
         industry = idea_context.get("industry", "Technology")
         b_type = idea_context.get("business_type", "online")
 
-        # Distinct, varied competitor value generators without duplicating company name
+        # Distinct, varied competitor value generators using competitor-specific data
         def get_comp_business_model(c, idx):
+            if c.get("features") and len(c.get("features")) > 20:
+                return f"{c.get('features')[:110]}."
             b_model = (c.get("business_type") or "offline").lower()
-            if b_model == "online":
+            if b_model in ["online", "hybrid"]:
                 models = [
-                    "Web/app platform with self-serve digital onboarding and automated user acquisition.",
-                    "Two-sided digital marketplace connecting service providers with online customers.",
-                    "Multi-tiered subscription model with freemium tier and cloud-hosted APIs."
+                    f"Cloud platform on {c.get('domain') or 'web'} with self-serve digital onboarding and automated user acquisition.",
+                    f"Digital solution with API integration and multi-tenant SaaS infrastructure.",
+                    f"Two-sided digital marketplace connecting regional service providers with active users."
                 ]
             else:
+                dist = c.get("distance_km")
+                dist_str = f" ({dist} km away)" if dist is not None else ""
                 models = [
-                    "Established brick-and-mortar storefront with fixed real estate and walk-in counter operations.",
-                    "Traditional localized branch model relying primarily on daily neighborhood foot-traffic.",
-                    "High-volume local retail facility focusing on on-site order fulfillment with dedicated staff."
+                    f"Established physical storefront{dist_str} with on-site customer service counters.",
+                    f"Traditional local retail outlet relying on direct neighborhood walk-in patronage.",
+                    f"Dedicated operational center focusing on on-premise order fulfillment."
                 ]
             return models[idx % len(models)]
 
         def get_comp_target_audience(c, idx):
+            if c.get("target_audience") and len(c.get("target_audience")) > 15:
+                return c.get("target_audience")
             dist = c.get("distance_km")
             loc = (c.get("location") or "the catchment")[:25]
             if dist is not None:
                 audiences = [
-                    f"Broad retail foot traffic and walk-in shoppers within {dist} km along {loc}.",
-                    f"Budget-conscious neighborhood residents, students, and daily commuters in {loc}.",
-                    f"Established residential households and multi-generational family regulars in {loc}."
+                    f"Walk-in patrons, commuters, and local residents within {dist} km along {loc}.",
+                    f"Neighborhood families, students, and regular customers situated in {loc}.",
+                    f"Established local clientele requiring direct in-person services."
                 ]
             else:
                 audiences = [
-                    "Digital-native consumers and remote professionals seeking on-demand web access.",
-                    "Mainstream internet users and business teams requiring standardized digital tools.",
-                    "Growth-stage users looking for entry-level digital productivity software."
+                    f"Digital-first users and enterprise teams requiring {industry} solutions.",
+                    f"Tech-forward organizations and professionals managing automated workflows.",
+                    f"Active consumers and growth-stage accounts seeking self-serve tooling."
                 ]
             return audiences[idx % len(audiences)]
 
         def get_comp_pricing_strategy(c, idx):
+            if c.get("pricing_details") and len(c.get("pricing_details")) > 15 and not "Subject to direct inquiry" in c.get("pricing_details"):
+                return c.get("pricing_details")
             pricing = c.get("pricing_model", "Standard")
             pricings = [
-                f"Conventional {pricing} pricing with standard unit markups and limited customer discounts.",
-                "Traditional retail counter pricing with set margins and high upfront lock-in.",
-                "Fixed tiered price points with minimum spend thresholds for special service bundles."
+                f"{pricing} model with fixed catalog pricing and standard volume discounts.",
+                f"Tiered structure based on usage with standard enterprise add-on charges.",
+                f"Conventional unit-based billing with fixed monthly service fees."
             ]
             return pricings[idx % len(pricings)]
 
@@ -342,25 +369,26 @@ CRITICAL RULES:
             dist = c.get("distance_km")
             if dist is not None:
                 distribs = [
-                    "Physical counter checkout queues and direct on-premise takeaway parcels.",
-                    "Storefront pickup combined with third-party delivery apps charging 18-25% commissions.",
-                    "Single localized service counter with manual token issuance and wait times."
+                    f"On-premise service counters with direct walk-in takeaway and order pickup.",
+                    f"Neighborhood storefront presence paired with localized third-party delivery dispatch.",
+                    f"Single physical location with in-person queue management and token issuance."
                 ]
             else:
                 distribs = [
-                    "Browser web portals and mobile app stores with automated email sequences.",
-                    "Organic search landing pages and partner directory referral funnels.",
-                    "Direct website signups with self-serve credit card billing."
+                    f"Direct cloud web portal and native mobile application with self-serve onboarding.",
+                    f"Search-driven digital acquisition with instant online access and webhook sync.",
+                    f"Self-serve website platform with multi-channel customer success support."
                 ]
             return distribs[idx % len(distribs)]
 
         def get_comp_moat(c, idx):
             rate = c.get("rating", 4.3)
             rev = c.get("review_count", 110)
+            rev_str = f" across {rev:,} reviews" if rev else ""
             moats = [
-                f"Solid {rate}★ rating across {rev} reviews; physical visibility but peak waiting congestion.",
-                f"Strong neighborhood brand recall; conventional operations without personalized digital retention.",
-                f"Established supplier relationships and dependable local presence; slower service turnaround."
+                f"Rated {rate}★{rev_str}; established brand recall with traditional operational practices.",
+                f"Strong localized presence with dependable operations and steady customer baseline.",
+                f"Solid market footprint; conventional workflows without real-time AI personalization."
             ]
             return moats[idx % len(moats)]
 
