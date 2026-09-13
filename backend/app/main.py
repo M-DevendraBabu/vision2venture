@@ -1,5 +1,6 @@
-from fastapi import FastAPI
-from app.database.connection import engine, Base, SessionLocal
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from app.database.connection import engine, Base, SessionLocal, get_db
 from app.routers import auth, startup, analysis, report, admin, chatbot, competitors
 from app.middleware.cors import add_cors_middleware
 from app.middleware.rate_limiter import RateLimiterMiddleware
@@ -96,9 +97,40 @@ def startup_tasks():
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to Vision2Venture API", "version": "1.0.0"}
+    return {"message": "Welcome to Vision2Venture API", "version": "1.0.1"}
 
 @app.get("/api/health")
 def health_check():
     return {"status": "healthy", "service": "Vision2Venture API"}
+
+@app.get("/api/system/status")
+def system_status(db: Session = Depends(get_db)):
+    from app.models.startup_idea import StartupIdea
+    from app.models.analysis import StartupAnalysis, MarketAnalysis
+    admin_email = os.getenv("ADMIN_EMAIL", "devendrababumotupalli@gmail.com").strip().lower()
+    admin_user = db.query(User).filter(User.email.ilike(admin_email)).first()
+    ideas_info = []
+    if admin_user:
+        for i in db.query(StartupIdea).filter(StartupIdea.user_id == admin_user.id).all():
+            sa = db.query(StartupAnalysis).filter(StartupAnalysis.idea_id == i.id).first()
+            ma = db.query(MarketAnalysis).filter(MarketAnalysis.idea_id == i.id).first()
+            ideas_info.append({
+                "id": i.id,
+                "title": i.title,
+                "score": float(sa.overall_score) if sa and sa.overall_score is not None else None,
+                "data_source": getattr(ma, 'data_source', None)
+            })
+    return {
+        "status": "online",
+        "admin": admin_email,
+        "admin_found": bool(admin_user),
+        "idea_count": len(ideas_info),
+        "ideas": ideas_info
+    }
+
+@app.get("/api/system/sync-seed")
+def system_sync_seed(force: bool = True, db: Session = Depends(get_db)):
+    from app.database.migration_helper import sync_production_seed_if_needed
+    return sync_production_seed_if_needed(db, force=force)
+
 

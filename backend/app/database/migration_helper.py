@@ -203,9 +203,23 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
         has_stale = any(i.title.lower().startswith(stale_prefixes) for i in current_ideas)
         is_exact_match = (current_titles == PROD_TITLES)
 
-        # Check for duplicate matrix strings in existing intelligence
+        seed_path = os.path.join(os.path.dirname(__file__), "production_seed_data.json")
+        if not os.path.exists(seed_path):
+            print(f"[SeedSync] Error: {seed_path} not found.")
+            return {"status": "error", "message": f"Seed file not found: {seed_path}"}
+
+        with open(seed_path, "r", encoding="utf-8") as f:
+            seed_items = json.load(f)
+
+        seed_scores = {
+            item['idea']['title'].strip(): item.get('startup_analysis', {}).get('overall_score')
+            for item in seed_items if 'idea' in item and 'title' in item['idea']
+        }
+
+        # Check for duplicate matrix strings in existing intelligence, missing data_source, or score mismatches
         has_legacy_intel = False
         has_unmigrated_data = False
+        has_score_mismatch = False
         if is_exact_match:
             for idea in current_ideas:
                 intel = db.query(CompetitorIntelligence).filter(CompetitorIntelligence.idea_id == idea.id).first()
@@ -217,24 +231,24 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
                 if not m or getattr(m, 'data_source', None) is None:
                     has_unmigrated_data = True
                     break
+                s = db.query(StartupAnalysis).filter(StartupAnalysis.idea_id == idea.id).first()
+                expected_score = seed_scores.get(idea.title.strip())
+                actual_score = float(s.overall_score) if s and s.overall_score is not None else None
+                if expected_score is not None:
+                    if actual_score is None or abs(float(expected_score) - actual_score) > 0.05:
+                        has_score_mismatch = True
+                        print(f"[SeedSync] Idea '{idea.title}' score mismatch: DB={actual_score} vs Seed={expected_score}. Refresh required.")
+                        break
 
-        if not force and is_exact_match and not has_stale and not has_legacy_intel and not has_unmigrated_data:
+        if not force and is_exact_match and not has_stale and not has_legacy_intel and not has_unmigrated_data and not has_score_mismatch:
             print(f"[SeedSync] Admin user {admin_user.email} already has the 7 verified production ideas with fresh data. No action needed.")
             return {"status": "ok", "message": "already synchronized", "count": len(current_ideas)}
 
-        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel}, unmigrated={has_unmigrated_data})...")
+        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel}, unmigrated={has_unmigrated_data}, score_mismatch={has_score_mismatch})...")
 
         for idea in current_ideas:
             db.delete(idea)
         db.flush()
-
-        seed_path = os.path.join(os.path.dirname(__file__), "production_seed_data.json")
-        if not os.path.exists(seed_path):
-            print(f"[SeedSync] Error: {seed_path} not found.")
-            return {"status": "error", "message": f"Seed file not found: {seed_path}"}
-
-        with open(seed_path, "r", encoding="utf-8") as f:
-            seed_items = json.load(f)
 
         for item in seed_items:
             idea_dict = item.get("idea", {})

@@ -20,6 +20,26 @@ const AdminPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [userHistory, setUserHistory] = useState([]);
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSyncSeed = async () => {
+    if (!window.confirm("Synchronize the 7 canonical startup ideas with the latest real-world analyzed data? This updates all benchmarks and scores.")) return;
+    setSyncing(true);
+    try {
+      const res = await api.post('/admin/sync-seed');
+      if (res.data?.status === 'success' || res.data?.status === 'ok') {
+        toast.success(`Successfully synchronized canonical ideas with real-world data!`);
+        fetchStats();
+        if (selectedUser) fetchUserHistory(selectedUser.id);
+      } else {
+        toast.info(res.data?.message || 'Sync completed');
+      }
+    } catch (err) {
+      toast.error('Failed to sync seed ideas: ' + (err.response?.data?.detail || err.message));
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   useEffect(() => {
     if (user?.role !== 'admin') return;
@@ -105,6 +125,25 @@ const AdminPage = () => {
               <p className="text-secondary text-sm">User oversight, registration & startup analysis management</p>
             </div>
           </div>
+          <button
+            onClick={handleSyncSeed}
+            disabled={syncing}
+            className="btn btn-primary flex align-center gap-xs"
+            style={{
+              padding: '10px 18px',
+              borderRadius: '10px',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              cursor: syncing ? 'not-allowed' : 'pointer',
+              opacity: syncing ? 0.7 : 1,
+              background: 'linear-gradient(135deg, #0284c7, #0369a1)',
+              color: '#ffffff',
+              border: 'none',
+              boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)'
+            }}
+          >
+            <FaRocket size={14} /> {syncing ? 'Syncing Real-World Data...' : 'Sync Real-World Ideas'}
+          </button>
         </div>
 
         {/* Stats Row */}

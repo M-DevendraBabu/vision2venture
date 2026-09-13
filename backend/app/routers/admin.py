@@ -120,3 +120,11 @@ def retrain_models(background_tasks: BackgroundTasks, admin: User = Depends(get_
         "status": "success",
         "message": "Dataset model retraining pipeline launched successfully in background."
     }
+
+@router.post("/sync-seed")
+def sync_seed_ideas(admin: User = Depends(get_admin_user), db: Session = Depends(get_db)):
+    """Synchronizes the 7 canonical production startup ideas directly into the database."""
+    from app.database.migration_helper import sync_production_seed_if_needed
+    res = sync_production_seed_if_needed(db, force=True, target_user=admin)
+    return res
+
