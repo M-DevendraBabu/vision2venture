@@ -35,43 +35,34 @@ def _init_clients():
 _init_clients()
 
 
-def _call_llm(prompt: str, max_tokens: int = 700, timeout: float = 12.0) -> str:
-    """Call Groq using active high-speed model qwen/qwen3.8-27b with failover to NVIDIA."""
-    safe_max_tokens = min(int(max_tokens or 650), 850)
+def _call_llm(prompt: str, max_tokens: int = 450, timeout: float = 12.0) -> str:
+    """Call Groq using active high-speed model qwen/qwen3.8-27b with failover and rate-limit backoff."""
+    safe_max_tokens = min(int(max_tokens or 400), 450)
     
     if _groq_client is not None:
-        try:
-            completion = _groq_client.chat.completions.create(
-                model="qwen/qwen3.8-27b",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=safe_max_tokens,
-                timeout=timeout,
-            )
-            text = completion.choices[0].message.content
-            if text:
-                text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
-                return text
-        except Exception as e:
-            print(f"[AI] Groq call notice: {e}")
-
-    # 2. Try NVIDIA Failover (active gemma-3-12b-it)
-    if _nvidia_client is not None:
-        try:
-            completion = _nvidia_client.chat.completions.create(
-                model="google/gemma-3-12b-it",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-                max_tokens=safe_max_tokens,
-                timeout=timeout,
-            )
-            text = completion.choices[0].message.content
-            if text:
-                return text
-        except Exception as e:
-            print(f"[AI] NVIDIA failover notice: {e}")
+        for attempt in range(3):
+            try:
+                completion = _groq_client.chat.completions.create(
+                    model="qwen/qwen3.8-27b",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.7,
+                    max_tokens=safe_max_tokens,
+                    timeout=timeout,
+                )
+                text = completion.choices[0].message.content
+                if text:
+                    text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+                    return text
+            except Exception as e:
+                err_str = str(e)
+                if '429' in err_str and attempt < 2:
+                    time.sleep(6.0)
+                    continue
+                print(f"[AI] Groq call notice: {e}")
+                break
 
     return ""
+
 
 
 def _parse_json(text: str) -> dict:

@@ -1,4 +1,5 @@
 import re
+import time
 import uuid
 import concurrent.futures
 from sqlalchemy.orm import Session
@@ -316,31 +317,30 @@ class AnalysisService:
             print(f"[Analysis] ERROR in Technology Recommendations: {e}")
             db.rollback()
 
-        # ============ 5, 6, 7. AI MODULES (PARALLEL CONCURRENT EXECUTION WITH REAL DATA CONTEXT) ============
+        # ============ 5, 6, 7. AI MODULES (SEQUENTIAL WITH RATE-LIMIT SPACING) ============
         bm_data, swot_data, road_data = {}, {}, {}
         try:
-            print(f"[Analysis] 5,6,7/9 Running Business Model, SWOT & Roadmap in parallel...")
-            with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-                future_bm = executor.submit(AIService.run_business_model, context)
-                future_swot = executor.submit(AIService.run_swot_analysis, context)
-                future_road = executor.submit(AIService.run_roadmap, context)
-
-                try:
-                    bm_data = future_bm.result(timeout=15.0) or {}
-                except Exception as e:
-                    print(f"[Analysis] BM notice: {e}")
-                
-                try:
-                    swot_data = future_swot.result(timeout=15.0) or {}
-                except Exception as e:
-                    print(f"[Analysis] SWOT notice: {e}")
-                
-                try:
-                    road_data = future_road.result(timeout=15.0) or {}
-                except Exception as e:
-                    print(f"[Analysis] Roadmap notice: {e}")
+            print(f"[Analysis] 5/9 Running Business Model...")
+            bm_data = AIService.run_business_model(context) or {}
         except Exception as e:
-            print(f"[Analysis] Parallel executor notice: {e}")
+            print(f"[Analysis] BM notice: {e}")
+
+        time.sleep(1.2)
+
+        try:
+            print(f"[Analysis] 6/9 Running SWOT Analysis...")
+            swot_data = AIService.run_swot_analysis(context) or {}
+        except Exception as e:
+            print(f"[Analysis] SWOT notice: {e}")
+
+        time.sleep(1.2)
+
+        try:
+            print(f"[Analysis] 7/9 Running Roadmap...")
+            road_data = AIService.run_roadmap(context) or {}
+        except Exception as e:
+            print(f"[Analysis] Roadmap notice: {e}")
+
 
         # Ensure Business Model data is high-fidelity
         if not bm_data or not bm_data.get('value_proposition'):

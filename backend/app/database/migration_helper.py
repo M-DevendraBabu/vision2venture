@@ -205,6 +205,7 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
 
         # Check for duplicate matrix strings in existing intelligence
         has_legacy_intel = False
+        has_unmigrated_data = False
         if is_exact_match:
             for idea in current_ideas:
                 intel = db.query(CompetitorIntelligence).filter(CompetitorIntelligence.idea_id == idea.id).first()
@@ -212,12 +213,16 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
                     if any("legacy technical debt" in str(r.get("advantage", "")) for r in intel.comparison_matrix):
                         has_legacy_intel = True
                         break
+                m = db.query(MarketAnalysis).filter(MarketAnalysis.idea_id == idea.id).first()
+                if not m or getattr(m, 'data_source', None) is None:
+                    has_unmigrated_data = True
+                    break
 
-        if not force and is_exact_match and not has_stale and not has_legacy_intel:
+        if not force and is_exact_match and not has_stale and not has_legacy_intel and not has_unmigrated_data:
             print(f"[SeedSync] Admin user {admin_user.email} already has the 7 verified production ideas with fresh data. No action needed.")
             return {"status": "ok", "message": "already synchronized", "count": len(current_ideas)}
 
-        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel})...")
+        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel}, unmigrated={has_unmigrated_data})...")
 
         for idea in current_ideas:
             db.delete(idea)
