@@ -15,10 +15,18 @@ const calculateFallbackRoadmap = (idea, data) => {
   const isHybrid = sec.includes('hybrid') || sec.includes('phygital');
   const userBudget = parseFloat(idea?.budget || 0);
 
-  let totalCapex = isOffline ? 600000 : (isHybrid ? 480000 : 320000);
-  if (userBudget >= 500000) {
-    totalCapex = Math.max(totalCapex, Math.round(userBudget * 0.55));
+  let devRatio = isOffline ? 0.40 : 0.48;
+  const userCapex = Number(data?.total_setup_capex || data?.total_capex || 0);
+  const backendDevCost = parseFloat(data?.development_cost || 0);
+  let effectiveBudget = userBudget;
+  if (userBudget >= 1000 && userBudget <= 95000) {
+    effectiveBudget = userBudget * 83.5;
   }
+  let totalCapex = userCapex > 0 
+    ? userCapex 
+    : (backendDevCost > 0 
+      ? Math.round(backendDevCost / devRatio) 
+      : (effectiveBudget >= 100000 ? Math.round(effectiveBudget * 0.85) : (isOffline ? 350000 : 250000)));
 
   let devCost = Math.round(totalCapex * (isOffline ? 0.40 : 0.48));
   let hwCost = Math.round(totalCapex * (isOffline ? 0.35 : 0.24));
@@ -30,7 +38,8 @@ const calculateFallbackRoadmap = (idea, data) => {
   let p3Cost = invCost + Math.round(brandCost * 0.4);
   let p2Cost = totalCapex - (p1Cost + p3Cost);
 
-  let monthlyOpex = isOffline ? 303000 : (isHybrid ? 293300 : 207000);
+  const userOpex = Number(data?.monthly_operating_cost || data?.monthly_opex || 0);
+  let monthlyOpex = userOpex > 0 ? userOpex : (userBudget > 0 ? Math.round(userBudget * 0.22) : (isOffline ? 120000 : 85000));
 
   return {
     total_setup_capex: totalCapex,

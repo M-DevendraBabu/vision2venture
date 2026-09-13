@@ -94,17 +94,25 @@ const calculateFallbackFinancials = (idea, data) => {
     utilMonthly = 5500;
   }
 
-  // Base CapEx
-  let baseCapex = isOffline ? 600000 : (isHybrid ? 480000 : 320000);
-  let totalCapex = userBudget >= 500000 ? Math.max(baseCapex, Math.round(userBudget * 0.55)) : baseCapex;
-
   let devRatio = isOffline ? 0.40 : 0.48;
   let hwRatio = isOffline ? 0.35 : 0.24;
   let licRatio = isOffline ? 0.08 : 0.12;
   let brandRatio = isOffline ? 0.07 : 0.10;
   let invRatio = isOffline ? 0.10 : 0.06;
 
-  let devCost = Math.round(totalCapex * devRatio);
+  // Base CapEx
+  let baseCapex = isOffline ? 450000 : (isHybrid ? 380000 : 250000);
+  let effectiveBudget = userBudget;
+  if (userBudget >= 1000 && userBudget <= 95000) {
+    effectiveBudget = userBudget * 83.5;
+  }
+
+  const backendDevCost = parseFloat(data?.development_cost || 0);
+  let totalCapex = backendDevCost > 0
+    ? Math.round(backendDevCost / devRatio)
+    : (effectiveBudget >= 100000 ? Math.round(effectiveBudget * 0.85) : baseCapex);
+
+  let devCost = backendDevCost > 0 ? Math.round(backendDevCost) : Math.round(totalCapex * devRatio);
   let hwCost = Math.round(totalCapex * hwRatio);
   let licCost = Math.round(totalCapex * licRatio);
   let brandCost = Math.round(totalCapex * brandRatio);
@@ -469,7 +477,7 @@ const FinancialTab = ({ data, idea }) => {
               <FaCalculator style={{ color: '#0ea5e9' }} /> Total Setup Capital (CapEx) Mathematical Formula
             </div>
             <div className="fin-formula-code">
-              <span className="formula-var">Total CapEx</span> = Product R&amp;D (<span className="formula-val">{formatCurrency(devCost)}</span>) + Machinery/Hardware (<span className="formula-val">{formatCurrency(hwCost)}</span>) + Legal/Filing (<span className="formula-val">{formatCurrency(licCost)}</span>) + Branding (<span className="formula-val">{formatCurrency(brandCost)}</span>) + Working Capital Reserve (<span className="formula-val">{formatCurrency(invCost)}</span>) = <span className="formula-total">{formatCurrency(totalCapEx)}</span>
+              <span className="formula-var">Total CapEx</span> = {isOffline ? 'Fit-Out & Renovation' : 'Core MVP Architecture'} (<span className="formula-val">{formatCurrency(devCost)}</span>) + {isOffline ? 'Machinery & Equipment' : 'Hardware & Staging'} (<span className="formula-val">{formatCurrency(hwCost)}</span>) + {isOffline ? 'FSSAI & Permits' : 'Legal & IP'} (<span className="formula-val">{formatCurrency(licCost)}</span>) + Branding (<span className="formula-val">{formatCurrency(brandCost)}</span>) + {isOffline ? 'Initial Stock & Reserve' : 'Cloud & Working Reserve'} (<span className="formula-val">{formatCurrency(invCost)}</span>) = <span className="formula-total">{formatCurrency(totalCapEx)}</span>
             </div>
             <div className="fin-formula-desc">
               Upfront capital allocated prior to commercial launch to build production-grade infrastructure, secure corporate registrations, and ensure liquidity without early cashflow strain.
@@ -530,7 +538,7 @@ const FinancialTab = ({ data, idea }) => {
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
                   {isOffline 
-                    ? 'Covers commercial dual-boiler espresso machine, under-counter refrigeration, prep tables, touch POS terminal, thermal receipt printer, and CCTV surveillance system.'
+                    ? 'Covers commercial kitchen/storefront machinery, commercial refrigeration, stainless prep fixtures, digital touch POS billing terminal, receipt printer, and security surveillance.'
                     : 'Covers high-performance developer laptops (Apple M-series / ThinkPad workstations), external 4K testing monitors, test mobile devices, and staging security appliances.'}
                 </p>
                 <div className="fin-calc-text">Industrial-grade hardware designed for a minimum 3-year continuous commercial lifespan.</div>
@@ -582,7 +590,7 @@ const FinancialTab = ({ data, idea }) => {
                 <div className="fin-why-label"><FaQuestionCircle /> Why It Costs This Much:</div>
                 <p className="fin-why-text">
                   {isOffline 
-                    ? 'Covers first 30 days of raw organic coffee beans, milk, baking ingredients, eco-friendly takeaway containers, napkins, and cleaning supplies.'
+                    ? 'Covers first 30 days of raw ingredients/inventory stock, merchandise, eco-friendly packaging, and operational supplies.'
                     : 'Covers initial AWS Mumbai staging VPC provisioning, automated vulnerability scanning, SSL certificates, and initial cloud credit reserve.'}
                 </p>
                 <div className="fin-calc-text">Pre-funded liquidity buffer prevents stockouts and server downtime during week-1 launch.</div>

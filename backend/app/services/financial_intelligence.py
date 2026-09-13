@@ -266,6 +266,18 @@ FINANCIAL_DOMAIN_BENCHMARKS = {
 }
 
 
+def detect_location_tier(location: str, title: str = "", description: str = "") -> str:
+    """Classifies location into commercial cost tiers: campus_town, tier_3_town, tier_2_city, or tier_1_metro."""
+    combined = f"{location} {title} {description}".lower()
+    if any(k in combined for k in ['vadlamudi', 'vignan', 'campus', 'college', 'university', 'vidyapeeth', 'hostel']):
+        return 'campus_town'
+    if any(k in combined for k in ['bangalore', 'bengaluru', 'mumbai', 'delhi', 'ncr', 'hyderabad', 'chennai', 'kolkata', 'pune', 'gurgaon', 'noida']):
+        return 'tier_1_metro'
+    if any(k in combined for k in ['guntur', 'vijayawada', 'jaipur', 'indore', 'chandigarh', 'kochi', 'lucknow', 'nagpur', 'surat', 'bhopal', 'vizag', 'visakhapatnam']):
+        return 'tier_2_city'
+    return 'tier_3_town'
+
+
 def generate_financial_analysis(context: dict) -> dict:
     """
     Computes accurate, realistic, Indian-calibrated financial projections,
@@ -283,6 +295,26 @@ def generate_financial_analysis(context: dict) -> dict:
 
     is_offline = 'offline' in sec or 'physical' in sec
     is_hybrid = 'hybrid' in sec or 'phygital' in sec
+
+    loc_tier = detect_location_tier(context.get('location', ''), title, context.get('description', ''))
+
+    # Location-tiered cost multiplier calibration
+    if loc_tier == 'campus_town':
+        rent_tier_multiplier = 0.35   # e.g. ₹12k-₹16k/mo for college/Vadlamudi
+        staff_tier_multiplier = 0.55  # e.g. ₹15k-₹18k/mo
+        tier_label = "Campus & College Town"
+    elif loc_tier == 'tier_3_town':
+        rent_tier_multiplier = 0.45   # e.g. ₹15k-₹20k/mo
+        staff_tier_multiplier = 0.65  # e.g. ₹18k-₹22k/mo
+        tier_label = "Tier-3 Semi-Urban Hub"
+    elif loc_tier == 'tier_2_city':
+        rent_tier_multiplier = 0.70   # e.g. ₹22k-₹32k/mo
+        staff_tier_multiplier = 0.80  # e.g. ₹22k-₹28k/mo
+        tier_label = "Tier-2 Commercial Corridor"
+    else:
+        rent_tier_multiplier = 1.0    # Metro
+        staff_tier_multiplier = 1.0
+        tier_label = "Tier-1 Metro Hub"
 
     # Fallback to sector category if exact industry not in benchmark table
     if not bm:
@@ -305,13 +337,24 @@ def generate_financial_analysis(context: dict) -> dict:
     # -------------------------------------------------------------
     # 1. CAPITAL SETUP (CapEx) MODELING
     # -------------------------------------------------------------
-    base_capex = 750000.0 if is_offline else (480000.0 if is_hybrid else 320000.0)
-    if user_budget >= 500000.0:
-        total_capex = round(max(base_capex, user_budget * 0.55), -3)
-    elif user_budget > 0:
-        total_capex = round(max(base_capex * 0.80, user_budget * 1.15), -3)
+    if is_offline:
+        default_base_capex = 350000.0 if loc_tier in ['campus_town', 'tier_3_town'] else (550000.0 if loc_tier == 'tier_2_city' else 750000.0)
+    elif is_hybrid:
+        default_base_capex = 420000.0
     else:
-        total_capex = base_capex
+        default_base_capex = 280000.0
+
+    # Convert legacy USD budgets (typically 1,000 to 95,000) to INR if needed
+    effective_budget = user_budget
+    if 1000.0 <= user_budget <= 95000.0:
+        effective_budget = user_budget * 83.5
+
+    if effective_budget >= 100000.0:
+        total_capex = round(max(default_base_capex * 0.65, min(default_base_capex * 1.5, effective_budget * 0.85)), -3)
+    elif effective_budget > 0:
+        total_capex = round(max(default_base_capex * 0.65, effective_budget * 0.85), -3)
+    else:
+        total_capex = default_base_capex
 
     dev_cost = round(total_capex * bm['capex_dev_fitout_ratio'], -2)
     hw_cost = round(total_capex * bm['capex_hardware_ratio'], -2)
@@ -326,13 +369,14 @@ def generate_financial_analysis(context: dict) -> dict:
     # 2. MONTHLY OPERATING EXPENSES (OpEx) MODELING
     # -------------------------------------------------------------
     salary_headcount = max(team_size, 2 if is_offline else 1)
-    staff_cost = round(salary_headcount * bm['salary_per_staff'], -2)
+    salary_per_staff = round(bm['salary_per_staff'] * (staff_tier_multiplier if is_offline else 1.0), -2)
+    staff_cost = round(salary_headcount * salary_per_staff, -2)
 
-    # Rent & Lease
+    # Rent & Lease calibrated to location tier
     if is_offline:
-        rent_cost = round(bm['monthly_rent_base'], -2)
+        rent_cost = round(bm['monthly_rent_base'] * rent_tier_multiplier, -2)
     elif is_hybrid:
-        rent_cost = round(bm['monthly_rent_base'] * 0.65, -2)
+        rent_cost = round(bm['monthly_rent_base'] * 0.65 * rent_tier_multiplier, -2)
     else:
         rent_cost = round(min(18000.0, max(0.0, (team_size - 1) * 4500.0)), -2)
 
@@ -427,58 +471,128 @@ def generate_financial_analysis(context: dict) -> dict:
     # -------------------------------------------------------------
     # 6. ITEMISED "WHY IT COSTS THIS MUCH" DESCRIPTIONS
     # -------------------------------------------------------------
+    ind_lower = f"{industry} {title} {context.get('description', '')}".lower()
+    is_food = any(k in ind_lower for k in ['food', 'beverage', 'cafe', 'restaurant', 'biryani', 'bakery', 'kitchen', 'eatery', 'dining'])
+    is_fitness = any(k in ind_lower for k in ['gym', 'fitness', 'crossfit', 'workout', 'wellness'])
+    is_clinic = any(k in ind_lower for k in ['clinic', 'health', 'doctor', 'medical', 'dental'])
+    is_retail = any(k in ind_lower for k in ['retail', 'grocery', 'supermarket', 'store', 'shop', 'organic'])
+
+    if is_food:
+        c1_name = "Commercial Kitchen & Machinery Setup"
+        c1_why = "Covers commercial gas burners, heavy-duty biryani handis, commercial deep freezer, ventilation/exhaust hood, and stainless steel prep tables."
+        c2_name = "Dining Fit-Out & Service Counter"
+        c2_why = "Covers customer order counter, dining seating/tables, LED lighting, interior painting, and exterior illuminated signboard."
+        c3_name = "FSSAI Food License & Trade Permits"
+        c3_why = "Covers statutory FSSAI State/Central food license, municipal trade license, Fire NOC, and shop establishment registration."
+        c4_name = "Branding, Menu Displays & QR Collateral"
+        c4_why = "Covers illuminated menu boards, takeaway packaging design, printed banners, and UPI table QR stands."
+        c5_name = "Initial Raw Material Stock & Working Reserve"
+        c5_why = "Covers opening bulk inventory (premium basmati rice, spices, ghee/oils, packaging) plus operating cash reserve."
+    elif is_fitness:
+        c1_name = "Commercial Fitness Machinery & Weights"
+        c1_why = "Covers multi-gym stations, Olympic barbells, dumbbell racks, cable crossovers, and cardio machinery."
+        c2_name = "Flooring, Mirrors & Locker Setup"
+        c2_why = "Covers high-density acoustic rubber flooring, wall-to-wall mirrors, sound system, and secure customer lockers."
+        c3_name = "Trade License & Safety Compliance"
+        c3_why = "Covers municipal gymnasium trade license, emergency medical kit, and building safety NOC."
+        c4_name = "Branding & Pre-Launch Signage"
+        c4_why = "Covers exterior LED fascia sign, promotional banners, and pre-launch membership passes."
+        c5_name = "Equipment Maintenance Spares & Reserve"
+        c5_why = "Covers spare cables, sanitization stations, and initial liquidity reserve."
+    elif is_clinic:
+        c1_name = "Diagnostic & Medical Treatment Hardware"
+        c1_why = "Covers digital examination apparatus, sterilization autoclave, vital diagnostic monitors, and consultation furniture."
+        c2_name = "Clinic Sanitation & Patient Waiting Fit-Out"
+        c2_why = "Covers medical-grade flooring, partition walls, air filtration, reception counter, and patient waiting seats."
+        c3_name = "Clinical Establishment & Pharmacy Licensing"
+        c3_why = "Covers Clinical Establishments Act registration, biomedical waste disposal tie-up, and municipal trade certificate."
+        c4_name = "Local Healthcare Branding & Signage"
+        c4_why = "Covers illuminated clinic board, bilingual direction signage, and appointment scheduling collateral."
+        c5_name = "Medical Consumables & Emergency Reserve"
+        c5_why = "Covers initial pharmacy consumables, disposable protective gear, and contingency buffer."
+    elif is_retail:
+        c1_name = "Point of Sale & Billing Hardware"
+        c1_why = "Covers touchscreen POS billing system, barcode scanner, thermal receipt printer, and CCTV surveillance."
+        c2_name = "Store Racks, Shelving & Visual Merchandising"
+        c2_why = "Covers commercial metal display racks, refrigeration display chillers, checkout counter, and lighting."
+        c3_name = "Shop Establishment & Trade Licensing"
+        c3_why = "Covers municipal shop act license, GST registration, and local commercial trade permit."
+        c4_name = "Storefront Signage & Launch Banners"
+        c4_why = "Covers backlit storefront board, aisle categorization signs, and grand opening flyers."
+        c5_name = "Initial Retail Merchandising Inventory"
+        c5_why = "Covers initial wholesale fast-moving consumer goods (FMCG) stock and working capital buffer."
+    else:
+        c1_name = "Core Platform Architecture & MVP Engineering"
+        c1_why = "Covers system architecture, database schema, responsive frontend UI/UX, and payment webhook integrations."
+        c2_name = "Developer Workstations & Staging Setup"
+        c2_why = f"Covers high-performance developer workstations for {salary_headcount} team members, test mobile devices, and SSL staging servers."
+        c3_name = "Company Incorporation & Trademark / IP Filing"
+        c3_why = "Covers MCA Private Limited company registration, DPIIT Startup India recognition, and trademark filing (Class 9/42)."
+        c4_name = "Brand Identity, Landing Page & Launch Collateral"
+        c4_why = "Covers brand visual identity, packaging/landing page design, launch marketing assets, and developer documentation."
+        c5_name = "Staging Cloud Infrastructure & Operating Reserve"
+        c5_why = "Covers AWS/cloud VPC setup, automated security scans, and third-party penetration testing."
+
     capex_breakdown = [
         {
-            'item': 'Software R&D / Store Architectural Fit-Out' if is_offline else 'Core Platform R&D & MVP Engineering',
+            'item': c1_name,
             'cost': dev_cost,
             'percent': round((dev_cost / total_capex) * 100, 1),
-            'why': f"Covers {'commercial interior renovation, plumbing, electrical wiring, customer counter, and exterior LED signage' if is_offline else 'system architecture, database schema, responsive frontend UI/UX, and payment webhook integrations'}.",
+            'why': c1_why,
             'calculation': f"Budget allocation of {round((dev_cost / total_capex) * 100)}% of total setup capital to ensure enterprise-grade production readiness before launch."
         },
         {
-            'item': 'Commercial Equipment & Machinery' if is_offline else 'Hardware, Developer Workstations & Staging',
+            'item': c2_name,
             'cost': hw_cost,
             'percent': round((hw_cost / total_capex) * 100, 1),
-            'why': f"Covers {'commercial espresso machine, refrigeration units, prep tables, touch POS terminal, and kitchen display screen' if is_offline else f'high-performance development laptops for {salary_headcount} team members, test mobile devices, and SSL staging servers'}.",
+            'why': c2_why,
             'calculation': f"Built to withstand daily operational workload with a minimum 3-year commercial lifecycle."
         },
         {
-            'item': 'Entity Incorporation, FSSAI / Legal & IP Filing',
+            'item': c3_name,
             'cost': lic_cost,
             'percent': round((lic_cost / total_capex) * 100, 1),
-            'why': f"Covers MCA Private Limited company registration, {'FSSAI State Food License, Fire NOC, and municipal trade permits' if is_offline else 'DPIIT Startup India recognition, trademark filing (Class 9/42), and founder equity structuring'}.",
+            'why': c3_why,
             'calculation': 'Statutory government filing fees plus professional Chartered Accountant (CA) and legal retainer fees.'
         },
         {
-            'item': 'Branding, Visual Identity & Launch Collateral',
+            'item': c4_name,
             'cost': brand_cost,
             'percent': round((brand_cost / total_capex) * 100, 1),
-            'why': 'Covers brand visual identity, packaging design, custom responsive landing page, launch marketing assets, and social media media kit.',
+            'why': c4_why,
             'calculation': 'Guarantees high-converting visual polish to attract early adopters during initial market entry.'
         },
         {
-            'item': 'Initial Consumable Stocking & Working Inventory' if is_offline else 'Staging Cloud Infrastructure & Security Audit',
+            'item': c5_name,
             'cost': inventory_cost,
             'percent': round((inventory_cost / total_capex) * 100, 1),
-            'why': f"Covers {'opening buffer of premium organic ingredients, eco-friendly food packaging, and service utensils' if is_offline else 'AWS Mumbai VPC setup, automated security scans, and third-party penetration testing'}.",
-            'calculation': 'Maintains operational liquidity and prevents stockout or server downtime during month-1 launch.'
+            'why': c5_why,
+            'calculation': 'Maintains operational liquidity and prevents stockout or service downtime during month-1 launch.'
         }
     ]
+
+    staff_roles = (
+        f"Head Chef/Master Cook @ ₹{int(salary_per_staff * 1.25):,}, Kitchen Assistants @ ₹{int(salary_per_staff * 0.85):,}" if is_food else
+        (f"Lead Fitness Trainer @ ₹{int(salary_per_staff):,}, Floor Assistants" if is_fitness else
+        (f"Consulting Doctor / Care Staff" if is_clinic else
+        (f"Store Manager & Retail Cashiers" if is_retail else
+        f"Technical Lead & Full-Stack Developers")))
+    )
 
     opex_breakdown = [
         {
             'item': f"Core Staff Payroll ({salary_headcount} Headcount)",
             'cost': staff_cost,
             'percent': round((staff_cost / total_opex) * 100, 1),
-            'why': f"Monthly compensation for {salary_headcount} full-time personnel ({'Store Manager/Head Chef @ ₹35k, 2 Service/Kitchen Staff @ ₹22k each' if is_offline else 'Technical Lead @ ₹65k, Full-Stack Developer @ ₹45k, Customer Success Lead @ ₹30k'}) including statutory benefits.",
-            'calculation': f"{salary_headcount} staff × avg ₹{bm['salary_per_staff']:,.0f}/mo base salary aligned with Indian tech & service wage standards."
+            'why': f"Monthly compensation for {salary_headcount} full-time personnel ({staff_roles}) aligned with {tier_label} wage standards.",
+            'calculation': f"{salary_headcount} staff × avg ₹{salary_per_staff:,.0f}/mo base salary."
         },
         {
             'item': 'Commercial Facility Rent & Maintenance' if is_offline else 'Workspace / Coworking & Remote Infrastructure',
             'cost': rent_cost,
             'percent': round((rent_cost / total_opex) * 100, 1),
-            'why': f"Covers {'a 650-850 sq.ft prime commercial high-street location in a Tier-1 Indian retail hub (e.g. Indiranagar, Bangalore or Bandra, Mumbai)' if is_offline else f'flexible coworking desk passes ({team_size} seats) at WeWork/Awfis including fiber internet and meeting room credits'}.",
-            'calculation': f"Market lease rate based on prime urban commercial real estate transactions in 2026."
+            'why': f"Covers commercial space ({'ground-floor campus/high-street location' if is_offline else 'flexible coworking/shared workspace'}) in {context.get('location', context.get('country', 'India'))} ({tier_label}).",
+            'calculation': f"Market lease rate calibrated for {tier_label} real estate in 2026."
         },
         {
             'item': 'Cloud Infrastructure, Managed DB & APIs',
