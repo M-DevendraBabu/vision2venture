@@ -336,7 +336,7 @@ CRITICAL RULES:
                         "review_count": None,
                         "opening_hours": "24/7 Digital Platform",
                         "pricing_model": item.get("pricing_model", "Freemium / Tiered"),
-                        "pricing_details": item.get("pricing_details", "Publicly available tier options; verify on official site."),
+                        "pricing_details": item.get("pricing_details") or "Information unavailable - requires direct verification on official site.",
                         "target_audience": item.get("target_audience", f"Users seeking {industry} solutions."),
                         "features": f"Category: {industry} | Cloud Architecture | Digital Platform",
                         "similarity_score": sim,

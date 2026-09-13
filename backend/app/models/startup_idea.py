@@ -23,6 +23,8 @@ class StartupIdea(Base):
     revenue_goal = Column(DECIMAL(15, 2), nullable=False)
     funding_required = Column(DECIMAL(15, 2), nullable=False)
     location = Column(String(255), nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
     radius_km = Column(Float, nullable=True, default=5.0)
     analysis_status = Column(String(50), default='pending', index=True)
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -28,8 +28,11 @@ const CompetitorMap = ({
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
-      const defaultLat = startupLocation?.lat || 17.385;
-      const defaultLng = startupLocation?.lng || 78.486;
+      const validComps = (competitors || []).filter(
+        c => c.latitude != null && c.longitude != null && !(parseFloat(c.latitude) === 0 && parseFloat(c.longitude) === 0)
+      );
+      const defaultLat = startupLocation?.lat || (validComps[0] ? parseFloat(validComps[0].latitude) : 20.5937);
+      const defaultLng = startupLocation?.lng || (validComps[0] ? parseFloat(validComps[0].longitude) : 78.9629);
 
       const map = L.map(mapContainerRef.current, {
         center: [defaultLat, defaultLng],
@@ -68,73 +71,74 @@ const CompetitorMap = ({
       circleRef.current = null;
     }
 
-    const lat = startupLocation?.lat;
-    const lng = startupLocation?.lng;
+    const lat = startupLocation?.lat != null ? parseFloat(startupLocation.lat) : null;
+    const lng = startupLocation?.lng != null ? parseFloat(startupLocation.lng) : null;
+    const hasStartupLoc = lat !== null && lng !== null && !(lat === 0 && lng === 0);
 
-    if (lat === undefined || lng === undefined || (lat === 0 && lng === 0)) {
-      return;
-    }
+    const bounds = L.latLngBounds();
 
-    const bounds = L.latLngBounds([[lat, lng]]);
+    // 1. Startup Marker & Radius (if startup location is valid)
+    if (hasStartupLoc) {
+      bounds.extend([lat, lng]);
 
-    // 1. Startup Marker (Pulsing Rocket Emblem)
-    const startupIcon = L.divIcon({
-      className: 'custom-startup-map-pin',
-      html: `
-        <div style="
-          position: relative;
-          width: 38px;
-          height: 38px;
-          background: #0284c7;
-          border: 3px solid #ffffff;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 0 15px rgba(2, 132, 199, 0.6);
-          cursor: pointer;
-        ">
-          <span style="font-size: 16px;">🚀</span>
+      const startupIcon = L.divIcon({
+        className: 'custom-startup-map-pin',
+        html: `
           <div style="
-            position: absolute;
-            inset: -6px;
+            position: relative;
+            width: 38px;
+            height: 38px;
+            background: #0284c7;
+            border: 3px solid #ffffff;
             border-radius: 50%;
-            border: 2px solid rgba(2, 132, 199, 0.4);
-            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-          "></div>
-        </div>
-      `,
-      iconSize: [38, 38],
-      iconAnchor: [19, 19],
-    });
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.6);
+            cursor: pointer;
+          ">
+            <span style="font-size: 16px;">🚀</span>
+            <div style="
+              position: absolute;
+              inset: -6px;
+              border-radius: 50%;
+              border: 2px solid rgba(2, 132, 199, 0.4);
+              animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+            "></div>
+          </div>
+        `,
+        iconSize: [38, 38],
+        iconAnchor: [19, 19],
+      });
 
-    const startupMarker = L.marker([lat, lng], { icon: startupIcon })
-      .addTo(layerGroupRef.current)
-      .bindPopup(`
-        <div style="font-family: inherit; font-size: 13px; line-height: 1.4; padding: 4px;">
-          <strong style="color: #0284c7; font-size: 14px;">📍 Your Startup Location</strong>
-          <p style="margin: 4px 0 0; color: #475569;">${startupLocation?.display_name || 'Designated Base'}</p>
-          <span style="display: inline-block; margin-top: 6px; font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 999px; font-weight: 600;">
-            Search Radius: ${radiusKm} km
-          </span>
-        </div>
-      `);
+      L.marker([lat, lng], { icon: startupIcon })
+        .addTo(layerGroupRef.current)
+        .bindPopup(`
+          <div style="font-family: inherit; font-size: 13px; line-height: 1.4; padding: 4px;">
+            <strong style="color: #0284c7; font-size: 14px;">📍 Your Startup Location</strong>
+            <p style="margin: 4px 0 0; color: #475569;">${startupLocation?.display_name || 'Designated Base'}</p>
+            <span style="display: inline-block; margin-top: 6px; font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 999px; font-weight: 600;">
+              Search Radius: ${radiusKm || 5} km
+            </span>
+          </div>
+        `);
 
-    // 2. Search Radius Circle Overlay
-    const radiusMeters = (radiusKm || 10) * 1000;
-    circleRef.current = L.circle([lat, lng], {
-      radius: radiusMeters,
-      color: '#0ea5e9',
-      weight: 1.5,
-      opacity: 0.8,
-      dashArray: '5, 5',
-      fillColor: '#0ea5e9',
-      fillOpacity: 0.06,
-    }).addTo(map);
+      // 2. Search Radius Circle Overlay
+      const radiusMeters = (radiusKm || 5) * 1000;
+      circleRef.current = L.circle([lat, lng], {
+        radius: radiusMeters,
+        color: '#0ea5e9',
+        weight: 1.5,
+        opacity: 0.8,
+        dashArray: '5, 5',
+        fillColor: '#0ea5e9',
+        fillOpacity: 0.06,
+      }).addTo(map);
+    }
 
     // 3. Competitor Markers
     const validCompetitors = (competitors || []).filter(
-      c => c.latitude !== null && c.latitude !== undefined && c.longitude !== null && c.longitude !== undefined
+      c => c.latitude !== null && c.latitude !== undefined && c.longitude !== null && c.longitude !== undefined && !(parseFloat(c.latitude) === 0 && parseFloat(c.longitude) === 0)
     );
 
     validCompetitors.forEach(comp => {
@@ -228,9 +232,9 @@ const CompetitorMap = ({
     });
 
     // Fit map bounds smoothly
-    if (validCompetitors.length > 0) {
+    if (bounds.isValid() && validCompetitors.length > 0) {
       map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
-    } else {
+    } else if (hasStartupLoc) {
       map.setView([lat, lng], 13);
     }
   }, [startupLocation, radiusKm, competitors, selectedCompetitorId]);

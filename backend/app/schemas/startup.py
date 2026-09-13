@@ -19,6 +19,8 @@ class StartupIdeaBase(BaseModel):
     revenue_goal: Decimal
     funding_required: Decimal
     location: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
     radius_km: Optional[float] = 5.0
 
 class StartupIdeaCreate(StartupIdeaBase):

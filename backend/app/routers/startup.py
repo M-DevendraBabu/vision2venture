@@ -28,6 +28,8 @@ def create_startup_idea(idea: StartupIdeaCreate, current_user: User = Depends(ge
         revenue_goal=idea.revenue_goal,
         funding_required=idea.funding_required,
         location=idea.location,
+        latitude=idea.latitude,
+        longitude=idea.longitude,
         radius_km=float(idea.radius_km or 5.0),
         analysis_status='pending'
     )

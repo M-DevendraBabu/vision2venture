@@ -20,7 +20,7 @@ const CompetitorTab = ({ data, idea }) => {
 
   // Ground Truth Startup Context (Read-Only from idea record)
   const businessType = (idea?.business_type || idea?.sector || 'online').toLowerCase();
-  const locationQuery = idea?.location || idea?.specific_location || idea?.country || 'Hyderabad, India';
+  const locationQuery = idea?.location || idea?.specific_location || idea?.country || '';
   const radiusKm = parseFloat(idea?.radius_km || 5.0);
   const [filterType, setFilterType] = useState('all'); // 'all', 'offline', 'online', 'hybrid'
 
@@ -49,6 +49,14 @@ const CompetitorTab = ({ data, idea }) => {
         }
         if (payload.search_config?.startup_location) {
           setStartupLocation(payload.search_config.startup_location);
+        } else if (payload.startup_location) {
+          setStartupLocation(payload.startup_location);
+        } else if (idea?.latitude && idea?.longitude) {
+          setStartupLocation({
+            lat: parseFloat(idea.latitude),
+            lng: parseFloat(idea.longitude),
+            display_name: idea.location || idea.country || 'Startup Base'
+          });
         }
       }
     } catch (err) {
@@ -57,7 +65,7 @@ const CompetitorTab = ({ data, idea }) => {
     } finally {
       setLoading(false);
     }
-  }, [ideaId]);
+  }, [ideaId, idea?.latitude, idea?.longitude, idea?.location, idea?.country]);
 
   useEffect(() => {
     loadCompetitorData();
@@ -72,7 +80,9 @@ const CompetitorTab = ({ data, idea }) => {
         idea_id: ideaId,
         business_type: businessType,
         location: locationQuery,
-        radius_km: radiusKm
+        radius_km: radiusKm,
+        lat: idea?.latitude ? parseFloat(idea.latitude) : (startupLocation?.lat ? parseFloat(startupLocation.lat) : undefined),
+        lng: idea?.longitude ? parseFloat(idea.longitude) : (startupLocation?.lng ? parseFloat(startupLocation.lng) : undefined)
       });
 
       if (res.data && res.data.data) {
@@ -162,11 +172,19 @@ const CompetitorTab = ({ data, idea }) => {
     }
   };
 
-  // Derived filtered competitors
-  const physicalCompetitors = competitors.filter(c => (c.business_type || '').toLowerCase() === 'offline');
+  // Derived filtered competitors (STRICT distance filtering for offline competitors)
+  const physicalCompetitors = competitors.filter(c => {
+    const isOff = (c.business_type || '').toLowerCase() === 'offline';
+    if (!isOff) return false;
+    if (c.distance_km != null && parseFloat(c.distance_km) > radiusKm) return false;
+    return true;
+  });
+
   const digitalCompetitors = competitors.filter(c => (c.business_type || '').toLowerCase() !== 'offline');
 
   const filteredCompetitors = competitors.filter(c => {
+    const isOff = (c.business_type || '').toLowerCase() === 'offline';
+    if (isOff && c.distance_km != null && parseFloat(c.distance_km) > radiusKm) return false;
     if (filterType === 'all') return true;
     return (c.business_type || '').toLowerCase() === filterType;
   });
@@ -532,6 +550,42 @@ const CompetitorTab = ({ data, idea }) => {
           )}
         </div>
       </div>
+
+      {/* LOCATION & CATCHMENT AUDIT BAR (Offline & Hybrid Ventures) */}
+      {businessType !== 'online' && (
+        <div style={{
+          background: '#f8fafc',
+          border: '1px solid #e2e8f0',
+          borderRadius: '12px',
+          padding: '10px 16px',
+          marginBottom: '18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '10px',
+          fontSize: '0.82rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span style={{ fontWeight: '700', color: '#0369a1', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <FaMapMarkerAlt /> Target Location:
+            </span>
+            <span style={{ color: '#0f172a', fontWeight: '600' }}>
+              {startupLocation?.display_name || locationQuery || 'Location specified'}
+            </span>
+            {startupLocation?.lat != null && startupLocation?.lng != null && (
+              <span style={{ background: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: '6px', fontWeight: '700', fontSize: '0.75rem' }}>
+                GPS: {parseFloat(startupLocation.lat).toFixed(4)}, {parseFloat(startupLocation.lng).toFixed(4)}
+              </span>
+            )}
+            <span style={{ color: '#64748b' }}>• Search Radius: <strong>{radiusKm} km</strong></span>
+          </div>
+          <div style={{ color: '#059669', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.78rem' }}>
+            <FaCheckCircle style={{ fontSize: '0.85rem' }} />
+            <span>OpenStreetMap / Overpass Ground Truth</span>
+          </div>
+        </div>
+      )}
 
       {/* SECTION 3: COMPACT ACTION ROW */}
       <div style={{

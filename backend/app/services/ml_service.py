@@ -1362,7 +1362,15 @@ class MLService:
 
         ind_clean = str(industry).lower()
         query_clean = str(query).lower()
-        query_words = set(re.findall(r'\w+', f"{ind_clean} {query_clean}"))
+        STOP_WORDS = {
+            'b2b', 'b2c', 'software', 'services', 'service', 'tech', 'technology', 'technologies',
+            'platform', 'platforms', 'online', 'application', 'applications', 'app', 'apps',
+            'solutions', 'solution', 'tools', 'tool', 'system', 'systems', 'and', 'the', 'for',
+            'with', 'inc', 'com', 'co', 'ai', 'artificial', 'intelligence', 'startup', 'startups',
+            'digital', 'global', 'india', 'united', 'states', 'market', 'product', 'products'
+        }
+        all_words = set(re.findall(r'\w+', f"{ind_clean} {query_clean}"))
+        domain_keywords = {w for w in all_words if len(w) > 2 and w not in STOP_WORDS}
         matches = []
 
         for c in _yc_competitors:
@@ -1377,17 +1385,30 @@ class MLService:
             tags_list = [t.strip() for t in tags_cleaned.split(',') if t.strip()]
             formatted_tags = ", ".join(tags_list[:4]) if tags_list else c_ind.title()
 
-            # Dynamic relevance score
+            # Dynamic domain-specific relevance score
             raw_score = 0
-            if ind_clean and ind_clean in c_ind: raw_score += 15
-            for word in query_words:
-                if len(word) > 2:
-                    if word in c_desc: raw_score += 8
-                    if word in c_tags_raw.lower(): raw_score += 6
-                    if word in c_ind: raw_score += 4
-                    if word in c_name.lower(): raw_score += 10
+            domain_matched = False
 
-            if raw_score > 0:
+            if domain_keywords:
+                for word in domain_keywords:
+                    if word in c_name.lower():
+                        raw_score += 30
+                        domain_matched = True
+                    if word in c_desc:
+                        raw_score += 25
+                        domain_matched = True
+                    if word in c_tags_raw.lower():
+                        raw_score += 20
+                        domain_matched = True
+
+                # If domain keywords exist, do not return companies that have zero domain match
+                if not domain_matched:
+                    continue
+            else:
+                if ind_clean and ind_clean in c_ind:
+                    raw_score += 20
+
+            if raw_score >= 35:
                 matches.append((raw_score, c, formatted_tags, c_batch))
 
         # Sort by raw score descending

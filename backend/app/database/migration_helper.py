@@ -86,6 +86,8 @@ def ensure_competitor_tables_and_columns():
 
             idea_cols_to_add = [
                 ("location", "VARCHAR(255) NULL"),
+                ("latitude", "FLOAT NULL"),
+                ("longitude", "FLOAT NULL"),
                 ("radius_km", "FLOAT DEFAULT 5.0")
             ]
             for col_name, col_type in idea_cols_to_add:

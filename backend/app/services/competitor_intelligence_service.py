@@ -19,7 +19,7 @@ class CompetitorIntelligenceService:
         description: str,
         business_type: str = "online",  # 'offline', 'online', 'hybrid'
         location: str = "",
-        radius_km: float = 10.0,
+        radius_km: float = 5.0,
         lat: Optional[float] = None,
         lng: Optional[float] = None,
         keywords: str = "",
@@ -47,6 +47,8 @@ class CompetitorIntelligenceService:
                     lat=lat,
                     lng=lng,
                     keywords=keywords,
+                    title=idea_title,
+                    description=description,
                     limit=12 if b_type == "offline" else 8
                 )
                 startup_location = offline_res.get("startup_location", startup_location)

@@ -19,7 +19,7 @@ class DiscoverRequest(BaseModel):
     idea_id: str
     business_type: Optional[str] = None
     location: Optional[str] = None
-    radius_km: Optional[float] = 10.0
+    radius_km: Optional[float] = 5.0
     lat: Optional[float] = None
     lng: Optional[float] = None
     keywords: Optional[str] = ""
@@ -87,6 +87,8 @@ def discover_competitors(
     b_type = _resolve_operating_model(payload.business_type, idea.sector, idea.business_type)
     loc = payload.location or idea.location or idea.country or ""
     radius = float(payload.radius_km or idea.radius_km or 5.0)
+    req_lat = payload.lat if payload.lat is not None else idea.latitude
+    req_lng = payload.lng if payload.lng is not None else idea.longitude
 
     # Run discovery
     discovery_result = CompetitorIntelligenceService.discover(
@@ -96,14 +98,25 @@ def discover_competitors(
         business_type=b_type,
         location=loc,
         radius_km=radius,
-        lat=payload.lat,
-        lng=payload.lng,
+        lat=req_lat,
+        lng=req_lng,
         keywords=payload.keywords or "",
         target_market=idea.country or "Global",
         user_known_competitors=payload.user_known_competitors or ""
     )
 
-    discovered_comps = discovery_result.get("competitors", [])
+    resolved_loc = discovery_result.get("startup_location")
+    if resolved_loc and resolved_loc.get("lat") and resolved_loc.get("lng"):
+        if idea.latitude is None or idea.longitude is None or payload.lat is not None:
+            idea.latitude = resolved_loc["lat"]
+            idea.longitude = resolved_loc["lng"]
+            db.commit()
+
+    # Strict radius filtering on returned competitors
+    discovered_comps = [
+        c for c in discovery_result.get("competitors", [])
+        if c.get("business_type") != "offline" or c.get("distance_km") is None or float(c["distance_km"]) <= radius
+    ]
 
     # Clear old competitors for this idea to keep dashboard fresh
     db.query(Competitor).filter(Competitor.idea_id == idea.id).delete()
@@ -294,19 +307,29 @@ def get_startup_competitor_data(
                 idea_id=idea.id,
                 business_type=b_type,
                 location=idea.location or idea.country or "",
-                radius_km=float(idea.radius_km or 5.0)
+                radius_km=float(idea.radius_km or 5.0),
+                lat=idea.latitude,
+                lng=idea.longitude
             ),
             current_user=current_user,
             db=db
         )
 
-    # Filter competitors strictly according to business type
+    effective_radius = float(idea.radius_km or 5.0)
+
+    # Filter competitors strictly according to business type and selected radius
     if b_type == "offline":
-        valid_competitors = [c for c in competitors if getattr(c, "business_type", "") == "offline"]
+        valid_competitors = [
+            c for c in competitors 
+            if getattr(c, "business_type", "") == "offline" and (c.distance_km is None or float(c.distance_km) <= effective_radius)
+        ]
     elif b_type == "online":
         valid_competitors = [c for c in competitors if getattr(c, "business_type", "") == "online"]
     else:  # hybrid
-        valid_competitors = competitors
+        valid_competitors = [
+            c for c in competitors
+            if getattr(c, "business_type", "") != "offline" or (c.distance_km is None or float(c.distance_km) <= effective_radius)
+        ]
 
     comps_serialized = [_serialize_competitor(c) for c in valid_competitors]
 
@@ -347,13 +370,41 @@ def get_startup_competitor_data(
             "data_limitations": intel.data_limitations or []
         }
 
-    search_cfg = (intel.search_config if intel and intel.search_config else {}) or {
-        "business_type": b_type,
-        "location": idea.location or idea.country or "",
-        "radius_km": float(idea.radius_km or 5.0) if b_type != "online" else None,
-        "startup_location": {"lat": 0.0, "lng": 0.0, "display_name": idea.location or idea.country or "Global"} if b_type != "online" else None
-    }
-    if b_type == "online":
+    search_cfg = (intel.search_config if intel and intel.search_config else {}) or {}
+    search_cfg["business_type"] = b_type
+    search_cfg["location"] = idea.location or idea.country or ""
+    search_cfg["radius_km"] = effective_radius if b_type != "online" else None
+
+    if b_type != "online":
+        existing_loc = search_cfg.get("startup_location") or {}
+        has_valid_coords = existing_loc.get("lat") not in [None, 0.0] and existing_loc.get("lng") not in [None, 0.0]
+
+        if not has_valid_coords:
+            from app.services.location_service import LocationService
+            if idea.latitude is not None and idea.longitude is not None and not (idea.latitude == 0.0 and idea.longitude == 0.0):
+                search_cfg["startup_location"] = {
+                    "lat": float(idea.latitude),
+                    "lng": float(idea.longitude),
+                    "display_name": idea.location or idea.country or "Target Location"
+                }
+            elif idea.location:
+                geo = LocationService.geocode_location(idea.location)
+                if geo:
+                    search_cfg["startup_location"] = {
+                        "lat": geo["lat"],
+                        "lng": geo["lng"],
+                        "display_name": geo.get("display_name", idea.location)
+                    }
+                    idea.latitude = geo["lat"]
+                    idea.longitude = geo["lng"]
+                    db.commit()
+                else:
+                    search_cfg["startup_location"] = {
+                        "lat": None,
+                        "lng": None,
+                        "display_name": idea.location
+                    }
+    else:
         search_cfg["startup_location"] = None
         search_cfg["radius_km"] = None
 

@@ -1,8 +1,11 @@
 import requests
 import json
 import math
+import logging
 import urllib.parse
 from typing import List, Dict, Optional
+
+logger = logging.getLogger("vision2venture.location")
 
 class LocationService:
     """
@@ -36,121 +39,206 @@ class LocationService:
     def geocode_location(cls, location_query: str) -> Optional[Dict]:
         """
         Geocode location using OpenStreetMap Nominatim.
-        Returns {lat, lng, display_name, country, city}
+        Returns {lat, lng, display_name, country, city, locality, district, state}
         """
         if not location_query or not location_query.strip():
             return None
 
+        clean_q = location_query.strip()
+        candidates = [clean_q]
+        if "," in clean_q:
+            parts = [p.strip() for p in clean_q.split(",") if p.strip()]
+            if len(parts) >= 2:
+                candidates.append(f"{parts[0]}, {parts[-1]}")
+
+        headers = {
+            "User-Agent": "Vision2Venture-StartupIntelligence/1.0 (contact@vision2venture.ai)",
+            "Accept-Language": "en"
+        }
+
+        for q in candidates:
+            try:
+                encoded_query = urllib.parse.quote(q)
+                url = f"https://nominatim.openstreetmap.org/search?q={encoded_query}&format=json&addressdetails=1&limit=3"
+                resp = requests.get(url, headers=headers, timeout=8)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    if data and len(data) > 0:
+                        item = data[0]
+                        address = item.get("address", {})
+                        locality = (
+                            address.get("village") or
+                            address.get("suburb") or
+                            address.get("neighbourhood") or
+                            address.get("residential") or
+                            address.get("town") or
+                            address.get("city") or
+                            address.get("hamlet") or
+                            ""
+                        )
+                        district = address.get("state_district") or address.get("county") or address.get("district") or ""
+                        state = address.get("state") or ""
+                        country = address.get("country") or ""
+
+                        name_parts = [p for p in [locality, district, state, country] if p]
+                        formatted_name = ", ".join(name_parts) if name_parts else item.get("display_name", clean_q)
+
+                        return {
+                            "lat": float(item["lat"]),
+                            "lng": float(item["lon"]),
+                            "display_name": formatted_name,
+                            "full_address": item.get("display_name", clean_q),
+                            "locality": locality,
+                            "district": district,
+                            "city": locality or district,
+                            "state": state,
+                            "country": country,
+                            "source": "OpenStreetMap Nominatim"
+                        }
+            except Exception as e:
+                logger.debug(f"[LocationService] Geocoding attempt for '{q}' notice: {e}")
+                continue
+
+        return None
+
+    @classmethod
+    def reverse_geocode(cls, lat: float, lng: float) -> Optional[Dict]:
+        """
+        Pinpoint reverse geocode using OpenStreetMap Nominatim.
+        Prioritizes village, suburb, neighbourhood, city, district.
+        """
         try:
             headers = {
                 "User-Agent": "Vision2Venture-StartupIntelligence/1.0 (contact@vision2venture.ai)",
                 "Accept-Language": "en"
             }
-            encoded_query = urllib.parse.quote(location_query.strip())
-            url = f"https://nominatim.openstreetmap.org/search?q={encoded_query}&format=json&addressdetails=1&limit=1"
-            
+            url = f"https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={lat}&lon={lng}&addressdetails=1"
             resp = requests.get(url, headers=headers, timeout=8)
             if resp.status_code == 200:
                 data = resp.json()
-                if data and len(data) > 0:
-                    item = data[0]
-                    address = item.get("address", {})
-                    city = address.get("city") or address.get("town") or address.get("suburb") or address.get("state_district") or ""
+                if data:
+                    address = data.get("address", {})
+                    locality = (
+                        address.get("village") or
+                        address.get("suburb") or
+                        address.get("neighbourhood") or
+                        address.get("residential") or
+                        address.get("town") or
+                        address.get("city") or
+                        address.get("hamlet") or
+                        ""
+                    )
+                    district = address.get("state_district") or address.get("county") or address.get("district") or ""
+                    state = address.get("state") or ""
                     country = address.get("country") or ""
-                    
+
+                    name_parts = [p for p in [locality, district, state, country] if p]
+                    clean_name = ", ".join(name_parts) if name_parts else data.get("display_name", f"Coordinates ({lat:.4f}, {lng:.4f})")
+
                     return {
-                        "lat": float(item["lat"]),
-                        "lng": float(item["lon"]),
-                        "display_name": item.get("display_name", location_query),
-                        "city": city,
-                        "country": country
+                        "lat": float(lat),
+                        "lng": float(lng),
+                        "display_name": clean_name,
+                        "full_address": data.get("display_name", clean_name),
+                        "locality": locality,
+                        "district": district,
+                        "city": locality or district,
+                        "state": state,
+                        "country": country,
+                        "source": "OpenStreetMap Reverse Geocode"
                     }
         except Exception as e:
-            print(f"[LocationService] Geocoding notice: {e}")
-
-        # Fallback known coordinate anchors for major hubs if network is constrained
-        location_lower = location_query.lower()
-        if "hyderabad" in location_lower:
-            return {"lat": 17.385044, "lng": 78.486671, "display_name": "Hyderabad, Telangana, India", "city": "Hyderabad", "country": "India"}
-        if "bengaluru" in location_lower or "bangalore" in location_lower:
-            return {"lat": 12.971599, "lng": 77.594566, "display_name": "Bengaluru, Karnataka, India", "city": "Bengaluru", "country": "India"}
-        if "mumbai" in location_lower:
-            return {"lat": 19.076090, "lng": 72.877426, "display_name": "Mumbai, Maharashtra, India", "city": "Mumbai", "country": "India"}
-        if "delhi" in location_lower:
-            return {"lat": 28.613939, "lng": 77.209023, "display_name": "New Delhi, Delhi, India", "city": "New Delhi", "country": "India"}
-        if "san francisco" in location_lower:
-            return {"lat": 37.774929, "lng": -122.419418, "display_name": "San Francisco, CA, USA", "city": "San Francisco", "country": "USA"}
-        if "new york" in location_lower:
-            return {"lat": 40.712776, "lng": -74.005974, "display_name": "New York, NY, USA", "city": "New York", "country": "USA"}
-        if "london" in location_lower:
-            return {"lat": 51.507351, "lng": -0.127758, "display_name": "London, UK", "city": "London", "country": "UK"}
-
+            logger.debug(f"[LocationService] Reverse geocode notice: {e}")
         return None
 
     @classmethod
-    def _map_category_to_osm_queries(cls, category: str, keywords: str = "") -> List[str]:
-        """Map business category & keywords to Overpass QL node/way filters."""
-        combined = f"{category} {keywords}".lower()
+    def _map_category_to_osm_queries(cls, category: str, keywords: str = "", title: str = "", description: str = "") -> List[str]:
+        """
+        Fine-grained, prioritized mapping of startup category & keywords to Overpass QL node/way filters.
+        Strictly prevents category contamination (e.g. swimming pools for gym, fast food for bakery).
+        """
+        combined = f"{category} {keywords} {title} {description}".lower()
 
-        # Food, Restaurant, Cloud Kitchen, Cafe
-        if any(k in combined for k in ["restaurant", "food", "cafe", "kitchen", "bakery", "dining", "eatery", "burger", "pizza", "coffee"]):
+        # 1. Bakery, Confectionery, Cake Shop, Pastry
+        if any(k in combined for k in ["bakery", "bake", "cake", "pastry", "confectionery", "croissant", "bread"]):
             return [
-                'node["amenity"~"restaurant|fast_food|cafe|bakery"](around:{radius},{lat},{lng});',
-                'node["shop"~"bakery|confectionery|deli"](around:{radius},{lat},{lng});'
+                'node["shop"~"bakery|pastry|confectionery"](around:{radius},{lat},{lng});',
+                'way["shop"~"bakery|pastry|confectionery"](around:{radius},{lat},{lng});',
+                'node["craft"="bakery"](around:{radius},{lat},{lng});'
             ]
 
-        # Grocery, Supermarket, Retail, Mart, Organic, Farm, Agriculture
-        if any(k in combined for k in ["grocery", "supermarket", "mart", "convenience", "kirana", "provision", "fruit", "vegetable", "organic", "farm", "agriculture"]):
+        # 2. Cafe, Coffee Shop, Tea Room
+        if any(k in combined for k in ["cafe", "coffee", "tea", "espresso", "barista", "chai"]):
             return [
-                'node["shop"~"supermarket|convenience|grocery|greengrocer"](around:{radius},{lat},{lng});',
-                'node["shop"~"general|chemist"](around:{radius},{lat},{lng});'
+                'node["amenity"="cafe"](around:{radius},{lat},{lng});',
+                'node["shop"~"coffee|tea"](around:{radius},{lat},{lng});',
+                'way["amenity"="cafe"](around:{radius},{lat},{lng});'
             ]
 
-        # Healthcare, Clinic, Hospital, Pharmacy
-        if any(k in combined for k in ["health", "hospital", "clinic", "doctor", "medical", "pharmacy", "dental", "care"]):
+        # 3. Gym, Fitness Centre, CrossFit, Workout Box
+        if any(k in combined for k in ["gym", "fitness", "crossfit", "workout", "bodybuilding", "powerlifting", "weightlifting", "personal training"]):
             return [
-                'node["amenity"~"hospital|clinic|doctors|dentist|pharmacy"](around:{radius},{lat},{lng});'
+                'node["leisure"="fitness_centre"](around:{radius},{lat},{lng});',
+                'node["sport"~"fitness|crossfit|gym|weightlifting"](around:{radius},{lat},{lng});',
+                'way["leisure"="fitness_centre"](around:{radius},{lat},{lng});'
             ]
 
-        # Gym, Fitness, Sports, Yoga
-        if any(k in combined for k in ["gym", "fitness", "workout", "sports", "yoga", "training", "crossfit"]):
+        # 4. Clinic, Doctors, Medical Centre, Dental
+        if any(k in combined for k in ["clinic", "doctor", "medical centre", "physician", "dental", "dentist", "pediatric", "smart clinic", "health centre"]):
             return [
-                'node["leisure"~"fitness_centre|sports_centre"](around:{radius},{lat},{lng});'
+                'node["amenity"~"clinic|doctors|dentist"](around:{radius},{lat},{lng});',
+                'node["healthcare"~"clinic|doctor|centre|dentist"](around:{radius},{lat},{lng});',
+                'way["amenity"~"clinic|doctors"](around:{radius},{lat},{lng});'
             ]
 
-        # Salon, Spa, Beauty, Grooming
+        # 5. Hospital
+        if "hospital" in combined:
+            return [
+                'node["amenity"="hospital"](around:{radius},{lat},{lng});',
+                'way["amenity"="hospital"](around:{radius},{lat},{lng});'
+            ]
+
+        # 6. Pharmacy, Chemist, Medical Store
+        if any(k in combined for k in ["pharmacy", "chemist", "drugstore", "medicine"]):
+            return [
+                'node["amenity"="pharmacy"](around:{radius},{lat},{lng});',
+                'node["shop"="chemist"](around:{radius},{lat},{lng});'
+            ]
+
+        # 7. Grocery, Supermarket, Organic Store, Hyperlocal Mart, Farm Produce
+        if any(k in combined for k in ["grocery", "supermarket", "mart", "convenience", "kirana", "provision", "fruit", "vegetable", "organic", "freshfarm", "hyperlocal", "agri", "farm"]):
+            return [
+                'node["shop"~"supermarket|convenience|grocery|greengrocer|farm"](around:{radius},{lat},{lng});',
+                'way["shop"~"supermarket|convenience|grocery"](around:{radius},{lat},{lng});'
+            ]
+
+        # 8. Restaurant, Dining, Cloud Kitchen, Bistro
+        if any(k in combined for k in ["restaurant", "dining", "kitchen", "fast_food", "bistro", "eatery", "burger", "pizza"]):
+            return [
+                'node["amenity"~"restaurant|fast_food"](around:{radius},{lat},{lng});',
+                'way["amenity"~"restaurant|fast_food"](around:{radius},{lat},{lng});'
+            ]
+
+        # 9. Salon, Spa, Beauty, Grooming
         if any(k in combined for k in ["salon", "spa", "beauty", "parlour", "hair", "barber", "grooming", "cosmetic"]):
             return [
                 'node["shop"~"hairdresser|beauty"](around:{radius},{lat},{lng});',
-                'node["leisure"~"spa"](around:{radius},{lat},{lng});'
+                'node["leisure"="spa"](around:{radius},{lat},{lng});'
             ]
 
-        # Retail, Fashion, Electronics, Clothing
-        if any(k in combined for k in ["retail", "clothes", "fashion", "electronics", "apparel", "boutique", "shoes"]):
-            return [
-                'node["shop"~"clothes|electronics|shoes|department_store|boutique"](around:{radius},{lat},{lng});'
-            ]
-
-        # Education, School, Coaching, Classes
+        # 10. Education, Coaching, Academy
         if any(k in combined for k in ["education", "school", "coaching", "tuition", "academy", "training", "college"]):
             return [
                 'node["amenity"~"school|college|kindergarten|language_school|music_school"](around:{radius},{lat},{lng});'
             ]
 
-        # Hospitality, Hotel, PG, Stay
+        # 11. Hospitality, Hotel, PG, Stay
         if any(k in combined for k in ["hotel", "hospitality", "hostel", "stay", "resort", "motel", "pg"]):
             return [
                 'node["tourism"~"hotel|guest_house|hostel|motel"](around:{radius},{lat},{lng});'
             ]
 
-        # Logistics, Courier, Delivery, Warehouse
-        if any(k in combined for k in ["logistics", "courier", "delivery", "transport", "freight"]):
-            return [
-                'node["amenity"~"post_office"](around:{radius},{lat},{lng});',
-                'node["office"~"logistics|courier|transport"](around:{radius},{lat},{lng});'
-            ]
-
-        # Automotive, Repair, Garage
+        # 12. Automotive, Repair, Garage
         if any(k in combined for k in ["auto", "car", "bike", "mechanic", "repair", "service", "garage"]):
             return [
                 'node["shop"~"car|car_repair|car_parts|motorcycle"](around:{radius},{lat},{lng});'
@@ -158,8 +246,7 @@ class LocationService:
 
         # Default fallback
         return [
-            'node["shop"](around:{radius},{lat},{lng});',
-            'node["amenity"~"restaurant|cafe|pharmacy|bank"](around:{radius},{lat},{lng});'
+            'node["shop"](around:{radius},{lat},{lng});'
         ]
 
     @classmethod
@@ -167,39 +254,57 @@ class LocationService:
         cls,
         category: str,
         location_query: str,
-        radius_km: float = 10.0,
+        radius_km: float = 5.0,
         lat: Optional[float] = None,
         lng: Optional[float] = None,
         keywords: str = "",
+        title: str = "",
+        description: str = "",
         limit: int = 25
     ) -> Dict:
         """
         Discover physical competitors within radius_km using Overpass API.
-        Enforces strict Haversine distance filtering and calculates relevance.
-        Returns: {
-            "startup_location": {lat, lng, display_name},
-            "radius_km": radius_km,
-            "competitors": [...]
-        }
+        Enforces strict Haversine distance filtering and category precision.
         """
-        radius_km = max(0.5, min(radius_km, 50.0))  # Clamp between 0.5km and 50km
+        radius_km = max(0.5, min(float(radius_km or 5.0), 50.0))
         radius_meters = int(radius_km * 1000)
 
         # 1. Resolve coordinates
-        if lat is None or lng is None:
+        resolved_from_gps = False
+        display_name = location_query
+
+        if lat is not None and lng is not None and not (lat == 0.0 and lng == 0.0):
+            lat = float(lat)
+            lng = float(lng)
+            resolved_from_gps = True
+            if not location_query or "coordinates" in location_query.lower() or location_query == f"{lat:.4f}, {lng:.4f}":
+                rev = cls.reverse_geocode(lat, lng)
+                if rev:
+                    display_name = rev["display_name"]
+        else:
             geo_info = cls.geocode_location(location_query)
             if not geo_info:
+                logger.warning(f"[LocationService] Geocoding failed for: '{location_query}'")
                 return {
-                    "startup_location": {"lat": 0.0, "lng": 0.0, "display_name": location_query},
+                    "startup_location": None,
                     "radius_km": radius_km,
+                    "total_found": 0,
                     "competitors": [],
-                    "message": f"Could not determine geographical coordinates for '{location_query}'."
+                    "status_message": f"Could not determine geographical coordinates for '{location_query}'. Please verify your location or use the map picker.",
+                    "provider_status": "geocoding_failed",
+                    "debug_info": {
+                        "location_searched": location_query,
+                        "resolved_address": None,
+                        "latitude": None,
+                        "longitude": None,
+                        "radius_km": radius_km,
+                        "source": "Nominatim",
+                        "error": "Location not found"
+                    }
                 }
             lat = geo_info["lat"]
             lng = geo_info["lng"]
             display_name = geo_info["display_name"]
-        else:
-            display_name = location_query or f"Coordinates ({lat:.4f}, {lng:.4f})"
 
         startup_loc = {
             "lat": round(lat, 6),
@@ -208,17 +313,17 @@ class LocationService:
         }
 
         # 2. Build Overpass QL statement
-        query_statements = cls._map_category_to_osm_queries(category, keywords)
+        query_statements = cls._map_category_to_osm_queries(category, keywords, title, description)
         rendered_statements = "\n  ".join(
             q.format(radius=radius_meters, lat=lat, lng=lng) for q in query_statements
         )
 
         overpass_ql = f"""
-        [out:json][timeout:12];
+        [out:json][timeout:15];
         (
           {rendered_statements}
         );
-        out body 25;
+        out body 35;
         """
 
         # 3. Query Overpass API with endpoint fallback
@@ -231,7 +336,7 @@ class LocationService:
                 resp = requests.post(
                     endpoint,
                     data={"data": overpass_ql},
-                    headers={"User-Agent": "curl/7.88.1", "Accept": "application/json, */*"},
+                    headers={"User-Agent": "Vision2Venture/1.0", "Accept": "application/json, */*"},
                     timeout=(5.0, 15.0)
                 )
                 if resp.status_code == 200:
@@ -245,7 +350,7 @@ class LocationService:
                     provider_error = f"HTTP {resp.status_code} on {endpoint}"
             except Exception as e:
                 provider_error = str(e)
-                print(f"[LocationService] Overpass notice on {endpoint}: {e}")
+                logger.debug(f"[LocationService] Overpass notice on {endpoint}: {e}")
                 continue
 
         # 4. Filter, parse, and score discovered businesses
@@ -264,15 +369,15 @@ class LocationService:
                 continue
             seen_names.add(name_key)
 
-            el_lat = el.get("lat")
-            el_lon = el.get("lon")
+            el_lat = el.get("lat") or el.get("center", {}).get("lat")
+            el_lon = el.get("lon") or el.get("center", {}).get("lon")
             if not el_lat or not el_lon:
                 continue
 
-            # Strict Haversine Distance Calculation
+            # Strict Haversine Distance Calculation & Filtering
             dist_km = cls.haversine_distance(lat, lng, float(el_lat), float(el_lon))
             if dist_km > radius_km:
-                continue  # Exclude any item beyond selected radius
+                continue  # STRICT EXCLUSION: Never return items outside user's selected radius
 
             # Address synthesis from OSM tags
             addr_parts = []
@@ -288,44 +393,43 @@ class LocationService:
             hours = tags.get("opening_hours") or "Not available"
 
             # Determine competitor classification
-            amenity_type = tags.get("amenity") or tags.get("shop") or tags.get("leisure") or category
-            if any(k in amenity_type.lower() for k in category.lower().split()):
+            amenity_type = tags.get("shop") or tags.get("leisure") or tags.get("amenity") or tags.get("healthcare") or category
+            cat_lower = category.lower()
+            amenity_lower = str(amenity_type).lower()
+
+            if any(k in amenity_lower for k in cat_lower.split()):
                 comp_type = "direct"
-            elif dist_km <= (radius_km * 0.4):
+            elif dist_km <= (radius_km * 0.5):
                 comp_type = "direct"
             else:
                 comp_type = "indirect"
 
             # Relevance Score Calculation (0-100)
-            # Factor 1: Proximity (closer = higher score up to 40 pts)
-            prox_score = max(0.0, 40.0 * (1.0 - (dist_km / radius_km)))
-            # Factor 2: Categorical match (35 pts for direct, 20 pts for indirect)
+            prox_score = max(0.0, 45.0 * (1.0 - (dist_km / radius_km)))
             cat_score = 35.0 if comp_type == "direct" else 20.0
-            # Factor 3: Data completeness (phone, hours, website up to 25 pts)
-            completeness = 10.0
+            completeness = 5.0
             if website: completeness += 8.0
             if phone != "Not available": completeness += 4.0
             if hours != "Not available": completeness += 3.0
 
-            relevance = round(min(98.0, prox_score + cat_score + completeness), 1)
+            relevance = round(min(98.0, max(50.0, prox_score + cat_score + completeness)), 1)
 
-            # Strengths and Weaknesses derivation from verifiable real data
             strengths_list = [
-                f"Established physical presence {dist_km} km from your target location ({full_address}).",
-                f"Operational local facility categorized under '{amenity_type}'."
+                f"Established physical presence {dist_km} km from target location ({full_address}).",
+                f"Operational local facility categorized under '{amenity_type.replace('_', ' ')}'."
             ]
             if website:
-                strengths_list.append("Provides a direct public website/portal for online visibility.")
+                strengths_list.append(f"Provides an active digital website ({website}).")
             if hours != "Not available":
                 strengths_list.append(f"Publicly listed business hours: {hours}.")
 
             weaknesses_list = []
             if not website:
-                weaknesses_list.append("No official digital storefront or website detected in public records.")
+                weaknesses_list.append("No official digital storefront or website detected in public registry.")
             if phone == "Not available":
                 weaknesses_list.append("Lacks publicly listed telephone contact in primary directory.")
-            if dist_km > (radius_km * 0.7):
-                weaknesses_list.append(f"Located near perimeter of target service radius ({dist_km} km away).")
+            if dist_km > (radius_km * 0.75):
+                weaknesses_list.append(f"Positioned towards the perimeter of service radius ({dist_km} km away).")
             if not weaknesses_list:
                 weaknesses_list.append("Physical operations bound to single brick-and-mortar footprint.")
 
@@ -336,7 +440,7 @@ class LocationService:
                 "name": clean_name,
                 "business_type": "offline",
                 "competitor_type": comp_type,
-                "description": f"Local {amenity_type.replace('_', ' ').title()} operating within {dist_km} km of {display_name}.",
+                "description": f"Local {amenity_type.replace('_', ' ').title()} operating {dist_km} km from {display_name}.",
                 "website_url": website,
                 "app_url": "",
                 "location": full_address,
@@ -344,19 +448,19 @@ class LocationService:
                 "longitude": float(el_lon),
                 "distance_km": dist_km,
                 "phone": phone,
-                "rating": None,  # Explicitly None (not invented)
-                "review_count": None,  # Explicitly None (not invented)
+                "rating": None,
+                "review_count": None,
                 "opening_hours": hours,
-                "pricing_model": "In-store / Menu / Fixed Unit",
-                "pricing_details": "Not publicly published online. Requires on-site or inquiry validation.",
-                "target_audience": f"Local residents and foot-traffic within {round(radius_km, 1)} km radius.",
-                "features": f"Category: {amenity_type} | Wheelchair Accessible: {tags.get('wheelchair', 'Unknown')} | Takeaway: {tags.get('takeaway', tags.get('delivery', 'Unknown'))}",
+                "pricing_model": "In-store / Fixed Unit",
+                "pricing_details": "On-site inquiry required. Pricing not published online.",
+                "target_audience": f"Local residents within {round(radius_km, 1)} km radius of {display_name}.",
+                "features": f"Category: {amenity_type} | Accessibility: {tags.get('wheelchair', 'Unknown')} | Delivery: {tags.get('delivery', tags.get('takeaway', 'Unknown'))}",
                 "similarity_score": relevance,
                 "relevance_score": relevance,
                 "strengths": "\n".join([f"• {s}" for s in strengths_list]),
                 "weaknesses": "\n".join([f"• {w}" for w in weaknesses_list]),
-                "competitive_gap": "Capitalize on streamlined digital ordering, faster fulfillment, and modern loyalty rewards.",
-                "usp": f"Hyper-localized service with transparent modern experience versus traditional {clean_name}.",
+                "competitive_gap": f"Capture demand with streamlined online ordering, faster fulfillment, and modern rewards compared to {clean_name}.",
+                "usp": f"Hyper-localized service with transparent modern customer experience versus traditional {clean_name}.",
                 "analysis_explanation": f"Discovered via OpenStreetMap geographic query centered at {display_name} within {dist_km} km.",
                 "source_urls": [source_url],
                 "data_sources": ["OpenStreetMap", "Overpass API"],
@@ -372,13 +476,17 @@ class LocationService:
             if len(discovered) >= limit:
                 break
 
-        # Sort by proximity first, then relevance
         discovered.sort(key=lambda x: (x["distance_km"], -x["relevance_score"]))
 
+        logger.info(
+            f"[LocationService] Searched: '{location_query}' | Resolved: '{display_name}' ({lat:.4f}, {lng:.4f}) | "
+            f"Radius: {radius_km} km | Found: {len(discovered)} competitors"
+        )
+
         if discovered:
-            status_msg = f"Discovered {len(discovered)} verified businesses from OpenStreetMap within {radius_km} km."
+            status_msg = f"Discovered {len(discovered)} verified physical competitors from OpenStreetMap within {radius_km} km of {display_name}."
         elif provider_status == "live_osm_success":
-            status_msg = f"No verified physical {category} competitors found within {radius_km} km of {display_name}."
+            status_msg = f"No verified physical {category} competitors found within {radius_km} km of {display_name}. You can expand radius or add competitors manually."
         else:
             status_msg = f"Location search provider temporarily unavailable ({provider_error or 'timeout'}). You can retry or add competitors manually."
 
@@ -388,5 +496,15 @@ class LocationService:
             "total_found": len(discovered),
             "competitors": discovered,
             "status_message": status_msg,
-            "provider_status": provider_status
+            "provider_status": provider_status,
+            "debug_info": {
+                "location_searched": location_query,
+                "resolved_address": display_name,
+                "latitude": round(lat, 6),
+                "longitude": round(lng, 6),
+                "radius_km": radius_km,
+                "category_matched": category,
+                "source": "OpenStreetMap / Overpass API",
+                "provider_status": provider_status
+            }
         }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { startupAPI, analysisAPI } from '../services/api';
 import { toast } from 'react-toastify';
@@ -215,12 +214,11 @@ const AnalysisPage = () => {
     );
   };
 
-  if (loading) return <div className="page-layout"><Sidebar /><div className="page-content"><LoadingSpinner /></div></div>;
+  if (loading) return <div className="page-layout analysis-page-layout" style={{ maxWidth: '1600px', width: '100%', margin: '0 auto', padding: '20px 24px', paddingTop: 'calc(64px + 20px)' }}><div className="page-content" style={{ width: '100%', maxWidth: '100%' }}><LoadingSpinner /></div></div>;
 
   return (
-    <div className="page-layout">
-      <Sidebar />
-      <div className="page-content analysis-page">
+    <div className="page-layout analysis-page-layout" style={{ maxWidth: '1600px', width: '100%', margin: '0 auto', padding: '20px 24px', paddingTop: 'calc(64px + 20px)' }}>
+      <div className="page-content analysis-page" style={{ width: '100%', maxWidth: '100%' }}>
         <div className="analysis-header stagger-1">
           <div className="title-section">
             <h1>{idea?.title || 'Startup Analysis'}</h1>

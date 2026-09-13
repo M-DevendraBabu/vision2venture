@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import { startupAPI, analysisAPI } from '../services/api';
 import { toast } from 'react-toastify';
 import { FaLaptopCode, FaStore, FaSync, FaChartLine, FaCheckCircle, FaRocket, FaMapMarkerAlt, FaGlobe, FaCogs, FaBullhorn, FaHandshake, FaClipboardList } from 'react-icons/fa';
+import LocationPickerModal from '../components/Map/LocationPickerModal';
 import '../styles/NewIdea.css';
 
 const INDUSTRIES = [
@@ -51,6 +52,8 @@ const NewIdeaPage = () => {
     // Offline-specific
     specific_location: '',
     location: '',
+    latitude: null,
+    longitude: null,
     radius_km: 5,
     store_type: '',
     operating_hours: '',
@@ -72,6 +75,7 @@ const NewIdeaPage = () => {
 
   const [locating, setLocating] = useState(false);
   const [locError, setLocError] = useState('');
+  const [showMapPicker, setShowMapPicker] = useState(false);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -98,20 +102,49 @@ const NewIdeaPage = () => {
         try {
           const { latitude, longitude } = position.coords;
           const resp = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
-            { headers: { 'Accept-Language': 'en', 'User-Agent': 'Vision2Venture/1.0' } }
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&addressdetails=1`,
+            { headers: { 'Accept-Language': 'en', 'User-Agent': 'Vision2Venture-StartupIntelligence/1.0' } }
           );
           if (resp.ok) {
             const data = await resp.json();
-            const city = data.address?.city || data.address?.town || data.address?.suburb || data.address?.county || '';
-            const state = data.address?.state || '';
-            const name = city ? `${city}, ${state}` : data.display_name.split(',').slice(0, 3).join(',');
-            setFormData(prev => ({ ...prev, specific_location: name, location: name }));
-            toast.success(`Location identified: ${name}`);
+            const addr = data.address || {};
+            // Village & neighbourhood first to avoid jumping straight to county/mandal
+            const locality = (
+              addr.village ||
+              addr.suburb ||
+              addr.neighbourhood ||
+              addr.residential ||
+              addr.town ||
+              addr.city ||
+              addr.hamlet ||
+              ''
+            );
+            const district = addr.state_district || addr.county || addr.district || '';
+            const state = addr.state || '';
+            const country = addr.country || '';
+
+            const parts = [locality, district, state].filter(Boolean);
+            const resolvedName = parts.length > 0 ? parts.join(', ') : (data.display_name ? data.display_name.split(',').slice(0, 3).join(', ') : `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+
+            setFormData(prev => ({
+              ...prev,
+              specific_location: resolvedName,
+              location: resolvedName,
+              country: country || prev.country || 'India',
+              latitude: latitude,
+              longitude: longitude
+            }));
+            toast.success(`Location identified: ${resolvedName}`);
           } else {
             const coordStr = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`;
-            setFormData(prev => ({ ...prev, specific_location: coordStr, location: coordStr }));
-            toast.success(`Location set from GPS coordinates`);
+            setFormData(prev => ({
+              ...prev,
+              specific_location: coordStr,
+              location: coordStr,
+              latitude: latitude,
+              longitude: longitude
+            }));
+            toast.success(`Location set from GPS coordinates (${coordStr})`);
           }
         } catch (err) {
           toast.info('Coordinates detected. Please type your city/area name.');
@@ -124,10 +157,10 @@ const NewIdeaPage = () => {
         if (err.code === 1) { // PERMISSION_DENIED
           setLocError('Location permission denied. Please enter your city or area manually below.');
         } else {
-          setLocError('Could not retrieve current location. Please enter your city or area manually.');
+          setLocError('Could not retrieve current location with high accuracy. Please enter your city or area manually.');
         }
       },
-      { timeout: 8000 }
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
     );
   };
 
@@ -197,6 +230,8 @@ const NewIdeaPage = () => {
         revenue_goal: parseFloat(formData.revenue_goal) || 0,
         funding_required: parseFloat(formData.funding_required) || 0,
         location: formData.sector === 'online' ? null : (formData.location || formData.specific_location || formData.country),
+        latitude: formData.sector === 'online' ? null : (formData.latitude != null ? parseFloat(formData.latitude) : null),
+        longitude: formData.sector === 'online' ? null : (formData.longitude != null ? parseFloat(formData.longitude) : null),
         radius_km: formData.sector === 'online' ? null : (parseFloat(formData.radius_km) || 5.0)
       };
 
@@ -338,28 +373,70 @@ const NewIdeaPage = () => {
             Used to discover real brick-and-mortar competitors within your catchment area.
           </small>
         </div>
-        <button
-          type="button"
-          onClick={handleGetCurrentLocation}
-          disabled={locating}
-          style={{
-            background: '#e0f2fe',
-            color: '#0369a1',
-            border: '1px solid #bae6fd',
-            borderRadius: '8px',
-            padding: '7px 14px',
-            fontSize: '0.8rem',
-            fontWeight: '600',
-            cursor: locating ? 'wait' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            transition: 'all 0.15s ease'
-          }}
-        >
-          <FaMapMarkerAlt /> {locating ? 'Detecting Location...' : '📍 Use My Current Location'}
-        </button>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={handleGetCurrentLocation}
+            disabled={locating}
+            style={{
+              background: '#e0f2fe',
+              color: '#0369a1',
+              border: '1px solid #bae6fd',
+              borderRadius: '8px',
+              padding: '7px 14px',
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              cursor: locating ? 'wait' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            <FaMapMarkerAlt /> {locating ? 'Detecting Location...' : '📍 Use My Current Location'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowMapPicker(true)}
+            style={{
+              background: '#f0fdf4',
+              color: '#15803d',
+              border: '1px solid #bbf7d0',
+              borderRadius: '8px',
+              padding: '7px 14px',
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            🗺️ Pick on Map
+          </button>
+        </div>
       </div>
+
+      {formData.latitude && formData.longitude && (
+        <div style={{
+          marginBottom: '12px',
+          fontSize: '0.78rem',
+          color: '#047857',
+          background: '#ecfdf5',
+          padding: '6px 12px',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          border: '1px solid #a7f3d0'
+        }}>
+          <span>📍 High-Accuracy Pinpoint:</span>
+          <strong>{formData.latitude.toFixed(4)}, {formData.longitude.toFixed(4)}</strong>
+          <span style={{ color: '#059669', fontSize: '0.72rem' }}>({formData.specific_location || formData.location})</span>
+        </div>
+      )}
 
       {locError && (
         <div style={{
@@ -828,6 +905,22 @@ const NewIdeaPage = () => {
           </form>
         </div>
       </div>
+
+      <LocationPickerModal
+        isOpen={showMapPicker}
+        onClose={() => setShowMapPicker(false)}
+        initialCoords={formData.latitude && formData.longitude ? { lat: formData.latitude, lng: formData.longitude } : null}
+        onSelectLocation={({ address, lat, lng }) => {
+          setFormData(prev => ({
+            ...prev,
+            specific_location: address,
+            location: address,
+            latitude: lat,
+            longitude: lng
+          }));
+          toast.success(`Pinned location: ${address}`);
+        }}
+      />
     </div>
   );
 };
