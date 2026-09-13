@@ -156,6 +156,8 @@ class AnalysisService:
                 business_type=b_type,
                 location=loc,
                 radius_km=radius,
+                lat=getattr(idea, 'latitude', None),
+                lng=getattr(idea, 'longitude', None),
                 keywords=kw_str,
                 target_market=idea.country or "Global"
             )

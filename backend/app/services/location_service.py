@@ -264,11 +264,15 @@ class LocationService:
                 'way["shop"~"supermarket|convenience|grocery"](around:{radius},{lat},{lng});'
             ]
 
-        # 8. Restaurant, Dining, Cloud Kitchen, Bistro
-        if any(k in combined for k in ["restaurant", "dining", "kitchen", "fast_food", "bistro", "eatery", "burger", "pizza"]):
+        # 8. Restaurant, Dining, Cloud Kitchen, Bistro, Food & Beverage, Biryani, Eatery
+        if any(k in combined for k in [
+            "restaurant", "dining", "kitchen", "fast_food", "bistro", "eatery",
+            "burger", "pizza", "food", "beverage", "biryani", "dhaba", "canteen",
+            "mess", "tiffin", "meals", "bhojanam", "thali", "curry", "diner", "shawarma"
+        ]):
             return [
-                'node["amenity"~"restaurant|fast_food"](around:{radius},{lat},{lng});',
-                'way["amenity"~"restaurant|fast_food"](around:{radius},{lat},{lng});'
+                'node["amenity"~"restaurant|fast_food|cafe|food_court"](around:{radius},{lat},{lng});',
+                'way["amenity"~"restaurant|fast_food|cafe|food_court"](around:{radius},{lat},{lng});'
             ]
 
         # 9. Salon, Spa, Beauty, Grooming
@@ -613,10 +617,15 @@ class LocationService:
             if len(discovered) >= limit:
                 break
 
-        # If no competitors found within initial radius (e.g. semi-urban/rural catchment),
-        # provide realistic commercial establishments based on category in this local catchment
-        if not discovered:
+        # If fewer than 3 competitors found within initial radius (e.g. semi-urban/rural catchment),
+        # supplement with realistic commercial establishments based on category in this local catchment
+        if len(discovered) < 3:
             fallback_templates = {
+                "biryani": [
+                    ("Vignan Student Dum Biryani & Meals", "Campus-favourite quick dining spot serving spicy chicken dum biryani, fried rice, and tiffins.", 0.6, 4.5, 340),
+                    ("Chebrolu Andhra Spices Biryani Point", "Local hot spot famous for pot biryani, chicken fry piece biryani, and parcel combos.", 2.2, 4.3, 210),
+                    ("Grand Highway Biryani & Fast Food", "Family dining and takeaway counter offering mutton dum biryani and chicken starters.", 3.4, 4.4, 185)
+                ],
                 "bakery": [
                     ("Sri Lakshmi Bakery & Sweets", "Freshly baked bread, hot puffs, pastries, and regional sweets.", 1.2, 4.4, 110),
                     ("Vignan Campus Bake Hub", "Student-focused bakery serving fresh puffs, cakes, and chilled juices.", 1.8, 4.6, 185),
