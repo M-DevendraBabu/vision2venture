@@ -570,6 +570,336 @@ ROADMAP_DOMAIN_TEMPLATES = {
                 'LTV:CAC ratio exceeding 4.1x'
             ]
         }
+    },
+
+    'fitness_wellness': {
+        'phase_1': {
+            'name': 'Phase 1: Legal Incorporation, Commercial Lease & Gym Floor Blueprint',
+            'duration': 'Months 1–2',
+            'weeks': 'Weeks 1–8',
+            'focus': 'Statutory Licensing, High-Street Commercial Lease & Rig Floor Plan',
+            'tasks': [
+                'Incorporate entity (MCA Pvt Ltd / LLP) and secure PAN/TAN/GSTIN registration',
+                'Execute commercial property lease (2,500–4,000 sq.ft) with high ceiling clearance for CrossFit drop zones',
+                'Apply for Municipal Health Trade License, Fire Department NOC & building structural clearances',
+                'Design 3D architectural floor layout: free weights zone, modular CrossFit rig, cardio deck & locker rooms',
+                'Finalize commercial strength equipment vendor contracts (Olympic barbells, bumper plates, power cages, rowers)'
+            ],
+            'milestones': [
+                'Commercial gym lease agreement executed with 3-month rental security deposit',
+                'Architectural drop-zone and MEP electrical/exhaust layout approved',
+                'Commercial fitness equipment supply contracts finalized within CapEx budget'
+            ],
+            'success_metrics': [
+                '100% regulatory documentation & municipal clearance',
+                'Equipment procurement locked in at or below allocated CapEx'
+            ]
+        },
+        'phase_2': {
+            'name': 'Phase 2: High-Density Flooring, Rig Fit-out & Coach Onboarding',
+            'duration': 'Months 3–5',
+            'weeks': 'Weeks 9–20',
+            'focus': 'Facility Renovation, Rig Commissioning & Lead Trainer Certification',
+            'tasks': [
+                'Install 25mm vulcanized acoustic rubber drop-zone flooring and artificial turf sprint track',
+                'Assemble custom modular CrossFit pull-up rig, squat racks, gymnastics rings, and wall-ball targets',
+                'Commission cardio equipment (Assault air bikes, Concept2 rowers, SkiErgs) and selectorized cable stacks',
+                'Recruit Head Strength & Conditioning Coach and Level-1/Level-2 CrossFit certified trainers',
+                'Deploy RFID turnstile access control, member management CRM, and POS billing software'
+            ],
+            'milestones': [
+                'Facility fit-out and rig assembly 100% completed & safety-inspected',
+                'Coaching roster onboarded with CPR/AED and certified strength training credentials',
+                'Biometric check-in and membership management portal live'
+            ],
+            'success_metrics': [
+                'Equipment safety audit passed with zero structural defects',
+                'Standardized coach-to-member training protocol implemented'
+            ]
+        },
+        'phase_3': {
+            'name': 'Phase 3: Founder Memberships Pre-Sale, Soft Launch & Community WODs',
+            'duration': 'Months 6–7',
+            'weeks': 'Weeks 21–28',
+            'focus': 'Early-Bird Founder Member Acquisition, Open House & Grand Opening',
+            'tasks': [
+                'Launch discounted Early-Bird Founder Memberships campaign across local residential & IT corridors',
+                'Host free weekend community workout sessions (WODs), mobility clinics, and lifting form workshops',
+                'Deploy localized Instagram and Google Search ads targeting fitness enthusiasts within 3 km catchment',
+                'Host official Grand Opening event with open lifting showcase and baseline body composition scans'
+            ],
+            'milestones': [
+                'First 120+ active paid members enrolled during pre-sale and opening week',
+                'Morning (6-9 AM) and Evening (6-9 PM) CrossFit batches running at 70%+ capacity',
+                'Google Maps review rating established at 4.8+ stars across first 50 member reviews'
+            ],
+            'success_metrics': [
+                'Pre-sale revenue covering first 2 months of operational facility expenses',
+                'Monthly member retention rate maintained above 92%'
+            ]
+        },
+        'phase_4': {
+            'name': 'Phase 4: Peak Batch Utilization, Personal Training Upsell & Break-Even',
+            'duration': 'Months 8–10',
+            'weeks': 'Weeks 29–40',
+            'focus': 'Operational Break-Even, 1-on-1 PT Revenue & Class Density',
+            'tasks': [
+                'Scale prime-time batch occupancy to 85%+ across CrossFit, HIIT, and strength conditioning classes',
+                'Roll out premium 1-on-1 Personal Training (PT) packages and body transformation cohorts',
+                'Launch in-house sports nutrition bar, whey protein supplements, and branded fitness merchandise',
+                'Surpass operational break-even threshold covering all trainer payroll, facility rent, and utilities'
+            ],
+            'milestones': [
+                'Operational break-even achieved with positive monthly net operating cashflow',
+                '25%+ of active members enrolled in high-margin personal training or specialty coaching',
+                'Active member community exceeding 260+ recurring monthly subscribers'
+            ],
+            'success_metrics': [
+                'Monthly revenue comfortably exceeding monthly operating expenses',
+                'Personal training gross margin sustained above 45%'
+            ]
+        },
+        'phase_5': {
+            'name': 'Phase 5: CapEx Recoup, Recovery Spa & 2nd Location Planning',
+            'duration': 'Months 11–12',
+            'weeks': 'Weeks 41–52',
+            'focus': 'Capital Payback, Contrast Therapy Spa & Second Facility LOI',
+            'tasks': [
+                'Accumulate monthly operating profits to achieve 100% payback of initial setup and equipment CapEx',
+                'Add contrast therapy recovery suite (ice baths, infrared sauna, pneumatic compression boots)',
+                'Establish corporate wellness partnerships with nearby multinational IT and business parks',
+                'Complete catchment feasibility analysis and sign Letter of Intent (LOI) for 2nd gym location'
+            ],
+            'milestones': [
+                'Initial setup CapEx 100% recouped from accumulated free cashflows',
+                'Annual membership renewal rate exceeding 65%',
+                'Second location commercial space identified and lease terms negotiated'
+            ],
+            'success_metrics': [
+                'Store operating above 120% of break-even capacity',
+                'Net Promoter Score (NPS) sustained at > +65'
+            ]
+        }
+    },
+
+    'healthtech': {
+        'phase_1': {
+            'name': 'Phase 1: Clinical Establishment Act Registration & Doctor Recruitment',
+            'duration': 'Months 1–2',
+            'weeks': 'Weeks 1–8',
+            'focus': 'Statutory Medical Approvals, Facility Lease & Practitioner Empanelment',
+            'tasks': [
+                'Incorporate healthcare entity and register under State Clinical Establishments Act',
+                'Obtain Biomedical Waste Management authorization, Pharmacy Drug License & Fire NOC',
+                'Execute commercial lease (1,200–2,000 sq.ft) in accessible ground-floor / first-floor medical zone',
+                'Empanel lead General Physician, Pediatrician, and visiting medical specialists',
+                'Architectural healthcare layout: consultation chambers, observation room, sample collection & pharmacy'
+            ],
+            'milestones': [
+                'Clinical Establishment provisional registration and biomedical clearance submitted',
+                'Commercial clinic lease signed and security deposit funded',
+                'Core panel of 4 certified medical practitioners empanelled'
+            ],
+            'success_metrics': [
+                '100% regulatory compliance clearances across healthcare statutes',
+                'Practitioner credentialing and background checks completed'
+            ]
+        },
+        'phase_2': {
+            'name': 'Phase 2: Medical Fit-out, Diagnostic Equipment & EMR Deployment',
+            'duration': 'Months 3–5',
+            'weeks': 'Weeks 9–20',
+            'focus': 'Clinic Interior, Diagnostic Hardware Commissioning & ABDM Integration',
+            'tasks': [
+                'Complete clinical hygiene interiors: anti-microbial flooring, consultation cabins & minor OT / procedure room',
+                'Install diagnostic hardware (automated biochemistry analyzer, ECG, digital vitals monitors, cold-chain vaccine fridge)',
+                'Deploy ABDM-compliant cloud Electronic Medical Records (EMR) and digital prescription system',
+                'Hire nursing supervisors, laboratory technicians, and front-desk clinic coordinators',
+                'Conduct emergency triage mock drills, medical inventory stocking, and billing system dry runs'
+            ],
+            'milestones': [
+                'Clinic interior fit-out and medical equipment calibration 100% completed',
+                'ABDM Ayushman Bharat Digital Mission healthcare facility registration verified',
+                'Pharmacy and essential emergency medical inventory fully stocked'
+            ],
+            'success_metrics': [
+                'Biomedical equipment calibration passed with zero variance',
+                'Patient check-in to consultation cycle time under 8 minutes'
+            ]
+        },
+        'phase_3': {
+            'name': 'Phase 3: Community Health Camp, Neighborhood Soft Opening & Telehealth Pilot',
+            'duration': 'Months 6–7',
+            'weeks': 'Weeks 21–28',
+            'focus': 'Community Outreach, Free Health Screenings & Omnichannel App Launch',
+            'tasks': [
+                'Host free community preventive health screening camp (blood sugar, BP, BMI, doctor consult)',
+                'Launch omnichannel patient mobile app for doctor appointment booking and digital lab reports',
+                'Partner with local gated residential societies and senior citizen associations for health checkup packages',
+                'Initiate 24/7 tele-consultation triage pilot for enrolled family members'
+            ],
+            'milestones': [
+                'Over 400+ residents screened during neighborhood community health camps',
+                'First 150+ paid in-clinic OPD consultations completed',
+                'Google Maps verified clinic listing with 4.8+ star rating'
+            ],
+            'success_metrics': [
+                'Patient follow-up compliance rate > 40%',
+                'Zero clinical incident or prescription error rate'
+            ]
+        },
+        'phase_4': {
+            'name': 'Phase 4: OPD Volume Scale, Chronic Disease Care Plans & Break-Even',
+            'duration': 'Months 8–10',
+            'weeks': 'Weeks 29–40',
+            'focus': 'Operational Break-Even, Preventive Subscription Plans & Pharmacy Margins',
+            'tasks': [
+                'Scale daily in-clinic OPD patient footfall to 35+ consultations per day across morning/evening sessions',
+                'Roll out Annual Family Wellness & Chronic Disease Management subscription packages (diabetes, hypertension)',
+                'Integrate home diagnostic sample collection service with doorstep report delivery',
+                'Achieve monthly operational break-even covering doctor retainers, nursing staff salaries, rent, and lab supplies'
+            ],
+            'milestones': [
+                'Operational break-even achieved with positive monthly net cashflow',
+                '180+ families subscribed to annual preventive health monitoring plans',
+                'Integrated pharmacy and lab diagnostics contributing 45%+ of total clinic revenue'
+            ],
+            'success_metrics': [
+                'Monthly revenue exceeds monthly operating expenditure',
+                'Patient repeat consultation rate > 50% within 90 days'
+            ]
+        },
+        'phase_5': {
+            'name': 'Phase 5: CapEx Recoup, Specialty Day-Care & 2nd Micro-Clinic Planning',
+            'duration': 'Months 11–12',
+            'weeks': 'Weeks 41–52',
+            'focus': 'Capital Payback, Day-Care Expansion & Hub-and-Spoke Micro-Clinic LOI',
+            'tasks': [
+                'Fully recoup initial clinic setup and diagnostic hardware CapEx from accumulated net earnings',
+                'Add day-care short-stay observation beds, physiotherapy unit, and specialized ultrasound diagnostics',
+                'Establish corporate preventive health checkup contracts with local employers',
+                'Draft expansion blueprint and scout property for second hub-and-spoke satellite micro-clinic'
+            ],
+            'milestones': [
+                'Initial medical setup CapEx 100% recouped from operating cashflow',
+                'Clinic operating at 115% of break-even patient volume',
+                'Second neighborhood clinic location secured under Letter of Intent (LOI)'
+            ],
+            'success_metrics': [
+                'Annualized clinical revenue run-rate exceeding target ARR',
+                'Net Promoter Score (NPS) among patients sustained at > +70'
+            ]
+        }
+    },
+
+    'agritech': {
+        'phase_1': {
+            'name': 'Phase 1: Farmer Cooperative Contracts & Micro-Fulfillment Hub Lease',
+            'duration': 'Months 1–2',
+            'weeks': 'Weeks 1–8',
+            'focus': 'Farm Sourcing Agreements, APMC Licensing & Micro-Warehouse Lease',
+            'tasks': [
+                'Incorporate entity and secure APMC mandi exemption, FSSAI retail license & GSTIN',
+                'Sign direct farm-gate procurement agreements with 15+ farmer producer organizations (FPOs)',
+                'Execute lease for 1,200–2,000 sq.ft ground-floor neighborhood dark store / fulfillment hub',
+                'Design temperature-controlled storage layout: cold room (4-8°C), ambient produce sorting, packing tables',
+                'Establish quality grading protocols for zero-chemical pesticide residue testing'
+            ],
+            'milestones': [
+                'Direct farm procurement agreements executed with guaranteed harvest off-take pricing',
+                'Micro-fulfillment dark store lease finalized with loading dock access',
+                'All agricultural trade and food safety licenses secured'
+            ],
+            'success_metrics': [
+                'Direct farm procurement cost locked in at 25-30% below mandi wholesale rates',
+                '100% regulatory documentation clearance'
+            ]
+        },
+        'phase_2': {
+            'name': 'Phase 2: Cold-Chain Storage, Sorting Line & Hyperlocal POS Deployment',
+            'duration': 'Months 3–5',
+            'weeks': 'Weeks 9–20',
+            'focus': 'Cold-Room Commissioning, Weight-Based POS & Delivery Fleet Onboarding',
+            'tasks': [
+                'Install commercial cold-room storage and ethylene absorption filters for fresh produce shelf-life extension',
+                'Deploy digital precision scale barcode scanners and batch-traceability inventory POS software',
+                'Procure eco-friendly biodegradable packaging and insulated delivery crates',
+                'Onboard and train 8 dedicated delivery partners with electric two-wheelers (EVs)',
+                'Conduct harvest-to-hub delivery dry runs to maintain <4 hour farm-to-table transit'
+            ],
+            'milestones': [
+                'Cold storage facility commissioned and temperature sensors calibrated',
+                'Inventory management and automated replenishment system live',
+                'Hyperlocal delivery fleet onboarded and equipped with insulated panniers'
+            ],
+            'success_metrics': [
+                'Produce post-harvest transit wastage controlled under 3.5%',
+                'Order dispatch latency from dark store under 4 minutes'
+            ]
+        },
+        'phase_3': {
+            'name': 'Phase 3: Hyperlocal Delivery Soft Launch & Customer Acquisition',
+            'duration': 'Months 6–7',
+            'weeks': 'Weeks 21–28',
+            'focus': 'Neighborhood Soft Launch, App Onboarding & Morning Subscription Trials',
+            'tasks': [
+                'Launch hyperlocal 15-minute grocery delivery app on iOS and Android across 3 km catchment',
+                'Deploy doorstep sampling campaign of farm-fresh organic produce to premium apartment complexes',
+                'Introduce daily morning milk, fresh bread, and vegetable subscription plans before 7:00 AM',
+                'Run targeted WhatsApp community campaigns and local residential association partnerships'
+            ],
+            'milestones': [
+                'Over 350+ daily orders fulfilled during soft launch with 98% on-time delivery rate',
+                'First 180 recurring daily morning milk and vegetable subscribers enrolled',
+                'Customer app rating established at 4.7+ stars across first 100 app reviews'
+            ],
+            'success_metrics': [
+                'Average customer basket size at target ticket value of ₹450+',
+                'Customer repeat purchase rate > 40% within 30 days'
+            ]
+        },
+        'phase_4': {
+            'name': 'Phase 4: Order Density Optimization, Private Label & Break-Even',
+            'duration': 'Months 8–10',
+            'weeks': 'Weeks 29–40',
+            'focus': 'Operational Break-Even, Delivery Route Density & High-Margin Staples',
+            'tasks': [
+                'Scale order density to 600+ daily orders within 3 km catchment to maximize delivery route efficiency',
+                'Introduce high-margin organic pantry staples: stone-ground flours, cold-pressed oils, and wild honey',
+                'Implement dynamic route bundling algorithms for delivery riders to achieve 3.8 orders per trip',
+                'Surpass operational break-even covering dark store rent, cold-chain power, rider payouts, and staff'
+            ],
+            'milestones': [
+                'Operational break-even achieved with positive monthly net cashflow',
+                'Private label organic staples contributing 30%+ of total gross merchandise value (GMV)',
+                'Active customer subscriber base exceeding 650+ households'
+            ],
+            'success_metrics': [
+                'Monthly revenue exceeds monthly operating costs',
+                'Delivery cost per order reduced by 22% via order batching'
+            ]
+        },
+        'phase_5': {
+            'name': 'Phase 5: CapEx Recoup, Farm Expansion & 2nd Dark Store Feasibility',
+            'duration': 'Months 11–12',
+            'weeks': 'Weeks 41–52',
+            'focus': 'Setup Payback, Direct Farmer Network Scale & 2nd Micro-Hub LOI',
+            'tasks': [
+                'Accumulate monthly operating cashflows to fully recoup initial cold storage and dark store setup CapEx',
+                'Expand direct farmer procurement network to 50+ regional organic growers',
+                'Launch B2B institutional supply for local organic cafes and premium restaurants',
+                'Complete catchment feasibility analysis and scout location for 2nd hyperlocal micro-hub'
+            ],
+            'milestones': [
+                'Initial setup CapEx 100% recouped from accumulated net cashflows',
+                'Customer monthly retention rate sustained above 75%',
+                'Second dark store location secured under Letter of Intent (LOI)'
+            ],
+            'success_metrics': [
+                'Hub operating at 118% of break-even order capacity',
+                'Gross margin sustained above 32%'
+            ]
+        }
     }
 }
 
@@ -606,18 +936,25 @@ def generate_roadmap_analysis(idea_dict: dict, fin_data: dict = None) -> dict:
     category = resolve_financial_sector(industry, title, sector)
     template = ROADMAP_DOMAIN_TEMPLATES.get(category)
 
-    # Fallback to nearest sector template
+    # Deterministic domain-specific fallback (ensures gyms get fitness, clinics get health, groceries get agri)
     if not template:
-        if 'food' in category or 'offline' in sector:
-            template = ROADMAP_DOMAIN_TEMPLATES['food & beverage']
-        elif 'clean' in category or 'agri' in category or 'hybrid' in sector:
-            template = ROADMAP_DOMAIN_TEMPLATES['cleantech']
-        elif 'logistic' in category:
-            template = ROADMAP_DOMAIN_TEMPLATES['logistics']
-        elif 'fintech' in category:
-            template = ROADMAP_DOMAIN_TEMPLATES['fintech']
+        combo_text = f"{industry} {title} {sector}".lower()
+        if any(k in combo_text for k in ['fitness', 'gym', 'crossfit', 'workout', 'wellness', 'calisthenics', 'trainer']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('fitness_wellness')
+        elif any(k in combo_text for k in ['health', 'clinic', 'medical', 'doctor', 'patient', 'telemedicine']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('healthtech')
+        elif any(k in combo_text for k in ['food', 'restaurant', 'bakery', 'biryani', 'beverage', 'cafe', 'dining', 'catering', 'qsr']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('food & beverage')
+        elif any(k in combo_text for k in ['grocery', 'produce', 'farm', 'agri', 'organic', 'vegetable', 'fruit']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('agritech')
+        elif any(k in combo_text for k in ['fintech', 'payment', 'banking', 'finance', 'upi']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('fintech')
+        elif any(k in combo_text for k in ['logistic', 'freight', 'truck', 'courier', 'shipping', 'fleet']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('logistics')
+        elif any(k in combo_text for k in ['clean', 'solar', 'energy', 'carbon', 'renewable']):
+            template = ROADMAP_DOMAIN_TEMPLATES.get('cleantech')
         else:
-            template = ROADMAP_DOMAIN_TEMPLATES['b2b_saas']
+            template = ROADMAP_DOMAIN_TEMPLATES.get('b2b_saas')
 
     # Phase Cost Allocations strictly tied to Financial Tab
     # Phase 1: Foundation & Licensing (Licensing CapEx + 60% of Branding)

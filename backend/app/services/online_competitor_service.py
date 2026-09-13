@@ -117,7 +117,10 @@ class OnlineCompetitorService:
             web_comps = WebSearchService.extract_competitors_from_search(
                 raw_web_results,
                 startup_title=title,
-                target_market=target_market
+                target_market=target_market,
+                industry=industry,
+                description=description,
+                keywords=keywords
             )
 
             # If raw web scrapers are blocked or returned < 3 items on cloud datacenter IPs,

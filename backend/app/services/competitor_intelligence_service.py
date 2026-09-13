@@ -295,99 +295,101 @@ CRITICAL RULES:
         industry = idea_context.get("industry", "Technology")
         b_type = idea_context.get("business_type", "online")
 
-        # Distinct, varied competitor value generators
+        # Distinct, varied competitor value generators without duplicating company name
         def get_comp_business_model(c, idx):
-            c_name = c.get("name", f"Competitor {idx+1}")
             b_model = (c.get("business_type") or "offline").lower()
             if b_model == "online":
                 models = [
-                    f"{c_name} operates a centralized web/app platform with self-serve digital onboarding and automated user acquisition.",
-                    f"{c_name} deploys a digital aggregator marketplace model connecting verified service providers and end consumers.",
-                    f"{c_name} utilizes a multi-tiered subscription model with freemium self-serve features and premium add-ons.",
-                    f"{c_name} runs a specialized vertical SaaS portal with cloud-hosted infrastructure and programmatic APIs."
+                    "Web/app platform with self-serve digital onboarding and automated user acquisition.",
+                    "Two-sided digital marketplace connecting service providers with online customers.",
+                    "Multi-tiered subscription model with freemium tier and cloud-hosted APIs."
                 ]
             else:
                 models = [
-                    f"{c_name} operates an established brick-and-mortar storefront with dedicated on-premise service counters and staff.",
-                    f"{c_name} runs a neighborhood commercial retail outlet relying primarily on daily walk-in customer foot-traffic.",
-                    f"{c_name} maintains a traditional localized branch model with fixed real estate, inventory displays, and counter staff.",
-                    f"{c_name} operates as a high-volume local point-of-sale facility focusing on instant on-site order fulfillment."
+                    "Established brick-and-mortar storefront with fixed real estate and walk-in counter operations.",
+                    "Traditional localized branch model relying primarily on daily neighborhood foot-traffic.",
+                    "High-volume local retail facility focusing on on-site order fulfillment with dedicated staff."
                 ]
             return models[idx % len(models)]
 
         def get_comp_target_audience(c, idx):
-            c_name = c.get("name", f"Competitor {idx+1}")
             dist = c.get("distance_km")
-            loc = (c.get("location") or "the catchment")[:30]
+            loc = (c.get("location") or "the catchment")[:25]
             if dist is not None:
                 audiences = [
-                    f"{c_name} captures broad retail foot traffic and walk-in shoppers within {dist} km along {loc}.",
-                    f"{c_name} caters predominantly to budget-conscious local residents, students, and daily neighborhood commuters.",
-                    f"{c_name} attracts established residential households and multi-generational family regulars in the {loc} area.",
-                    f"{c_name} serves time-constrained working professionals and daily shoppers requiring immediate on-site convenience."
+                    f"Broad retail foot traffic and walk-in shoppers within {dist} km along {loc}.",
+                    f"Budget-conscious neighborhood residents, students, and daily commuters in {loc}.",
+                    f"Established residential households and multi-generational family regulars in {loc}."
                 ]
             else:
                 audiences = [
-                    f"{c_name} targets digital-native consumers and remote workers seeking on-demand self-service web access.",
-                    f"{c_name} addresses mainstream internet users and small-to-midsize business teams requiring standard tooling.",
-                    f"{c_name} captures growth-stage professionals and students looking for entry-level digital productivity software.",
-                    f"{c_name} serves enterprise-tier departments with legacy workflows and multi-seat corporate accounts."
+                    "Digital-native consumers and remote professionals seeking on-demand web access.",
+                    "Mainstream internet users and business teams requiring standardized digital tools.",
+                    "Growth-stage users looking for entry-level digital productivity software."
                 ]
             return audiences[idx % len(audiences)]
 
         def get_comp_pricing_strategy(c, idx):
-            c_name = c.get("name", f"Competitor {idx+1}")
             pricing = c.get("pricing_model", "Standard")
             pricings = [
-                f"{c_name} implements conventional {pricing} pricing with standard unit markups and occasional seasonal offers.",
-                f"{c_name} applies traditional retail counter pricing with set MRP margins and no dynamic customer discount tier.",
-                f"{c_name} leverages premium location-based pricing reflecting prime commercial lease and overhead costs.",
-                f"{c_name} utilizes fixed tiered price points with minimum spend thresholds for special service bundles."
+                f"Conventional {pricing} pricing with standard unit markups and limited customer discounts.",
+                "Traditional retail counter pricing with set margins and high upfront lock-in.",
+                "Fixed tiered price points with minimum spend thresholds for special service bundles."
             ]
             return pricings[idx % len(pricings)]
 
         def get_comp_distribution(c, idx):
-            c_name = c.get("name", f"Competitor {idx+1}")
             dist = c.get("distance_km")
             if dist is not None:
                 distribs = [
-                    f"{c_name} relies entirely on physical counter checkout queues and direct on-premise takeaway parcels.",
-                    f"{c_name} fulfills orders primarily through walk-in customers and third-party delivery apps with 18-25% commissions.",
-                    f"{c_name} maintains a single localized fulfillment counter with cash, UPI, and manual token issuance.",
-                    f"{c_name} distributes strictly via storefront pickup with no proprietary mobile order tracking."
+                    "Physical counter checkout queues and direct on-premise takeaway parcels.",
+                    "Storefront pickup combined with third-party delivery apps charging 18-25% commissions.",
+                    "Single localized service counter with manual token issuance and wait times."
                 ]
             else:
                 distribs = [
-                    f"{c_name} distributes through browser web apps and responsive mobile portals with email notifications.",
-                    f"{c_name} utilizes organic SEO landing pages, referral funnels, and app store listings for customer acquisition.",
-                    f"{c_name} relies on direct website signups and automated transactional email onboarding sequences.",
-                    f"{c_name} distributes through digital marketplace partner directories and public cloud integrations."
+                    "Browser web portals and mobile app stores with automated email sequences.",
+                    "Organic search landing pages and partner directory referral funnels.",
+                    "Direct website signups with self-serve credit card billing."
                 ]
             return distribs[idx % len(distribs)]
 
         def get_comp_moat(c, idx):
-            c_name = c.get("name", f"Competitor {idx+1}")
             rate = c.get("rating", 4.3)
             rev = c.get("review_count", 110)
             moats = [
-                f"{c_name} holds a solid {rate}/5 rating across {rev} customer reviews, relying on historic neighborhood goodwill and physical visibility.",
-                f"{c_name} maintains strong local brand recall but experiences recurring customer friction regarding peak waiting congestion.",
-                f"{c_name} benefits from established supplier relationships and dependable daily operations within the local area.",
-                f"{c_name} leverages conventional counter service familiarity, though lacking personalized digital customer retention programs."
+                f"Solid {rate}★ rating across {rev} reviews; physical visibility but peak waiting congestion.",
+                f"Strong neighborhood brand recall; conventional operations without personalized digital retention.",
+                f"Established supplier relationships and dependable local presence; slower service turnaround."
             ]
             return moats[idx % len(moats)]
+
+        # Filter out non-direct retail / irrelevant shops (e.g. sports goods shops for gyms)
+        clean_comps = []
+        is_gym = any(k in f"{industry} {title}".lower() for k in ['gym', 'fitness', 'crossfit', 'workout'])
+        is_food = any(k in f"{industry} {title}".lower() for k in ['biryani', 'food', 'bakery', 'restaurant', 'dining'])
+
+        for c in competitors:
+            c_name_lower = (c.get("name") or "").lower()
+            if is_gym and any(bad in c_name_lower for bad in ['sports shop', 'sports store', 'equipment', 'apparel', 'retail', 'textiles', 'shoe', 'wear']):
+                continue
+            if is_food and any(bad in c_name_lower for bad in ['pharmacy', 'medical', 'textile', 'clothing', 'hardware']):
+                continue
+            clean_comps.append(c)
+
+        matrix_competitors = clean_comps[:3] if len(clean_comps) >= 2 else (competitors[:3] if competitors else [])
 
         # Build comparison matrix with dimension-specific advantages and competitor values
         dim_configs = [
             (
                 "Business Model",
-                f"Agile, modern {b_type} operational model with minimal overhead and rapid adaptability.",
+                f"Agile, lean {b_type} operational model with minimal overhead and rapid adaptability.",
                 get_comp_business_model,
                 f"{title} operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings."
             ),
             (
                 "Target Audience",
-                f"Hyper-targeted focus on modern consumers and professionals seeking verified quality in {industry}.",
+                f"Hyper-targeted focus on modern consumers seeking verified quality in {industry}.",
                 get_comp_target_audience,
                 f"{title} caters directly to underserved modern customer requirements in {industry}, delivering personalized care rather than generic mass-market compromises."
             ),
@@ -414,7 +416,7 @@ CRITICAL RULES:
         matrix = []
         for dim, s_val, comp_fn, adv in dim_configs:
             comp_vals = []
-            for idx, c in enumerate(competitors[:5]):
+            for idx, c in enumerate(matrix_competitors):
                 c_name = c.get("name", f"Competitor {idx+1}")
                 comp_vals.append({
                     "name": c_name,

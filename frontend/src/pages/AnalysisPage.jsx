@@ -250,7 +250,7 @@ const AnalysisPage = () => {
           )}
         </div>
 
-        <div className="tabs-container glass-card">
+        <div className="tabs-container">
           <div className="tabs-nav">
             {tabs.map(tab => (
               <button

@@ -22,7 +22,17 @@ EXCLUDED_DOMAINS = {
     "coursera.org", "udemy.com", "amazon.com", "amazon.in",
     "flipkart.com", "play.google.com", "apps.apple.com",
     "glassdoor.com", "glassdoor.co.in", "indeed.com", "indeed.co.in",
-    "bing.com", "google.com", "duckduckgo.com", "yahoo.com"
+    "bing.com", "google.com", "duckduckgo.com", "yahoo.com",
+    # Review directories & software listing portals (not actual competitor products)
+    "capterra.com", "g2.com", "trustpilot.com", "producthunt.com",
+    "softwareadvice.com", "getapp.com", "slashdot.org", "crozdesk.com",
+    "saasworthy.com", "sourceforge.net", "trustradius.com", "goodfirms.co", "clutch.co",
+    # News & media outlets
+    "techcrunch.com", "forbes.com", "theverge.com", "venturebeat.com",
+    "businessinsider.com", "wired.com", "bloomberg.com", "reuters.com",
+    "economictimes.indiatimes.com", "yourstory.com", "inc42.com",
+    "entrackr.com", "livemint.com", "ndtv.com", "timesofindia.indiatimes.com",
+    "thehindu.com", "financialexpress.com", "substack.com", "hubspot.com"
 }
 
 class WebSearchService:
@@ -638,15 +648,76 @@ Output strictly valid JSON:
         return aggregated, provider_used
 
     @classmethod
+    def is_relevant_result(
+        cls,
+        title: str,
+        snippet: str,
+        domain: str,
+        startup_title: str,
+        industry: str = "",
+        description: str = "",
+        keywords: str = ""
+    ) -> bool:
+        """
+        Pure relevance filter: determines whether a search result is genuinely
+        relevant to the startup's product/market scope.
+        Rejects:
+        - Review aggregators, listicles, directories, and tech blogs
+        - Off-topic or tangentially matching companies in unrelated fields
+        """
+        dom_clean = cls.normalize_domain(domain)
+        if not dom_clean:
+            return False
+            
+        for ex in EXCLUDED_DOMAINS:
+            if ex in dom_clean:
+                return False
+
+        full_text = f"{title} {snippet} {dom_clean}".lower()
+
+        # Reject aggregator, directory, and job listing pages
+        listicle_indicators = [
+            "top 10 ", "top 5 ", "best 10 ", "best 5 ", "read customer reviews",
+            "compare software", "software reviews", "alternatives and competitors",
+            "directory of", "find the best", "jobs near", "job openings for"
+        ]
+        if any(ind in full_text for ind in listicle_indicators):
+            # If domain isn't an established SaaS/app product itself, reject it
+            if not any(dom_clean.endswith(ext) for ext in [".io", ".ai", ".app", ".co", ".com"]):
+                return False
+
+        # Extract core domain tokens from startup title, industry, and keywords
+        stop_words = {
+            "the", "and", "for", "with", "startup", "business", "platform", "app",
+            "application", "solution", "solutions", "online", "offline", "hybrid",
+            "service", "services", "system", "india", "near", "point", "smart",
+            "best", "top", "new", "free", "tool", "tools", "hub", "center"
+        }
+        combined_seed = f"{startup_title} {industry} {keywords}".lower()
+        seed_words = [w for w in re.findall(r'[a-zA-Z]{3,}', combined_seed) if w not in stop_words]
+
+        # Require at least one meaningful domain concept keyword match in candidate's text
+        if seed_words:
+            has_keyword_match = any(sw in full_text for sw in seed_words)
+            if not has_keyword_match:
+                return False
+
+        return True
+
+    @classmethod
     def extract_competitors_from_search(
         cls,
         search_items: List[Dict],
         startup_title: str,
-        target_market: str = ""
+        target_market: str = "",
+        industry: str = "",
+        description: str = "",
+        keywords: str = ""
     ) -> List[Dict]:
         """
         Transforms raw web search items into structured competitor objects
         with normalized names, official root domains, and initial feature sets.
+        Enforces strict relevance verification before returning results.
         """
         extracted = []
         target_market_lower = target_market.lower() if target_market else ""
@@ -658,13 +729,25 @@ Output strictly valid JSON:
             snippet = item.get("snippet", "")
             provider = item.get("provider", "DuckDuckGo HTML Engine")
 
+            # 1. Pure Relevance Check
+            if not cls.is_relevant_result(
+                title=title,
+                snippet=snippet,
+                domain=domain,
+                startup_title=startup_title,
+                industry=industry,
+                description=description,
+                keywords=keywords
+            ):
+                continue
+
             comp_name = cls.clean_company_name(title, domain)
             if not comp_name or len(comp_name) < 2:
                 continue
 
             text_lower = f"{title} {snippet}".lower()
             
-            # 1. Direct vs Indirect vs Alternative
+            # 2. Direct vs Indirect vs Alternative
             if any(w in text_lower for w in ["service", "agency", "writing service", "consultant", "coaching", "offline"]):
                 comp_type = "alternative"
             elif (target_market_lower and target_market_lower in text_lower) or any(w in text_lower for w in ["builder", "generator", "creator", "maker", "ai"]):

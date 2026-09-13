@@ -335,6 +335,180 @@ SECTOR_PROFILES = {
             ],
             "overall_assessment": "{title} holds high strategic value by digitizing India's fragmented outpatient healthcare ecosystem. By solving the dual challenges of doctor time constraints and mandatory ABDM compliance, it establishes an irreplaceable clinical moat."
         }
+    },
+
+    "fitness_wellness": {
+        "archetype": "Hybrid Digital Wellness & Connected Fitness",
+        "gross_margin": "70% – 78%",
+        "ltv_cac": "3.9x – 4.5x",
+        "payback_months": "4 – 6 Months",
+        "problem": "Generic overcrowded commercial gyms, lack of structured functional training form checks, and high upfront annual lock-in fees leaving fitness enthusiasts unmotivated and prone to injury in India.",
+        "solution": "Modern high-intensity CrossFit and functional strength facility combining Olympic lifting platforms, certified coach form assessments, and transparent monthly membership tiers for {title}.",
+        "customer_segments": [
+            "Primary ICP: Working professionals, corporate executives, and students aged 20–42 seeking high-energy fitness",
+            "Functional Athletes: CrossFitters, marathoners, and powerlifters requiring Olympic barbell drop zones",
+            "Weight Transformation: Individuals seeking structured 1-on-1 personal training and nutritional guidance",
+            "Corporate Wellness: Local tech park employees looking for morning/evening stress relief workouts"
+        ],
+        "value_proposition": "Delivers expert coach-led strength and conditioning with sub-15 member batch limits, premium Olympic lifting equipment, and flexible monthly memberships with zero hidden lock-ins.",
+        "channels": [
+            "Hyperlocal Instagram & Meta Reels showcasing member PRs, lifting form, and community workouts",
+            "Community Weekend Open WODs & Free Mobility Workshops within 3 km catchment radius",
+            "Corporate Wellness Partnerships with nearby IT hubs and business offices",
+            "Referral Word-of-Mouth: 'Bring a Friend' free trial pass with 15% renewal cashback"
+        ],
+        "key_partners": [
+            "Commercial Strength & Fitness Equipment Manufacturers (custom rigs, barbells, bumper plates)",
+            "Certified Sports Nutrition & Supplement Brands for in-house retail protein bar",
+            "Local Physiotherapists & Sports Chiropractors for member recovery referrals",
+            "Biometric Access & Gym Management Software Providers (RFID check-ins & AutoPay billing)"
+        ],
+        "key_activities": [
+            "Daily workout programming (WODs) tailored for scalability across beginner to advanced athletes",
+            "Continuous trainer form coaching, injury prevention audits, and member technique workshops",
+            "Equipment sanitation, barbell maintenance, and acoustic rubber floor upkeep",
+            "Monthly InBody body composition tracking and member milestone celebrations"
+        ],
+        "key_resources": [
+            "High-street commercial facility (2,500–4,000 sq.ft) with structural clearance for barbell drop zones",
+            "Certified Head Strength Coach and Level-1/Level-2 CrossFit certified coaching roster",
+            "Heavy-duty modular CrossFit rig, Concept2 rowers, Assault air bikes, and Olympic plates",
+            "Automated membership billing CRM and biometric turnstile access control"
+        ],
+        "cost_structure": [
+            "Commercial Property Lease & High-Street Rent (28% of monthly operating budget)",
+            "Certified Head Coach & Trainer Salaries + Performance Incentives (32%)",
+            "Facility Power, Commercial Air Conditioning & Utility Expenses (14%)",
+            "Equipment Maintenance, Sanitation Supplies & Wear-and-Tear Reserve (10%)",
+            "Local Performance Marketing, Social Media & Community Events (16%)"
+        ],
+        "revenue_streams": [
+            "Starter Floor Pass: ₹1,499 / month (₹14,390 / year, full gym floor & cardio access)",
+            "Pro Athlete / CrossFit Pass: ₹2,999 / month (₹28,790 / year, unlimited daily coached batches)",
+            "Elite Transformation & PT: ₹5,499 / month (₹52,790 / year, includes 8 1-on-1 trainer sessions)",
+            "In-House Sports Nutrition Bar & Merchandise: ₹250 – ₹1,200 per transaction"
+        ],
+        "key_metrics": [
+            "Active Recurring Member Base & Monthly Renewal Rate (>82% target)",
+            "Batch Capacity Utilization Rate (Target >75% in prime 6-9 AM / 6-9 PM slots)",
+            "Average Revenue Per Member (ARPM > ₹2,800/mo via PT upsell)",
+            "Member Lifetime Value to CAC Ratio (>3.8x)"
+        ],
+        "unfair_advantage": "Coach-led community culture paired with dedicated Olympic lifting drop-zone infrastructure and flexible monthly billing, delivering 3x higher attendance consistency than conventional commercial gyms.",
+        "detailed_explanation": "{title} combines high-energy group functional training with high-margin 1-on-1 personal coaching. By maintaining lean operational overhead and building an authentic fitness community, unit economics achieve rapid break-even within 6 months.",
+        "pricing_tiers": [
+            {"tier": "Starter Floor Pass", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,390", "period": "/ month", "target": "Casual lifters & general gym regulars", "features": "Full cardio & free weights floor access, locker facility, general fitness orientation, shower access"},
+            {"tier": "Pro Athlete / CrossFit", "price": "₹2,999", "monthly_price": "₹2,999", "annual_price": "₹28,790", "period": "/ month", "target": "CrossFit athletes & functional fitness regulars", "features": "Unlimited daily CrossFit & HIIT batches, expert coach form analysis, Olympic lifting platforms, priority batch booking", "popular": True},
+            {"tier": "Elite Transformation & PT", "price": "₹5,499", "monthly_price": "₹5,499", "annual_price": "₹52,790", "period": "/ month", "target": "Personalized coaching & body transformation", "features": "8 dedicated 1-on-1 personal trainer sessions/mo, monthly InBody body composition scan, customized macro nutrition plan, recovery lounge access"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "Coach-to-Member Ratio & Community Cohesion", "desc": "Small batch sizes (<15 members) ensure dedicated trainer attention and build high social retention.", "impact": "Core Competency", "action": "Highlight trainer certifications and member transformation case studies across local media."},
+                {"title": "High Margin Personal Training Upsell", "desc": "1-on-1 personal training delivers gross margins exceeding 65% on top of baseline membership fees.", "impact": "Revenue Multiplier", "action": "Offer complimentary 30-minute fitness assessment to every new member to drive PT conversions."},
+                {"title": "Low Marginal Serving Cost", "desc": "Once equipment CapEx is funded, operating marginal cost per additional member in existing batches is near zero.", "impact": "Operating Leverage", "action": "Maximize off-peak afternoon batch occupancy with special corporate and student discounts."}
+            ],
+            "weaknesses": [
+                {"title": "Peak Hour Floor Capacity Bottlenecks", "desc": "Morning (6-9 AM) and Evening (6-9 PM) hours experience high demand while mid-day hours remain quiet.", "impact": "Capacity Constraint", "action": "Introduce mid-day flex memberships priced at 25% discount to balance footfall across the day."},
+                {"title": "Dependency on Key Trainer Retention", "desc": "Popular coaches can build personal followings that may follow them if they transition.", "impact": "Personnel Risk", "action": "Implement competitive revenue-share incentives and long-term trainer retention contracts."}
+            ],
+            "opportunities": [
+                {"title": "Corporate Wellness & B2B Group Subscriptions", "desc": "Nearby technology parks and multinational corporate offices actively fund employee fitness allowances.", "impact": "Bulk Volume", "action": "Sign exclusive corporate wellness tie-ups with subsidized employee annual memberships."},
+                {"title": "Recovery Suite & Cryo / Sauna Add-ons", "desc": "Modern athletes increasingly pay premium add-on fees for ice baths, infrared saunas, and compression boots.", "impact": "High-Margin Expansion", "action": "Install a 4-person contrast therapy recovery zone funded from Month 6 operating cashflows."},
+                {"title": "Multi-Location Franchise Expansion", "desc": "Proving the unit economics in the first neighborhood unlocks multi-hub expansion across urban catchments.", "impact": "Geographic Scale", "action": "Codify operating standard operating procedures (SOPs) for turnkey 2nd location launch."}
+            ],
+            "threats": [
+                {"title": "Discount Gym Chains & Low-Price Competitors", "desc": "Budget commercial gym franchises offer barebones gym floor access at ₹700–₹1,000/month.", "impact": "Price Pressure", "action": "Compete strictly on coaching quality, CrossFit results, and community rather than low price."},
+                {"title": "Commercial Real Estate Rent Escalation", "desc": "Prime high-street landlords may demand aggressive 5-8% annual rent escalations upon lease renewal.", "impact": "Margin Drag", "action": "Negotiate 5-year commercial lease agreements with capped 3% biennial rent escalations."}
+            ],
+            "overall_assessment": "{title} demonstrates strong commercial viability in Fitness & Wellness. By focusing on coach-led community workouts and premium 1-on-1 transformation packages, the business achieves high member retention and rapid unit payback."
+        }
+    },
+
+    "food & beverage": {
+        "archetype": "Specialized QSR, Artisanal Dining & Cloud Kitchen",
+        "gross_margin": "60% – 68%",
+        "ltv_cac": "3.5x – 4.2x",
+        "payback_months": "4 – 6 Months",
+        "problem": "Inconsistent taste quality, long dining wait times, and high food aggregator commissions (22%+) eroding margins for food operators while delivering lukewarm food to customers across India.",
+        "solution": "High-efficiency culinary kitchen model focusing on authentic signature recipes (dum biryani / artisanal baked goods), rapid counter takeaway, and direct localized delivery for {title}.",
+        "customer_segments": [
+            "Primary ICP: Students, young professionals, and local residents seeking authentic, hygienic meals",
+            "Family Diners: Multi-generational households looking for weekend feast packs and celebratory platters",
+            "Corporate Offices: Tech firms and institutions requiring reliable executive lunch boxes and meeting platters",
+            "Event Hosts: Local birthday parties, functions, and campus events needing bulk catering"
+        ],
+        "value_proposition": "Delivers slow-cooked authentic taste with strict hygiene standards, express counter takeaway under 6 minutes, and generous family portions at honest local prices.",
+        "channels": [
+            "Direct Walk-in Counter & High-Visibility Street Frontage with Open Kitchen Display",
+            "Direct WhatsApp / QR Code Table Ordering with Zero Aggregator Markups",
+            "Local Foodie Influencer Reviews & Instagram Reels showcasing live dum-pot opening",
+            "Selective Aggregator Presence (Swiggy / Zomato) used strictly as top-of-funnel customer discovery"
+        ],
+        "key_partners": [
+            "Direct Farm & Spice Wholesalers for daily fresh poultry, dairy, Basmati rice & spices",
+            "Packaging Manufacturers for leak-proof, heat-retentive clay pots and biodegradable boxes",
+            "FSSAI Food Safety Auditors & Commercial Kitchen Equipment Maintenance Vendors",
+            "Local Delivery Fleets for direct neighborhood order fulfillment"
+        ],
+        "key_activities": [
+            "Daily batch preparation of signature marinade, slow dum cooking, and fresh pastry baking",
+            "Strict HACCP & FSSAI hygiene protocols, temperature logging, and quality checks",
+            "Counter takeaway order packaging speed optimization (target <5 minutes)",
+            "Managing customer feedback, review generation, and loyalty stamp cards"
+        ],
+        "key_resources": [
+            "Prime commercial kitchen location (600–1,200 sq.ft) with high foot-traffic street frontage",
+            "Experienced Master Chef (Ustad / Head Baker) and trained kitchen prep line staff",
+            "Commercial grade convection ovens, high-capacity dum burners, and cold-room storage",
+            "Touchscreen POS terminal with automated recipe inventory consumption tracking"
+        ],
+        "cost_structure": [
+            "Raw Food Ingredients & Consumables / COGS (34% of monthly operating revenue)",
+            "Kitchen Staff & Front-Counter Team Payroll (22%)",
+            "Storefront Commercial Rent & Lease Maintenance (18%)",
+            "Commercial LPG Gas, Electricity & Kitchen Power (10%)",
+            "Packaging, Delivery Logistics & Local Marketing (16%)"
+        ],
+        "revenue_streams": [
+            "Student / Quick Meal Combo: ₹249 / meal (express counter pickup with complimentary drink)",
+            "Family Feast / Handi Pack: ₹799 / pack (clay handi dum biryani / pastry platter for 3-4 pax)",
+            "Corporate & Party Catering: ₹4,999 / event (buffet setup for 15-25 pax with chafing dishes)",
+            "Beverage & Dessert Add-ons: ₹50 – ₹180 per order (sweet lassi, gulab jamun, signature pastries)"
+        ],
+        "key_metrics": [
+            "Daily Order Volume & Average Order Value (Target AOV > ₹480)",
+            "Food Cost Percentage / COGS (Strictly controlled under 35%)",
+            "Table Turnover / Counter Throughput Latency (<6 minutes per takeaway parcel)",
+            "Direct Re-order / Repeat Customer Rate (>30% within 30 days)"
+        ],
+        "unfair_advantage": "Proprietary slow-cooked dum recipe and spice blend delivering irreplaceable signature taste, paired with direct WhatsApp ordering that bypasses third-party platform commissions.",
+        "detailed_explanation": "{title} leverages lean, high-throughput kitchen operations to drive superior gross margins. By balancing high-volume walk-in takeaway with profitable direct party catering, the venture achieves sustainable profitability within months.",
+        "pricing_tiers": [
+            {"tier": "Student / Quick Meal Combo", "price": "₹249", "monthly_price": "₹249", "annual_price": "₹249", "period": "/ meal combo", "target": "Individual diners, students & commuters", "features": "Single-portion signature dum biryani or pastry box, complimentary beverage, express takeaway counter pickup, eco-friendly packaging"},
+            {"tier": "Family Feast / Handi Pack", "price": "₹799", "monthly_price": "₹799", "annual_price": "₹799", "period": "/ meal pack", "target": "Families & friend groups (3-4 pax)", "features": "Full clay handi dum biryani or artisanal dessert platter, double sides (mirchi ka salan & raita), signature dessert sampler, priority dine-in table", "popular": True},
+            {"tier": "Party & Corporate Catering", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹4,999", "period": "/ event booking", "target": "Office parties, birthdays & celebrations (15-25 pax)", "features": "Customized catering buffet setup, chafing dishes with live food heating, dedicated service steward, complimentary dessert counter, custom spice levels"}
+        ],
+        "swot": {
+            "strengths": [
+                {"title": "Signature Recipe & Flavor Consistency", "desc": "Standardized spice formulas and batch cooking times guarantee identical great taste every single day.", "impact": "Core Competency", "action": "Pre-package signature spice masalas centrally to protect intellectual property."},
+                {"title": "High Table Turnover & Takeaway Volume", "desc": "Fast prep cycle (<5 mins) maximizes peak lunch and dinner hour order volume.", "impact": "High Throughput", "action": "Implement a dedicated express takeaway counter to avoid walk-in dining congestion."},
+                {"title": "Lucrative Corporate Catering Margins", "desc": "Pre-booked bulk orders provide high gross margins (68%+) with zero food wastage risk.", "impact": "Margin Expansion", "action": "Distribute corporate catering tasting boxes to HR managers at nearby business hubs."}
+            ],
+            "weaknesses": [
+                {"title": "Raw Ingredient Price Volatility", "desc": "Spikes in onion, tomato, dairy, or poultry prices can compress gross margins if not hedged.", "impact": "Cost Pressure", "action": "Secure quarterly fixed-rate supply contracts with regional wholesale poultry and dairy vendors."},
+                {"title": "Dependency on Core Kitchen Talent", "desc": "Loss of the head cook could disrupt daily food consistency and kitchen morale.", "impact": "Operational Risk", "action": "Document exact ingredient grammage measurements in written SOPs to ensure any cook can execute."}
+            ],
+            "opportunities": [
+                {"title": "Direct D2C WhatsApp Ordering Channel", "desc": "Encouraging regular customers to order directly via WhatsApp saves 20-25% aggregator commission fees.", "impact": "Profit Protection", "action": "Offer a free beverage or 10% instant discount on direct WhatsApp pickup orders."},
+                {"title": "Late Night & Weekend Midnight Delivery", "desc": "University campuses and IT corridors experience intense late-night food cravings between 11 PM and 2 AM.", "impact": "Incremental Revenue", "action": "Extend cloud kitchen delivery hours on weekends to capture high-margin night sales."},
+                {"title": "Packaged Gourmet Spices & Sauces", "desc": "Retail sales of signature biryani masala kits or bottled artisanal sauces create an omnichannel revenue stream.", "impact": "Brand Extension", "action": "Package signature spice blends in retail jars for front-counter display sales."}
+            ],
+            "threats": [
+                {"title": "Aggressive Discounting from Delivery Aggregators", "desc": "Swiggy and Zomato promote deeply-discounted cloud kitchen brands that undercut storefront prices.", "impact": "Price Competition", "action": "Focus marketing on dine-in freshness, authentic clay-pot aroma, and direct customer relationships."},
+                {"title": "Stringent Food Safety Inspections", "desc": "FSSAI compliance audits require rigorous hygiene, pest control, and food safety certifications.", "impact": "Regulatory Compliance", "action": "Conduct bi-weekly third-party hygiene audits and maintain spotless kitchen transparency."}
+            ],
+            "overall_assessment": "{title} possesses outstanding commercial potential in Food & Beverage. By combining an authentic signature culinary identity with rapid counter throughput and direct catering orders, the brand builds strong localized defensibility."
+        }
     }
 }
 
@@ -562,11 +736,23 @@ def get_universal_business_profile(context: dict, sector_key: str) -> dict:
         ],
         "unfair_advantage": f"Deeply customized domain architecture engineered specifically for Indian market nuances ({meta['pricing_unit']}), creating superior localized value compared to generic foreign software.",
         "detailed_explanation": f"{title} operates a defensible, high-margin business model in the {ind} sector. By solving acute operational pain points and leveraging scalable digital channels, the company is structured for capital-efficient growth and rapid unit economic profitability.",
-        "pricing_tiers": [
-            {"tier": "Starter", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Early adopters & small teams", "features": f"Core {ind} toolkit, standard analytics, email & chat support, 2 user seats"},
-            {"tier": "Professional", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Growing businesses & active operators", "features": "Advanced workflows, multi-seat collaboration, automated reporting, priority webhook SLAs", "popular": True},
-            {"tier": "Enterprise", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹47,988", "period": "/ month", "target": "Large institutions & multi-location groups", "features": "Dedicated database tenant, custom ERP integration, 99.9% uptime SLA, 24/7 account manager"}
-        ],
+        "pricing_tiers": (
+            [
+                {"tier": "Standard Walk-in / Base Pass", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,990", "period": "/ month", "target": "Regular local customers & walk-ins", "features": f"Core on-premise {ind} access, standard service fulfillment, digital receipt"},
+                {"tier": "Preferred Regular Member", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,390", "period": "/ month", "target": "High-frequency local patrons", "features": f"Unlimited monthly access, priority queue booking, 10% discount on add-ons, personalized service", "popular": True},
+                {"tier": "VIP / Corporate Package", "price": "₹3,999", "monthly_price": "₹3,999", "annual_price": "₹39,990", "period": "/ month", "target": "VIP clients & corporate group accounts", "features": f"Dedicated relationship coordinator, zero-waiting priority slots, custom requested accommodations, complimentary hospitality perks"}
+            ] if ('offline' in str(context.get('sector', '')).lower() or 'physical' in str(context.get('sector', '')).lower()) else (
+            [
+                {"tier": "Basic Digital + Store Pass", "price": "₹399", "monthly_price": "₹399", "annual_price": "₹3,830", "period": "/ month", "target": "Periodic shoppers & digital users", "features": f"Digital app access, storefront express pickup, standard tracking alerts"},
+                {"tier": "Omnichannel Prime Pass", "price": "₹999", "monthly_price": "₹999", "annual_price": "₹9,590", "period": "/ month", "target": "Weekly active patrons", "features": f"Free doorstep fulfillment, priority in-store service counter, 5% cashback on all orders, WhatsApp concierge", "popular": True},
+                {"tier": "Family All-Access Executive", "price": "₹2,499", "monthly_price": "₹2,499", "annual_price": "₹23,990", "period": "/ month", "target": "Full household accounts", "features": f"Unlimited free doorstep deliveries, zero surge fees during peak hours, dedicated relationship manager, priority slots"}
+            ] if ('hybrid' in str(context.get('sector', '')).lower() or 'phygital' in str(context.get('sector', '')).lower()) else
+            [
+                {"tier": "Starter", "price": "₹499", "monthly_price": "₹499", "annual_price": "₹4,788", "period": "/ month", "target": "Early adopters & small teams", "features": f"Core {ind} toolkit, standard analytics, email & chat support, 2 user seats"},
+                {"tier": "Professional", "price": "₹1,499", "monthly_price": "₹1,499", "annual_price": "₹14,388", "period": "/ month", "target": "Growing businesses & active operators", "features": "Advanced workflows, multi-seat collaboration, automated reporting, priority support", "popular": True},
+                {"tier": "Enterprise", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹47,988", "period": "/ month", "target": "Large institutions & multi-location groups", "features": "Dedicated instance, custom ERP integration, 99.9% uptime SLA, 24/7 account manager"}
+            ]
+        )),
         "swot": {
             "strengths": [
                 {"title": f"Tailored {ind} Solution Architecture", "desc": f"Built from the ground up to address specific friction points in {ind}, rather than using generic off-the-shelf tools.", "impact": "Core Competency", "action": "Highlight vertical-specific ROI and workflow time savings in sales collateral."},

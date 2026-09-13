@@ -343,10 +343,34 @@ const getUniversalDomainProfile = (industry, title, sector) => {
       'Net Revenue Retention (NRR > 110%) & Gross Monthly Churn (<2.0%)'
     ],
     unfair_advantage: `Customized domain architecture engineered specifically for Indian operational nuances and payment ecosystems, creating defensible localized value compared to generic foreign software.`,
-    pricing_tiers: [
+    pricing_tiers: isOffline ? (
+      (ttl.toLowerCase().includes('gym') || ind.toLowerCase().includes('fitness')) ? [
+        { tier: 'Starter Floor Pass', monthlyPrice: '₹1,499', annualPrice: '₹14,390', period: '/ month', target: 'Casual lifters & general gym regulars', features: ['Full cardio & free weights floor access', 'Locker & shower facility', 'General fitness orientation', 'Dedicated trainer floor support'] },
+        { tier: 'Pro Athlete / CrossFit', monthlyPrice: '₹2,999', annualPrice: '₹28,790', period: '/ month', target: 'CrossFit athletes & group HIIT regulars', features: ['Unlimited daily coached CrossFit batches', 'Coach lifting form & technique analysis', 'Olympic lifting platforms', 'Priority batch reservation'], popular: true },
+        { tier: 'Elite Transformation & PT', monthlyPrice: '₹5,499', annualPrice: '₹52,790', period: '/ month', target: 'Personalized coaching & body transformation', features: ['8 dedicated 1-on-1 personal trainer sessions/mo', 'Monthly InBody body composition scan', 'Customized macro nutrition plan', 'Recovery lounge access'] }
+      ] : (ttl.toLowerCase().includes('biryani') || ind.toLowerCase().includes('food') || ttl.toLowerCase().includes('bakery')) ? [
+        { tier: 'Student / Quick Meal Combo', monthlyPrice: '₹249', annualPrice: '₹249', period: '/ meal combo', target: 'Individual diners, students & commuters', features: ['Single-portion signature dum biryani / pastry box', 'Complimentary beverage', 'Express takeaway counter pickup', 'Eco-friendly food packaging'] },
+        { tier: 'Family Feast / Handi Pack', monthlyPrice: '₹799', annualPrice: '₹799', period: '/ meal pack', target: 'Families & friend groups (3-4 pax)', features: ['Full clay handi dum biryani / artisanal dessert platter', 'Double sides (mirchi ka salan & raita)', 'Signature dessert sampler', 'Priority dine-in table'], popular: true },
+        { tier: 'Party & Corporate Catering', monthlyPrice: '₹4,999', annualPrice: '₹4,999', period: '/ event booking', target: 'Office parties, birthdays & celebrations (15-25 pax)', features: ['Customized catering buffet setup', 'Chafing dishes with live food heating', 'Dedicated service steward', 'Custom spice levels'] }
+      ] : [
+        { tier: 'Standard Walk-in / Base Pass', monthlyPrice: '₹499', annualPrice: '₹4,990', period: '/ month', target: 'Regular walk-ins & local patrons', features: [`Core on-premise ${ind} access`, 'Standard service fulfillment', 'Digital transaction receipt', 'Standard support'] },
+        { tier: 'Preferred Regular Member', monthlyPrice: '₹1,499', annualPrice: '₹14,390', period: '/ month', target: 'Frequent neighborhood patrons', features: ['Unlimited monthly on-premise access', 'Priority queue booking', '10% discount on retail add-ons', 'Personalized customer care'], popular: true },
+        { tier: 'VIP / Corporate Package', monthlyPrice: '₹3,999', annualPrice: '₹39,990', period: '/ month', target: 'VIP clients & corporate group accounts', features: ['Dedicated relationship coordinator', 'Zero-waiting priority slots', 'Custom accommodations', 'Complimentary perks'] }
+      ]
+    ) : isHybrid ? (
+      (ttl.toLowerCase().includes('grocery') || ind.toLowerCase().includes('agri')) ? [
+        { tier: 'Everyday Shopper', monthlyPrice: 'Pay-as-you-go', annualPrice: 'Pay-as-you-go', period: '/ order', target: 'Casual walk-ins & periodic app orders', features: ['Direct farm-fresh organic produce', 'Wholesale mandi rates', 'Free storefront pickup', 'Zero subscription commitment'] },
+        { tier: 'Fresh Club Member', monthlyPrice: '₹149', annualPrice: '₹1,490', period: '/ month', target: 'Frequent weekly grocery buyers', features: ['Unlimited free 15-minute home delivery', '5% cashback on all orders', 'Morning priority delivery slots (6-8 AM)', 'Guaranteed pesticide-free quality'], popular: true },
+        { tier: 'Family Pantry Annual Pass', monthlyPrice: '₹999', annualPrice: '₹999', period: '/ year', target: 'Full household daily kitchen requirements', features: ['Daily unadulterated farm milk delivery before 7 AM', 'Zero surge delivery fees during peak hours', 'Free seasonal organic fruit box quarterly', 'Dedicated WhatsApp concierge'] }
+      ] : [
+        { tier: 'Basic Digital + Store Pass', monthlyPrice: '₹399', annualPrice: '₹3,830', period: '/ month', target: 'Periodic shoppers & digital users', features: ['Digital app access', 'Storefront express pickup', 'Order status tracking', 'Basic support'] },
+        { tier: 'Omnichannel Prime Pass', monthlyPrice: '₹999', annualPrice: '₹9,590', period: '/ month', target: 'Weekly active patrons', features: ['Free doorstep fulfillment', 'Priority in-store service counter', '5% cashback on all orders', 'WhatsApp concierge'], popular: true },
+        { tier: 'Family All-Access Executive', monthlyPrice: '₹2,499', annualPrice: '₹23,990', period: '/ month', target: 'Full household accounts', features: ['Unlimited free doorstep deliveries', 'Zero surge fees during peak hours', 'Dedicated relationship manager', 'Priority slots'] }
+      ]
+    ) : [
       { tier: 'Starter', monthlyPrice: '₹499', annualPrice: '₹4,788', period: '/ month', target: 'Early adopters & small teams', features: [`Core ${ind} toolkit`, 'Standard analytics dashboard', 'Email & WhatsApp support', '2 user seats'] },
-      { tier: 'Professional', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated GST reporting', 'Priority webhook SLAs'], popular: true },
-      { tier: 'Enterprise', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated database tenant', 'Custom ERP bi-directional sync', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
+      { tier: 'Professional', monthlyPrice: '₹1,499', annualPrice: '₹14,388', period: '/ month', target: 'Growing businesses & active operators', features: ['Advanced automated workflows', 'Multi-seat team collaboration', 'Automated reporting', 'Priority support'], popular: true },
+      { tier: 'Enterprise', monthlyPrice: '₹4,999', annualPrice: '₹47,988', period: '/ month', target: 'Large institutions & multi-location groups', features: ['Dedicated instance', 'Custom ERP integration', '99.9% uptime SLA guarantee', '24/7 dedicated account manager'] }
     ],
     swot: {
       strengths: [
