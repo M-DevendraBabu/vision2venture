@@ -261,18 +261,22 @@ class AnalysisService:
 
         # ============ 3. MARKET ANALYSIS (REAL DATA + AI / ML) ============
         market_data = {}
+        market_source = "Google Trends, World Bank & AI"
         try:
             print(f"[Analysis] 3/9 Running Market Analysis (Grounded in Real Data)...")
             market_data = AIService.run_market_analysis(context) or {}
+            if market_data and market_data.get('data_source'):
+                market_source = market_data['data_source']
             if not market_data.get('market_size') or 'unavailable' in str(market_data.get('market_size', '')).lower():
                 market_data = MLService.calculate_market_analysis(context) or {}
+                market_source = market_data.get('data_source') or "Industry benchmark estimate"
 
             m_analysis = MarketAnalysis(
                 idea_id=idea.id,
                 market_size=str(market_data.get('market_size') or f'Estimated for {idea.industry} in {idea.country}'),
-                growth_rate=safe_float(market_data.get('growth_rate'), 14.5),
+                growth_rate=safe_float(market_data.get('growth_rate'), None),
                 demand_level=str(market_data.get('demand_level') or 'High'),
-                opportunity_score=safe_float(market_data.get('opportunity_score'), 80.0),
+                opportunity_score=safe_float(market_data.get('opportunity_score'), None),
                 industry_trends=market_data.get('industry_trends') or [
                     f'Increasing demand for {idea.industry} solutions',
                     'Digital transformation driving adoption',
@@ -283,7 +287,8 @@ class AnalysisService:
                 key_pain_point=str(market_data.get('key_pain_point') or f'High cost or friction in current {idea.industry} offerings'),
                 acquisition_channel=str(market_data.get('acquisition_channel') or 'Digital Marketing, SEO, Direct Outreach'),
                 purchase_trigger=str(market_data.get('purchase_trigger') or 'Immediate need for a scalable solution'),
-                opportunity_explanation=str(market_data.get('opportunity_explanation') or 'Strong market fit and timing.')
+                opportunity_explanation=str(market_data.get('opportunity_explanation') or 'Strong market fit and timing.'),
+                data_source=market_source
             )
             db.add(m_analysis)
             db.commit()
@@ -350,6 +355,7 @@ class AnalysisService:
             return str(val)
 
         # Save Business Model
+        bm_source = "AI-grounded analysis" if (bm_data and not bm_data.get('_is_fallback')) else "Industry benchmark estimate"
         try:
             db.add(BusinessModel(
                 idea_id=idea.id,
@@ -361,7 +367,8 @@ class AnalysisService:
                 key_activities=_fmt_field(bm_data.get('key_activities') or bm_data.get('key_activities_str'), 'Product Development, Marketing, Operations'),
                 key_resources=_fmt_field(bm_data.get('key_resources') or bm_data.get('key_resources_str'), f'Founding Team, Initial Budget of ₹{budget:,.0f}'),
                 cost_structure=_fmt_field(bm_data.get('cost_structure') or bm_data.get('cost_structure_str'), 'Development, Operations, Marketing, Personnel'),
-                detailed_explanation=str(bm_data.get('detailed_explanation') or f'Comprehensive business strategy for {idea.title}.')
+                detailed_explanation=str(bm_data.get('detailed_explanation') or f'Comprehensive business strategy for {idea.title}.'),
+                data_source=bm_source
             ))
             db.commit()
         except Exception as e:
@@ -374,6 +381,7 @@ class AnalysisService:
             swot_data = generate_swot_analysis(context)
 
         # Save SWOT Analysis
+        swot_source = "AI-grounded analysis" if (swot_data and not swot_data.get('_is_fallback')) else "Industry benchmark estimate"
         try:
             db.add(SwotAnalysis(
                 idea_id=idea.id,
@@ -381,7 +389,8 @@ class AnalysisService:
                 weaknesses=swot_data.get('weaknesses') or ['Early stage brand awareness', 'Resource constraints'],
                 opportunities=swot_data.get('opportunities') or [f'Expanding market in {idea.country}', 'Tech adoption trends'],
                 threats=swot_data.get('threats') or ['Incumbent market position', 'Changing regulatory landscape'],
-                overall_assessment=str(swot_data.get('overall_assessment') or f'Strong overall baseline for {idea.title}.')
+                overall_assessment=str(swot_data.get('overall_assessment') or f'Strong overall baseline for {idea.title}.'),
+                data_source=swot_source
             ))
             db.commit()
         except Exception as e:
@@ -431,7 +440,8 @@ class AnalysisService:
                 break_even_analysis=str(fi_fin.get('break_even_analysis') or f'Break-even estimated within 8-12 months.'),
                 roi=safe_float(fi_fin.get('roi'), 145.0),
                 profit_margins=safe_float(fi_fin.get('profit_margins'), 24.5),
-                detailed_explanation=str(fi_fin.get('detailed_explanation') or f'Financial projections for {idea.title}.')
+                detailed_explanation=str(fi_fin.get('detailed_explanation') or f'Financial projections for {idea.title}.'),
+                data_source="Industry Benchmark & Financial Model"
             ))
             db.commit()
         except Exception as e:
@@ -488,7 +498,9 @@ class AnalysisService:
             m_record = db.query(MarketAnalysis).filter(MarketAnalysis.idea_id == idea.id).first()
             if s_record:
                 feasibility_score = safe_float(feas_data.get('overall_feasibility'), 78.0)
-                market_fit_score = safe_float(m_record.opportunity_score if m_record else 75.0, 75.0)
+                # When opportunity_score is None, use neutral default (75.0) ONLY inside composite calculation so stored field stays None
+                opp_score_for_calc = float(m_record.opportunity_score) if (m_record and m_record.opportunity_score is not None) else 75.0
+                market_fit_score = safe_float(opp_score_for_calc, 75.0)
                 risk_score = safe_float(risk_data.get('overall_risk'), 38.0)
                 inv_score = safe_float(inv_data.get('investor_score'), 76.0)
 

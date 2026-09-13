@@ -11,6 +11,7 @@ import {
   FaGlobe, 
   FaLaptopCode 
 } from 'react-icons/fa';
+import SourceBadge from './SourceBadge';
 
 const RiskTab = ({ data, idea }) => {
   const [activeSubTab, setActiveSubTab] = useState('heatmap');
@@ -313,11 +314,14 @@ const RiskTab = ({ data, idea }) => {
 
   return (
     <div className="risk-tab animate-fade-in">
-      <div className="section-heading mb-md"><FaExclamationTriangle /> Risk Profiling & Investor Readiness</div>
+      <div className="section-heading mb-md" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+        <span><FaExclamationTriangle /> Risk Profiling &amp; Investor Readiness</span>
+        <SourceBadge source={data?.data_source || 'Trained ML Models (Kaggle Datasets)'} />
+      </div>
       
       <div className="explanation-box mb-xl" style={{ borderLeft: '4px solid #f59e0b' }}>
         <strong>AI Risk Profiling:</strong> We've evaluated 5 key vulnerability vectors in your business model. 
-        Your overall risk score is evaluated at <strong>{overallRisk !== null ? `${overallRisk}/100 (${overallRisk > 60 ? 'HIGH' : overallRisk > 35 ? 'MEDIUM' : 'LOW'})` : 'Pending'}</strong> based on 155,500 historical startup records.
+        Your overall risk score is evaluated at <strong>{overallRisk !== null ? `${overallRisk}/100 (${overallRisk > 60 ? 'HIGH' : overallRisk > 35 ? 'MEDIUM' : 'LOW'})` : 'Estimate unavailable — re-run for AI analysis'}</strong> based on 155,500 historical startup records.
       </div>
 
       {/* Sub-Tab Navigation Bar */}

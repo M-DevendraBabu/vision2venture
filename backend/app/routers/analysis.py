@@ -102,7 +102,8 @@ def get_overview(
             "keywords": analysis.keywords,
             "business_category": analysis.business_category,
             "summary": analysis.summary,
-            "overall_score": float(analysis.overall_score)
+            "overall_score": float(analysis.overall_score) if analysis.overall_score is not None else None,
+            "data_source": "NLP Analysis & Scoring Engine"
         }
     }
 
@@ -124,16 +125,17 @@ def get_market_analysis(
         "status": "success",
         "data": {
             "market_size": market.market_size,
-            "growth_rate": float(market.growth_rate),
+            "growth_rate": float(market.growth_rate) if market.growth_rate is not None else None,
             "demand_level": market.demand_level,
-            "opportunity_score": float(market.opportunity_score),
+            "opportunity_score": float(market.opportunity_score) if market.opportunity_score is not None else None,
             "industry_trends": market.industry_trends,
             "market_analysis_explanation": market.market_analysis_explanation,
             "primary_demo": market.primary_demo,
             "key_pain_point": market.key_pain_point,
             "acquisition_channel": market.acquisition_channel,
             "purchase_trigger": market.purchase_trigger,
-            "opportunity_explanation": market.opportunity_explanation
+            "opportunity_explanation": market.opportunity_explanation,
+            "data_source": getattr(market, 'data_source', None) or "Google Trends, World Bank & AI"
         }
     }
 
@@ -264,7 +266,12 @@ def get_business(
         "threats_detailed": bi_swot["threats_detailed"]
     }
 
-    return {"status": "success", "data": {"business_model": bm_dict, "swot": swot_dict}}
+    bm_source = getattr(bm, 'data_source', None) or "AI-grounded analysis"
+    swot_source = getattr(swot, 'data_source', None) or "AI-grounded analysis"
+    bm_dict["data_source"] = bm_source
+    swot_dict["data_source"] = swot_source
+
+    return {"status": "success", "data": {"business_model": bm_dict, "swot": swot_dict, "data_source": bm_source}}
 
 
 # ============================================================
@@ -347,7 +354,8 @@ def get_financial(
         "capex_breakdown": fi_data["capex_breakdown"],
         "opex_breakdown": fi_data["opex_breakdown"],
         "revenue_breakdown": fi_data["revenue_breakdown"],
-        "methodology_sources": fi_data["methodology_sources"]
+        "methodology_sources": fi_data["methodology_sources"],
+        "data_source": getattr(fin, 'data_source', None) or "Industry Benchmark & Financial Model"
     }
     return {"status": "success", "data": fin_dict}
 
@@ -374,15 +382,15 @@ def get_risk(
             "competition_risk": risk.competition_risk,
             "financial_risk": risk.financial_risk,
             "operational_risk": risk.operational_risk,
-            "overall_risk": float(risk.overall_risk)
+            "overall_risk": float(risk.overall_risk) if risk.overall_risk is not None else None
         }
     if feas:
         data["feasibility"] = {
-            "market_score": float(feas.market_score),
-            "technical_score": float(feas.technical_score),
-            "financial_score": float(feas.financial_score),
-            "innovation_score": float(feas.innovation_score),
-            "overall_feasibility": float(feas.overall_feasibility),
+            "market_score": float(feas.market_score) if feas.market_score is not None else None,
+            "technical_score": float(feas.technical_score) if feas.technical_score is not None else None,
+            "financial_score": float(feas.financial_score) if feas.financial_score is not None else None,
+            "innovation_score": float(feas.innovation_score) if feas.innovation_score is not None else None,
+            "overall_feasibility": float(feas.overall_feasibility) if feas.overall_feasibility is not None else None,
             "explanation": feas.explanation,
             "technical_explanation": getattr(feas, 'technical_explanation', None),
             "market_explanation": getattr(feas, 'market_explanation', None),
@@ -391,11 +399,11 @@ def get_risk(
         }
     if inv:
         data["investor_readiness"] = {
-            "scalability": float(inv.scalability),
-            "innovation": float(inv.innovation),
-            "business_model": float(inv.business_model),
-            "market": float(inv.market),
-            "investor_score": float(inv.investor_score),
+            "scalability": float(inv.scalability) if inv.scalability is not None else None,
+            "innovation": float(inv.innovation) if inv.innovation is not None else None,
+            "business_model": float(inv.business_model) if inv.business_model is not None else None,
+            "market": float(inv.market) if inv.market is not None else None,
+            "investor_score": float(inv.investor_score) if inv.investor_score is not None else None,
             "explanation": inv.explanation,
             "suggestions": inv.suggestions,
             "scalability_explanation": getattr(inv, 'scalability_explanation', None),
@@ -407,6 +415,7 @@ def get_risk(
     if not data:
         raise HTTPException(status_code=404, detail="Risk analysis not found")
 
+    data["data_source"] = "Trained ML Models (Kaggle Datasets)"
     return {"status": "success", "data": data}
 
 

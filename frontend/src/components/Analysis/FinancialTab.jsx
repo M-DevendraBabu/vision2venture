@@ -8,6 +8,7 @@ import {
   FaArrowRight, FaBullseye, FaCalendarAlt, FaLightbulb, FaBuilding,
   FaCheck, FaBookOpen, FaAward, FaSlidersH, FaChevronLeft, FaChevronRight
 } from 'react-icons/fa';
+import SourceBadge from './SourceBadge';
 
 // Client-side fallback intelligence ensuring crash-proof financial calculations
 const calculateFallbackFinancials = (idea, data) => {
@@ -330,9 +331,12 @@ const FinancialTab = ({ data, idea }) => {
       <div className="fin-command-header">
         <div className="fin-header-top">
           <div>
-            <h3 className="fin-title">
-              <FaMoneyBillWave style={{ color: '#10b981' }} /> Realistic Financial Model &amp; Unit Economics
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '4px' }}>
+              <h3 className="fin-title" style={{ margin: 0 }}>
+                <FaMoneyBillWave style={{ color: '#10b981' }} /> Realistic Financial Model &amp; Unit Economics
+              </h3>
+              <SourceBadge source={data?.data_source || 'Industry Benchmark & Financial Model'} />
+            </div>
             <p className="fin-subtitle">
               Fully calibrated in Indian Rupees (₹) adhering to DPIIT, NASSCOM, JLL Real Estate, and RBI Market Telemetry.
             </p>

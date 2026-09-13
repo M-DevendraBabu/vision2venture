@@ -14,7 +14,7 @@ class StartupAnalysis(Base):
     keywords = Column(JSON, nullable=False)
     business_category = Column(String(100), nullable=False)
     summary = Column(Text, nullable=False)
-    overall_score = Column(DECIMAL(5, 2), nullable=False, default=85.0)
+    overall_score = Column(DECIMAL(5, 2), nullable=True, default=None)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class MarketAnalysis(Base):
@@ -22,9 +22,9 @@ class MarketAnalysis(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     idea_id = Column(String(36), ForeignKey('startup_ideas.id', ondelete='CASCADE'), unique=True, nullable=False)
     market_size = Column(String(255), nullable=False)
-    growth_rate = Column(DECIMAL(5, 2), nullable=False)
+    growth_rate = Column(DECIMAL(5, 2), nullable=True)
     demand_level = Column(String(100), nullable=False)
-    opportunity_score = Column(DECIMAL(5, 2), nullable=False)
+    opportunity_score = Column(DECIMAL(5, 2), nullable=True)
     industry_trends = Column(JSON, nullable=False)
     market_analysis_explanation = Column(Text, nullable=False)
     primary_demo = Column(String(255), nullable=True)
@@ -32,6 +32,7 @@ class MarketAnalysis(Base):
     acquisition_channel = Column(String(255), nullable=True)
     purchase_trigger = Column(String(255), nullable=True)
     opportunity_explanation = Column(Text, nullable=True)
+    data_source = Column(String(100), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class Competitor(Base):
@@ -116,6 +117,7 @@ class BusinessModel(Base):
     key_resources = Column(Text, nullable=False)
     cost_structure = Column(Text, nullable=False)
     detailed_explanation = Column(Text, nullable=False)
+    data_source = Column(String(100), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class SwotAnalysis(Base):
@@ -127,6 +129,7 @@ class SwotAnalysis(Base):
     opportunities = Column(JSON, nullable=False)
     threats = Column(JSON, nullable=False)
     overall_assessment = Column(Text, nullable=False)
+    data_source = Column(String(100), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class FinancialAnalysis(Base):
@@ -153,6 +156,7 @@ class FinancialAnalysis(Base):
     roi = Column(DECIMAL(10, 2), nullable=False)
     profit_margins = Column(DECIMAL(5, 2), nullable=False)
     detailed_explanation = Column(Text, nullable=False)
+    data_source = Column(String(100), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class RiskAnalysis(Base):

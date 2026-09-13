@@ -12,21 +12,22 @@ class StartupAnalysisResponse(BaseModel):
     keywords: List[str]
     business_category: str
     summary: str
-    overall_score: Decimal
+    overall_score: Optional[Decimal] = None
     
     class Config: from_attributes = True
 
 class MarketAnalysisResponse(BaseModel):
     market_size: str
-    growth_rate: Decimal
+    growth_rate: Optional[Decimal] = None
     demand_level: str
-    opportunity_score: Decimal
+    opportunity_score: Optional[Decimal] = None
     industry_trends: List[str]
     primary_demo: Optional[str] = None
     key_pain_point: Optional[str] = None
     acquisition_channel: Optional[str] = None
     purchase_trigger: Optional[str] = None
     opportunity_explanation: Optional[str] = None
+    data_source: Optional[str] = None
     
     class Config: from_attributes = True
 
@@ -60,6 +61,7 @@ class BusinessModelResponse(BaseModel):
     key_activities: str
     key_resources: str
     cost_structure: str
+    data_source: Optional[str] = None
     
     class Config: from_attributes = True
 
@@ -68,6 +70,7 @@ class SwotAnalysisResponse(BaseModel):
     weaknesses: List[str]
     opportunities: List[str]
     threats: List[str]
+    data_source: Optional[str] = None
     
     class Config: from_attributes = True
 
@@ -81,6 +84,7 @@ class FinancialAnalysisResponse(BaseModel):
     profit_estimate: Decimal
     roi: Decimal
     break_even_months: int
+    data_source: Optional[str] = None
     
     class Config: from_attributes = True
 

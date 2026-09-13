@@ -7,6 +7,7 @@ import {
   FaNetworkWired, FaCertificate, FaArrowRight, FaCalendarAlt
 } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import SourceBadge from './SourceBadge';
 
 // Universal 25-sector fallback intelligence repository for frontend resiliency
 const FRONTEND_BUSINESS_INTELLIGENCE = {
@@ -1083,7 +1084,10 @@ const BusinessTab = ({ data, idea }) => {
       <div className="biz-executive-header">
         <div className="biz-header-top">
           <div className="biz-title-area">
-            <h3><FaBuilding style={{ color: '#0284c7' }} /> Business Model &amp; Unit Economics Architecture</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', marginBottom: '6px' }}>
+              <h3 style={{ margin: 0 }}><FaBuilding style={{ color: '#0284c7' }} /> Business Model &amp; Unit Economics Architecture</h3>
+              <SourceBadge source={bm?.data_source || data?.business_model?.data_source || 'AI-grounded analysis'} />
+            </div>
             <p className="biz-subtitle">Strategic Lean Canvas, Unit Economics, and Monetization Architecture for <strong>{title}</strong></p>
             <div className="biz-badge-group">
               <span className="biz-badge archetype"><FaRocket /> {archetype}</span>
@@ -1296,6 +1300,16 @@ const BusinessTab = ({ data, idea }) => {
       {activeSubTab === 'swot' && (
         <div className="animate-fade-in">
           
+          {/* SWOT SECTION HEADING & PROVENANCE */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <h4 style={{ margin: 0, fontSize: '1.15rem', fontWeight: 700, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FaProjectDiagram style={{ color: '#0284c7' }} /> Strategic SWOT Matrix
+              </h4>
+              <SourceBadge source={swot?.data_source || data?.swot?.data_source || 'AI-grounded analysis'} />
+            </div>
+          </div>
+
           {/* SWOT TOOLBAR: QUADRANT FILTER & BALANCE METER */}
           <div className="swot-header-toolbar">
             <div className="swot-filter-group">

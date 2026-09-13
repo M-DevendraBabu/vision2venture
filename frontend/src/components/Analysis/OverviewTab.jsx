@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiTarget, FiAlertCircle, FiCheckCircle, FiLayers, FiTag } from 'react-icons/fi';
 import { FaHashtag, FaIndustry, FaUsers, FaCalculator, FaBullseye, FaChartLine } from 'react-icons/fa';
+import SourceBadge from './SourceBadge';
 
 const OverviewTab = ({ data, idea }) => {
   if (!data || !idea) return <div className="text-center p-8 animate-fade-in">Loading overview...</div>;
@@ -47,21 +48,26 @@ const OverviewTab = ({ data, idea }) => {
         borderRadius: '12px', borderLeft: `4px solid ${getScoreColor(score)}`,
         background: 'rgba(16, 185, 129, 0.06)', flexWrap: 'wrap'
       }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '80px' }}>
-          <span style={{ fontSize: '2.8rem', fontWeight: 800, color: getScoreColor(score), lineHeight: 1 }}>
-            {score !== null ? score : 'Pending'}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: score !== null ? '80px' : '180px' }}>
+          <span style={{ fontSize: score !== null ? '2.8rem' : '0.9rem', fontWeight: score !== null ? 800 : 600, color: getScoreColor(score), lineHeight: score !== null ? 1 : 1.4, textAlign: 'center', fontStyle: score !== null ? 'normal' : 'italic' }}>
+            {score !== null ? score : 'Estimate unavailable — re-run for AI analysis'}
           </span>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '4px' }}>
-            / 100
-          </span>
+          {score !== null && (
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '4px' }}>
+              / 100
+            </span>
+          )}
         </div>
         <div style={{ flex: 1, minWidth: '200px' }}>
-          <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.05rem', fontWeight: 600, color: getScoreColor(score), margin: '0 0 6px 0' }}>
-            <FaCalculator /> Vision2Venture Overall Evaluation Index
-          </h4>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '6px' }}>
+            <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.05rem', fontWeight: 600, color: getScoreColor(score), margin: 0 }}>
+              <FaCalculator /> Vision2Venture Overall Evaluation Index
+            </h4>
+            <SourceBadge source={data.data_source || 'Composite Multi-Model Evaluation'} />
+          </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
             <strong>Calculation:</strong> Feasibility (30%) + Market Fit (30%) + Investor Readiness (25%) + Risk Mitigation (15%).
-            {score === null ? ' Analysis in progress.' :
+            {score === null ? ' Score unavailable. Re-run analysis for live multi-model evaluation.' :
              score >= 80 ? ' Strong overall startup viability with favorable unit economics.' :
              score >= 60 ? ' Moderate viability — focus on strengthening weaker dimensions.' :
              ' Needs improvement across multiple dimensions before launch.'}

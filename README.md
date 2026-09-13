@@ -33,10 +33,21 @@
 
 ### 1. Database Setup
 
-Open MySQL Workbench and run:
+For a fresh install, open MySQL Workbench and run:
 ```sql
 source database/schema.sql;
 ```
+
+#### Database Migrations
+For existing databases upgrading to the real-data and nullable-scores release, execute the migration script:
+```sql
+source database/migrations/002_allow_null_scores_and_add_data_source.sql;
+```
+This migration:
+- Allows `NULL` for `overall_score` in `startup_analysis`, preventing hardcoded baseline defaults.
+- Allows `NULL` for `growth_rate` and `opportunity_score` in `market_analysis` when AI or model telemetry is unavailable.
+- Adds `data_source VARCHAR(100)` to `market_analysis`, `business_models`, `swot_analysis`, and `financial_analysis` to surface source provenance (Real Data / AI / Benchmark / Fallback) across the UI.
+
 
 ### 2. Configure Environment
 

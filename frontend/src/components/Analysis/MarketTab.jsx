@@ -5,6 +5,7 @@ import {
   FaUsers, FaRocket, FaCheckCircle, FaLayerGroup, 
   FaCalendarCheck, FaBalanceScale, FaArrowUp, FaTag
 } from 'react-icons/fa';
+import SourceBadge from './SourceBadge';
 
 // ============================================================
 // REAL-WORLD SECTOR MARKET INTELLIGENCE REPOSITORY
@@ -453,26 +454,30 @@ const MarketTab = ({ data, idea }) => {
   if (!data) return <div className="text-center p-8 animate-fade-in">Loading market analysis...</div>;
 
   const opportunityScore = data.opportunity_score != null ? Math.round(data.opportunity_score) : null;
-  const growthRate = data.growth_rate ? Number(data.growth_rate).toFixed(1) : String(profile.cagr);
+  const growthRate = data.growth_rate != null ? Number(data.growth_rate).toFixed(1) : null;
   const demandLevel = data.demand_level || profile.demand;
+
+  const cagrDisplay = growthRate !== null ? `a projected 5-year CAGR of ${growthRate}%` : `strong market tailwinds`;
+  const oppScoreDisplay = opportunityScore !== null ? `${opportunityScore}/100` : `Estimate unavailable — re-run for AI analysis`;
 
   // Clean narrative explanations
   const cleanedMarketExp = cleanExplanationText(
     data.market_analysis_explanation || 
-    `Addressable market capacity for ${startupTitle} in ${industryName} is evaluated at ${marketSizing.tamStr} with a projected 5-year CAGR of ${growthRate}%. Favorable market dynamics indicate ${demandLevel.toLowerCase()} and strong willingness to pay in ${countryName}.`
+    `Addressable market capacity for ${startupTitle} in ${industryName} is evaluated at ${marketSizing.tamStr} with ${cagrDisplay}. Favorable market dynamics indicate ${demandLevel.toLowerCase()} and strong willingness to pay in ${countryName}.`
   );
 
   const cleanedOpportunityExp = cleanExplanationText(
     data.opportunity_explanation || 
-    `Market Opportunity Score for ${startupTitle} is evaluated at ${opportunityScore !== null ? opportunityScore : 'Pending'}/100 based on verified sector scale (${marketSizing.tamStr}), robust CAGR (${growthRate}%), and high buyer adoption tailwinds in ${industryName}.`
+    `Market Opportunity Score for ${startupTitle} is evaluated at ${oppScoreDisplay} based on verified sector scale (${marketSizing.tamStr}) and high buyer adoption tailwinds in ${industryName}.`
   );
 
   return (
     <div className="market-tab animate-fade-in">
       {/* ── Section Title & Meta Tags ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '1rem' }}>
-        <div className="section-heading mb-0" style={{ margin: 0 }}>
-          <FaGlobe /> Market Intelligence & Strategic TAM Opportunity
+        <div className="section-heading mb-0" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <span><FaGlobe /> Market Intelligence &amp; Strategic TAM Opportunity</span>
+          <SourceBadge source={data?.data_source || 'Google Trends, World Bank & AI'} />
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <span className="tag" style={{ background: 'rgba(14, 165, 233, 0.15)', color: '#0284c7', borderColor: 'rgba(14, 165, 233, 0.3)' }}>
@@ -515,8 +520,14 @@ const MarketTab = ({ data, idea }) => {
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaChartLine /> 5-Year CAGR Growth
           </div>
-          <div className="metric-value text-primary" style={{ color: '#059669', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
-            +{growthRate}% <span className="trend-indicator up text-xs ml-xs">↗ High Growth</span>
+          <div className="metric-value text-primary" style={{ color: '#059669', fontSize: growthRate !== null ? 'clamp(1.2rem, 2.5vw, 1.6rem)' : '0.85rem' }}>
+            {growthRate !== null ? (
+              <>+{growthRate}% <span className="trend-indicator up text-xs ml-xs">↗ High Growth</span></>
+            ) : (
+              <span style={{ color: '#64748B', fontWeight: 500, fontStyle: 'italic', fontSize: '0.82rem' }}>
+                Estimate unavailable — re-run for AI analysis
+              </span>
+            )}
           </div>
           <div className="text-secondary text-xs mt-xs">Annual Compounded Industry Growth</div>
         </div>
@@ -537,8 +548,14 @@ const MarketTab = ({ data, idea }) => {
           <div className="metric-label flex align-center justify-center gap-xs">
             <FaRocket /> Market Opportunity Index
           </div>
-          <div className="metric-value" style={{ color: '#db2777', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)' }}>
-            {opportunityScore !== null ? <>{opportunityScore}<span style={{ fontSize: '1rem', color: '#64748B' }}>/100</span></> : 'Pending'}
+          <div className="metric-value" style={{ color: '#db2777', fontSize: opportunityScore !== null ? 'clamp(1.2rem, 2.5vw, 1.6rem)' : '0.85rem' }}>
+            {opportunityScore !== null ? (
+              <>{opportunityScore}<span style={{ fontSize: '1rem', color: '#64748B' }}>/100</span></>
+            ) : (
+              <span style={{ color: '#64748B', fontWeight: 500, fontStyle: 'italic', fontSize: '0.82rem' }}>
+                Estimate unavailable — re-run for AI analysis
+              </span>
+            )}
           </div>
           <div className="text-secondary text-xs mt-xs">Venture Scale Viability Score</div>
         </div>
@@ -702,8 +719,8 @@ const MarketTab = ({ data, idea }) => {
                     <div className="dim-subtitle">Viability & Market Tailwinds Assessment</div>
                   </div>
                 </div>
-                <div className="dim-score-badge score-success" style={{ color: '#7c3aed', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)' }}>
-                  {opportunityScore !== null ? `${opportunityScore}/100 Viability` : 'Pending'}
+                <div className="dim-score-badge score-success" style={{ color: '#7c3aed', borderColor: '#10b981', background: 'rgba(16, 185, 129, 0.15)', fontSize: opportunityScore !== null ? '0.85rem' : '0.72rem' }}>
+                  {opportunityScore !== null ? `${opportunityScore}/100 Viability` : 'Estimate unavailable — re-run for AI analysis'}
                 </div>
               </div>
 
@@ -716,7 +733,7 @@ const MarketTab = ({ data, idea }) => {
                 <div className="dim-action-box" style={{ borderLeftColor: '#10b981' }}>
                   <span className="dim-action-label" style={{ color: '#7c3aed' }}>Venture Capital Perspective</span>
                   <span className="dim-action-content">
-                    Institutional investors look for addressable depth (TAM &gt; ₹10,000 Cr) and high compounding expansion (CAGR &gt; 12%). {startupTitle} qualifies with a healthy TAM of {marketSizing.tamStr} and +{growthRate}% annual sector growth.
+                    Institutional investors look for addressable depth (TAM &gt; ₹10,000 Cr) and high compounding expansion (CAGR &gt; 12%). {startupTitle} qualifies with a healthy TAM of {marketSizing.tamStr}{growthRate !== null ? ` and +${growthRate}% annual sector growth.` : '.'}
                   </span>
                 </div>
               </div>

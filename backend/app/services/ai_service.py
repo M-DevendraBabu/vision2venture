@@ -212,9 +212,9 @@ Return ONLY valid JSON with this exact schema:
         ind = context.get('industry', 'Technology')
         return {
             "market_size": f"₹42,000 Cr ({ind} in India)",
-            "growth_rate": 14.5,
+            "growth_rate": None,
             "demand_level": "High Demand",
-            "opportunity_score": 75.0,
+            "opportunity_score": None,
             "industry_trends": [
                 f"Digital adoption and localized delivery expansion in {ind}",
                 "Increasing consumer preference for verified quality and transparent pricing",
@@ -225,8 +225,8 @@ Return ONLY valid JSON with this exact schema:
             "acquisition_channel": "Hyperlocal digital marketing, search SEO, and direct customer referrals",
             "purchase_trigger": "Immediate requirement for reliable, cost-effective service",
             "opportunity_explanation": f"Grounded market opportunity metrics for {context.get('title', 'startup')}.",
-            "market_analysis_explanation": "Baseline market analysis generated from verified sector benchmarks when AI engine is offline.",
-            "data_source": "Industry Benchmark Estimate (Offline Fallback)"
+            "market_analysis_explanation": "Baseline market analysis generated when AI engine is offline. Re-run analysis for live AI evaluation.",
+            "data_source": "Template / offline fallback"
         }
 
     @staticmethod

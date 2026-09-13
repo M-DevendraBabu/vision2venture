@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS startup_analysis (
     keywords JSON NOT NULL,
     business_category VARCHAR(100) NOT NULL,
     summary TEXT NOT NULL,
+    overall_score DECIMAL(5, 2) NULL DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idea_id) REFERENCES startup_ideas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -89,11 +90,17 @@ CREATE TABLE IF NOT EXISTS market_analysis (
     id VARCHAR(36) PRIMARY KEY,
     idea_id VARCHAR(36) UNIQUE NOT NULL,
     market_size VARCHAR(255) NOT NULL,
-    growth_rate DECIMAL(5, 2) NOT NULL,
+    growth_rate DECIMAL(5, 2) NULL DEFAULT NULL,
     demand_level VARCHAR(100) NOT NULL,
-    opportunity_score DECIMAL(5, 2) NOT NULL,
+    opportunity_score DECIMAL(5, 2) NULL DEFAULT NULL,
     industry_trends JSON NOT NULL,
     market_analysis_explanation TEXT NOT NULL,
+    primary_demo VARCHAR(255) NULL,
+    key_pain_point VARCHAR(255) NULL,
+    acquisition_channel VARCHAR(255) NULL,
+    purchase_trigger VARCHAR(255) NULL,
+    opportunity_explanation TEXT NULL,
+    data_source VARCHAR(100) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idea_id) REFERENCES startup_ideas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -148,6 +155,7 @@ CREATE TABLE IF NOT EXISTS business_models (
     key_resources TEXT NOT NULL,
     cost_structure TEXT NOT NULL,
     detailed_explanation TEXT NOT NULL,
+    data_source VARCHAR(100) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idea_id) REFERENCES startup_ideas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -163,6 +171,7 @@ CREATE TABLE IF NOT EXISTS swot_analysis (
     opportunities JSON NOT NULL,
     threats JSON NOT NULL,
     overall_assessment TEXT NOT NULL,
+    data_source VARCHAR(100) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idea_id) REFERENCES startup_ideas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
@@ -193,6 +202,7 @@ CREATE TABLE IF NOT EXISTS financial_analysis (
     roi DECIMAL(10, 2) NOT NULL,
     profit_margins DECIMAL(5, 2) NOT NULL,
     detailed_explanation TEXT NOT NULL,
+    data_source VARCHAR(100) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idea_id) REFERENCES startup_ideas(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
