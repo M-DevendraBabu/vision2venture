@@ -374,10 +374,9 @@ def generate_financial_analysis(context: dict) -> dict:
     mrr = monthly_revenue
     arr = mrr * 12.0
 
-    # -------------------------------------------------------------
-    # 4. UNIT ECONOMICS (CAC, LTV, Contribution Margin)
-    # -------------------------------------------------------------
-    cac = bm['cac']
+    # Scale CAC dynamically using user budget & acquisition intensity, bounded by domain benchmark
+    budget_scaling = max(0.8, min(1.4, (user_budget / 50000.0) ** 0.2)) if user_budget > 0 else 1.0
+    cac = round(bm['cac'] * budget_scaling, -1)
     target_ltv_mult = bm.get('target_ltv_mult', 3.8 if is_offline else 4.2)
     ltv = round(cac * target_ltv_mult, -1)
     ltv_cac_ratio = round(ltv / max(1.0, cac), 1)

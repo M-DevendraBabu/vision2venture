@@ -480,6 +480,7 @@ class MLService:
         succ_prob = MLService.predict_success_probability(context)
 
         return {
+            'data_source': 'Industry benchmark estimate',
             'market_size': market_size_str,
             'growth_rate': growth_rate,
             'demand_level': demand_level,
