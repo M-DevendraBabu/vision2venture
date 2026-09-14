@@ -440,6 +440,11 @@ class AnalysisService:
                 break_even_analysis=str(fi_fin.get('break_even_analysis') or f'Break-even estimated within 8-12 months.'),
                 roi=safe_float(fi_fin.get('roi'), 145.0),
                 profit_margins=safe_float(fi_fin.get('profit_margins'), 24.5),
+                gross_margin_percent=safe_float(fi_fin.get('gross_margin_percent'), None),
+                break_even_months=safe_int(fi_fin.get('break_even_months'), None) if fi_fin.get('break_even_months') else None,
+                year1_revenue=safe_float(fi_fin.get('year1_revenue'), None),
+                year2_revenue=safe_float(fi_fin.get('year2_revenue'), None),
+                year3_revenue=safe_float(fi_fin.get('year3_revenue'), None),
                 detailed_explanation=str(fi_fin.get('detailed_explanation') or f'Financial projections for {idea.title}.'),
                 data_source="Industry Benchmark & Financial Model"
             ))
