@@ -777,31 +777,78 @@ def generate_financial_analysis(context: dict) -> dict:
             'calculation': f"Market lease rate calibrated for {tier_label} real estate in 2026."
         },
         {
-            'item': 'Cloud Infrastructure, Managed DB & APIs',
+            # Online/SaaS/Tech → Cloud infra. Offline (food/fitness/retail/clinic) → POS/billing tools only.
+            'item': (
+                'POS System, Billing Software & Digital Tools' if (is_food and is_offline) else
+                'Gym Management App, Booking & POS Software' if (is_fitness and is_offline) else
+                'Clinic Management Software & Appointment Tools' if (is_clinic and is_offline) else
+                'POS System, FMCG Billing & Inventory Software' if (is_retail and is_offline) else
+                'Cloud Infrastructure, Managed DB & APIs'
+            ),
             'cost': cloud_cost,
             'percent': round((cloud_cost / total_opex) * 100, 1),
-            'why': 'Covers AWS Mumbai (ap-south-1) cloud compute, managed PostgreSQL database clusters, Cloudflare Pro CDN caching, SMS OTP gateways, and Razorpay payment switch routing.',
-            'calculation': 'Scales with user traffic ensuring sub-50ms API response latency and 99.9% uptime SLA.'
+            'why': (
+                'Covers Petpooja/Posist restaurant POS license, WhatsApp Business API for order confirmations, Google My Business management, and basic digital menu/QR code tools.'
+                if (is_food and is_offline) else
+                'Covers Mindbody/Gyms.ai gym management SaaS (membership tracking, class scheduling, attendance), Instamojo for payments, and Google Workspace for operations.'
+                if (is_fitness and is_offline) else
+                'Covers Practo/HealthPlix clinic management software, online appointment booking system, prescription management, and WhatsApp patient communication tools.'
+                if (is_clinic and is_offline) else
+                'Covers Tally Prime GST billing software, inventory management app, barcode scanner integration, and basic e-commerce listing on JioMart/Blinkit if applicable.'
+                if (is_retail and is_offline) else
+                f'Covers AWS Mumbai (ap-south-1) cloud compute, managed PostgreSQL database clusters, Cloudflare Pro CDN caching, SMS OTP gateways, and Razorpay payment switch routing.'
+            ),
+            'calculation': (
+                'Essential low-cost digital tools to manage operations efficiently without heavy IT overhead.'
+                if is_offline else
+                'Scales with user traffic ensuring sub-50ms API response latency and 99.9% uptime SLA.'
+            )
         },
         {
             'item': 'Performance Marketing & Customer Acquisition (CAC)',
             'cost': marketing_cost,
             'percent': round((marketing_cost / total_opex) * 100, 1),
-            'why': 'Direct media spend on Meta (Instagram/FB), Google Search ads, and local influencer partnerships to acquire new recurring customers.',
+            'why': (
+                'Covers Google Maps local listing promotion, Instagram/Facebook local area ads, WhatsApp group marketing in nearby hostels/colleges, and Swiggy/Zomato onboarding.'
+                if (is_food and is_offline) else
+                'Covers Instagram fitness content ads, Google Search ads for local gym queries, referral discount programs, and free trial membership campaigns.'
+                if (is_fitness and is_offline) else
+                'Covers Google Maps promoted listing, Practo/1mg clinic directory, local health camp sponsorships, and patient referral bonus programs.'
+                if (is_clinic and is_offline) else
+                'Direct media spend on Meta (Instagram/FB), Google Search ads, and local influencer partnerships to acquire new recurring customers.'
+            ),
             'calculation': f"Allocated to acquire ~{max(30, int(marketing_cost / max(1, cac)))} new customers monthly at an average blended CAC of ₹{cac:,.0f}."
         },
         {
             'item': 'Raw Materials, Ingredients & Consumables' if (is_offline or raw_material_cost > 0) else 'SaaS Tools, Communication & Security',
             'cost': raw_material_cost if (is_offline or raw_material_cost > 0) else utility_cost,
             'percent': round(((raw_material_cost if (is_offline or raw_material_cost > 0) else utility_cost) / total_opex) * 100, 1),
-            'why': f"Covers {'wholesale organic food ingredients, fresh produce, milk/coffee supplies, and eco-packaging' if is_offline else 'Slack, GitHub Enterprise, Google Workspace, Postman, and automated code backup tooling'}.",
+            'why': (
+                'Wholesale procurement of rice, chicken, biryani masala, fresh vegetables, ghee, packaging containers, and disposable cutlery from Hyderabad/Guntur wholesale mandis.'
+                if (is_food and is_offline and 'biryani' in title.lower()) else
+                'Wholesale procurement of certified organic coffee beans, farm-fresh dairy, organic produce, eco-friendly biodegradable takeaway packaging, and hygiene consumables.'
+                if (is_food and is_offline) else
+                'Protein supplement inventory, gym chalk, resistance bands, foam rollers, and basic merchandise for resale (water bottles, towels).'
+                if (is_fitness and is_offline) else
+                'Medical consumables (gloves, syringes, bandages), grooming supplies, and pharmacy prescription medicines for in-house dispensing.'
+                if (is_clinic and is_offline) else
+                'Covers fresh produce sourcing, cold chain packaging, and wholesale FMCG inventory replenishment.'
+                if (is_retail and is_offline) else
+                'Covers Slack, GitHub Enterprise, Google Workspace, Postman, and automated code backup tooling.'
+            ),
             'calculation': f"Cost of Goods Sold (COGS) at {round((1.0 - gross_margin) * 100)}% of monthly revenue to guarantee consistent product quality." if is_offline else "Standard software tool licensing per technical seat."
         },
         {
-            'item': 'Utilities, Power, Internet & Operational Incidentals',
+            'item': 'Utilities, LPG/Power, Water & Operational Incidentals' if is_food else 'Utilities, Power, Internet & Operational Incidentals',
             'cost': utility_cost,
             'percent': round((utility_cost / total_opex) * 100, 1),
-            'why': 'Covers commercial power tariffs (HVAC / refrigeration), dual high-speed commercial fiber lines, facility maintenance, and municipal taxes.',
+            'why': (
+                'Covers commercial LPG cylinder costs (₹2,400/month for cooking), electricity for commercial burners and refrigeration, water utility, waste disposal, and municipal trade license renewal.'
+                if (is_food and is_offline) else
+                'Covers commercial power tariffs for AC and gym equipment, 100 Mbps broadband for music/streaming, water utility, and facility cleaning/maintenance.'
+                if (is_fitness and is_offline) else
+                'Covers commercial power tariffs (HVAC / refrigeration), dual high-speed commercial fiber lines, facility maintenance, and municipal taxes.'
+            ),
             'calculation': 'Essential baseline utilities to ensure uninterrupted daily service operations.'
         }
     ]

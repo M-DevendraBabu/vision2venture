@@ -209,7 +209,11 @@ PROD_TITLES = {
     "CarePoint Omnichannel Smart Clinic",
     "FreshFarm Organics Hyperlocal Grocery",
     "Artisan Crust & Crumb Bakery",
-    "Biryani Point near Vignan University, Vadlamudi"
+    "Biryani Point near Vignan University, Vadlamudi",
+    # 3 new production ideas added
+    "CodeSprint EdTech Platform",
+    "Dosa King Tiffin Center",
+    "PawsFirst Vet & Pet Clinic",
 }
 
 def _clean_attrs(model_cls, data_dict, overrides=None, actual_db_cols=None):
