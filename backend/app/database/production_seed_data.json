@@ -4067,8 +4067,30 @@
     },
     "startup_analysis": null,
     "market_analysis": null,
-    "technology_recommendation": null,
-    "business_model": null,
+    "technology_recommendation": {
+      "frontend": "React.js PWA + WhatsApp ordering bot",
+      "backend": "FastAPI (Python) + Celery task queue",
+      "database_system": "PostgreSQL + Redis (order cache)",
+      "cloud_platform": "AWS Mumbai (ap-south-1) + Cloudflare CDN",
+      "ai_framework": "ML demand forecasting (Prophet/LightGBM)",
+      "deployment": "Docker + AWS ECS Fargate + GitHub Actions CI/CD",
+      "reasoning": "Hyperlocal delivery requires real-time order management. React PWA for customer ordering, FastAPI for OMS, Redis for live order tracking, ML demand forecasting to minimize perishable waste.",
+      "id": "fde8a7aa-ed3a-4819-884c-e96d336edb18",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676"
+    },
+    "business_model": {
+      "customer_segments": "Health-conscious urban households, organic food enthusiasts, busy professionals seeking chemical-free groceries delivered in 4 hours",
+      "value_proposition": "Farm-direct organic produce delivered in 4 hours — fresher than supermarkets, cheaper than specialty organic stores, with full traceability",
+      "revenue_streams": "Grocery sales, subscription delivery plans (weekly/monthly), premium organic box subscriptions, B2B restaurant/cafe supply",
+      "channels": "WhatsApp orders, own app, Swiggy Instamart/Blinkit dark store partnership, Instagram organic community, Google Maps",
+      "key_partners": "Organic certified farms in Nalgonda/Kurnool, delivery partners, FSSAI auditors, packaging suppliers, Swiggy/Blinkit",
+      "key_activities": "Daily farm procurement, cold-chain quality control, packing, last-mile delivery dispatch, customer retention campaigns",
+      "key_resources": "Cold storage facility, delivery fleet/bikes, organic farm supply network, FSSAI license, order management system",
+      "cost_structure": "Procurement COGS (68% of revenue), delivery cost, cold storage utilities, packaging, driver salaries, OMS subscription",
+      "detailed_explanation": "Hyperlocal organic grocery model with farm-direct sourcing, minimizing supply chain layers to offer 22% gross margins despite low grocery pricing.",
+      "id": "67cf5655-30df-4ba3-a6f9-a5fabe6c9692",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676"
+    },
     "swot_analysis": null,
     "financial_analysis": {
       "id": "1facf7bd-669c-4a51-a1e8-465e08cef630",
@@ -4204,7 +4226,17 @@
     },
     "risk_analysis": null,
     "feasibility_analysis": null,
-    "investor_readiness": null,
+    "investor_readiness": {
+      "investor_score": 60.0,
+      "market": 72.0,
+      "innovation": 65.0,
+      "business_model": 58.0,
+      "scalability": 70.0,
+      "suggestions": "Focus on achieving Rs50L monthly GMV in one locality before raising seed. Key metric: repeat purchase rate above 40%.",
+      "explanation": "Attractive market with 22% CAGR but thin grocery margins require high volume. Differentiate on organic certification and farm traceability. Blinkit/Swiggy partnership as growth lever.",
+      "id": "b28a2a16-d2e7-4b06-a1af-536a287fdce7",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676"
+    },
     "implementation_roadmap": null,
     "competitor_intelligence": {
       "id": "01fc2954-c802-4ec2-9349-bed8a77e11c7",
@@ -6473,19 +6505,30 @@
       "id": "70e1bc3a-e3af-429c-b7bd-93562a4a6539",
       "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95",
       "primary_stack": "React + FastAPI + PostgreSQL + AWS",
-      "recommended_tools": [
-        "React",
-        "Python",
-        "PostgreSQL"
-      ],
-      "created_at": "2026-09-14T11:55:58.934894"
+      "recommended_tools": "[\"React\", \"Python\", \"PostgreSQL\"]",
+      "created_at": "2026-09-14T11:55:58.934894",
+      "frontend": "React.js + Tailwind CSS",
+      "backend": "FastAPI (Python)",
+      "database_system": "PostgreSQL (NeonDB serverless)",
+      "cloud_platform": "AWS EC2 + S3 (video hosting)",
+      "ai_framework": "OpenAI API (code review assistant)",
+      "deployment": "Docker + AWS EC2 + GitHub Actions CI/CD",
+      "reasoning": "React for responsive LMS UI, FastAPI for fast async API, PostgreSQL for student/progress data, AWS S3 for course video storage. OpenAI for automated code review feedback."
     },
     "business_model": {
       "id": "8327c5d8-a4a4-4d67-9144-291338574e06",
       "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95",
       "revenue_streams": "Freemium subscriptions, placement fee, corporate training",
       "key_partners": "Colleges, hiring companies",
-      "created_at": "2026-09-14T11:55:58.934925"
+      "created_at": "2026-09-14T11:55:58.934925",
+      "customer_segments": "College students aged 18-25, freshers, working professionals seeking upskilling, corporate L&D teams",
+      "value_proposition": "Affordable job-oriented coding education with placement support, specifically designed for Tier-2/3 city students underserved by expensive EdTech platforms",
+      "channels": "YouTube content marketing, Instagram reels, college campus ambassadors, Google Search SEO, WhatsApp batch groups",
+      "key_activities": "Live coding classes, course content creation, mentor onboarding, placement tie-ups, student community management",
+      "key_resources": "Qualified instructors, LMS platform, industry mentor network, placement partner companies, course IP",
+      "cost_structure": "Instructor salaries, cloud infrastructure, content production, student acquisition (CAC), LMS hosting",
+      "detailed_explanation": "Business model tailored for CodeSprint EdTech Platform operating in the online segment in India.",
+      "data_source": "Industry Benchmark & Market Research"
     },
     "swot_analysis": {
       "id": "d937f3af-7d7d-465b-9a3c-2a2ade5476eb",
@@ -6519,7 +6562,14 @@
       "id": "521ce188-fdd9-4d19-9ae7-2a2ff257d657",
       "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95",
       "overall_readiness": 62.0,
-      "created_at": "2026-09-14T11:55:58.935039"
+      "created_at": "2026-09-14T11:55:58.935039",
+      "investor_score": 62.0,
+      "market": 70.0,
+      "innovation": 65.0,
+      "business_model": 68.0,
+      "scalability": 78.0,
+      "suggestions": "Demonstrate clear placement success rate metrics and CAC:LTV ratio to attract EdTech investors.",
+      "explanation": "Solid scalable SaaS model with high gross margins. Key risk is market saturation from BYJU's/Unacademy. Differentiate on Tier-2/3 focus and placement success rate."
     },
     "implementation_roadmap": {
       "id": "14052f35-4476-4ff5-bb66-7afd0a5d514c",
@@ -6720,19 +6770,30 @@
       "id": "3f26ac14-f3ae-4d6c-b53c-91dc9ddb6198",
       "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503",
       "primary_stack": "Petpooja POS + WhatsApp Business + Google Workspace",
-      "recommended_tools": [
-        "Petpooja",
-        "WhatsApp Business",
-        "Tally"
-      ],
-      "created_at": "2026-09-14T11:55:58.946644"
+      "recommended_tools": "[\"Petpooja\", \"WhatsApp Business\", \"Tally\"]",
+      "created_at": "2026-09-14T11:55:58.946644",
+      "frontend": "Petpooja POS tablet UI",
+      "backend": "Petpooja cloud backend",
+      "database_system": "Petpooja managed DB",
+      "cloud_platform": "None (offline-first)",
+      "ai_framework": "None required",
+      "deployment": "On-premise POS system with local backup",
+      "reasoning": "Offline-first operation. Petpooja POS handles billing, daily sales reports, inventory, and Swiggy/Zomato order sync. No custom software development required."
     },
     "business_model": {
       "id": "181372c0-a6d4-4821-8789-098b00edd913",
       "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503",
       "revenue_streams": "Direct sales, monthly subscription tiffin",
       "key_partners": "Wholesale mandis, Swiggy/Zomato",
-      "created_at": "2026-09-14T11:55:58.946660"
+      "created_at": "2026-09-14T11:55:58.946660",
+      "customer_segments": "Daily commuters, college students, office workers, families within 1km radius seeking affordable breakfast/lunch",
+      "value_proposition": "Hygienic, authentic, affordable South Indian tiffin — the taste of home at canteen prices, fresher than restaurants",
+      "channels": "Walk-in, Swiggy/Zomato listing, Google My Business, WhatsApp hostel/office groups, local flyers",
+      "key_activities": "Daily fresh cooking operations, ingredient procurement, quality control, hygienic packaging, customer service",
+      "key_resources": "Commercial kitchen setup, head cook, fresh ingredient supply chain, POS billing system, FSSAI license",
+      "cost_structure": "Raw material procurement (COGS 40%), head cook salary, LPG/utilities, shop rent, FSSAI renewal, packaging",
+      "detailed_explanation": "Business model tailored for Dosa King Tiffin Center operating in the offline segment in India.",
+      "data_source": "Industry Benchmark & Market Research"
     },
     "swot_analysis": {
       "id": "c63bc1f0-f009-4e3b-b365-4a0228c71171",
@@ -6766,7 +6827,14 @@
       "id": "b86169b6-35a4-42b8-b180-fb449a3e9c84",
       "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503",
       "overall_readiness": 45.0,
-      "created_at": "2026-09-14T11:55:58.946724"
+      "created_at": "2026-09-14T11:55:58.946724",
+      "investor_score": 45.0,
+      "market": 50.0,
+      "innovation": 30.0,
+      "business_model": 55.0,
+      "scalability": 40.0,
+      "suggestions": "Not suitable for VC investment. Bootstrap with personal savings or small business loan. Focus on achieving daily 100+ covers before any expansion.",
+      "explanation": "Strong unit economics for a bootstrapped F&B business but low investor appeal due to limited scalability. Self-fund with Rs3.5L investment and target break-even in 12 months."
     },
     "implementation_roadmap": {
       "id": "bd32294b-2d12-4b19-aee4-5fba055ad0eb",
@@ -6967,19 +7035,30 @@
       "id": "ad5d8505-0599-424f-8514-387a9a1a477a",
       "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860",
       "primary_stack": "Petpooja POS + WhatsApp Business + Google Workspace",
-      "recommended_tools": [
-        "Petpooja",
-        "WhatsApp Business",
-        "Tally"
-      ],
-      "created_at": "2026-09-14T11:55:58.951515"
+      "recommended_tools": "[\"Petpooja\", \"WhatsApp Business\", \"Tally\"]",
+      "created_at": "2026-09-14T11:55:58.951515",
+      "frontend": "Practo clinic portal + WhatsApp Business",
+      "backend": "Practo/HealthPlix clinic management",
+      "database_system": "Practo managed patient records",
+      "cloud_platform": "None (offline-first with SaaS tools)",
+      "ai_framework": "None required",
+      "deployment": "SaaS clinic management subscription, no custom deployment",
+      "reasoning": "Offline-first clinic. Practo handles appointment booking, patient records, and online discovery. WhatsApp Business for appointment reminders. HealthPlix for prescription management."
     },
     "business_model": {
       "id": "bf8525b9-78d3-42b0-a65c-2a4ba3619dde",
       "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860",
       "revenue_streams": "Consultation fee, grooming packages, vaccination drives",
       "key_partners": "Pet food brands, drug suppliers",
-      "created_at": "2026-09-14T11:55:58.951530"
+      "created_at": "2026-09-14T11:55:58.951530",
+      "customer_segments": "Urban middle-class pet owners (dog & cat), premium pet owners in residential colonies",
+      "value_proposition": "Trustworthy, affordable veterinary and grooming clinic with trained vets, short waiting times, and WhatsApp appointment booking",
+      "channels": "Google Maps, Practo listing, WhatsApp pet community groups, local vet referral network, Instagram pet content",
+      "key_activities": "Veterinary consultations, grooming appointments, vaccination drives, medicine dispensing, lab test coordination",
+      "key_resources": "Qualified veterinarian, grooming studio, medical equipment, VCI license, Practo clinic listing, medicine inventory",
+      "cost_structure": "Vet salary (Rs50k), groomer salary (Rs18k), medicine procurement, equipment maintenance, rent, Practo subscription",
+      "detailed_explanation": "Business model tailored for PawsFirst Vet & Pet Clinic operating in the offline segment in India.",
+      "data_source": "Industry Benchmark & Market Research"
     },
     "swot_analysis": {
       "id": "c2f9b60d-2725-43e5-8c06-de32abe100aa",
@@ -7013,7 +7092,14 @@
       "id": "e882e21c-6e6a-4a42-9c03-35f7b06cb7cb",
       "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860",
       "overall_readiness": 52.0,
-      "created_at": "2026-09-14T11:55:58.951597"
+      "created_at": "2026-09-14T11:55:58.951597",
+      "investor_score": 52.0,
+      "market": 62.0,
+      "innovation": 45.0,
+      "business_model": 58.0,
+      "scalability": 50.0,
+      "suggestions": "Build patient database of 200+ active clients before approaching angel investors for multi-clinic expansion.",
+      "explanation": "India pet care market growing 22% CAGR. Strong unit economics once past 22-month break-even. Consider VetCo franchise model for faster scaling."
     },
     "implementation_roadmap": {
       "id": "0f3ee868-4838-4321-8263-49ad4f6a408a",
