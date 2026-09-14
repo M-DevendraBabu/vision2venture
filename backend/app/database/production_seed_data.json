@@ -4065,8 +4065,25 @@
       "analysis_status": "pending",
       "created_at": "2026-09-12T17:52:17"
     },
-    "startup_analysis": null,
-    "market_analysis": null,
+    "startup_analysis": {
+      "id": "9746f8c9-c11a-49a2-96b6-78f5651934be",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "business_domain": "Food & Beverage",
+      "target_users": "Health-conscious households, organic food buyers",
+      "problem_statement": "Urban consumers lack access to fresh, certified organic groceries delivered locally — supermarkets stock imported produce with poor freshness.",
+      "solution": "A hyperlocal grocery delivery platform sourcing directly from certified organic farms, delivering within 4 hours to urban neighborhoods.",
+      "keywords": "[\"organic grocery\", \"hyperlocal delivery\", \"farm fresh\", \"health food\"]",
+      "business_category": "Hybrid Grocery",
+      "summary": "FreshFarm Organics Hyperlocal Grocery is a hyperlocal organic grocery delivery platform sourcing farm-direct produce for health-conscious urban consumers."
+    },
+    "market_analysis": {
+      "id": "f8cdaed5-9604-460b-a850-276bb6be8b70",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "market_size": "India organic food market: Rs1,700 crore ($200M) growing at 26% CAGR. Online grocery: $18.5B by 2024",
+      "demand_level": "High",
+      "industry_trends": "Organic food adoption growing 3x, direct-to-consumer agriculture, Blinkit/Instamart hyperlocal model validation",
+      "market_analysis_explanation": "Premium organic segment growing rapidly. Challenge is building reliable farm supply chain. Cold-chain logistics is key differentiator."
+    },
     "technology_recommendation": {
       "frontend": "React.js PWA + WhatsApp ordering bot",
       "backend": "FastAPI (Python) + Celery task queue",
@@ -4091,7 +4108,15 @@
       "id": "67cf5655-30df-4ba3-a6f9-a5fabe6c9692",
       "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676"
     },
-    "swot_analysis": null,
+    "swot_analysis": {
+      "id": "54e6de19-c571-45ea-b22c-1f89e6d8c209",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "strengths": "Farm-direct sourcing at lower cost, 4-hour delivery speed, organic certification as differentiator, health trend tailwind",
+      "weaknesses": "Low gross margins (22%), perishable inventory management, cold-chain investment, dark store rent",
+      "opportunities": "D2C farm subscription boxes, B2B restaurant supply, Swiggy Instamart dark store partnership, private label organic brand",
+      "threats": "Blinkit/Swiggy Instamart scale advantage, weather-dependent supply disruptions, organic certification fraud risk",
+      "overall_assessment": "FreshFarm Organics Hyperlocal Grocery addresses real consumer demand in growing organic market. Success requires building reliable farm supply chain and achieving Rs50L monthly GMV in first zone."
+    },
     "financial_analysis": {
       "id": "1facf7bd-669c-4a51-a1e8-465e08cef630",
       "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
@@ -4224,8 +4249,26 @@
       "data_source": "Industry Benchmark & Financial Model",
       "created_at": "2026-09-14T12:01:57.556394"
     },
-    "risk_analysis": null,
-    "feasibility_analysis": null,
+    "risk_analysis": {
+      "id": "1e610c8f-0aeb-4592-aa0c-57da997be086",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "technical_risk": 10.0,
+      "market_risk": 22.0,
+      "competition_risk": 30.0,
+      "financial_risk": 18.0,
+      "operational_risk": 25.0,
+      "overall_risk": 22.0
+    },
+    "feasibility_analysis": {
+      "id": "95c5d42c-7732-4824-856c-b3cb3f202ea3",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "market_score": 72.0,
+      "technical_score": 82.0,
+      "financial_score": 76.0,
+      "innovation_score": 40.0,
+      "overall_feasibility": 78.0,
+      "explanation": "Feasible with proper cold-chain setup. Technical complexity in OMS and demand forecasting. Financial feasibility requires Rs50L monthly GMV threshold."
+    },
     "investor_readiness": {
       "investor_score": 60.0,
       "market": 72.0,
@@ -4237,7 +4280,16 @@
       "id": "b28a2a16-d2e7-4b06-a1af-536a287fdce7",
       "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676"
     },
-    "implementation_roadmap": null,
+    "implementation_roadmap": {
+      "id": "068a1fd6-d220-4cce-9335-3005b1987749",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "phase_1": "Month 1-2: FSSAI license, dark store lease, cold storage setup, farm supply agreements, app MVP development",
+      "phase_2": "Month 3-4: Pilot delivery in 2km radius, first 100 orders, Swiggy Instamart partnership discussions, farm quality audit",
+      "phase_3": "Month 5-8: 300+ orders/day, dark store expansion, B2B restaurant supply pilot, private label launch",
+      "phase_4": "Month 9-12: Profitability milestone, second zone launch, subscription model introduction, investor pitch preparation",
+      "phase_5": "Month 13-18: Series A fundraise, 5-zone city presence, farm-to-table restaurant partnerships, brand expansion",
+      "timeline": "18 months to profitability"
+    },
     "competitor_intelligence": {
       "id": "01fc2954-c802-4ec2-9349-bed8a77e11c7",
       "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
@@ -6352,7 +6404,14 @@
       "financial_score": 68.0,
       "feasibility_score": 74.0,
       "risk_score": 35.0,
-      "created_at": "2026-09-14T11:55:58.934770"
+      "created_at": "2026-09-14T11:55:58.934770",
+      "business_domain": 50.0,
+      "target_users": 50.0,
+      "problem_statement": 50.0,
+      "solution": 50.0,
+      "keywords": 50.0,
+      "business_category": 50.0,
+      "summary": 50.0
     },
     "financial_analysis": {
       "id": "902be451-02e9-46e3-8aec-cd101c327386",
@@ -6499,7 +6558,9 @@
       "purchase_trigger": "Placement season, job loss, college final year, campus recruitment drives",
       "competitive_landscape": "Fragmented with large players (BYJU's, Unacademy) but gap in affordable Tier-2/3 offerings",
       "data_source": "Live Industry Analysis",
-      "created_at": "2026-09-14T11:55:58.934863"
+      "created_at": "2026-09-14T11:55:58.934863",
+      "industry_trends": "Standard market factor for this segment",
+      "market_analysis_explanation": "Standard market factor for this segment"
     },
     "technology_recommendation": {
       "id": "70e1bc3a-e3af-429c-b7bd-93562a4a6539",
@@ -6537,7 +6598,8 @@
       "weaknesses": "High competition from funded EdTech giants",
       "opportunities": "India digital upskilling push, NEP 2020",
       "threats": "BYJU's/Unacademy free content saturation",
-      "created_at": "2026-09-14T11:55:58.934954"
+      "created_at": "2026-09-14T11:55:58.934954",
+      "overall_assessment": "Standard industry factor"
     },
     "risk_analysis": {
       "id": "2a43d0d1-622a-4213-a644-ad0100d8883d",
@@ -6547,7 +6609,9 @@
       "financial_risk": 30.0,
       "technical_risk": 25.0,
       "regulatory_risk": 20.0,
-      "created_at": "2026-09-14T11:55:58.934983"
+      "created_at": "2026-09-14T11:55:58.934983",
+      "competition_risk": 45.0,
+      "operational_risk": 30.0
     },
     "feasibility_analysis": {
       "id": "c4f55743-21df-4265-8bee-091210f6e5ab",
@@ -6556,7 +6620,12 @@
       "market_feasibility": 72.0,
       "technical_feasibility": 75.0,
       "financial_feasibility": 70.0,
-      "created_at": "2026-09-14T11:55:58.935011"
+      "created_at": "2026-09-14T11:55:58.935011",
+      "market_score": 65.0,
+      "technical_score": 78.0,
+      "financial_score": 62.0,
+      "innovation_score": 70.0,
+      "explanation": "EdTech platform is technically feasible with proven SaaS stack. Market is large but competitive. Financial feasibility depends on achieving 500+ paying students in year 1."
     },
     "investor_readiness": {
       "id": "521ce188-fdd9-4d19-9ae7-2a2ff257d657",
@@ -6579,7 +6648,13 @@
       "phase3": "Growth & Scale (Month 5-8)",
       "phase4": "Optimization (Month 9-12)",
       "phase5": "Expansion (Month 13+)",
-      "created_at": "2026-09-14T11:55:58.935066"
+      "created_at": "2026-09-14T11:55:58.935066",
+      "phase_1": "Standard milestone",
+      "phase_2": "Standard milestone",
+      "phase_3": "Standard milestone",
+      "phase_4": "Standard milestone",
+      "phase_5": "Standard milestone",
+      "timeline": "Standard milestone"
     },
     "competitor_intelligence": null,
     "competitors": []
@@ -6617,7 +6692,14 @@
       "financial_score": 75.0,
       "feasibility_score": 78.0,
       "risk_score": 28.0,
-      "created_at": "2026-09-14T11:55:58.946565"
+      "created_at": "2026-09-14T11:55:58.946565",
+      "business_domain": 50.0,
+      "target_users": 50.0,
+      "problem_statement": 50.0,
+      "solution": 50.0,
+      "keywords": 50.0,
+      "business_category": 50.0,
+      "summary": 50.0
     },
     "financial_analysis": {
       "id": "2d4d5f2c-ee43-4e23-bff3-52635f6b570a",
@@ -6764,7 +6846,9 @@
       "purchase_trigger": "Hunger, convenience, affordability, and taste preference over canteen food",
       "competitive_landscape": "Local dhabas and hotels present, but no organized tiffin center brand",
       "data_source": "Live Industry Analysis",
-      "created_at": "2026-09-14T11:55:58.946627"
+      "created_at": "2026-09-14T11:55:58.946627",
+      "industry_trends": "Standard market factor for this segment",
+      "market_analysis_explanation": "Standard market factor for this segment"
     },
     "technology_recommendation": {
       "id": "3f26ac14-f3ae-4d6c-b53c-91dc9ddb6198",
@@ -6802,7 +6886,8 @@
       "weaknesses": "Perishable goods, margins thin",
       "opportunities": "Swiggy/Zomato cloud kitchen potential",
       "threats": "Food inflation, competition from hotels",
-      "created_at": "2026-09-14T11:55:58.946676"
+      "created_at": "2026-09-14T11:55:58.946676",
+      "overall_assessment": "Standard industry factor"
     },
     "risk_analysis": {
       "id": "5bf03dcb-10c3-4783-9798-a94bfc45cd67",
@@ -6812,7 +6897,9 @@
       "financial_risk": 30.0,
       "technical_risk": 25.0,
       "regulatory_risk": 20.0,
-      "created_at": "2026-09-14T11:55:58.946692"
+      "created_at": "2026-09-14T11:55:58.946692",
+      "competition_risk": 30.0,
+      "operational_risk": 30.0
     },
     "feasibility_analysis": {
       "id": "351a5b9d-c381-4a8b-aaea-448589d4e9ce",
@@ -6821,7 +6908,12 @@
       "market_feasibility": 72.0,
       "technical_feasibility": 75.0,
       "financial_feasibility": 70.0,
-      "created_at": "2026-09-14T11:55:58.946707"
+      "created_at": "2026-09-14T11:55:58.946707",
+      "market_score": 72.0,
+      "technical_score": 80.0,
+      "financial_score": 74.0,
+      "innovation_score": 40.0,
+      "explanation": "Tiffin center is highly feasible operationally. Low capex, simple operations, proven model. Financial feasibility strong if daily covers exceed 80 consistently."
     },
     "investor_readiness": {
       "id": "b86169b6-35a4-42b8-b180-fb449a3e9c84",
@@ -6844,7 +6936,13 @@
       "phase3": "Growth & Scale (Month 5-8)",
       "phase4": "Optimization (Month 9-12)",
       "phase5": "Expansion (Month 13+)",
-      "created_at": "2026-09-14T11:55:58.946739"
+      "created_at": "2026-09-14T11:55:58.946739",
+      "phase_1": "Standard milestone",
+      "phase_2": "Standard milestone",
+      "phase_3": "Standard milestone",
+      "phase_4": "Standard milestone",
+      "phase_5": "Standard milestone",
+      "timeline": "Standard milestone"
     },
     "competitor_intelligence": null,
     "competitors": []
@@ -6882,7 +6980,14 @@
       "financial_score": 70.0,
       "feasibility_score": 73.0,
       "risk_score": 32.0,
-      "created_at": "2026-09-14T11:55:58.951447"
+      "created_at": "2026-09-14T11:55:58.951447",
+      "business_domain": 50.0,
+      "target_users": 50.0,
+      "problem_statement": 50.0,
+      "solution": 50.0,
+      "keywords": 50.0,
+      "business_category": 50.0,
+      "summary": 50.0
     },
     "financial_analysis": {
       "id": "51d3e6bf-3cb6-4497-ad84-378b415f11bd",
@@ -7029,7 +7134,9 @@
       "purchase_trigger": "Pet illness, vaccination reminder, grooming urgency",
       "competitive_landscape": "Few organized vet clinics; mostly individual practitioners",
       "data_source": "Live Industry Analysis",
-      "created_at": "2026-09-14T11:55:58.951498"
+      "created_at": "2026-09-14T11:55:58.951498",
+      "industry_trends": "Standard market factor for this segment",
+      "market_analysis_explanation": "Standard market factor for this segment"
     },
     "technology_recommendation": {
       "id": "ad5d8505-0599-424f-8514-387a9a1a477a",
@@ -7067,7 +7174,8 @@
       "weaknesses": "High equipment cost, long break-even",
       "opportunities": "Pet humanization trend, Rs 18,000 Cr Indian pet care market",
       "threats": "Unlicensed unqualified vets, low pet insurance adoption",
-      "created_at": "2026-09-14T11:55:58.951546"
+      "created_at": "2026-09-14T11:55:58.951546",
+      "overall_assessment": "Standard industry factor"
     },
     "risk_analysis": {
       "id": "774f145d-eeab-4da4-b2ed-00cf64dff5b0",
@@ -7077,7 +7185,9 @@
       "financial_risk": 30.0,
       "technical_risk": 25.0,
       "regulatory_risk": 20.0,
-      "created_at": "2026-09-14T11:55:58.951563"
+      "created_at": "2026-09-14T11:55:58.951563",
+      "competition_risk": 28.0,
+      "operational_risk": 30.0
     },
     "feasibility_analysis": {
       "id": "ec3a7c07-e76c-4317-8a0d-8db107ab0b8c",
@@ -7086,7 +7196,12 @@
       "market_feasibility": 72.0,
       "technical_feasibility": 75.0,
       "financial_feasibility": 70.0,
-      "created_at": "2026-09-14T11:55:58.951580"
+      "created_at": "2026-09-14T11:55:58.951580",
+      "market_score": 68.0,
+      "technical_score": 72.0,
+      "financial_score": 65.0,
+      "innovation_score": 55.0,
+      "explanation": "Vet clinic is feasible with proper licensing. Technical requirements are standard. Financial feasibility requires building a client base of 200+ active pets within 18 months."
     },
     "investor_readiness": {
       "id": "e882e21c-6e6a-4a42-9c03-35f7b06cb7cb",
@@ -7109,7 +7224,13 @@
       "phase3": "Growth & Scale (Month 5-8)",
       "phase4": "Optimization (Month 9-12)",
       "phase5": "Expansion (Month 13+)",
-      "created_at": "2026-09-14T11:55:58.951613"
+      "created_at": "2026-09-14T11:55:58.951613",
+      "phase_1": "Standard milestone",
+      "phase_2": "Standard milestone",
+      "phase_3": "Standard milestone",
+      "phase_4": "Standard milestone",
+      "phase_5": "Standard milestone",
+      "timeline": "Standard milestone"
     },
     "competitor_intelligence": null,
     "competitors": []
