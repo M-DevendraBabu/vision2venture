@@ -84,10 +84,16 @@ def startup_tasks():
         else:
             print(f"[ADMIN] {ADMIN_EMAIL} not found yet - will be promoted on next restart after registration")
 
-        # 4. Synchronize production seed ideas (removes stale ideas like NeuralLogistics, etc. on Render cloud DB)
+        # 4. Synchronize production seed ideas (removes stale ideas, adds new ones)
         try:
-            from app.database.migration_helper import sync_production_seed_if_needed
-            sync_production_seed_if_needed(db)
+            from app.database.migration_helper import sync_production_seed_if_needed, PROD_TITLES
+            from app.models.startup_idea import StartupIdea
+            # Force sync if DB count doesn't match expected production count
+            db_count = db.query(StartupIdea).filter(StartupIdea.user_id == admin_user.id).count() if admin_user else 0
+            force_sync = (db_count != len(PROD_TITLES))
+            if force_sync:
+                print(f"[SeedSync] DB has {db_count} ideas, expected {len(PROD_TITLES)} — forcing full re-sync.")
+            sync_production_seed_if_needed(db, force=force_sync)
         except Exception as e:
             print(f"[Startup] Production seed sync notice: {e}")
     except Exception as e:
