@@ -27,12 +27,17 @@ const CompetitorMap = ({
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
+    // Guard: Prevent 'Map container is already initialized' error
+    if (mapContainerRef.current._leaflet_id && !mapInstanceRef.current) {
+      mapContainerRef.current._leaflet_id = null;
+    }
+
     if (!mapInstanceRef.current) {
       const validComps = (competitors || []).filter(
-        c => c.latitude != null && c.longitude != null && !(parseFloat(c.latitude) === 0 && parseFloat(c.longitude) === 0)
+        c => c.latitude != null && c.longitude != null && !isNaN(parseFloat(c.latitude)) && !isNaN(parseFloat(c.longitude)) && !(parseFloat(c.latitude) === 0 && parseFloat(c.longitude) === 0)
       );
-      const defaultLat = startupLocation?.lat || (validComps[0] ? parseFloat(validComps[0].latitude) : 20.5937);
-      const defaultLng = startupLocation?.lng || (validComps[0] ? parseFloat(validComps[0].longitude) : 78.9629);
+      const defaultLat = (startupLocation?.lat != null && !isNaN(parseFloat(startupLocation.lat))) ? parseFloat(startupLocation.lat) : (validComps[0] ? parseFloat(validComps[0].latitude) : 20.5937);
+      const defaultLng = (startupLocation?.lng != null && !isNaN(parseFloat(startupLocation.lng))) ? parseFloat(startupLocation.lng) : (validComps[0] ? parseFloat(validComps[0].longitude) : 78.9629);
 
       const map = L.map(mapContainerRef.current, {
         center: [defaultLat, defaultLng],
@@ -49,11 +54,22 @@ const CompetitorMap = ({
 
       layerGroupRef.current = L.layerGroup().addTo(map);
       mapInstanceRef.current = map;
+
+      // Invalidate size once tab/container layout stabilizes
+      setTimeout(() => {
+        try {
+          if (mapInstanceRef.current) {
+            mapInstanceRef.current.invalidateSize();
+          }
+        } catch (_) {}
+      }, 250);
     }
 
     return () => {
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove();
+        try {
+          mapInstanceRef.current.remove();
+        } catch (_) {}
         mapInstanceRef.current = null;
       }
     };
@@ -250,6 +266,12 @@ const CompetitorMap = ({
     } else if (hasStartupLoc) {
       map.setView([lat, lng], 13);
     }
+
+    setTimeout(() => {
+      try {
+        if (map) map.invalidateSize();
+      } catch (_) {}
+    }, 150);
   }, [startupLocation, radiusKm, competitors, selectedCompetitorId]);
 
   return (

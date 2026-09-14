@@ -18,8 +18,15 @@ const CompetitorTab = ({ data, idea }) => {
   // Active sub-view: 'map', 'matrix', 'strengths', 'strategy'
   const [activeSubTab, setActiveSubTab] = useState('map');
 
-  // Ground Truth Startup Context (Read-Only from idea record)
-  const businessType = (idea?.business_type || idea?.sector || 'online').toLowerCase();
+  // Ground Truth Operating Model: 'offline', 'online', or 'hybrid'
+  const resolveOperatingModel = (sec, bType) => {
+    for (const val of [sec, bType]) {
+      const norm = String(val || '').toLowerCase().trim();
+      if (['offline', 'online', 'hybrid'].includes(norm)) return norm;
+    }
+    return 'online';
+  };
+  const businessType = resolveOperatingModel(idea?.sector, idea?.business_type);
   const locationQuery = idea?.location || idea?.specific_location || idea?.country || '';
   const radiusKm = parseFloat(idea?.radius_km || 5.0);
   const [filterType, setFilterType] = useState('all'); // 'all', 'offline', 'online', 'hybrid'
@@ -356,9 +363,13 @@ const CompetitorTab = ({ data, idea }) => {
                 <span>⭐ What Customers Love</span>
               </div>
               <div style={{ color: '#1e293b' }}>
-                {comp.strengths ? comp.strengths.split('\n').slice(0, 2).map((s, idx) => (
-                  <div key={idx} style={{ marginBottom: '2px' }}>{s.replace(/^•\s*(Customer Praise:\s*)?/, '• ')}</div>
-                )) : '• Consistently praised for core reliability and streamlined workflows.'}
+                {(() => {
+                  if (!comp.strengths) return '• Consistently praised for core reliability and streamlined workflows.';
+                  const list = Array.isArray(comp.strengths) ? comp.strengths : String(comp.strengths).split('\n');
+                  return list.slice(0, 2).map((s, idx) => (
+                    <div key={idx} style={{ marginBottom: '2px' }}>{String(s).replace(/^•\s*(Customer Praise:\s*)?/, '• ')}</div>
+                  ));
+                })()}
               </div>
             </div>
 
@@ -375,9 +386,13 @@ const CompetitorTab = ({ data, idea }) => {
                 <span>⚠️ Customer Complaints & Friction</span>
               </div>
               <div style={{ color: '#1e293b' }}>
-                {comp.weaknesses ? comp.weaknesses.split('\n').slice(0, 2).map((w, idx) => (
-                  <div key={idx} style={{ marginBottom: '2px' }}>{w.replace(/^•\s*(Customer Complaints:\s*)?/, '• ')}</div>
-                )) : '• Users cite occasional onboarding friction and lack of customized features.'}
+                {(() => {
+                  if (!comp.weaknesses) return '• Users cite occasional onboarding friction and lack of customized features.';
+                  const list = Array.isArray(comp.weaknesses) ? comp.weaknesses : String(comp.weaknesses).split('\n');
+                  return list.slice(0, 2).map((w, idx) => (
+                    <div key={idx} style={{ marginBottom: '2px' }}>{String(w).replace(/^•\s*(Customer Complaints:\s*)?/, '• ')}</div>
+                  ));
+                })()}
               </div>
             </div>
           </div>
