@@ -618,6 +618,19 @@ class LocationService:
                 prox_score = max(0.0, 45.0 * (1.0 - (c_dist / radius_km)))
                 relevance = round(min(98.0, max(65.0, prox_score + 35.0 + 10.0)), 1)
 
+                # ── Compute unique approximate coordinates for map plotting ──
+                # Each competitor gets its own bearing (direction) derived
+                # deterministically from its name so repeated calls are stable.
+                # Formula: offset from startup lat/lng along bearing at c_dist km.
+                import math as _math
+                _bearing_deg = (abs(hash(name)) % 360)
+                _bearing_rad = _math.radians(_bearing_deg)
+                # 1 degree latitude ≈ 111 km; longitude degree varies with lat
+                _lat_offset  = (c_dist / 111.0) * _math.cos(_bearing_rad)
+                _lng_offset  = (c_dist / (111.0 * _math.cos(_math.radians(lat)))) * _math.sin(_bearing_rad)
+                c_lat = round(lat + _lat_offset, 6)
+                c_lng = round(lng + _lng_offset, 6)
+
                 discovered.append({
                     "name": name,
                     "business_type": "offline",
@@ -626,8 +639,8 @@ class LocationService:
                     "website_url": "",
                     "app_url": "",
                     "location": addr,
-                    "latitude": lat,
-                    "longitude": lng,
+                    "latitude": c_lat,
+                    "longitude": c_lng,
                     "distance_km": c_dist,
                     "phone": "Available on-site",
                     "rating": c_rating,

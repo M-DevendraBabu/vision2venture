@@ -205,19 +205,32 @@ const CompetitorMap = ({
           if (onSelectCompetitor) onSelectCompetitor(comp.id);
         });
 
+      // Draw a thin dashed line from startup to competitor for spatial clarity
+      if (hasStartupLoc) {
+        L.polyline([[lat, lng], [cLat, cLng]], {
+          color: isDirect ? '#10b981' : '#f59e0b',
+          weight: 1.2,
+          opacity: 0.45,
+          dashArray: '4, 6',
+        }).addTo(layerGroupRef.current);
+      }
+
       // Popup with selection action
       marker.bindPopup(`
-        <div style="font-family: inherit; font-size: 13px; line-height: 1.4; padding: 4px; min-width: 180px;">
+        <div style="font-family: inherit; font-size: 13px; line-height: 1.4; padding: 4px; min-width: 200px;">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
             <strong style="color: #0f172a; font-size: 14px;">${comp.name}</strong>
             <span style="font-size: 10px; background: ${isDirect ? '#ecfdf5' : '#fffbeb'}; color: ${isDirect ? '#065f46' : '#92400e'}; padding: 2px 6px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">
               ${comp.competitor_type || 'Direct'}
             </span>
           </div>
-          <p style="margin: 2px 0; color: #64748b; font-size: 12px;">${comp.location || 'Local vicinity'}</p>
+          <p style="margin: 2px 0; color: #64748b; font-size: 12px;">📍 ${comp.location || 'Local vicinity'}</p>
           <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px; font-size: 12px;">
             <span style="font-weight: 600; color: #0284c7;">📏 ${comp.distance_km || 0} km away</span>
             <span style="color: #64748b;">• Match: ${comp.relevance_score || 75}%</span>
+          </div>
+          <div style="margin-top: 6px; font-size: 11px; color: #94a3b8;">
+            📌 ${comp.latitude ? `${parseFloat(comp.latitude).toFixed(4)}°N, ${parseFloat(comp.longitude).toFixed(4)}°E` : 'Approx. location'}
           </div>
           ${comp.phone && comp.phone !== 'Not available' ? `
             <p style="margin: 4px 0 0; font-size: 11px; color: #475569;">📞 ${comp.phone}</p>
