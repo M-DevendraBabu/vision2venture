@@ -15,7 +15,17 @@ class GoogleTrendsService:
         Get real Google search volume trends for startup-related keywords.
         Returns average interest, trend direction, regional interest, and related queries.
         """
-        clean_keywords = [k.strip() for k in keywords if k and len(k.strip()) > 1][:3]
+        import re
+        clean_keywords = []
+        for k in keywords:
+            if not k:
+                continue
+            # Replace special characters like &, +, / with space, clean up extra whitespace
+            sanitized = re.sub(r'[^\w\s]', ' ', str(k))
+            sanitized = re.sub(r'\s+', ' ', sanitized).strip()
+            if len(sanitized) > 1 and sanitized.lower() not in [ck.lower() for ck in clean_keywords]:
+                clean_keywords.append(sanitized)
+        clean_keywords = clean_keywords[:3]
         if not clean_keywords:
             return {
                 "avg_interest": 50.0,

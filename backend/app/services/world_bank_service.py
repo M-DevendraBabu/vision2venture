@@ -28,8 +28,8 @@ class WorldBankService:
 
         indicators = {
             'NY.GDP.MKTP.CD': 'gdp_usd',
-            'SP.POP.TOTL': 'population',
-            'IT.NET.USER.ZS': 'internet_pct',
+            'SP.POP.TOTL':    'population',
+            'IT.NET.USER.ZS': 'internet_penetration',   # fixed: was 'internet_pct'
             'NY.GDP.PCAP.CD': 'gdp_per_capita',
         }
 
@@ -37,7 +37,8 @@ class WorldBankService:
             "country_code": clean_code,
             "gdp_usd": 3750000000000.0,
             "population": 1428627663,
-            "internet_pct": 52.0,
+            "internet_penetration": 52.0,      # fallback baseline (TRAI 2023)
+            "internet_pct": 52.0,              # alias for legacy references
             "gdp_per_capita": 2600.0,
             "data_source": "World Bank Open Data",
             "data_freshness": "Verified National Accounts (2023-2024)",
@@ -54,9 +55,13 @@ class WorldBankService:
                         latest = next((d for d in data[1] if d.get('value') is not None), None)
                         if latest and latest.get('value') is not None:
                             results[name] = float(latest['value'])
+                            # keep alias in sync
+                            if name == 'internet_penetration':
+                                results['internet_pct'] = float(latest['value'])
                             results[f"{name}_year"] = latest.get('date')
             results["status"] = "live_verified"
         except Exception as e:
             logger.info(f"[WorldBank] Notice (using verified cached baseline): {e}")
 
         return results
+
