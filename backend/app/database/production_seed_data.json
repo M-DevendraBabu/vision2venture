@@ -4070,7 +4070,138 @@
     "technology_recommendation": null,
     "business_model": null,
     "swot_analysis": null,
-    "financial_analysis": null,
+    "financial_analysis": {
+      "id": "1facf7bd-669c-4a51-a1e8-465e08cef630",
+      "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676",
+      "subscription_revenue": 1336500.0,
+      "freemium_conversion": 0.0,
+      "monthly_recurring_revenue": 0.0,
+      "customer_acquisition_cost": 730.0,
+      "lifetime_value": 2920.0,
+      "churn_rate": 0.0,
+      "daily_customers_estimate": 40,
+      "average_order_value": 1100.0,
+      "monthly_revenue": 1336500.0,
+      "rent_cost": 18200.0,
+      "staff_cost": 132000.0,
+      "raw_material_cost": 1042500.0,
+      "utility_cost": 7500.0,
+      "marketing_cost": 25200.0,
+      "development_cost": 157500.0,
+      "monthly_operating_cost": 1233400.0,
+      "break_even_analysis": "Real Mathematical Break-Even Analysis: To achieve operational break-even for FreshFarm Organics Hyperlocal Grocery, the business must cover ₹180,800 in monthly fixed overheads (staff payroll ₹132,000, rent ₹18,200, cloud/utilities ₹15,500, base marketing ₹15,120). With an Average Order Value (AOV) of ₹1,100 and a direct contribution margin of ₹220 per unit (20% margin after COGS and payment gateway fees), the business needs exactly 822 paying customer transactions per month (approx. 27.4 orders/day). This corresponds to a minimum break-even monthly revenue run-rate of ₹904,200. At the target operating volume of 1,215 monthly transactions (₹1,336,500/mo), the business operates at 148% of break-even capacity, generating a net monthly profit of ₹103,100 (7.7% net margin). Initial CapEx setup capital of ₹630,000 is projected to be fully recouped within 16 months.",
+      "roi": 380.0,
+      "profit_margins": 7.7,
+      "gross_margin_percent": 22.0,
+      "break_even_months": 16,
+      "year1_revenue": 16038000.0,
+      "year2_revenue": 31274000.0,
+      "year3_revenue": 54730000.0,
+      "opex_breakdown": [
+        {
+          "item": "Core Staff Payroll (6 Headcount)",
+          "cost": 132000.0,
+          "percent": 10.7,
+          "why": "Monthly compensation for 6 full-time personnel (Store Manager & Retail Cashiers) aligned with Tier-1 Metro Hub wage standards.",
+          "calculation": "6 staff × avg ₹22,000/mo base salary."
+        },
+        {
+          "item": "Workspace / Coworking & Remote Infrastructure",
+          "cost": 18200.0,
+          "percent": 1.5,
+          "why": "Covers commercial space (flexible coworking/shared workspace) in Hyderabad, Telangana (Tier-1 Metro Hub).",
+          "calculation": "Market lease rate calibrated for Tier-1 Metro Hub real estate in 2026."
+        },
+        {
+          "item": "Cloud Infrastructure, Managed DB & APIs",
+          "cost": 8000.0,
+          "percent": 0.6,
+          "why": "Covers AWS Mumbai (ap-south-1) cloud compute, managed PostgreSQL database clusters, Cloudflare Pro CDN caching, SMS OTP gateways, and Razorpay payment switch routing.",
+          "calculation": "Scales with user traffic ensuring sub-50ms API response latency and 99.9% uptime SLA."
+        },
+        {
+          "item": "Performance Marketing & Customer Acquisition (CAC)",
+          "cost": 25200.0,
+          "percent": 2.0,
+          "why": "Direct media spend on Meta (Instagram/FB), Google Search ads, and local influencer partnerships to acquire new recurring customers.",
+          "calculation": "Allocated to acquire ~34 new customers monthly at an average blended CAC of ₹730."
+        },
+        {
+          "item": "Raw Materials, Ingredients & Consumables",
+          "cost": 1042500.0,
+          "percent": 84.5,
+          "why": "Covers Slack, GitHub Enterprise, Google Workspace, Postman, and automated code backup tooling.",
+          "calculation": "Standard software tool licensing per technical seat."
+        },
+        {
+          "item": "Utilities, Power, Internet & Operational Incidentals",
+          "cost": 7500.0,
+          "percent": 0.6,
+          "why": "Covers commercial power tariffs (HVAC / refrigeration), dual high-speed commercial fiber lines, facility maintenance, and municipal taxes.",
+          "calculation": "Essential baseline utilities to ensure uninterrupted daily service operations."
+        }
+      ],
+      "capex_breakdown": [
+        {
+          "item": "Point of Sale & Billing Hardware",
+          "cost": 157500.0,
+          "percent": 25.0,
+          "why": "Covers touchscreen POS billing system, barcode scanner, thermal receipt printer, and CCTV surveillance.",
+          "calculation": "Budget allocation of 25% of total setup capital to ensure enterprise-grade production readiness before launch."
+        },
+        {
+          "item": "Store Racks, Shelving & Visual Merchandising",
+          "cost": 189000.0,
+          "percent": 30.0,
+          "why": "Covers commercial metal display racks, refrigeration display chillers, checkout counter, and lighting.",
+          "calculation": "Built to withstand daily operational workload with a minimum 3-year commercial lifecycle."
+        },
+        {
+          "item": "Shop Establishment & Trade Licensing",
+          "cost": 63000.0,
+          "percent": 10.0,
+          "why": "Covers municipal shop act license, GST registration, and local commercial trade permit.",
+          "calculation": "Statutory government filing fees plus professional Chartered Accountant (CA) and legal retainer fees."
+        },
+        {
+          "item": "Storefront Signage & Launch Banners",
+          "cost": 50400.0,
+          "percent": 8.0,
+          "why": "Covers backlit storefront board, aisle categorization signs, and grand opening flyers.",
+          "calculation": "Guarantees high-converting visual polish to attract early adopters during initial market entry."
+        },
+        {
+          "item": "Initial Retail Merchandising Inventory",
+          "cost": 170100.0,
+          "percent": 27.0,
+          "why": "Covers initial wholesale fast-moving consumer goods (FMCG) stock and working capital buffer.",
+          "calculation": "Maintains operational liquidity and prevents stockout or service downtime during month-1 launch."
+        }
+      ],
+      "revenue_breakdown": [
+        {
+          "stream": "Primary Product / Service Sales",
+          "amount": 1042500.0,
+          "why": "Direct customer transactions for core FreshFarm Organics Hyperlocal Grocery offerings at an average transaction ticket of ₹1,100.",
+          "calculation": "Generates 78% of top-line monthly cash inflow."
+        },
+        {
+          "stream": "Premium Tier Subscriptions / Value-Add Modules",
+          "amount": 200500.0,
+          "why": "Repeat loyalty passes, automated monthly meal subscriptions, or enterprise advanced workflow modules.",
+          "calculation": "High-margin recurring revenue stream insulating the business against seasonal dips."
+        },
+        {
+          "stream": "Ancillary Services, Partnerships & Delivery Add-Ons",
+          "amount": 93600.0,
+          "why": "B2B corporate catering, platform convenience fees, and merchandise partnerships.",
+          "calculation": "Pure contribution margin expansion with minimal marginal operational cost."
+        }
+      ],
+      "detailed_explanation": "Financial Modeling Methodology & Indian Startup Benchmarks: Projections for FreshFarm Organics Hyperlocal Grocery (Grocery & Retail - HYBRID) are synthesized using deterministic unit economic models calibrated against validated Indian startup operating benchmarks. Key Assumptions: Initial setup capital (CapEx) of ₹630,000 itemized across product R&D (₹157,500), hardware/infrastructure (₹189,000), regulatory incorporation & IP (₹63,000), and launch branding (₹50,400). Operating expenses total ₹1,233,400/month with a 6-person core team (₹132,000/mo) and facility lease/cloud overhead of ₹26,200/mo. Unit economics demonstrate high capital efficiency with an LTV of ₹2,920 against a CAC of ₹730 (4.0x ratio, exceeding the 3.0x venture hurdle). Break-even is achieved at 822 monthly orders (₹904,200/mo), with full CapEx recovery within 16 months. Three-year cumulative ROI is projected at 380.0%.",
+      "data_source": "Industry Benchmark & Financial Model",
+      "created_at": "2026-09-14T12:01:57.556394"
+    },
     "risk_analysis": null,
     "feasibility_analysis": null,
     "investor_readiness": null,
