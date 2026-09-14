@@ -31,7 +31,7 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
     if matches(['law', 'laws', 'legal', 'contract', 'contracts', 'compliance', 'advocate', 'vakil', 'court', 'ndas', 'litigation', 'trademark']):
         return 'legaltech'
     if matches(['pet', 'pets', 'dog', 'cat', 'veterinary', 'vet', 'grooming', 'animal']):
-        return 'marketplace_ondemand'
+        return 'pet_clinic'
     if matches(['on-demand', 'hyperlocal', 'gig', 'handyman', 'laundry', 'salon', 'home service', 'plumber', 'electrician', 'cleaning', 'services']):
         return 'marketplace_ondemand'
     if matches(['crm', 'erp', 'b2b saas', 'enterprise', 'workflow', 'billing saas', 'invoice software', 'procurement', 'inventory management']):
@@ -68,6 +68,8 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
         return 'hrtech'
     if matches(['security', 'cyber', 'cybersecurity', 'auth', 'threat', 'fraud', 'firewall', 'penetration', 'soc2', 'vapt', 'anti-fraud', 'identity']):
         return 'cybersecurity'
+    if matches(['tiffin', 'dosa', 'idli', 'vada', 'paratha', 'tea stall', 'chai', 'street food', 'thali', 'bhojanam', 'mess', 'canteen', 'fast food stall', 'food stall', 'tiffin center']):
+        return 'tiffin_streetfood'
     if matches(['food', 'restaurant', 'cafe', 'cloud kitchen', 'dining', 'beverage', 'snack', 'bakery', 'qsr', 'catering', 'bar']):
         return 'food & beverage'
     if matches(['game', 'games', 'gaming', 'esport', 'esports', 'metaverse', 'ar/vr', 'casual game', 'arcade', 'vr', 'game studio']):
@@ -85,7 +87,7 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
 FINANCIAL_DOMAIN_BENCHMARKS = {
     'food & beverage': {
         'aov': 480.0,
-        'gross_margin': 0.62,
+        'gross_margin': 0.58,
         'cac': 380.0,
         'monthly_orders_per_table_or_unit': 850,
         'salary_per_staff': 22000.0,
@@ -103,6 +105,51 @@ FINANCIAL_DOMAIN_BENCHMARKS = {
         'target_ltv_mult': 3.8,
         'typical_break_even_months': 9
     },
+    # Tiffin centers, dosa stalls, street food, canteen — small-ticket walk-in
+    # Sources: NRAI Small Food Service Report 2023, local Hyderabad/Guntur market survey
+    'tiffin_streetfood': {
+        'aov': 110.0,              # Dosa/idli plate Rs40-80, thali Rs80-150 → avg Rs110
+        'gross_margin': 0.48,      # NRAI QSR small operator: 45-52% after raw material
+        'cac': 80.0,               # Mostly walk-in + WhatsApp + Google listing: Rs50-120
+        'monthly_orders_per_table_or_unit': 1800,  # ~60 customers/day is realistic for a tiffin center
+        'salary_per_staff': 18000.0,   # Cook + helper in Hyderabad/Tier-2
+        'monthly_rent_base': 25000.0,  # Small stall / tiffin space
+        'raw_material_ratio': 0.40,    # Raw material 40% of revenue (rice, dal, vegetables)
+        'cloud_it_monthly': 1500.0,    # Simple billing app
+        'utility_monthly': 5500.0,     # LPG + electricity + water
+        'mkt_spend_ratio': 0.05,       # Minimal digital marketing
+        'capex_dev_fitout_ratio': 0.35, # Kitchen setup, counters, equipment
+        'capex_hardware_ratio': 0.40,   # Commercial stove, vessels, grinder
+        'capex_legal_ratio': 0.08,      # FSSAI license, trade license
+        'capex_branding_ratio': 0.07,   # Signboard, menu board
+        'capex_inventory_ratio': 0.10,  # Initial raw material stock
+        'rent_deposit_months': 3,
+        'target_ltv_mult': 5.0,        # Repeat daily customers → high LTV
+        'typical_break_even_months': 8
+    },
+    # Veterinary clinic + pet grooming studio
+    # Sources: Indian Veterinary Association survey, Tier-2 city clinic benchmarks
+    'pet_clinic': {
+        'aov': 850.0,              # Vet consult Rs300-800 + grooming Rs400-800 → avg Rs850
+        'gross_margin': 0.55,      # Vet services 50-60% margin
+        'cac': 320.0,              # Local referral Rs0, Google/WhatsApp ads Rs200-400
+        'monthly_orders_per_table_or_unit': 280,  # ~9-10 patients/day realistic for new clinic
+        'salary_per_staff': 30000.0,   # Vet Rs50k, groomer Rs18k, receptionist Rs12k → avg Rs26k
+        'monthly_rent_base': 22000.0,  # Tier-2 city clinic space
+        'raw_material_ratio': 0.25,    # Medicines + grooming supplies
+        'cloud_it_monthly': 3000.0,    # Appointment booking SaaS
+        'utility_monthly': 6000.0,     # Electricity + water
+        'mkt_spend_ratio': 0.10,
+        'capex_dev_fitout_ratio': 0.30, # Clinic fit-out, grooming bay setup
+        'capex_hardware_ratio': 0.45,   # Medical equipment, grooming tools, exam table
+        'capex_legal_ratio': 0.10,      # VCI license, shop license
+        'capex_branding_ratio': 0.08,   # Signage, website
+        'capex_inventory_ratio': 0.07,  # Initial medicine stock
+        'rent_deposit_months': 3,
+        'target_ltv_mult': 6.0,        # Pet owners repeat every 1-3 months
+        'typical_break_even_months': 14  # Realistic ramp: 10-18 months
+    },
+
     'b2b_saas': {
         'aov': 1999.0,
         'gross_margin': 0.82,
@@ -444,9 +491,13 @@ def generate_financial_analysis(context: dict) -> dict:
     net_profit_margin = round((monthly_net_profit / max(1.0, monthly_revenue)) * 100.0, 1)
 
     # Break-Even Timeline (Months to recover initial CapEx investment)
+    # New offline/hybrid businesses need 2-4 months to reach full capacity (ramp-up period)
+    ramp_up_buffer = 3 if (is_offline or is_hybrid) else 1
     if monthly_net_profit > 15000:
         payback_months = round(total_capex / monthly_net_profit, 1)
-        break_even_months = max(5, min(24, math.ceil(payback_months) + 2))
+        raw_be = math.ceil(payback_months) + 2
+        # Apply ramp-up buffer: offline takes longer to build customer base
+        break_even_months = max(6, min(30, raw_be + ramp_up_buffer))
     else:
         payback_months = bm['typical_break_even_months']
         break_even_months = bm['typical_break_even_months']
