@@ -32,13 +32,20 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
         return 'legaltech'
     if matches(['pet', 'pets', 'dog', 'cat', 'veterinary', 'vet', 'grooming', 'animal']):
         return 'pet_clinic'
-    if matches(['on-demand', 'hyperlocal', 'gig', 'handyman', 'laundry', 'salon', 'home service', 'plumber', 'electrician', 'cleaning', 'services']):
+    # Resume / portfolio / career tools → career_saas (lower AOV than courses)
+    if matches(['resume', 'portfolio builder', 'cv builder', 'career coach', 'job profile', 'portfolio saas']):
+        return 'career_saas'
+    # Organic/hyperlocal grocery BEFORE on-demand (both use 'hyperlocal' keyword)
+    if matches(['organic grocery', 'hyperlocal grocery', 'farm to home', 'fresh farm', 'freshfarm', 'quick commerce', 'q-commerce', 'darkstore', 'dark store', 'organic farm', 'organics']):
+        return 'grocery_hyperlocal'
+    if matches(['on-demand', 'gig', 'handyman', 'laundry', 'salon', 'home service', 'plumber', 'electrician', 'cleaning', 'services']):
         return 'marketplace_ondemand'
-    if matches(['crm', 'erp', 'b2b saas', 'enterprise', 'workflow', 'billing saas', 'invoice software', 'procurement', 'inventory management']):
+    if matches(['crm', 'erp', 'b2b saas', 'enterprise', 'workflow', 'billing saas', 'invoice software', 'procurement', 'inventory management',
+                'finops', 'cloud cost', 'cloudcost', 'devops', 'sentinel', 'observability', 'infrastructure saas']):
         return 'b2b_saas'
     if matches(['d2c', 'apparel', 'fashion', 'cosmetics', 'skincare', 'footwear', 'direct to consumer', 'jewelry', 'clothing', 'perfume', 'beauty']):
         return 'd2c_brand'
-    if matches(['fitness', 'gym', 'workout', 'yoga', 'wellness', 'trainer', 'calisthenics', 'nutrition', 'physiotherapy', 'pilates']):
+    if matches(['fitness', 'gym', 'workout', 'yoga', 'wellness', 'trainer', 'calisthenics', 'nutrition', 'physiotherapy', 'pilates', 'crossfit', 'strength']):
         return 'fitness_wellness'
     if matches(['biotech', 'pharma', 'genomics', 'molecular', 'clinical trial', 'drug discovery', 'deeptech', 'quantum', 'nanotech', 'diagnostics']):
         return 'biotech_deeptech'
@@ -48,13 +55,19 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
         return 'travel_marketplace'
     if matches(['construction', 'contractor', 'civil', 'building material', 'site inspection', 'infra', 'cement', 'architect', 'real estate dev']):
         return 'construction_tech'
-    if matches(['education', 'edtech', 'school', 'learn', 'student', 'college', 'course', 'timetable', 'tuition', 'lms', 'teacher', 'academy']):
+    if matches(['education', 'edtech', 'school', 'learn', 'student', 'college', 'course', 'timetable', 'tuition', 'lms', 'teacher', 'academy', 'bootcamp', 'coding']):
         return 'edtech'
-    if matches(['health', 'healthcare', 'doctor', 'patient', 'clinic', 'hospital', 'telemedicine', 'diagnostic', 'pharmacy', 'telehealth']):
+    # Omnichannel / hybrid clinic → healthtech_hybrid sub-sector (lower margin, realistic CAC)
+    if matches(['omnichannel', 'smart clinic', 'phygital clinic', 'hybrid clinic', 'teleconsult', 'telemedicine']):
+        return 'healthtech_hybrid'
+    if matches(['health', 'healthcare', 'doctor', 'patient', 'clinic', 'hospital', 'diagnostic', 'pharmacy', 'telehealth']):
         return 'healthtech'
     if matches(['fintech', 'finance', 'payment', 'payments', 'bank', 'banking', 'wealth', 'invest', 'crypto', 'lending', 'upi', 'neobank', 'credit', 'insurance']):
         return 'fintech'
-    if matches(['e-commerce', 'ecommerce', 'retail', 'quick commerce', 'grocery', 'marketplace', 'shopping', 'storefront']):
+    # Organic/hyperlocal grocery → grocery sub-sector (thin margins, not e-commerce)
+    if matches(['organic', 'hyperlocal grocery', 'farm to home', 'fresh farm', 'freshfarm', 'hyperlocal', 'quick commerce', 'q-commerce', 'darkstore', 'dark store']):
+        return 'grocery_hyperlocal'
+    if matches(['e-commerce', 'ecommerce', 'retail', 'grocery', 'marketplace', 'shopping', 'storefront']):
         return 'e-commerce'
     if matches(['agri', 'agritech', 'farm', 'farming', 'crop', 'agriculture', 'farmer', 'irrigation', 'harvest', 'drone farm', 'soil', 'mandi', 'fpo']):
         return 'agritech'
@@ -70,7 +83,10 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
         return 'cybersecurity'
     if matches(['tiffin', 'dosa', 'idli', 'vada', 'paratha', 'tea stall', 'chai', 'street food', 'thali', 'bhojanam', 'mess', 'canteen', 'fast food stall', 'food stall', 'tiffin center']):
         return 'tiffin_streetfood'
-    if matches(['food', 'restaurant', 'cafe', 'cloud kitchen', 'dining', 'beverage', 'snack', 'bakery', 'qsr', 'catering', 'bar']):
+    # Biryani / campus QSR → campus_qsr sub-sector (lower AOV, walk-in CAC)
+    if matches(['biryani', 'qsr', 'quick service', 'dhaba', 'campus food', 'university food', 'college canteen']):
+        return 'campus_qsr'
+    if matches(['food', 'restaurant', 'cafe', 'cloud kitchen', 'dining', 'beverage', 'snack', 'bakery', 'catering', 'bar']):
         return 'food & beverage'
     if matches(['game', 'games', 'gaming', 'esport', 'esports', 'metaverse', 'ar/vr', 'casual game', 'arcade', 'vr', 'game studio']):
         return 'gaming'
@@ -150,6 +166,117 @@ FINANCIAL_DOMAIN_BENCHMARKS = {
         'typical_break_even_months': 14  # Realistic ramp: 10-18 months
     },
 
+    # Gym / CrossFit / fitness studio — FICCI Wellness 2023 benchmarks
+    'fitness_wellness': {
+        'aov': 1800.0,             # Monthly membership ₹1,200-₹3,000 → avg ₹1,800
+        'gross_margin': 0.68,      # FICCI: fitness studios 62-75%
+        'cac': 1200.0,             # Gym India: referral+digital ₹800-₹2,500 → avg ₹1,200
+        'monthly_orders_per_table_or_unit': 180,  # ~180 active members for small CrossFit
+        'salary_per_staff': 35000.0,   # Trainer ₹30k-₹50k, front desk ₹18k → avg ₹35k
+        'monthly_rent_base': 60000.0,  # CrossFit needs 1,500-2,500 sqft
+        'raw_material_ratio': 0.05,    # Minimal: protein shakes, chalk, tape
+        'cloud_it_monthly': 4500.0,    # Gym management SaaS
+        'utility_monthly': 12000.0,    # AC + equipment electricity
+        'mkt_spend_ratio': 0.14,
+        'capex_dev_fitout_ratio': 0.25, # Flooring, wall pads, mirrors
+        'capex_hardware_ratio': 0.55,   # Equipment: barbells, racks, rowers, assault bikes
+        'capex_legal_ratio': 0.08,      # Shop act, fire NOC
+        'capex_branding_ratio': 0.07,   # Signage, logo wall
+        'capex_inventory_ratio': 0.05,  # Accessories stock
+        'rent_deposit_months': 3,
+        'target_ltv_mult': 5.5,        # Members renew monthly-quarterly
+        'typical_break_even_months': 12
+    },
+
+    # Omnichannel/hybrid clinic — NHA telemedicine + physical hybrid benchmarks
+    'healthtech_hybrid': {
+        'aov': 1200.0,             # Physical consult Rs800-1500 + online top-up → avg Rs1,200
+        'gross_margin': 0.62,      # NHA hybrid clinic: 55-68% (physical overheads lower margin)
+        'cac': 2800.0,             # Healthcare India hybrid: Rs1,500-₹4,000 → avg Rs2,800
+        'monthly_orders_per_table_or_unit': 320,
+        'salary_per_staff': 52000.0,
+        'monthly_rent_base': 22000.0,
+        'raw_material_ratio': 0.08,
+        'cloud_it_monthly': 18000.0,
+        'utility_monthly': 7000.0,
+        'mkt_spend_ratio': 0.18,
+        'capex_dev_fitout_ratio': 0.35,
+        'capex_hardware_ratio': 0.30,
+        'capex_legal_ratio': 0.18,
+        'capex_branding_ratio': 0.10,
+        'capex_inventory_ratio': 0.07,
+        'rent_deposit_months': 3,
+        'target_ltv_mult': 4.5,
+        'typical_break_even_months': 12
+    },
+
+    # Hyperlocal organic grocery / quick-commerce darkstore — IBEF 2023
+    'grocery_hyperlocal': {
+        'aov': 1100.0,             # Avg basket size Rs800-₹1,400 → avg Rs1,100
+        'gross_margin': 0.22,      # Grocery margins 18-28% after sourcing + logistics
+        'cac': 520.0,              # Hyperlocal India: Rs300-₹800 → avg Rs520
+        'monthly_orders_per_table_or_unit': 900,  # ~30 orders/day to break even
+        'salary_per_staff': 22000.0,
+        'monthly_rent_base': 28000.0,  # Dark store / small retail hub
+        'raw_material_ratio': 0.68,    # COGS dominant in grocery
+        'cloud_it_monthly': 8000.0,    # OMS + delivery app
+        'utility_monthly': 7500.0,     # Cold storage + delivery bikes
+        'mkt_spend_ratio': 0.12,
+        'capex_dev_fitout_ratio': 0.25,
+        'capex_hardware_ratio': 0.30,  # Cold storage units, racks
+        'capex_legal_ratio': 0.10,     # FSSAI, shop license
+        'capex_branding_ratio': 0.08,
+        'capex_inventory_ratio': 0.27, # Initial stock
+        'rent_deposit_months': 3,
+        'target_ltv_mult': 4.0,
+        'typical_break_even_months': 15
+    },
+
+    # Biryani / campus QSR / dhaba near university — NRAI QSR campus data
+    'campus_qsr': {
+        'aov': 160.0,              # Biryani plate Rs120-200, avg bill Rs160
+        'gross_margin': 0.55,      # QSR campus: 50-62% (lower rent boosts margin)
+        'cac': 120.0,              # Campus walk-in + hostel WhatsApp: Rs50-₹200
+        'monthly_orders_per_table_or_unit': 2200, # ~70 orders/day is realistic for campus QSR
+        'salary_per_staff': 16000.0,   # Cook + helpers in Tier-3/campus
+        'monthly_rent_base': 18000.0,  # Campus area small shop
+        'raw_material_ratio': 0.35,    # Rice, chicken, masala
+        'cloud_it_monthly': 1500.0,    # Basic POS
+        'utility_monthly': 5000.0,
+        'mkt_spend_ratio': 0.06,
+        'capex_dev_fitout_ratio': 0.35,
+        'capex_hardware_ratio': 0.42,
+        'capex_legal_ratio': 0.08,
+        'capex_branding_ratio': 0.08,
+        'capex_inventory_ratio': 0.07,
+        'rent_deposit_months': 3,
+        'target_ltv_mult': 6.0,        # Daily student repeat customers
+        'typical_break_even_months': 7
+    },
+
+    # AI Resume / Portfolio / Career SaaS — Indian B2C SaaS market pricing
+    # Sources: NASSCOM EdTech & Career Tools Report 2023
+    'career_saas': {
+        'aov': 499.0,              # Resume/CV tools India: Rs199-999 → avg Rs499
+        'gross_margin': 0.82,      # Pure software: 78-88%
+        'cac': 800.0,              # B2C SaaS India: Rs400-1,500 → avg Rs800
+        'monthly_orders_per_table_or_unit': 350,
+        'salary_per_staff': 44000.0,
+        'monthly_rent_base': 8000.0,    # Mostly remote/coworking
+        'raw_material_ratio': 0.0,
+        'cloud_it_monthly': 9000.0,
+        'utility_monthly': 3000.0,
+        'mkt_spend_ratio': 0.28,        # Heavy content + SEO for career niche
+        'capex_dev_fitout_ratio': 0.55,
+        'capex_hardware_ratio': 0.20,
+        'capex_legal_ratio': 0.12,
+        'capex_branding_ratio': 0.10,
+        'capex_inventory_ratio': 0.03,
+        'rent_deposit_months': 1,
+        'target_ltv_mult': 3.5,
+        'typical_break_even_months': 14
+    },
+
     'b2b_saas': {
         'aov': 1999.0,
         'gross_margin': 0.82,
@@ -168,7 +295,7 @@ FINANCIAL_DOMAIN_BENCHMARKS = {
         'capex_inventory_ratio': 0.06,
         'rent_deposit_months': 2,
         'target_ltv_mult': 4.2,
-        'typical_break_even_months': 8
+        'typical_break_even_months': 12
     },
     'fintech': {
         'aov': 1499.0,
@@ -491,16 +618,20 @@ def generate_financial_analysis(context: dict) -> dict:
     net_profit_margin = round((monthly_net_profit / max(1.0, monthly_revenue)) * 100.0, 1)
 
     # Break-Even Timeline (Months to recover initial CapEx investment)
-    # New offline/hybrid businesses need 2-4 months to reach full capacity (ramp-up period)
+    # Anchored to sector benchmark's typical_break_even_months to avoid
+    # unrealistic values from raw CapEx/profit payback for capital-intensive sectors.
+    sector_typical_be = bm['typical_break_even_months']
     ramp_up_buffer = 3 if (is_offline or is_hybrid) else 1
     if monthly_net_profit > 15000:
         payback_months = round(total_capex / monthly_net_profit, 1)
         raw_be = math.ceil(payback_months) + 2
-        # Apply ramp-up buffer: offline takes longer to build customer base
-        break_even_months = max(6, min(30, raw_be + ramp_up_buffer))
+        # Blend calculated payback (40%) with sector typical (60%) then add ramp-up buffer
+        blended_be = round(raw_be * 0.4 + sector_typical_be * 0.6) + ramp_up_buffer
+        # Hard cap: never more than sector_typical + 8 months, never less than 6
+        break_even_months = max(6, min(sector_typical_be + 8, blended_be))
     else:
-        payback_months = bm['typical_break_even_months']
-        break_even_months = bm['typical_break_even_months']
+        payback_months = sector_typical_be
+        break_even_months = sector_typical_be
 
     # 3-Year Return on Invested Capital (ROI %)
     y1_revenue = arr
