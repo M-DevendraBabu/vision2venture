@@ -132,7 +132,61 @@ def ensure_competitor_tables_and_columns():
                         print(f"[Migration] Added 'data_source' column to '{tbl}' table.")
                 except Exception as e:
                     print(f"[Migration] Notice adding data_source to {tbl}: {e}")
-                        
+
+            # ─────────────────────────────────────────────────────────────
+            # 5. Fix market_analysis columns: VARCHAR(255) → TEXT
+            #    (LLM-generated primary_demo / key_pain_point can exceed 255 chars
+            #     causing "Data too long" insert errors on Artisan Bakery etc.)
+            # ─────────────────────────────────────────────────────────────
+            if dialect == 'mysql':
+                market_text_fixes = [
+                    ("primary_demo",       "TEXT"),
+                    ("key_pain_point",     "TEXT"),
+                    ("purchase_trigger",   "TEXT"),
+                    ("acquisition_channel","VARCHAR(500)"),
+                ]
+                try:
+                    res = conn.execute(text("SHOW COLUMNS FROM market_analysis"))
+                    ma_cols = {row[0]: row[1].upper() for row in res.fetchall()}
+                    for col_name, new_type in market_text_fixes:
+                        if col_name in ma_cols:
+                            current_type = ma_cols[col_name]
+                            # Only alter if it's still a short VARCHAR (needs upgrade)
+                            if "VARCHAR(255)" in current_type or "VARCHAR(500)" in current_type and col_name == "acquisition_channel":
+                                conn.execute(text(f"ALTER TABLE market_analysis MODIFY COLUMN {col_name} {new_type}"))
+                                conn.commit()
+                                print(f"[Migration] Widened market_analysis.{col_name} to {new_type}.")
+                except Exception as e:
+                    print(f"[Migration] market_analysis text-column fix notice: {e}")
+
+            # ─────────────────────────────────────────────────────────────
+            # 6. Add gross_margin_percent, break_even_months, year1/2/3_revenue
+            #    columns to financial_analysis (added to track real metrics in DB)
+            # ─────────────────────────────────────────────────────────────
+            try:
+                fa_cols = set()
+                if dialect == 'mysql':
+                    res = conn.execute(text("SHOW COLUMNS FROM financial_analysis"))
+                    fa_cols = {row[0] for row in res.fetchall()}
+                elif dialect == 'sqlite':
+                    res = conn.execute(text("PRAGMA table_info(financial_analysis)"))
+                    fa_cols = {row[1] for row in res.fetchall()}
+
+                new_fa_cols = [
+                    ("gross_margin_percent", "DECIMAL(5,2) NULL DEFAULT NULL"),
+                    ("break_even_months",    "INT NULL DEFAULT NULL"),
+                    ("year1_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+                    ("year2_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+                    ("year3_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+                ]
+                for col_name, col_type in new_fa_cols:
+                    if col_name not in fa_cols and fa_cols:
+                        conn.execute(text(f"ALTER TABLE financial_analysis ADD COLUMN {col_name} {col_type}"))
+                        conn.commit()
+                        print(f"[Migration] Added financial_analysis.{col_name} ({col_type}).")
+            except Exception as e:
+                print(f"[Migration] financial_analysis new-columns notice: {e}")
+
             print("[Migration] All database tables and columns verified successfully.")
     except Exception as e:
         print(f"[Migration] Notice running migration check: {e}")
@@ -240,7 +294,18 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
                         print(f"[SeedSync] Idea '{idea.title}' score mismatch: DB={actual_score} vs Seed={expected_score}. Refresh required.")
                         break
 
-        if not force and is_exact_match and not has_stale and not has_legacy_intel and not has_unmigrated_data and not has_score_mismatch:
+        # Check if new financial columns are missing data (triggers resync after schema migration)
+        has_missing_financial_cols = False
+        if is_exact_match:
+            try:
+                fa_sample = db.query(FinancialAnalysis).first()
+                if fa_sample and getattr(fa_sample, 'gross_margin_percent', None) is None:
+                    has_missing_financial_cols = True
+                    print("[SeedSync] financial_analysis.gross_margin_percent is empty — resync needed.")
+            except Exception:
+                pass
+
+        if not force and is_exact_match and not has_stale and not has_legacy_intel and not has_unmigrated_data and not has_score_mismatch and not has_missing_financial_cols:
             print(f"[SeedSync] Admin user {admin_user.email} already has the 7 verified production ideas with fresh data. No action needed.")
             return {"status": "ok", "message": "already synchronized", "count": len(current_ideas)}
 
