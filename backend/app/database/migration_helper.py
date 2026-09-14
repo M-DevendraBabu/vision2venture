@@ -212,7 +212,7 @@ PROD_TITLES = {
     "Biryani Point near Vignan University, Vadlamudi"
 }
 
-def _clean_attrs(model_cls, data_dict, overrides=None):
+def _clean_attrs(model_cls, data_dict, overrides=None, actual_db_cols=None):
     if not data_dict:
         return None
     d = dict(data_dict)
@@ -222,6 +222,9 @@ def _clean_attrs(model_cls, data_dict, overrides=None):
     res = {}
     for k, v in d.items():
         if k in col_names:
+            # If actual DB columns are known, never try to insert a column that isn't physically in the table
+            if actual_db_cols is not None and k.lower() not in actual_db_cols:
+                continue
             col = col_names[k]
             if 'DATETIME' in str(col.type).upper() or 'TIMESTAMP' in str(col.type).upper():
                 if isinstance(v, str):
@@ -311,13 +314,51 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
 
         print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel}, unmigrated={has_unmigrated_data}, score_mismatch={has_score_mismatch})...")
 
+        # Proactively ensure new financial columns exist before inserting
+        for col_name, col_type in [
+            ("gross_margin_percent", "DECIMAL(5,2) NULL DEFAULT NULL"),
+            ("break_even_months",    "INT NULL DEFAULT NULL"),
+            ("year1_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+            ("year2_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+            ("year3_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+        ]:
+            try:
+                db.execute(text(f"ALTER TABLE financial_analysis ADD COLUMN {col_name} {col_type}"))
+                db.commit()
+                print(f"[SeedSync] Added missing column '{col_name}' to financial_analysis.")
+            except Exception:
+                db.rollback()
+
+        for col_name, new_type in [
+            ("primary_demo",        "TEXT"),
+            ("key_pain_point",      "TEXT"),
+            ("purchase_trigger",    "TEXT"),
+            ("acquisition_channel", "VARCHAR(500)"),
+        ]:
+            try:
+                db.execute(text(f"ALTER TABLE market_analysis MODIFY COLUMN {col_name} {new_type}"))
+                db.commit()
+            except Exception:
+                db.rollback()
+
+        # Cache physical table columns from MySQL
+        table_cols_cache = {}
+        def get_actual_cols(tbl_name):
+            if tbl_name not in table_cols_cache:
+                try:
+                    res = db.execute(text(f"SHOW COLUMNS FROM {tbl_name}"))
+                    table_cols_cache[tbl_name] = {row[0].lower() for row in res.fetchall()}
+                except Exception:
+                    table_cols_cache[tbl_name] = None
+            return table_cols_cache[tbl_name]
+
         for idea in current_ideas:
             db.delete(idea)
         db.flush()
 
         for item in seed_items:
             idea_dict = item.get("idea", {})
-            idea_obj = _clean_attrs(StartupIdea, idea_dict, {"user_id": admin_user.id})
+            idea_obj = _clean_attrs(StartupIdea, idea_dict, {"user_id": admin_user.id}, actual_db_cols=get_actual_cols("startup_ideas"))
             db.add(idea_obj)
             db.flush()
 
@@ -338,12 +379,14 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
             for model_cls, key in analysis_mappings:
                 data = item.get(key)
                 if data:
-                    obj = _clean_attrs(model_cls, data, {"idea_id": idea_obj.id})
+                    tbl_name = getattr(model_cls, '__tablename__', None)
+                    actual_cols = get_actual_cols(tbl_name) if tbl_name else None
+                    obj = _clean_attrs(model_cls, data, {"idea_id": idea_obj.id}, actual_db_cols=actual_cols)
                     db.add(obj)
 
             comps = item.get("competitors", [])
             for c_data in comps:
-                c_obj = _clean_attrs(Competitor, c_data, {"idea_id": idea_obj.id})
+                c_obj = _clean_attrs(Competitor, c_data, {"idea_id": idea_obj.id}, actual_db_cols=get_actual_cols("competitors"))
                 db.add(c_obj)
 
         db.commit()
