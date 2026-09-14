@@ -241,8 +241,8 @@ def _clean_attrs(model_cls, data_dict, overrides=None, actual_db_cols=None):
 
 def sync_production_seed_if_needed(db, force=False, target_user=None):
     """
-    Ensures that the admin user on production (Render / Cloud DB) has the 7 clean production
-    startup ideas (2 Online, 3 Offline, 2 Hybrid) and all their associated analyses,
+    Ensures that the admin user on production (Render / Cloud DB) has the 10 clean production
+    startup ideas (3 Online, 4 Offline, 3 Hybrid) and all their associated analyses,
     benchmarks, and competitors.
     """
     try:
@@ -273,8 +273,8 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
             seed_items = json.load(f)
 
         seed_scores = {
-            item['idea']['title'].strip(): item.get('startup_analysis', {}).get('overall_score')
-            for item in seed_items if 'idea' in item and 'title' in item['idea']
+            item['idea']['title'].strip(): (item.get('startup_analysis') or {}).get('overall_score')
+            for item in seed_items if 'idea' in item and item.get('idea') and 'title' in item['idea']
         }
 
         # Check for duplicate matrix strings in existing intelligence, missing data_source, or score mismatches
@@ -313,10 +313,10 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
                 pass
 
         if not force and is_exact_match and not has_stale and not has_legacy_intel and not has_unmigrated_data and not has_score_mismatch and not has_missing_financial_cols:
-            print(f"[SeedSync] Admin user {admin_user.email} already has the 7 verified production ideas with fresh data. No action needed.")
+            print(f"[SeedSync] Admin user {admin_user.email} already has {len(PROD_TITLES)} verified production ideas with fresh data. No action needed.")
             return {"status": "ok", "message": "already synchronized", "count": len(current_ideas)}
 
-        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, force={force}, has_stale={has_stale}, has_legacy={has_legacy_intel}, unmigrated={has_unmigrated_data}, score_mismatch={has_score_mismatch})...")
+        print(f"[SeedSync] Syncing production seed for {admin_user.email} (current ideas: {len(current_ideas)}, target: {len(seed_items)}, force={force})...")
 
         # Proactively ensure new financial columns exist before inserting
         for col_name, col_type in [
@@ -361,7 +361,9 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
         db.flush()
 
         for item in seed_items:
-            idea_dict = item.get("idea", {})
+            idea_dict = item.get("idea") or {}
+            if not idea_dict:
+                continue
             idea_obj = _clean_attrs(StartupIdea, idea_dict, {"user_id": admin_user.id}, actual_db_cols=get_actual_cols("startup_ideas"))
             db.add(idea_obj)
             db.flush()
