@@ -251,8 +251,12 @@ def test_case_c_hybrid_agritech():
     assert len(physical) > 0, "Hybrid startup with retail should discover physical competitors!"
     assert len(digital) > 0, "Hybrid startup should also discover digital delivery / e-grocery competitors!"
     
-    for comp in physical[:2]:
-        assert comp.get("source_type") == "openstreetmap"
+    # Physical competitors may come from any REAL source: HERE and TomTom commercial
+    # POI as well as OpenStreetMap. Unverified AI suggestions are leads, not competitors.
+    physical_verified = [c for c in physical if c.get("source_type") != "ai_inferred"]
+    assert len(physical_verified) > 0, "Expected at least one VERIFIED physical competitor"
+    for comp in physical_verified[:2]:
+        assert comp.get("source_type") in ("openstreetmap", "here", "tomtom"),             f"Expected a real physical source, got: {comp.get('source_type')}"
         print(f"    [Physical] {comp['name']} ({comp.get('distance_km')} km)")
     for comp in digital[:2]:
         assert comp.get("source_type") in ["live_web", "yc_dataset", "llm", "manual"]

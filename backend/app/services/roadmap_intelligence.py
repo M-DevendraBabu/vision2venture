@@ -18,7 +18,7 @@ ROADMAP_DOMAIN_TEMPLATES = {
                 'Apply for FSSAI State Food License, Municipal Health Trade License & Fire NOC',
                 'Finalize commercial lease (650–850 sq.ft) and execute 3-month rental deposit',
                 'Architectural interior design layout, 3D floor plan & MEP commercial kitchen schematic',
-                'Source initial organic ingredient vendor partnerships & farm-to-table supply contracts'
+                'Source initial ingredient vendor partnerships and supply contracts'
             ],
             'milestones': [
                 'Entity incorporated & FSSAI license application submitted',
@@ -58,7 +58,7 @@ ROADMAP_DOMAIN_TEMPLATES = {
             'weeks': 'Weeks 21–28',
             'focus': 'Quality Assurance, Hyperlocal Launch & Customer Feedback',
             'tasks': [
-                'Procure 30-day opening stock of organic coffee beans, fresh dairy & eco-packaging',
+                'Procure 30-day opening stock of core ingredients, dairy and takeaway packaging',
                 'Host 7-day invite-only soft opening for local food bloggers, neighborhood residents & corporates',
                 'Launch Google My Business listing, Zomato/Swiggy dining profiles, and Instagram teaser campaign',
                 'Execute official grand opening with introductory loyalty coffee stamp cards',

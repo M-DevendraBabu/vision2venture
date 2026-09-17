@@ -91,7 +91,7 @@ SECTOR_PROFILES = {
         "gross_margin": "78% – 85%",
         "ltv_cac": "4.2x – 4.8x",
         "payback_months": "6 – 8 Months",
-        "problem": "Manual timetable scheduling, severe teacher workload burnout, and complex multidisciplinary elective alignment under NEP 2020 causing administrative gridlock in 85%+ of Indian schools and colleges.",
+        "problem": "Manual timetable scheduling, severe teacher workload burnout, and complex multidisciplinary elective alignment under NEP 2020 causing administrative gridlock across many Indian schools and colleges.",
         "solution": "Automated algorithmic scheduling platform with real-time teacher substitution management, NEP credit-framework compliance, and multi-campus timetable optimization for {title}.",
         "customer_segments": [
             "Primary ICP: K-12 Private & CBSE/ICSE Schools with 500+ students seeking automated timetable compliance",
@@ -178,7 +178,7 @@ SECTOR_PROFILES = {
         "gross_margin": "65% – 75%",
         "ltv_cac": "3.8x – 4.5x",
         "payback_months": "5 – 7 Months",
-        "problem": "High merchant transaction failure rates, exorbitant payment gateway markups (2.2%+ MDR), and sluggish multi-day settlement cycles crippling cash flows for MSMEs across India.",
+        "problem": "High merchant transaction failure rates, high payment gateway markups, and sluggish multi-day settlement cycles crippling cash flows for MSMEs across India.",
         "solution": "Next-generation payment routing gateway with sub-second UPI AutoPay orchestration, dynamic settlement algorithms, and automated reconciliation for {title}.",
         "customer_segments": [
             "Primary ICP: Digital-first MSMEs, D2C brands, and retail merchants processing ₹5L–₹50L monthly GMV",
@@ -265,7 +265,7 @@ SECTOR_PROFILES = {
         "gross_margin": "72% – 80%",
         "ltv_cac": "4.5x – 5.2x",
         "payback_months": "6 – 9 Months",
-        "problem": "Fragmented patient medical records, 45+ minute doctor clinic waiting room congestion, and lack of Ayushman Bharat Digital Mission (ABDM) integration across 90% of private clinics and nursing homes in India.",
+        "problem": "Fragmented patient medical records, long clinic waiting times, and limited Ayushman Bharat Digital Mission (ABDM) integration across private clinics and nursing homes in India.",
         "solution": "Integrated clinical operating system featuring ABDM Ayushman Bharat health account (ABHA) record sync, smart appointment queuing, digital EMR prescriptions, and teleconsultation for {title}.",
         "customer_segments": [
             "Primary ICP: Independent Private Practitioners, Polyclinics, and 10–50 Bed Nursing Homes across Tier-1 and Tier-2 cities",
@@ -439,7 +439,7 @@ SECTOR_PROFILES = {
         "gross_margin": "60% – 68%",
         "ltv_cac": "3.5x – 4.2x",
         "payback_months": "4 – 6 Months",
-        "problem": "Inconsistent taste quality, long dining wait times, and high food aggregator commissions (22%+) eroding margins for food operators while delivering lukewarm food to customers across India.",
+        "problem": "Inconsistent taste quality, long dining wait times, and high food aggregator commissions eroding margins for food operators while delivering lukewarm food to customers across India.",
         "solution": "High-efficiency culinary kitchen model focusing on authentic signature recipes, rapid counter takeaway, and direct localized delivery for {title}.",
         "customer_segments": [
             "Primary ICP: Students, young professionals, and local residents seeking authentic, hygienic meals",
@@ -526,7 +526,7 @@ SECTOR_PROFILES = {
         "gross_margin": "82% – 88%",
         "ltv_cac": "4.5x – 5.2x",
         "payback_months": "4 – 6 Months",
-        "problem": "Severe ATS resume rejection rates (>75%), lack of personalized job description tailoring, and generic static portfolios causing candidates to miss top-tier job opportunities across India and globally.",
+        "problem": "High ATS resume rejection rates, lack of personalized job description tailoring, and generic static portfolios causing candidates to miss top-tier job opportunities across India and globally.",
         "solution": "AI-powered career suite featuring automated job description keyword optimization, ATS resume scoring, dynamic developer portfolio generators with live demo hosting, and automated cover letters for {title}.",
         "customer_segments": [
             "Primary ICP: Job seekers, software engineers, and mid-career professionals actively interviewing",
@@ -613,7 +613,7 @@ SECTOR_PROFILES = {
         "gross_margin": "84% – 90%",
         "ltv_cac": "5.5x – 6.2x",
         "payback_months": "5 – 7 Months",
-        "problem": "Uncontrolled cloud sprawl, surprise AWS/Azure/GCP bills, idle compute resources, and lack of engineering accountability leading to 30%+ wasted cloud expenditure for tech companies across India and globally.",
+        "problem": "Uncontrolled cloud sprawl, surprise AWS/Azure/GCP bills, idle compute resources, and lack of engineering accountability leading to substantial wasted cloud expenditure for tech companies across India and globally.",
         "solution": "Agentic cloud FinOps platform providing automated anomaly detection, idle resource shutoff, shift-left CI/CD pull request cost diffs, and automated spot/RI arbitrage for {title}.",
         "customer_segments": [
             "Primary ICP: Growth-stage software companies and tech startups spending ₹3L–₹35L ($4k–$40k) monthly on cloud",

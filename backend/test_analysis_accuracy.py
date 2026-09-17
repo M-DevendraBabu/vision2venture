@@ -243,6 +243,39 @@ def test_no_hash_derived_statistics():
           not [h for h in hits if "sentiment" in h.lower()])
 
 
+def test_ratings_are_never_invented():
+    """Guards: competitor ratings, review counts and sentiment were synthesised.
+    Ratings may now come ONLY from a real review provider, or stay None."""
+    print("\n[12] Ratings come from a real provider or not at all")
+    from app.services.reviews_service import ReviewsService
+
+    configured = ReviewsService.is_configured()
+    comps = [{
+        "name": "Some Cafe", "latitude": 12.97, "longitude": 77.59, "verified": True,
+        "source_type": "tomtom", "rating": None, "review_count": None,
+        "location": "Bengaluru", "data_sources": ["TomTom"], "source_urls": [],
+    }]
+    out = ReviewsService.enrich([dict(c) for c in comps])
+    if not configured:
+        check("with no provider key, rating stays None", out[0]["rating"] is None)
+        check("with no provider key, review_count stays None", out[0].get("review_count") is None)
+        check("direct fetch returns None, not a value",
+              ReviewsService.fetch("Some Cafe", 12.97, 77.59) is None)
+    else:
+        check("a returned rating is within the 0-5 scale",
+              out[0]["rating"] is None or 0.0 <= float(out[0]["rating"]) <= 5.0)
+        check("a rating carries its source",
+              out[0]["rating"] is None or bool(out[0].get("rating_source")))
+
+    # Unverified AI suggestions must never be given a rating: their identity and
+    # location are unconfirmed, so any rating could belong to a different business.
+    ai = [{"name": "Maybe Cafe", "latitude": None, "longitude": None, "verified": False,
+           "source_type": "ai_inferred", "rating": None, "location": "", "data_sources": [],
+           "source_urls": []}]
+    out_ai = ReviewsService.enrich(ai)
+    check("unverified AI suggestions are never rated", out_ai[0]["rating"] is None)
+
+
 def test_venture_economics():
     """Guards: budget and team_size were read in isolation, so runway was invisible."""
     print("\n[9] Runway combines capital, team size and delivery mode")
@@ -280,8 +313,8 @@ def main():
                test_opportunity_is_not_a_budget_proxy, test_revenue_goal_is_used,
                test_financials_reconcile, test_no_cross_industry_content_leakage,
                test_hybrid_national_scope_sizing, test_zero_fabrication,
-               test_no_hash_derived_statistics, test_venture_economics,
-               test_strong_beats_weak]:
+               test_no_hash_derived_statistics, test_ratings_are_never_invented,
+               test_venture_economics, test_strong_beats_weak]:
         try:
             fn()
         except Exception as e:

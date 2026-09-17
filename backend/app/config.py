@@ -49,6 +49,13 @@ class Settings(BaseSettings):
     HERE_API_KEY: str = ""
     TOMTOM_API_KEY: str = ""
 
+    # Real customer ratings and reviews for competitors. HERE/TomTom/OpenStreetMap
+    # return business locations but NO ratings, so these are the only sources of
+    # rating data. With neither set, competitor ratings stay unavailable - they are
+    # never estimated, defaulted or generated.
+    GOOGLE_PLACES_API_KEY: str = ""
+    FOURSQUARE_API_KEY: str = ""
+
     class Config:
         env_file = str(_ENV_FILE)
         env_file_encoding = "utf-8"

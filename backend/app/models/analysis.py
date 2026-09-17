@@ -52,6 +52,12 @@ class Competitor(Base):
     phone = Column(String(50), nullable=True)
     rating = Column(Float, nullable=True)
     review_count = Column(Integer, nullable=True)
+    # Real customer reviews fetched from Google Places / Foursquare. Null when no
+    # review provider is configured or the business genuinely has no ratings -
+    # never populated with estimated or generated values.
+    reviews = Column(JSON, nullable=True)
+    customer_sentiment = Column(Text, nullable=True)
+    rating_source = Column(String(50), nullable=True)
     opening_hours = Column(String(255), nullable=True)
     pricing_model = Column(String(100), nullable=True)
     pricing_details = Column(Text, nullable=True)

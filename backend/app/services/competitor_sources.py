@@ -25,6 +25,7 @@ from typing import List, Dict, Optional
 from app.services.location_service import LocationService
 from app.services.here_places_service import HerePlacesService
 from app.services.tomtom_places_service import TomTomPlacesService
+from app.services.reviews_service import ReviewsService
 
 logger = logging.getLogger("vision2venture.competitor_sources")
 
@@ -202,13 +203,26 @@ def search_offline_competitors_multi(
         except Exception as e:
             logger.warning(f"[CompetitorSources] TomTom provider notice: {e}")
 
-    # No commercial results at all -> nothing to merge, return OSM untouched.
+    # No commercial results at all -> nothing to merge. Still attach real ratings,
+    # which no location provider supplies.
     if not here_comps and not tomtom_comps:
+        try:
+            ReviewsService.enrich(osm_comps)
+        except Exception as e:
+            logger.warning(f"[CompetitorSources] Review enrichment notice: {e}")
         return osm_res
 
     # 3. Merge, de-duplicate and re-sort by distance.
     merged = merge_competitor_sources([here_comps, tomtom_comps, osm_comps])
     merged = merged[:limit]
+
+    # 4. Real customer ratings. None of the location providers return ratings, so
+    #    this is the only step that may set one. It fails open and never invents:
+    #    a competitor with no rating available keeps rating = None.
+    try:
+        ReviewsService.enrich(merged)
+    except Exception as e:
+        logger.warning(f"[CompetitorSources] Review enrichment notice: {e}")
 
     sources_used = []
     if here_comps:

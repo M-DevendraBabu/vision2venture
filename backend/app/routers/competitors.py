@@ -140,6 +140,9 @@ def discover_competitors(
             phone=c.get("phone", "Not available"),
             rating=c.get("rating"),
             review_count=c.get("review_count"),
+            reviews=c.get("reviews"),
+            customer_sentiment=c.get("customer_sentiment"),
+            rating_source=c.get("rating_source"),
             opening_hours=c.get("opening_hours", "Not available"),
             pricing_model=c.get("pricing_model", "Not available"),
             pricing_details=c.get("pricing_details", ""),
@@ -608,6 +611,9 @@ def _serialize_competitor(c: Competitor) -> Dict[str, Any]:
             or (f"Rated {c.rating} from {c.review_count} reviews" if c.rating and c.review_count
                 else (f"Rated {c.rating}" if c.rating else "Rating data not available"))
         ),
+        # Real review texts, when a review provider returned any. Empty otherwise.
+        "reviews": getattr(c, "reviews", None) or [],
+        "rating_source": getattr(c, "rating_source", None),
         "opening_hours": getattr(c, "opening_hours", "Not available") or "Not available",
         "pricing_model": getattr(c, "pricing_model", "Not available") or "Not available",
         "pricing_details": getattr(c, "pricing_details", "") or "",
