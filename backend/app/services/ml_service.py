@@ -1332,7 +1332,7 @@ class MLService:
                 "cloud_platform": "Google Cloud Run (Serverless Auto-Scaling Microservices) + Firebase Cloud Messaging",
                 "ai_framework": "Time-Series ARIMA / Prophet (Perishable Ingredient Wastage & Restock Prediction)",
                 "deployment": "Cloud Run Automated CI/CD + ESC/POS Network Thermal Receipt Printer Integration",
-                "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, cutting table turnover time by 35%."
+                "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, with the goal of shortening table turnover time."
             },
             "e-commerce": {
                 "frontend": "Next.js PWA (Instant 0.8s Storefront) + React Native (Dark-Store Picker & Rider Navigation App)",
@@ -1743,9 +1743,9 @@ class MLService:
             cust_sentiment = "Rating data not available for this competitor"
 
             s = f"• Strong enterprise brand credibility with Y Combinator ({batch}) venture backing: '{one_liner}'.\n• Established presence in {formatted_tags}."
-            w = f"• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows."
+            w = f"• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: slower innovation velocity vs next-generation AI-native workflows. No customer review data was retrieved for this competitor, so these are hypotheses to validate."
             gap = f"Outperform {c_name} with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation."
-            usp = f"Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than {c_name}."
+            usp = f"Opportunity to differentiate on faster setup and lower total cost of ownership than {c_name} — a positioning target, not a measured comparison."
             exp = f"YC competitor match: {c_name} — domain match on {formatted_tags} from the Y Combinator company dataset. No customer rating data is available for this entry."
 
             results.append({

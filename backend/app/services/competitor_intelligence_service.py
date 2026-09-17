@@ -416,7 +416,7 @@ CRITICAL RULES:
                 "Business Model",
                 f"Agile, lean {b_type} operational model with minimal overhead and rapid adaptability.",
                 get_comp_business_model,
-                f"{title} operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings."
+                f"{title} is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster."
             ),
             (
                 "Target Audience",
@@ -428,7 +428,7 @@ CRITICAL RULES:
                 "Pricing Strategy",
                 "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
                 get_comp_pricing_strategy,
-                f"{title} delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI."
+                f"{title} delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for."
             ),
             (
                 "Distribution & Fulfillment",

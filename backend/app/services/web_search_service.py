@@ -560,7 +560,7 @@ Output strictly valid JSON:
                 matched_key = "gym"
 
             if matched_key and matched_key in registry:
-                for name, dom, desc, rate, rev, praise, complaint in registry[matched_key]:
+                for name, dom, desc, _rate, _rev, praise, complaint in registry[matched_key]:
                     if any(r["name"].lower() == name.lower() for r in results):
                         continue
                     url = f"https://www.{dom}/"
@@ -572,9 +572,14 @@ Output strictly valid JSON:
                         "source_urls": [url],
                         "description": desc,
                         "competitor_type": "direct",
-                        "rating": rate,
-                        "review_count": rev,
-                        "customer_sentiment": f"Curated reference data ({rev} reviews reported); sentiment not independently measured",
+                        # The registry's star ratings and review counts were hand-typed, not
+                        # fetched from any rating provider, and were wrong by orders of
+                        # magnitude for large platforms. Real ratings come only from
+                        # ReviewsService (Google Places / Foursquare); until one is
+                        # configured these stay empty rather than plausible-but-invented.
+                        "rating": None,
+                        "review_count": None,
+                        "customer_sentiment": "Rating data not available for this competitor",
                         "customer_praise": f"• Customer Praise: {praise}",
                         "customer_complaints": f"• Customer Complaints: {complaint}",
                         "pricing_model": "Freemium / Monthly SaaS" if "saas" in combined_q else "Direct Marketplace",

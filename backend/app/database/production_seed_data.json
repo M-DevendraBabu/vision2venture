@@ -467,7 +467,7 @@
       },
       "comparison_matrix": [
         {
-          "advantage": "AI Resume & Portfolio Builder SaaS operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings.",
+          "advantage": "AI Resume & Portfolio Builder SaaS is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster.",
           "dimension": "Business Model",
           "confidence": "High",
           "startup_value": "Agile, lean online operational model with minimal overhead and rapid adaptability.",
@@ -507,7 +507,7 @@
           ]
         },
         {
-          "advantage": "AI Resume & Portfolio Builder SaaS delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI.",
+          "advantage": "AI Resume & Portfolio Builder SaaS delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for.",
           "dimension": "Pricing Strategy",
           "confidence": "High",
           "startup_value": "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
@@ -693,13 +693,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "26fc584a-3d55-4de0-9041-5660e1ebd864",
@@ -738,13 +741,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "3006c85c-636c-424d-bc82-6a8d7b243d11",
@@ -783,13 +789,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "67ca2541-5f71-4ca5-bc23-21c763f29716",
@@ -797,7 +806,7 @@
         "name": "Hiration",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "We help job seekers quickly create resumes that get 2X more interviews 88% Positive Feedback (600 Reviews).",
+        "description": "We help job seekers quickly create resumes that get 2X more interviews",
         "website_url": "https://www.hiration.com/",
         "app_url": "",
         "location": "Global / US",
@@ -805,8 +814,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.3,
-        "review_count": 600,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -814,10 +823,10 @@
         "features": "Sector tags: marketplace, saas, recruiting | YC Verified Venture.",
         "similarity_score": "88.50",
         "relevance_score": "88.50",
-        "strengths": "• Customer Praise: Rated 4.3★ across 600 verified user reviews for proven marketplace, saas, recruiting capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Winter 2020) venture backing: 'We help job seekers quickly create resumes that get 2X more interviews'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Winter 2020) venture backing: 'We help job seekers quickly create resumes that get 2X more interviews'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Hiration with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Hiration.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Hiration.",
         "analysis_explanation": "YC competitor match: Hiration — verified domain match on marketplace, saas, recruiting (4.3★ customer rating).",
         "source_urls": [
           "https://www.hiration.com/"
@@ -833,7 +842,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "69f63d6a-665b-4489-a3aa-8945903873e6",
@@ -872,13 +884,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "7f54a6dd-0606-4d5c-8d96-898ff6dcc6c0",
@@ -917,13 +932,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "9e55ece6-ccd5-46b0-9c5a-cd49226c28e5",
@@ -962,13 +980,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "ba5c29b2-4bee-4a35-ac24-286eb4dc4fdb",
@@ -1007,13 +1028,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "c4726de7-cc37-4c07-8ab3-43773e2ca682",
@@ -1021,7 +1045,7 @@
         "name": "Souffle Club",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Souffle Club:10x better LinkedIn alternative with profiles >> resumes 88% Positive Feedback (612 Reviews).",
+        "description": "Souffle Club:10x better LinkedIn alternative with profiles >> resumes",
         "website_url": "https://souffle.club",
         "app_url": "",
         "location": "Global / US",
@@ -1029,8 +1053,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.4,
-        "review_count": 612,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -1038,10 +1062,10 @@
         "features": "Sector tags: social network | YC Verified Venture.",
         "similarity_score": "71.50",
         "relevance_score": "71.50",
-        "strengths": "• Customer Praise: Rated 4.4★ across 612 verified user reviews for proven social network capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Summer 2019) venture backing: 'Souffle Club:10x better LinkedIn alternative with profiles >> resumes'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Summer 2019) venture backing: 'Souffle Club:10x better LinkedIn alternative with profiles >> resumes'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Souffle Club with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Souffle Club.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Souffle Club.",
         "analysis_explanation": "YC competitor match: Souffle Club — verified domain match on social network (4.4★ customer rating).",
         "source_urls": [
           "https://souffle.club"
@@ -1057,7 +1081,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "c773103b-5620-4a17-b137-a08dca9daba1",
@@ -1065,7 +1092,7 @@
         "name": "Hackermeter",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Replacing resume screening with code challenges. 94% Positive Feedback (642 Reviews).",
+        "description": "Replacing resume screening with code challenges.",
         "website_url": "http://hackermeter.com",
         "app_url": "",
         "location": "Global / US",
@@ -1073,8 +1100,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.3,
-        "review_count": 642,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -1082,10 +1109,10 @@
         "features": "Sector tags: recruiting | YC Verified Venture.",
         "similarity_score": "79.00",
         "relevance_score": "79.00",
-        "strengths": "• Customer Praise: Rated 4.3★ across 642 verified user reviews for proven recruiting capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Summer 2013) venture backing: 'Replacing resume screening with code challenges.'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Summer 2013) venture backing: 'Replacing resume screening with code challenges.'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Hackermeter with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Hackermeter.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Hackermeter.",
         "analysis_explanation": "YC competitor match: Hackermeter — verified domain match on recruiting (4.3★ customer rating).",
         "source_urls": [
           "http://hackermeter.com"
@@ -1101,7 +1128,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:31:29",
-        "updated_at": "2026-09-14T06:31:29"
+        "updated_at": "2026-09-14T06:31:29",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       }
     ]
   },
@@ -1578,7 +1608,7 @@
       },
       "comparison_matrix": [
         {
-          "advantage": "Apex Strength & CrossFit Gym operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings.",
+          "advantage": "Apex Strength & CrossFit Gym is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster.",
           "dimension": "Business Model",
           "confidence": "High",
           "startup_value": "Agile, lean b2c operational model with minimal overhead and rapid adaptability.",
@@ -1592,7 +1622,7 @@
           "competitor_values": []
         },
         {
-          "advantage": "Apex Strength & CrossFit Gym delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI.",
+          "advantage": "Apex Strength & CrossFit Gym delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for.",
           "dimension": "Pricing Strategy",
           "confidence": "High",
           "startup_value": "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
@@ -1712,9 +1742,9 @@
         "longitude": 78.4072,
         "distance_km": 0.8,
         "phone": "+91 80 4725 3400",
-        "rating": 4.6,
-        "review_count": 820,
-        "customer_sentiment": "88% Positive Feedback (820 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "6:00 AM - 10:00 PM",
         "pricing_model": "Monthly / Annual Membership (Rs 3,500/mo)",
         "pricing_details": "Tiered membership with multi-center access.",
@@ -1733,7 +1763,9 @@
         "verified": true,
         "is_selected": true,
         "id": "bd4a3b9f-a58b-4d2d-923f-1fbf26de7363",
-        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9"
+        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "F45 Training Jubilee Hills",
@@ -1746,9 +1778,9 @@
         "longitude": 78.4128,
         "distance_km": 1.1,
         "phone": "+91 91000 45450",
-        "rating": 4.7,
-        "review_count": 340,
-        "customer_sentiment": "91% Positive Feedback (340 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "6:00 AM - 9:00 PM",
         "pricing_model": "Premium Studio Membership (Rs 6,000/mo)",
         "pricing_details": "Premium pricing with heart-rate tracking.",
@@ -1758,7 +1790,7 @@
         "relevance_score": 90.0,
         "strengths": "• Dynamic daily workout programming with zero repetition\n• Strong community and high member accountability",
         "weaknesses": "• Expensive monthly fees limiting mass adoption\n• No open gym hours for independent powerlifting",
-        "competitive_gap": "Apex provides barbell strength training and open gym access at 35% lower subscription fees.",
+        "competitive_gap": "Apex provides barbell strength training and open gym access at a lower subscription fee.",
         "usp": "Proprietary F45 television screens showing synchronized workout stations.",
         "analysis_explanation": "Premium boutique rival competing for same high-income fitness demographic.",
         "source_type": "openstreetmap",
@@ -1767,7 +1799,9 @@
         "verified": true,
         "is_selected": true,
         "id": "833b52b8-825f-4297-875c-3c6636974473",
-        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9"
+        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Gold's Gym Jubilee Hills",
@@ -1780,9 +1814,9 @@
         "longitude": 78.415,
         "distance_km": 1.4,
         "phone": "+91 40 2355 4567",
-        "rating": 4.3,
-        "review_count": 610,
-        "customer_sentiment": "82% Positive Feedback (610 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "5:30 AM - 10:30 PM",
         "pricing_model": "Annual Contract (Rs 28,000/yr)",
         "pricing_details": "Discounts on multi-year commitments.",
@@ -1801,7 +1835,9 @@
         "verified": true,
         "is_selected": true,
         "id": "05045acc-e781-424d-b540-fe3eb90b95e3",
-        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9"
+        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Ozone Fitness Club",
@@ -1814,9 +1850,9 @@
         "longitude": 78.4285,
         "distance_km": 2.6,
         "phone": "+91 40 6646 9999",
-        "rating": 4.5,
-        "review_count": 280,
-        "customer_sentiment": "86% Positive Feedback (280 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "6:00 AM - 10:00 PM",
         "pricing_model": "Luxury Tier (Rs 8,000/mo)",
         "pricing_details": "Full access to spa and pool included.",
@@ -1835,7 +1871,9 @@
         "verified": true,
         "is_selected": true,
         "id": "3e757c02-8c3b-4148-a31c-84cd42adba88",
-        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9"
+        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Kris Gethin Gyms - Madhapur",
@@ -1848,9 +1886,9 @@
         "longitude": 78.3912,
         "distance_km": 3.2,
         "phone": "+91 73373 88812",
-        "rating": 4.6,
-        "review_count": 490,
-        "customer_sentiment": "89% Positive Feedback (490 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "5:30 AM - 11:00 PM",
         "pricing_model": "Transformation Package (Rs 4,500/mo)",
         "pricing_details": "Includes personalized diet guidelines.",
@@ -1869,7 +1907,9 @@
         "verified": true,
         "is_selected": true,
         "id": "1213b6e3-a53f-43c3-879f-36736fe193ef",
-        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9"
+        "idea_id": "10dc88bb-aaea-4afc-8adc-33318e21e3e9",
+        "reviews": null,
+        "rating_source": null
       }
     ]
   },
@@ -1964,14 +2004,14 @@
       "id": "3b5e6e8b-bde2-496d-ac4a-c18bc43a7ff4",
       "idea_id": "8bd8e646-29ff-4713-a143-f80768590af7",
       "customer_segments": "• Series A/Series B Startups (Tech/SAAS)\n• Mid-sized IT Services Companies (50-500 employees)\n• Digital-First Retail & E-commerce Brands",
-      "value_proposition": "Cut cloud costs by 30% in the first 90 days without engineering overhead. The most affordable, Indian-context-aware FinOps tool that turns complex cloud bills into simple, actionable savings, protecting your runway and profitability.",
+      "value_proposition": "Aims to cut cloud costs materially within the first 90 days without engineering overhead. The most affordable, Indian-context-aware FinOps tool that turns complex cloud bills into simple, actionable savings, protecting your runway and profitability.",
       "revenue_streams": "• Starter Tier: ₹15,000/month for companies with <₹1L monthly cloud spend\n• Growth Tier: ₹45,000/month for companies with ₹1L-₹10L monthly cloud spend\n• Enterprise/Custom: ₹1,50,000+/month for multi-cloud, >₹10L spend, with SLA",
       "channels": "• Content Marketing: In-depth 'Cloud Cost Case Studies' on LinkedIn and Medium targeting CTOs/Founders\n• Partnerships: Referral deals with Cloud MSPs (Managed Service Providers) in India\n• Community: Active presence in Indian DevOps and FinOps Slack/Discord communities",
       "key_partners": "• Cloud Service Providers (AWS/Azure/GCP) via Partner Programs\n• Indian Cloud MSPs and System Integrators\n• Cloud Cost Accountants and FinOps Consultants",
       "key_activities": "• Building and refining the core anomaly detection and rightsizing algorithms\n• Sales and onboarding of the first 10 design-partner startups",
       "key_resources": "• Proprietary cost-optimization algorithm trained on Indian usage patterns\n• Founder-led sales capability and deep technical credibility",
       "cost_structure": "• Cloud Infrastructure for Platform Hosting: ~₹5,000/month (using free tiers/credits initially)\n• Tools & Subscriptions (Analytics, CRM, Design): ~₹3,000/month\n• Marketing & Community Engagement: ~₹5,000/month (Booths, digital ads, content creation)\n• Legal/Compliance (GST, Startup India registration): ~₹2,000 one-time",
-      "detailed_explanation": "The CloudCost Sentinel FinOps Platform is designed to fill a critical gap in the Indian market: affordable, actionable cloud cost optimization for startups and SMEs. While global competitors like Cloudchipr and Finout offer robust solutions, they are often priced for large enterprises or lack the nuanced understanding of Indian startup economics and billing complexities. \n\nWith a lean budget of ₹50,000 and a 3-person team, the strategy focuses on a 'land and expand' model. The initial budget is allocated to essential infrastructure (leveraging cloud provider free tiers and credits), basic marketing, and legal setup. The core product is a lightweight SaaS platform that connects to AWS/Azure/GCP, identifies waste (idle resources, over-provisioning, inefficient storage), and provides simple, one-click fixes. \n\nThe pricing model is tiered in INR, starting at ₹15,000/month, which is significantly lower than enterprise competitors but high enough to cover costs and generate revenue. The value proposition is clear: save 30% on cloud bills within 90 days. The unfair advantage lies in the hyper-localized approach: understanding Indian startup budget cycles, providing support in a way that resonates with local CTOs, and offering a 'founder-led' onboarding experience that builds trust. \n\nKey activities focus on building the core algorithm and securing the first 10 design-partner customers to validate the product and generate case studies. Channels include content marketing on LinkedIn (targeting CTOs/Founders), partnerships with Indian MSPs, and community engagement. The gross margin is high (85-90%) because the primary cost is cloud infrastructure, which scales efficiently. The LTV:CAC is projected at 2.5x, with a payback period of 6-8 months, ensuring sustainable growth. This model is realistic for the given budget and team size, focusing on high-value, low-volume customers initially.",
+      "detailed_explanation": "The CloudCost Sentinel FinOps Platform is designed to fill a critical gap in the Indian market: affordable, actionable cloud cost optimization for startups and SMEs. While global competitors like Cloudchipr and Finout offer robust solutions, they are often priced for large enterprises or lack the nuanced understanding of Indian startup economics and billing complexities. \nWith a lean budget of ₹50,000 and a 3-person team, the strategy focuses on a 'land and expand' model. The initial budget is allocated to essential infrastructure (leveraging cloud provider free tiers and credits), basic marketing, and legal setup. The core product is a lightweight SaaS platform that connects to AWS/Azure/GCP, identifies waste (idle resources, over-provisioning, inefficient storage), and provides simple, one-click fixes. \nThe pricing model is tiered in INR, starting at ₹15,000/month, which is significantly lower than enterprise competitors but high enough to cover costs and generate revenue. The value proposition is clear: measurable savings on cloud bills within the first 90 days. The unfair advantage lies in the hyper-localized approach: understanding Indian startup budget cycles, providing support in a way that resonates with local CTOs, and offering a 'founder-led' onboarding experience that builds trust. \nKey activities focus on building the core algorithm and securing the first 10 design-partner customers to validate the product and generate case studies. Channels include content marketing on LinkedIn (targeting CTOs/Founders), partnerships with Indian MSPs, and community engagement. The gross margin is high (85-90%) because the primary cost is cloud infrastructure, which scales efficiently. The LTV:CAC is projected at 2.5x, with a payback period of 6-8 months, ensuring sustainable growth. This model is realistic for the given budget and team size, focusing on high-value, low-volume customers initially.",
       "data_source": "AI-grounded analysis",
       "created_at": "2026-09-14T06:39:50"
     },
@@ -1990,7 +2030,7 @@
       "opportunities": [
         "AI Workload Cost Surge (GPU / LLM FinOps): Explosive enterprise adoption of generative AI is creating massive, unmonitored GPU cloud spending spikes.",
         "Cloud Marketplace Co-Selling: Enterprises can use their committed AWS EDP or Google Cloud enterprise discount budgets to purchase software.",
-        "Cross-Border Enterprise Expansion: US and European mid-market companies face identical FinOps pressures and pay 3x–4x higher software fees in USD."
+        "Cross-Border Enterprise Expansion: US and European mid-market companies face identical FinOps pressures and pay materially higher software fees in USD."
       ],
       "threats": [
         "Native Cloud Provider Cost Tools: AWS Cost Explorer and Azure Cost Management continuously release basic incremental cost analysis features.",
@@ -2343,7 +2383,7 @@
       },
       "comparison_matrix": [
         {
-          "advantage": "CloudCost Sentinel FinOps Platform operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings.",
+          "advantage": "CloudCost Sentinel FinOps Platform is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster.",
           "dimension": "Business Model",
           "confidence": "High",
           "startup_value": "Agile, lean online operational model with minimal overhead and rapid adaptability.",
@@ -2383,7 +2423,7 @@
           ]
         },
         {
-          "advantage": "CloudCost Sentinel FinOps Platform delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI.",
+          "advantage": "CloudCost Sentinel FinOps Platform delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for.",
           "dimension": "Pricing Strategy",
           "confidence": "High",
           "startup_value": "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
@@ -2537,7 +2577,7 @@
         "name": "Solutionsreview",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Vantage Platform: Vantage Description: Vantage is a cloud optimization platform that helps enterprises gain real-time visibility and control over cloud spending across AWS, Azure, GCP, and 20+ other native integrations. ",
+        "description": "Vantage Platform: Vantage Description: Vantage is a cloud optimization platform that helps enterprises gain real-time visibility and control over cloud spending across AWS, Azure, GCP, and 20+ other native integrations.",
         "website_url": "https://solutionsreview.com/",
         "app_url": "",
         "location": "Global",
@@ -2568,13 +2608,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "4129b674-dffb-4cfa-9c4d-f8f35a1e9df2",
@@ -2582,7 +2625,7 @@
         "name": "Cloudthread",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Eliminate Cloud Waste. Attribute and Track Savings. Engage Engineers. 86% Positive Feedback (346 Reviews).",
+        "description": "Eliminate Cloud Waste. Attribute and Track Savings. Engage Engineers.",
         "website_url": "https://cloudthread.io",
         "app_url": "",
         "location": "Global / US",
@@ -2590,8 +2633,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.8,
-        "review_count": 346,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -2599,10 +2642,10 @@
         "features": "Sector tags: developer tools, finops, b2b, workflow automation | YC Verified Venture.",
         "similarity_score": "71.50",
         "relevance_score": "71.50",
-        "strengths": "• Customer Praise: Rated 4.8★ across 346 verified user reviews for proven developer tools, finops, b2b, workflow automation capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Summer 2021) venture backing: 'Eliminate Cloud Waste. Attribute and Track Savings. Engage Engineers.'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Summer 2021) venture backing: 'Eliminate Cloud Waste. Attribute and Track Savings. Engage Engineers.'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Cloudthread with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Cloudthread.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Cloudthread.",
         "analysis_explanation": "YC competitor match: Cloudthread — verified domain match on developer tools, finops, b2b, workflow automation (4.8★ customer rating).",
         "source_urls": [
           "https://cloudthread.io"
@@ -2618,7 +2661,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "6aa995ba-6d60-4fb9-9355-a5c7d293b524",
@@ -2626,7 +2672,7 @@
         "name": "Infracost",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Shift FinOps Left: Proactively Find & Fix Cloud Cost Issues 86% Positive Feedback (766 Reviews).",
+        "description": "Shift FinOps Left: Proactively Find & Fix Cloud Cost Issues",
         "website_url": "https://infracost.io",
         "app_url": "",
         "location": "Global / US",
@@ -2634,8 +2680,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.2,
-        "review_count": 766,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -2643,10 +2689,10 @@
         "features": "Sector tags: developer tools, devsecops, finops, b2b | YC Verified Venture.",
         "similarity_score": "79.00",
         "relevance_score": "79.00",
-        "strengths": "• Customer Praise: Rated 4.2★ across 766 verified user reviews for proven developer tools, devsecops, finops, b2b capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Winter 2021) venture backing: 'Shift FinOps Left: Proactively Find & Fix Cloud Cost Issues'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Winter 2021) venture backing: 'Shift FinOps Left: Proactively Find & Fix Cloud Cost Issues'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Infracost with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Infracost.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Infracost.",
         "analysis_explanation": "YC competitor match: Infracost — verified domain match on developer tools, devsecops, finops, b2b (4.2★ customer rating).",
         "source_urls": [
           "https://infracost.io"
@@ -2662,7 +2708,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "797fbec8-eff5-422a-bd2d-9ec44f3493c3",
@@ -2701,13 +2750,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "9cc14bf3-a807-4f29-b93b-0e65352625b3",
@@ -2746,13 +2798,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "b297ac3b-ebc9-4ddb-838e-37a4831aab7d",
@@ -2791,13 +2846,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "d017e868-117f-4ce3-80a6-f5cacf29b098",
@@ -2805,7 +2863,7 @@
         "name": "Cloudchipr",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "The #1 Actionable FinOps Platform 85% Positive Feedback (213 Reviews).",
+        "description": "The #1 Actionable FinOps Platform",
         "website_url": "https://cloudchipr.com/",
         "app_url": "",
         "location": "Global / US",
@@ -2813,8 +2871,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.6,
-        "review_count": 213,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -2822,10 +2880,10 @@
         "features": "Sector tags: developer tools, finops, saas, b2b | YC Verified Venture.",
         "similarity_score": "88.50",
         "relevance_score": "88.50",
-        "strengths": "• Customer Praise: Rated 4.6★ across 213 verified user reviews for proven developer tools, finops, saas, b2b capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Winter 2023) venture backing: 'The #1 Actionable FinOps Platform'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Winter 2023) venture backing: 'The #1 Actionable FinOps Platform'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Cloudchipr with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Cloudchipr.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Cloudchipr.",
         "analysis_explanation": "YC competitor match: Cloudchipr — verified domain match on developer tools, finops, saas, b2b (4.6★ customer rating).",
         "source_urls": [
           "https://cloudchipr.com/"
@@ -2841,7 +2899,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "dce9fee4-4158-4125-8b3b-493af9d16f0c",
@@ -2880,13 +2941,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "dec97929-1f7e-434c-b0f0-b3106cc66f4a",
@@ -2925,13 +2989,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "f1cc2674-17da-41f6-a2ca-085a55809365",
@@ -2970,13 +3037,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:39:07",
-        "updated_at": "2026-09-14T06:39:07"
+        "updated_at": "2026-09-14T06:39:07",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       }
     ]
   },
@@ -3451,7 +3521,7 @@
       },
       "comparison_matrix": [
         {
-          "advantage": "CarePoint Omnichannel Smart Clinic operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings.",
+          "advantage": "CarePoint Omnichannel Smart Clinic is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster.",
           "dimension": "Business Model",
           "confidence": "High",
           "startup_value": "Agile, lean hybrid operational model with minimal overhead and rapid adaptability.",
@@ -3491,7 +3561,7 @@
           ]
         },
         {
-          "advantage": "CarePoint Omnichannel Smart Clinic delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI.",
+          "advantage": "CarePoint Omnichannel Smart Clinic delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for.",
           "dimension": "Pricing Strategy",
           "confidence": "High",
           "startup_value": "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
@@ -3645,7 +3715,7 @@
         "name": "PNOĒ",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Enabling health professionals to prescribe clinical-grade wellness… 84% Positive Feedback (512 Reviews).",
+        "description": "Enabling health professionals to prescribe clinical-grade wellness…",
         "website_url": "https://nan",
         "app_url": "",
         "location": "Global / US",
@@ -3653,8 +3723,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.6,
-        "review_count": 512,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -3662,10 +3732,10 @@
         "features": "Sector tags: medical devices, digital health, telemedicine, diagnostics | YC Verified Venture.",
         "similarity_score": "88.50",
         "relevance_score": "88.50",
-        "strengths": "• Customer Praise: Rated 4.6★ across 512 verified user reviews for proven medical devices, digital health, telemedicine, diagnostics capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Winter 2019) venture backing: 'Enabling health professionals to prescribe clinical-grade wellness…'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Winter 2019) venture backing: 'Enabling health professionals to prescribe clinical-grade wellness…'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform PNOĒ with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than PNOĒ.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than PNOĒ.",
         "analysis_explanation": "YC competitor match: PNOĒ — verified domain match on medical devices, digital health, telemedicine, diagnostics (4.6★ customer rating).",
         "source_urls": [
           "nan"
@@ -3681,7 +3751,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "04f4f068-0745-4b0e-b232-970b893e0016",
@@ -3697,8 +3770,8 @@
         "longitude": 78.3412,
         "distance_km": 1.2,
         "phone": "Available on-site",
-        "rating": 4.1,
-        "review_count": 350,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹₹ - ₹₹₹",
@@ -3724,7 +3797,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "16e6a3f5-b6a6-48da-8504-e928a9e739ee",
@@ -3732,7 +3808,7 @@
         "name": "Pulse Active Stations Network",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "We are a connected network of smart health machines in India. 94% Positive Feedback (306 Reviews).",
+        "description": "We are a connected network of smart health machines in India.",
         "website_url": "http://www.getpulse.in/",
         "app_url": "",
         "location": "Global / US",
@@ -3740,8 +3816,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.6,
-        "review_count": 306,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -3749,10 +3825,10 @@
         "features": "Sector tags: health tech, india | YC Verified Venture.",
         "similarity_score": "79.00",
         "relevance_score": "79.00",
-        "strengths": "• Customer Praise: Rated 4.6★ across 306 verified user reviews for proven health tech, india capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Winter 2019) venture backing: 'We are a connected network of smart health machines in India.'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Winter 2019) venture backing: 'We are a connected network of smart health machines in India.'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Pulse Active Stations Network with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Pulse Active Stations Network.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Pulse Active Stations Network.",
         "analysis_explanation": "YC competitor match: Pulse Active Stations Network — verified domain match on health tech, india (4.6★ customer rating).",
         "source_urls": [
           "http://www.getpulse.in/"
@@ -3768,7 +3844,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "1838f70f-d48d-4f9f-a835-435a05ff08ce",
@@ -3807,13 +3886,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "3c8e228c-cbac-4e0f-97cd-95063caa02d5",
@@ -3829,8 +3911,8 @@
         "longitude": 78.3476,
         "distance_km": 0.8,
         "phone": "Available on-site",
-        "rating": 4.3,
-        "review_count": 210,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹₹ - ₹₹₹₹",
@@ -3856,7 +3938,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "49fb044c-c8af-4703-931e-d02ae6ce03f2",
@@ -3882,7 +3967,7 @@
         "similarity_score": "70.30",
         "relevance_score": "70.30",
         "strengths": "• Listed contact phone: 9291441531",
-        "weaknesses": "",
+        "weaknesses": "No verified customer feedback was retrieved for this competitor.",
         "competitive_gap": "Capture demand with streamlined online ordering, faster fulfillment, and modern rewards compared to Profile dental care.",
         "usp": "Hyper-localized service with transparent modern customer experience versus traditional Profile dental care.",
         "analysis_explanation": "Discovered via OpenStreetMap geographic query centered at Gachibowli, Ranga Reddy, Telangana, India within 2.08 km. Rating data not available from OSM.",
@@ -3901,7 +3986,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "5b31393d-171d-4f4c-84ed-bb09b0e66d57",
@@ -3917,8 +4005,8 @@
         "longitude": 78.3378,
         "distance_km": 1.5,
         "phone": "Available on-site",
-        "rating": 4.5,
-        "review_count": 480,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹₹₹",
@@ -3944,7 +4032,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "6179913d-07d2-4dc3-8688-bb1d0f4d9e12",
@@ -3960,8 +4051,8 @@
         "longitude": 78.356,
         "distance_km": 0.6,
         "phone": "Available on-site",
-        "rating": 4.0,
-        "review_count": 150,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹₹",
@@ -3987,7 +4078,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "666fc550-ac5a-4fce-bbb5-9bae203d3863",
@@ -4003,8 +4097,8 @@
         "longitude": 78.3357,
         "distance_km": 1.8,
         "phone": "Available on-site",
-        "rating": 3.9,
-        "review_count": 95,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹₹",
@@ -4030,7 +4124,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "95157bbd-096f-4471-8acb-831da91fbf48",
@@ -4069,13 +4166,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "b59a01e3-1c22-4c5a-b868-763b0f61900e",
@@ -4091,8 +4191,8 @@
         "longitude": 78.3631,
         "distance_km": 2.1,
         "phone": "Available on-site",
-        "rating": 4.2,
-        "review_count": 275,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹₹",
@@ -4118,7 +4218,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "d9df49d7-320c-4971-8e54-26af5d0e2947",
@@ -4157,13 +4260,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "80.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "e1968ed5-9511-4df6-802d-9fbdd9570c1e",
@@ -4171,7 +4277,7 @@
         "name": "Measured",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Telemedicine platform for chronic conditions like obesity 91% Positive Feedback (855 Reviews).",
+        "description": "Telemedicine platform for chronic conditions like obesity",
         "website_url": "https://trymeasured.com/",
         "app_url": "",
         "location": "Global / US",
@@ -4179,8 +4285,8 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Not available",
-        "rating": 4.5,
-        "review_count": 855,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "24/7 Digital Cloud Service",
         "pricing_model": "SaaS / Freemium / Tiered",
         "pricing_details": "Tiered SaaS pricing; consult vendor website for enterprise tiers.",
@@ -4188,10 +4294,10 @@
         "features": "Sector tags: consumer health services, e-commerce, subscriptions | YC Verified Venture.",
         "similarity_score": "71.50",
         "relevance_score": "71.50",
-        "strengths": "• Customer Praise: Rated 4.5★ across 855 verified user reviews for proven consumer health services, e-commerce, subscriptions capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC (Winter 2021) venture backing: 'Telemedicine platform for chronic conditions like obesity'.",
-        "weaknesses": "• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows.",
+        "strengths": "• Strong enterprise brand credibility with YC (Winter 2021) venture backing: 'Telemedicine platform for chronic conditions like obesity'.",
+        "weaknesses": "• Likely gap: rigid legacy enterprise tiers and complex self-serve onboarding.\n• Likely gap: Slower innovation velocity compared to next-generation AI-native workflows.",
         "competitive_gap": "Outperform Measured with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation.",
-        "usp": "Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than Measured.",
+        "usp": "Opportunity to differentiate on faster setup and lower total cost of ownership than Measured.",
         "analysis_explanation": "YC competitor match: Measured — verified domain match on consumer health services, e-commerce, subscriptions (4.5★ customer rating).",
         "source_urls": [
           "https://trymeasured.com/"
@@ -4207,7 +4313,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:41:18",
-        "updated_at": "2026-09-14T06:41:18"
+        "updated_at": "2026-09-14T06:41:18",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       }
     ]
   },
@@ -4741,13 +4850,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "92.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-12T17:52:52",
-        "updated_at": "2026-09-12T17:52:52"
+        "updated_at": "2026-09-12T17:52:52",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "7c67dc09-5a9b-443d-832d-05814543db59",
@@ -4792,7 +4904,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-12T17:52:52",
-        "updated_at": "2026-09-12T17:52:52"
+        "updated_at": "2026-09-12T17:52:52",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "aa229c56-0503-408d-b7a6-ebf730ebddd1",
@@ -4831,13 +4946,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "92.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-12T17:52:52",
-        "updated_at": "2026-09-12T17:52:52"
+        "updated_at": "2026-09-12T17:52:52",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "af481b97-42f2-4a4c-b668-e5d7fd2146e4",
@@ -4845,7 +4963,7 @@
         "name": "Ijrpr",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "ABSTRACT This study assesses the market feasibility of launching a hyperlocal organic food delivery startup tailored for consumers in Urban India. Driven by escalating health consciousness and the demand for convenience ",
+        "description": "ABSTRACT This study assesses the market feasibility of launching a hyperlocal organic food delivery startup tailored for consumers in Urban India. Driven by escalating health consciousness and the demand for convenience",
         "website_url": "https://ijrpr.com/",
         "app_url": "",
         "location": "India",
@@ -4876,13 +4994,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "92.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-12T17:52:52",
-        "updated_at": "2026-09-12T17:52:52"
+        "updated_at": "2026-09-12T17:52:52",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "b2f70f92-9b06-4d80-9a58-2f8657c3a9be",
@@ -4890,7 +5011,7 @@
         "name": "Organicsmantra",
         "business_type": "online",
         "competitor_type": "direct",
-        "description": "Order organic farm fresh fruits, vegetables, dairy products, exotic veggies, grocery home delivery. we ensure you have the highest quality fresh farm products when you need it at your door step. we have the best app for ",
+        "description": "Order organic farm fresh fruits, vegetables, dairy products, exotic veggies, grocery home delivery. we ensure you have the highest quality fresh farm products when you need it at your door step. we have the best app for",
         "website_url": "https://organicsmantra.in/",
         "app_url": "",
         "location": "India",
@@ -4921,13 +5042,16 @@
         ],
         "data_freshness": "Real-Time Web Search",
         "confidence_score": "92.00",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "source_type": "live_web",
         "source_label": "Live Web Search",
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-12T17:52:52",
-        "updated_at": "2026-09-12T17:52:52"
+        "updated_at": "2026-09-12T17:52:52",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "b7800e7b-b61a-48ee-b923-20ac3e99d78b",
@@ -4972,7 +5096,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-12T17:52:52",
-        "updated_at": "2026-09-12T17:52:52"
+        "updated_at": "2026-09-12T17:52:52",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       }
     ]
   },
@@ -5060,7 +5187,7 @@
       "cloud_platform": "Google Cloud Run (Serverless Auto-Scaling Microservices) + Firebase Cloud Messaging",
       "ai_framework": "Time-Series ARIMA / Prophet (Perishable Ingredient Wastage & Restock Prediction)",
       "deployment": "Cloud Run Automated CI/CD + ESC/POS Network Thermal Receipt Printer Integration",
-      "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, cutting table turnover time by 35%.",
+      "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, with the goal of shortening table turnover time.",
       "created_at": "2026-09-13T14:53:54"
     },
     "business_model": {
@@ -5449,7 +5576,7 @@
       },
       "comparison_matrix": [
         {
-          "advantage": "Artisan Crust & Crumb Bakery operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings.",
+          "advantage": "Artisan Crust & Crumb Bakery is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster.",
           "dimension": "Business Model",
           "confidence": "High",
           "startup_value": "Agile, lean b2c operational model with minimal overhead and rapid adaptability.",
@@ -5463,7 +5590,7 @@
           "competitor_values": []
         },
         {
-          "advantage": "Artisan Crust & Crumb Bakery delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI.",
+          "advantage": "Artisan Crust & Crumb Bakery delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for.",
           "dimension": "Pricing Strategy",
           "confidence": "High",
           "startup_value": "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
@@ -5583,9 +5710,9 @@
         "longitude": 78.406,
         "distance_km": 1.1,
         "phone": "+91 40 2355 8899",
-        "rating": 4.7,
-        "review_count": 1450,
-        "customer_sentiment": "92% Positive Feedback (1,450 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "10:00 AM - 11:30 PM",
         "pricing_model": "A la Carte Premium (Rs 350-600 / item)",
         "pricing_details": "Desserts Rs 350+, Breads Rs 220+",
@@ -5604,7 +5731,9 @@
         "verified": true,
         "is_selected": true,
         "id": "4c702f41-a7e1-42c1-9e95-836da0610abf",
-        "idea_id": "17cded59-a5ce-4445-944c-03a2848d3123"
+        "idea_id": "17cded59-a5ce-4445-944c-03a2848d3123",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Karachi Bakery & Cafe",
@@ -5617,9 +5746,9 @@
         "longitude": 78.441,
         "distance_km": 2.4,
         "phone": "+91 40 6666 2222",
-        "rating": 4.2,
-        "review_count": 3200,
-        "customer_sentiment": "79% Positive Feedback (3,200 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "9:00 AM - 11:00 PM",
         "pricing_model": "Retail Packaged & Counter (Rs 100-300)",
         "pricing_details": "Packaged cookies, rusks, and party cakes.",
@@ -5638,7 +5767,9 @@
         "verified": true,
         "is_selected": true,
         "id": "ebb4d122-1b94-421b-885c-85921d22681d",
-        "idea_id": "17cded59-a5ce-4445-944c-03a2848d3123"
+        "idea_id": "17cded59-a5ce-4445-944c-03a2848d3123",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Theobroma Patisserie",
@@ -5651,9 +5782,9 @@
         "longitude": 78.4095,
         "distance_km": 1.3,
         "phone": "+91 88888 43627",
-        "rating": 4.4,
-        "review_count": 890,
-        "customer_sentiment": "85% Positive Feedback (890 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "8:30 AM - 11:30 PM",
         "pricing_model": "Mid-to-High Retail (Rs 120-400 / item)",
         "pricing_details": "Brownies Rs 110+, Croissants Rs 140+",
@@ -5672,7 +5803,9 @@
         "verified": true,
         "is_selected": true,
         "id": "4aaa7556-06be-4cac-b374-ddc55d694e3b",
-        "idea_id": "17cded59-a5ce-4445-944c-03a2848d3123"
+        "idea_id": "17cded59-a5ce-4445-944c-03a2848d3123",
+        "reviews": null,
+        "rating_source": null
       }
     ]
   },
@@ -5760,7 +5893,7 @@
       "cloud_platform": "Google Cloud Run (Serverless Auto-Scaling Microservices) + Firebase Cloud Messaging",
       "ai_framework": "Time-Series ARIMA / Prophet (Perishable Ingredient Wastage & Restock Prediction)",
       "deployment": "Cloud Run Automated CI/CD + ESC/POS Network Thermal Receipt Printer Integration",
-      "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, cutting table turnover time by 35%.",
+      "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, with the goal of shortening table turnover time.",
       "created_at": "2026-09-14T06:50:23"
     },
     "business_model": {
@@ -6152,7 +6285,7 @@
       },
       "comparison_matrix": [
         {
-          "advantage": "Biryani Point near Vignan University, Vadlamudi operates with ~35% lower administrative overhead than legacy incumbents, allowing faster service iteration and direct customer cost savings.",
+          "advantage": "Biryani Point near Vignan University, Vadlamudi is designed to run leaner than legacy incumbents, targeting lower administrative overhead so savings can be passed to customers and service can iterate faster.",
           "dimension": "Business Model",
           "confidence": "High",
           "startup_value": "Agile, lean offline operational model with minimal overhead and rapid adaptability.",
@@ -6192,7 +6325,7 @@
           ]
         },
         {
-          "advantage": "Biryani Point near Vignan University, Vadlamudi delivers transparent value-based packages with bundled perks and zero hidden charges, providing 15-20% higher perceived customer ROI.",
+          "advantage": "Biryani Point near Vignan University, Vadlamudi delivers transparent value-based packages with bundled perks and no hidden charges, so customers can see exactly what they pay for.",
           "dimension": "Pricing Strategy",
           "confidence": "High",
           "startup_value": "Transparent, value-based pricing designed to lower entry friction with zero hidden legacy markups.",
@@ -6354,8 +6487,8 @@
         "longitude": 80.5607,
         "distance_km": 1.2,
         "phone": "Available on-site",
-        "rating": 4.1,
-        "review_count": 210,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹120 - ₹250",
@@ -6381,7 +6514,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "42076664-0626-4b9c-908e-131348969f42",
@@ -6397,8 +6533,8 @@
         "longitude": 80.5566,
         "distance_km": 0.8,
         "phone": "Available on-site",
-        "rating": 4.2,
-        "review_count": 345,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹150 - ₹300",
@@ -6424,7 +6560,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "480b3123-ecb3-41ea-a94d-cc6bab50db55",
@@ -6440,8 +6579,8 @@
         "longitude": 80.5117,
         "distance_km": 4.2,
         "phone": "Available on-site",
-        "rating": 4.4,
-        "review_count": 275,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹200 - ₹400",
@@ -6467,7 +6606,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "7c7f65d6-8a17-4885-93d7-5b2c9988c607",
@@ -6483,8 +6625,8 @@
         "longitude": 80.5455,
         "distance_km": 0.5,
         "phone": "Available on-site",
-        "rating": 3.9,
-        "review_count": 150,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹80 - ₹150",
@@ -6510,7 +6652,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "b0a15ec7-8765-4fc1-aa8c-68718dcaf655",
@@ -6526,8 +6671,8 @@
         "longitude": 80.5773,
         "distance_km": 3.0,
         "phone": "Available on-site",
-        "rating": 4.0,
-        "review_count": 95,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹100 - ₹200",
@@ -6553,7 +6698,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "bd2ce824-12e6-4047-ad64-94407eb33fd7",
@@ -6569,8 +6717,8 @@
         "longitude": 80.5339,
         "distance_km": 2.5,
         "phone": "Available on-site",
-        "rating": 4.3,
-        "review_count": 180,
+        "rating": null,
+        "review_count": null,
         "opening_hours": "Standard Commercial Hours",
         "pricing_model": "In-store / Menu pricing",
         "pricing_details": "₹180 - ₹350",
@@ -6596,7 +6744,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       },
       {
         "id": "ea9ec25e-9bfc-4087-8eb1-88aaa5511cd3",
@@ -6622,7 +6773,7 @@
         "similarity_score": "50.00",
         "relevance_score": "50.00",
         "strengths": "• Published operating hours: Mo-Su 09:00-21:00",
-        "weaknesses": "",
+        "weaknesses": "No verified customer feedback was retrieved for this competitor.",
         "competitive_gap": "Capture demand with streamlined online ordering, faster fulfillment, and modern rewards compared to St.Marys Canteen.",
         "usp": "Hyper-localized service with transparent modern customer experience versus traditional St.Marys Canteen.",
         "analysis_explanation": "Discovered via OpenStreetMap geographic query centered at Vadlamudi, Guntur, Andhra Pradesh within 3.76 km. Rating data not available from OSM.",
@@ -6641,7 +6792,10 @@
         "verified": true,
         "is_selected": true,
         "created_at": "2026-09-14T06:49:24",
-        "updated_at": "2026-09-14T06:49:24"
+        "updated_at": "2026-09-14T06:49:24",
+        "reviews": null,
+        "rating_source": null,
+        "customer_sentiment": "Rating data not available for this competitor"
       }
     ]
   },
@@ -6943,9 +7097,9 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Online Platform",
-        "rating": 4.5,
-        "review_count": 2100,
-        "customer_sentiment": "86% Positive Feedback (2,100 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "24/7 LMS Access",
         "pricing_model": "Upfront & Income Share (Rs 2.5 Lakhs)",
         "pricing_details": "High-ticket 9 to 11 month full-stack curriculum.",
@@ -6955,16 +7109,18 @@
         "relevance_score": 95.0,
         "strengths": "• High brand prestige and alumni placed at Tier-1 product tech companies\n• Structured curriculum taught by seasoned ex-FAANG engineers",
         "weaknesses": "• Very high course fees (Rs 2.5L) out of reach for Tier-2/3 college students\n• Heavy time commitment demanding 15-20 hours weekly",
-        "competitive_gap": "CodeSprint delivers job-ready skill modules at 80% lower cost (Rs 15k-30k) tailored for Tier-2/3 graduates.",
+        "competitive_gap": "CodeSprint delivers job-ready skill modules at a materially lower price point (Rs 15k-30k) tailored for Tier-2/3 graduates.",
         "usp": "Elite mentor network from Microsoft, Google, and Amazon.",
         "analysis_explanation": "Leading high-ticket direct competitor in Indian tech upskilling market.",
         "source_type": "live_web",
         "source_label": "Live Web / Tech Registry",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "verified": true,
         "is_selected": true,
         "id": "dd44f969-f77d-44d7-90d6-4d47b9112ddf",
-        "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95"
+        "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Coding Ninjas",
@@ -6977,9 +7133,9 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Online Platform",
-        "rating": 4.4,
-        "review_count": 3400,
-        "customer_sentiment": "84% Positive Feedback (3,400 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "24/7 LMS Access",
         "pricing_model": "Course-based (Rs 15,000 - 45,000)",
         "pricing_details": "Per-track pricing with career track bootcamps.",
@@ -6994,11 +7150,13 @@
         "analysis_explanation": "Direct college-focused competitor with strong campus brand reach.",
         "source_type": "live_web",
         "source_label": "Live Web / Tech Registry",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "verified": true,
         "is_selected": true,
         "id": "2c9eda43-2cf9-4fd6-84b8-742349c1e9eb",
-        "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95"
+        "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Masai School",
@@ -7011,9 +7169,9 @@
         "longitude": null,
         "distance_km": null,
         "phone": "Online Platform",
-        "rating": 4.3,
-        "review_count": 1800,
-        "customer_sentiment": "81% Positive Feedback (1,800 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "9:00 AM - 9:00 PM (Strict Schedule)",
         "pricing_model": "Pay After Placement / ISA",
         "pricing_details": "Zero upfront fee, percentage of salary upon placement > 5 LPA.",
@@ -7028,11 +7186,13 @@
         "analysis_explanation": "Outcome-driven coding bootcamp competing for placement-focused students.",
         "source_type": "live_web",
         "source_label": "Live Web / Tech Registry",
-        "evidence_status": "web_verified",
+        "evidence_status": "web_listed",
         "verified": true,
         "is_selected": true,
         "id": "7f26c021-1ff5-4790-a108-a7adf584fa1d",
-        "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95"
+        "idea_id": "34756b2e-59c0-4afb-a5a3-1d42da09fc95",
+        "reviews": null,
+        "rating_source": null
       }
     ]
   },
@@ -7334,9 +7494,9 @@
         "longitude": 80.6234,
         "distance_km": 1.5,
         "phone": "+91 866 257 8899",
-        "rating": 4.5,
-        "review_count": 4100,
-        "customer_sentiment": "89% Positive Feedback (4,100 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "6:30 AM - 1:00 PM, 4:30 PM - 10:00 PM",
         "pricing_model": "Dine-in & Counter (Rs 40 - 120 / plate)",
         "pricing_details": "Butter Idli Rs 50, Ghee Dosa Rs 80.",
@@ -7355,7 +7515,9 @@
         "verified": true,
         "is_selected": true,
         "id": "32df57cb-b9b4-4787-8dd4-329554acbbf2",
-        "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503"
+        "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Chutneys Tiffin Center",
@@ -7368,9 +7530,9 @@
         "longitude": 80.637,
         "distance_km": 2.1,
         "phone": "+91 866 667 9900",
-        "rating": 4.3,
-        "review_count": 2900,
-        "customer_sentiment": "82% Positive Feedback (2,900 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "7:00 AM - 10:30 PM",
         "pricing_model": "AC Restaurant Pricing (Rs 90 - 180 / plate)",
         "pricing_details": "Babai Dosa Rs 140, MLA Pesarattu Rs 150.",
@@ -7389,7 +7551,9 @@
         "verified": true,
         "is_selected": true,
         "id": "371ff39c-38cd-4a70-a892-f58b5ba9f054",
-        "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503"
+        "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Sree Ramakrishna Tiffins",
@@ -7402,9 +7566,9 @@
         "longitude": 80.628,
         "distance_km": 1.2,
         "phone": "+91 98480 23456",
-        "rating": 4.4,
-        "review_count": 1200,
-        "customer_sentiment": "87% Positive Feedback (1,200 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "6:00 AM - 12:00 PM, 4:00 PM - 9:30 PM",
         "pricing_model": "Economy Counter (Rs 35 - 80 / plate)",
         "pricing_details": "Pesarattu Rs 50, Upma Rs 35, Coffee Rs 20.",
@@ -7423,7 +7587,9 @@
         "verified": true,
         "is_selected": true,
         "id": "e770791a-2c87-439e-a1fb-e92fad5bc735",
-        "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503"
+        "idea_id": "3a00d08e-3d6b-49d4-b70f-a65dfce05503",
+        "reviews": null,
+        "rating_source": null
       }
     ]
   },
@@ -7725,9 +7891,9 @@
         "longitude": 80.4365,
         "distance_km": 2.8,
         "phone": "+91 863 223 4567",
-        "rating": 3.9,
-        "review_count": 310,
-        "customer_sentiment": "71% Positive Feedback (310 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "8:00 AM - 1:00 PM (Monday-Saturday)",
         "pricing_model": "Subsidized Public Rates (Rs 20 - 200)",
         "pricing_details": "Nominal government token fees.",
@@ -7746,7 +7912,9 @@
         "verified": true,
         "is_selected": true,
         "id": "62e22df2-c2ed-4e44-afa3-a885466e76b2",
-        "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860"
+        "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Dr. Rao's Pet Clinic & Surgical Center",
@@ -7759,9 +7927,9 @@
         "longitude": 80.428,
         "distance_km": 1.4,
         "phone": "+91 863 224 8899",
-        "rating": 4.6,
-        "review_count": 420,
-        "customer_sentiment": "89% Positive Feedback (420 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "9:30 AM - 1:30 PM, 5:30 PM - 9:00 PM",
         "pricing_model": "Private Clinic Rates (Rs 300 - 600 Consultation)",
         "pricing_details": "Consultation Rs 400, Vaccinations Rs 600-1200.",
@@ -7780,7 +7948,9 @@
         "verified": true,
         "is_selected": true,
         "id": "571b1909-a109-437e-9fa7-4bfc96451ab9",
-        "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860"
+        "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860",
+        "reviews": null,
+        "rating_source": null
       },
       {
         "name": "Happy Paws Pet Shop & Grooming Salon",
@@ -7793,9 +7963,9 @@
         "longitude": 80.442,
         "distance_km": 2.2,
         "phone": "+91 94900 11223",
-        "rating": 4.3,
-        "review_count": 260,
-        "customer_sentiment": "83% Positive Feedback (260 Reviews)",
+        "rating": null,
+        "review_count": null,
+        "customer_sentiment": "Rating data not available for this competitor",
         "opening_hours": "10:00 AM - 9:30 PM",
         "pricing_model": "Retail & Service (Bath Rs 500 - 900)",
         "pricing_details": "Retail accessories and shampoo baths.",
@@ -7814,7 +7984,9 @@
         "verified": true,
         "is_selected": true,
         "id": "ddcd0271-4e37-485a-91af-9c3375b57b1d",
-        "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860"
+        "idea_id": "3d45ae93-5a0d-406a-b26f-a5080fb44860",
+        "reviews": null,
+        "rating_source": null
       }
     ]
   }
