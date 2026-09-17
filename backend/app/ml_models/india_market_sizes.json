@@ -3,7 +3,7 @@
     "description": "Published India sector market sizes, used to anchor national/online TAM. Replaces figures that were hard-coded inline in ml_service.py with no source attached.",
     "compiled": "2026-09-17",
     "definition": "total_market_inr_cr is the PUBLISHED TOTAL market for the sector in India. addressable_share is the fraction an early-stage venture can realistically compete for; the app sizes TAM as total_market_inr_cr * addressable_share, so a new entrant is not shown the whole national market as if it were reachable.",
-    "addressable_share_rationale": "A single early-stage venture does not address a whole national market. The shares below are planning assumptions, not published figures, and are stated here rather than buried in code so they can be argued with.",
+    "addressable_share_rationale": "addressable_share is the one judgment in this file: the published totals are real, the fraction a new venture can reach is not published anywhere. Each sector now carries a share_rationale naming the actual barrier - RBI licensing, clinical licensing, RMG licensing, utility-scale incumbency - rather than a number chosen to preserve earlier output. Sectors still marked low confidence carry no published total at all.",
     "fields": {
       "total_market_inr_cr": "Published total India market size, INR crore.",
       "addressable_share": "Planning assumption: fraction reachable by an early-stage entrant.",
@@ -21,6 +21,22 @@
       "late_stage_usd_bn": 3,
       "tier1_share_of_funding_pct": 92.8,
       "note": "Tier-1 cities took 92.8% of H1 2025 funding; Tier-2 and Tier-3 together took 2.5%. Relevant to any venture outside a metro that plans to raise."
+    },
+    "fx_inr_per_usd": {
+      "rates": {
+        "2022-23": 78.6,
+        "2023-24": 82.8,
+        "2024-25": 86.47,
+        "2025-26": 88.37,
+        "2026-27": 94.38,
+        "2022": 79.82,
+        "2023": 82.61,
+        "2024": 84.49,
+        "2025": 87.16,
+        "2026": 92.66
+      },
+      "source": "Foreign Exchange Dealers' Association of India (FEDAI), reproduced in IBEF sector reports, May 2026",
+      "note": "Every USD figure is converted at the rate for the year that figure describes, not a single flat rate. A flat Rs 83.5/USD was previously used throughout and was wrong by up to 4.2% against the 2025 rate of Rs 87.16."
     }
   },
   "ecommerce": {
@@ -43,7 +59,8 @@
       "deal_count": 109,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
-    }
+    },
+    "share_rationale": "Highly fragmented with low regulatory barrier; a niche or category entrant can take a real slice."
   },
   "fintech": {
     "match": [
@@ -55,9 +72,9 @@
       "pay",
       "fin"
     ],
-    "total_market_inr_cr": 1300000,
+    "total_market_inr_cr": 1356820,
     "addressable_share": 0.07,
-    "source": "IMARC / Mordor Intelligence - India fintech market US$155.67bn (2025), converted at Rs 83.5/USD",
+    "source": "IMARC / Mordor Intelligence - India fintech market US$155.67bn (2025), converted at the CY2025 FEDAI rate of Rs 87.16/USD",
     "as_of": 2025,
     "confidence": "medium",
     "funding_h1_2025": {
@@ -65,7 +82,8 @@
       "deal_count": 68,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
-    }
+    },
+    "share_rationale": "RBI licensing (payment-aggregator authorisation, KYC, capital adequacy) is a hard gate. Most of this market is closed to an unlicensed entrant."
   },
   "healthcare": {
     "match": [
@@ -78,9 +96,9 @@
       "clinic",
       "med"
     ],
-    "total_market_inr_cr": 1800000,
+    "total_market_inr_cr": 2832700,
     "addressable_share": 0.03,
-    "source": "IBEF - India healthcare industry projected US$650bn by 2030; 2025 interpolation converted at Rs 83.5/USD",
+    "source": "IBEF - India healthcare industry projected US$650bn by 2030; 2025 mid-point interpolation of US$325bn, converted at the CY2025 FEDAI rate of Rs 87.16/USD",
     "as_of": 2025,
     "confidence": "medium",
     "funding_h1_2025": {
@@ -88,7 +106,8 @@
       "deal_count": 29,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
-    }
+    },
+    "share_rationale": "Clinical licensing and capital intensity restrict entry; most spend goes to established hospitals and pharmacy chains."
   },
   "edtech": {
     "match": [
@@ -101,16 +120,31 @@
       "skill",
       "edu"
     ],
-    "total_market_inr_cr": 42000,
-    "addressable_share": 1.0,
-    "source": "PLANNING ASSUMPTION - no current published India EdTech total was confirmed; retained from the previous inline value and flagged rather than dressed up with a citation.",
-    "as_of": null,
-    "confidence": "low",
+    "total_market_inr_cr": 64875,
+    "addressable_share": 0.05,
+    "source": "IAMAI + Grant Thornton Bharat - Indian edtech market Rs 64,875 crore (US$7.5bn), via IBEF Education & Training, May 2026",
+    "as_of": 2025,
+    "confidence": "high",
     "funding_h1_2025": {
-      "usd_mn_deployed": 188,
-      "deal_count": 15,
-      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
-      "note": "Capital deployed into Indian startups in this sector, not market size."
+      "usd_mn_deployed": 120,
+      "deal_count": 11,
+      "source": "IBEF Education & Training, May 2026 (Rs 1,071 crore across 11 deals, a fivefold rebound)",
+      "note": "Capital deployed into Indian edtech startups in this sector, not market size."
+    },
+    "share_rationale": "Low regulatory barrier to entry, but the segment is consolidating hard - upGrad signed a term sheet to acquire Unacademy in March 2026 and PhysicsWallah listed at a 33-42% premium in November 2025. A new entrant competes against funded incumbents, not open field.",
+    "corroboration": "Statista independently puts India's online education market at Rs 65,458 crore (US$7.57bn) for 2025 - within 0.9% of the IAMAI figure. Two different methodologies, same answer.",
+    "detail": {
+      "fy30_projection_inr_cr": 250850,
+      "fy30_projection_usd_bn": 29,
+      "online_users_mn": 309.1,
+      "online_penetration_pct": 15,
+      "coaching_industry_inr_cr": 58088,
+      "coaching_industry_as_of": "Dec 2022",
+      "coaching_2028_projection_inr_cr": 133995,
+      "pe_vc_2015_2025_inr_cr": 123883,
+      "h1_2025_funding_inr_cr": 1071,
+      "h1_2025_deals": 11,
+      "note": "The Rs 58,088 crore coaching industry is the relevant figure for a physical coaching centre; the Rs 64,875 crore edtech figure is for an online product. They are different markets."
     }
   },
   "gaming": {
@@ -119,9 +153,9 @@
       "esport",
       "game"
     ],
-    "total_market_inr_cr": 31730,
+    "total_market_inr_cr": 31464,
     "addressable_share": 0.06,
-    "source": "Lumikai x Google, 'Levelling up: State of India Interactive Media & Gaming FY24' (Nov 2024) - India gaming market US$3.8bn in FY24, converted at Rs 83.5/USD",
+    "source": "Lumikai x Google, 'Levelling up: State of India Interactive Media & Gaming FY24' (Nov 2024) - US$3.8bn in FY24, converted at the FY2023-24 FEDAI rate of Rs 82.80/USD",
     "as_of": 2024,
     "confidence": "high",
     "detail": {
@@ -138,7 +172,8 @@
         "other": 0.04,
         "note": "Real-money gaming is 63% of the market and is a licensed, 28%-GST segment a new studio cannot simply enter. A free-to-play or premium studio addresses in-app purchases plus ads, roughly US$1.3bn (Rs 10,855 cr), not the headline US$3.8bn. Lumikai also reports RMG gross-to-net margin down 30% and user-acquisition payback doubled under the new GST regime."
       }
-    }
+    },
+    "share_rationale": "Real-money gaming is 63% of the market, licensed and taxed at 28% GST. A free-to-play studio addresses in-app purchases plus ads only."
   },
   "logistics": {
     "match": [
@@ -159,7 +194,9 @@
       "deal_count": null,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
-    }
+    },
+    "share_rationale": "PLANNING ASSUMPTION - no published India total confirmed for this sector.",
+    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found."
   },
   "cleantech": {
     "match": [
@@ -172,16 +209,41 @@
       "clean",
       "ev"
     ],
-    "total_market_inr_cr": 58000,
-    "addressable_share": 1.0,
-    "source": "PLANNING ASSUMPTION - no current published India cleantech total was confirmed.",
-    "as_of": null,
-    "confidence": "low",
+    "total_market_inr_cr": 390595,
+    "addressable_share": 0.02,
+    "source": "MNRE / IBEF Renewable Energy, May 2026 - the 500 GW by 2030 target carries an investment opportunity of US$221bn, annualised across 2026-2030 and converted at the FY2025-26 FEDAI rate of Rs 88.37/USD",
+    "as_of": 2026,
+    "confidence": "medium",
     "funding_h1_2025": {
       "usd_mn_deployed": 321,
       "deal_count": 31,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
+    },
+    "measures": "ANNUAL CAPITAL DEPLOYMENT into renewable projects, not consumer spending. Unlike the other sectors here, this sector's market is capital formation - state that plainly wherever it is shown.",
+    "share_rationale": "Utility-scale is dominated by NTPC (Rs 2 lakh crore committed in Madhya Pradesh alone), Adani, ReNew (Rs 82,000 crore in Andhra Pradesh) and JSW. A startup does not compete for those projects. 2% reflects the distributed and services layer a new entrant can actually reach.",
+    "corroboration": "Moody's independently estimates US$190-215bn for the same 500 GW target over 2023-2030, plus US$150-170bn for transmission and storage - consistent with the US$221bn figure.",
+    "detail": {
+      "installed_re_capacity_gw_may2026": 230,
+      "incl_large_hydro_gw": 291,
+      "target_2030_gw": 500,
+      "solar_share_of_target_gw": 280,
+      "re_potential_gw": {
+        "solar": 750,
+        "wind": 102,
+        "bio": 25,
+        "small_hydro": 20,
+        "total": 900
+      },
+      "fdi_fy26_usd_mn": 3019,
+      "fdi_fy25_usd_mn": 4012,
+      "mnre_budget_fy2026_27_inr_cr": 44614.67,
+      "rooftop_solar_addressable": {
+        "installed_gw_mar2026": 9.56,
+        "households_lakh": 40,
+        "subsidy_disbursed_inr_cr": 17967.53,
+        "note": "PM Surya Ghar rooftop solar is the segment a small cleantech venture can realistically serve: 40 lakh households reached against a one-crore target, so roughly 60 lakh households remain. Utility-scale is not addressable by a startup."
+      }
     }
   },
   "agritech": {
@@ -203,7 +265,9 @@
       "deal_count": 16,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
-    }
+    },
+    "share_rationale": "PLANNING ASSUMPTION - no published India total confirmed for this sector.",
+    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found."
   },
   "cybersecurity": {
     "match": [
@@ -217,7 +281,9 @@
     "addressable_share": 1.0,
     "source": "PLANNING ASSUMPTION - no current published India cybersecurity total was confirmed.",
     "as_of": null,
-    "confidence": "low"
+    "confidence": "low",
+    "share_rationale": "PLANNING ASSUMPTION - no published India total confirmed for this sector.",
+    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found."
   },
   "_default": {
     "match": [],
