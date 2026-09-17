@@ -13,6 +13,11 @@ and it fetches them from providers that actually serve real user reviews:
      to 0-5 here), a real rating count, and user "tips" as review text.
      Needs FOURSQUARE_API_KEY.
 
+Note on cost: BOTH providers put ratings behind billing. Google needs a Cloud
+billing account even to use the free allowance, and on Foursquare `rating` is a
+Premium field billed from the first request. There is no free source of real
+star ratings, which is why the app runs correctly with neither configured.
+
 Hard rule: if no provider is configured or a lookup fails, this returns None and
 the competitor keeps `rating = None`. Ratings are NEVER estimated, defaulted or
 derived — an earlier revision of this project synthesised them from hash(name)
@@ -112,10 +117,37 @@ class GooglePlacesReviews:
 
 
 class FoursquareReviews:
-    """Real ratings + user tips from the Foursquare Places API."""
+    """
+    Real ratings + user tips from the Foursquare Places API.
 
-    SEARCH_URL = "https://api.foursquare.com/v3/places/search"
-    TIPS_URL = "https://api.foursquare.com/v3/places/{fsq_id}/tips"
+    This targets the CURRENT API on places-api.foursquare.com. The old
+    api.foursquare.com/v3 endpoints this originally called were deprecated on
+    15 May 2026 and no longer answer, so a v3-era key/URL will simply 404 here.
+
+    Two things differ from v3 and matter:
+      * auth is a bearer token from a Foursquare *Service API Key*, not the bare
+        key in the Authorization header;
+      * X-Places-Api-Version is mandatory and pins the response shape, so the
+        date below is deliberately fixed rather than "today".
+
+    `rating` is a Premium field: it must be named explicitly in `fields` and is
+    billed from the first request. Without a Premium plan the search still
+    succeeds but carries no rating, and this returns None like any other miss.
+    """
+
+    BASE_URL = "https://places-api.foursquare.com"
+    SEARCH_URL = f"{BASE_URL}/places/search"
+    TIPS_URL = BASE_URL + "/places/{fsq_id}/tips"
+    API_VERSION = "2025-06-17"
+    FIELDS = "fsq_place_id,name,location,link,rating,stats"
+
+    @staticmethod
+    def _headers(api_key: str) -> Dict[str, str]:
+        return {
+            "Authorization": f"Bearer {api_key}",
+            "X-Places-Api-Version": FoursquareReviews.API_VERSION,
+            "Accept": "application/json",
+        }
 
     @staticmethod
     def lookup(name: str, lat: Optional[float], lon: Optional[float], address: str = "") -> Optional[Dict]:
@@ -123,12 +155,12 @@ class FoursquareReviews:
         if not api_key or not name:
             return None
 
-        params = {"query": name, "limit": 1, "fields": "fsq_id,name,rating,stats,location,link"}
+        params = {"query": name, "limit": 1, "fields": FoursquareReviews.FIELDS}
         if lat is not None and lon is not None:
             params["ll"] = f"{float(lat)},{float(lon)}"
             params["radius"] = 500
 
-        headers = {"Authorization": api_key, "Accept": "application/json"}
+        headers = FoursquareReviews._headers(api_key)
         try:
             resp = requests.get(FoursquareReviews.SEARCH_URL, params=params, headers=headers, timeout=TIMEOUT)
             if resp.status_code != 200:
@@ -144,6 +176,8 @@ class FoursquareReviews:
         place = results[0]
         raw_rating = place.get("rating")
         if raw_rating is None:
+            # Not an error: the plan in use does not include the Premium rating
+            # field. A competitor with no rating keeps rating = None.
             return None
 
         # Foursquare rates 0-10; the rest of the app uses a 0-5 star scale.
@@ -151,16 +185,19 @@ class FoursquareReviews:
         count = ((place.get("stats") or {}) or {}).get("total_ratings")
 
         reviews: List[Dict] = []
-        fsq_id = place.get("fsq_id")
+        # The current API returns fsq_place_id; v3 called it fsq_id.
+        fsq_id = place.get("fsq_place_id") or place.get("fsq_id")
         if fsq_id:
             try:
                 t = requests.get(
                     FoursquareReviews.TIPS_URL.format(fsq_id=fsq_id),
-                    params={"limit": MAX_REVIEWS, "fields": "text,created_at"},
+                    params={"limit": MAX_REVIEWS},
                     headers=headers, timeout=TIMEOUT,
                 )
                 if t.status_code == 200:
-                    for tip in (t.json() or []):
+                    payload = t.json() or []
+                    tips = payload if isinstance(payload, list) else (payload.get("results") or [])
+                    for tip in tips:
                         if tip.get("text"):
                             reviews.append({
                                 "author": "Foursquare user",
