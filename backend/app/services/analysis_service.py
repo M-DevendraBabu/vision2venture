@@ -292,7 +292,13 @@ class AnalysisService:
                 acquisition_channel=str(market_data.get('acquisition_channel') or 'Digital Marketing, SEO, Direct Outreach'),
                 purchase_trigger=str(market_data.get('purchase_trigger') or 'Immediate need for a scalable solution'),
                 opportunity_explanation=str(market_data.get('opportunity_explanation') or 'Strong market fit and timing.'),
-                data_source=market_source
+                data_source=market_source,
+                # Provenance travels with the figure. VARCHAR(500) on a strict-mode
+                # MySQL errors rather than truncates, so the source is trimmed here.
+                market_size_source=(str(market_data['market_size_source'])[:500]
+                                    if market_data.get('market_size_source') else None),
+                market_size_confidence=(str(market_data['market_size_confidence'])[:20]
+                                        if market_data.get('market_size_confidence') else None)
             )
             db.add(m_analysis)
             db.commit()

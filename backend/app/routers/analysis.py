@@ -136,6 +136,8 @@ def get_market_analysis(
             "purchase_trigger": market.purchase_trigger,
             "opportunity_explanation": market.opportunity_explanation,
             "data_source": getattr(market, 'data_source', None) or "Google Trends, World Bank & AI",
+            "market_size_source": getattr(market, 'market_size_source', None),
+            "market_size_confidence": getattr(market, 'market_size_confidence', None),
             "estimate_note": "Market size, growth rate and opportunity score are AI/benchmark estimates grounded in real demand and macro signals — not measured figures for this specific idea."
         }
     }

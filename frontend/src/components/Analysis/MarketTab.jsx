@@ -211,6 +211,28 @@ const MarketTab = ({ data, idea }) => {
             {marketSizing.tamStr}
           </div>
           <div className="text-secondary text-xs mt-xs">Total {industryName} Sector Capacity</div>
+          {/* Where the figure came from. A sector with no published India total is
+              shown amber and says so, so a planning assumption is never read as a
+              published statistic. */}
+          {data?.market_size_source && (
+            <div
+              title={data.market_size_source}
+              style={{
+                marginTop: '6px',
+                fontSize: '0.68rem',
+                lineHeight: 1.35,
+                color: data.market_size_confidence === 'low' ? '#b45309' : '#64748B',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden'
+              }}
+            >
+              {data.market_size_confidence === 'low'
+                ? 'Planning assumption — no published India figure'
+                : `Source: ${data.market_size_source}`}
+            </div>
+          )}
         </div>
 
         {/* 5-Year CAGR */}

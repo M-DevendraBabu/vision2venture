@@ -136,6 +136,28 @@ def ensure_competitor_tables_and_columns():
                 except Exception as e:
                     print(f"[Migration] Notice adding data_source to {tbl}: {e}")
 
+            # 4b. Provenance for the market_size figure, so the UI can show whether it
+            #     is a published statistic or a flagged planning assumption.
+            try:
+                ma_cols = set()
+                if dialect == 'mysql':
+                    res = conn.execute(text("SHOW COLUMNS FROM market_analysis"))
+                    ma_cols = {row[0] for row in res.fetchall()}
+                elif dialect == 'sqlite':
+                    res = conn.execute(text("PRAGMA table_info(market_analysis)"))
+                    ma_cols = {row[1] for row in res.fetchall()}
+
+                for col_name, col_type in [
+                    ("market_size_source", "VARCHAR(500) NULL"),
+                    ("market_size_confidence", "VARCHAR(20) NULL"),
+                ]:
+                    if col_name not in ma_cols and ma_cols:
+                        conn.execute(text(f"ALTER TABLE market_analysis ADD COLUMN {col_name} {col_type}"))
+                        conn.commit()
+                        print(f"[Migration] Added market_analysis.{col_name}.")
+            except Exception as e:
+                print(f"[Migration] market_analysis provenance column notice: {e}")
+
             # ─────────────────────────────────────────────────────────────
             # 5. Fix market_analysis columns: VARCHAR(255) → TEXT
             #    (LLM-generated primary_demo / key_pain_point can exceed 255 chars

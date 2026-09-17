@@ -33,6 +33,10 @@ class MarketAnalysis(Base):
     purchase_trigger = Column(Text, nullable=True)
     opportunity_explanation = Column(Text, nullable=True)
     data_source = Column(String(100), nullable=True)
+    # Provenance for the market_size figure above. Kept beside the number so a
+    # low-confidence planning assumption cannot be displayed as a published statistic.
+    market_size_source = Column(String(500), nullable=True)
+    market_size_confidence = Column(String(20), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class Competitor(Base):
