@@ -1,0 +1,452 @@
+{
+  "_meta": {
+    "description": "Real per-capita consumption from the Government of India's Household Consumption Expenditure Survey, used to size local (offline and hybrid) catchment markets. Replaces six per_capita_spend numbers that were hardcoded in ml_service.py with no source, every one of which overstated the real figure.",
+    "source": "MoSPI / National Statistics Office, Household Consumption Expenditure Survey 2023-24 Fact Sheet (fieldwork August 2023 - July 2024; 2,61,953 households; 1,54,357 rural and 1,07,596 urban)",
+    "source_url": "https://www.mospi.gov.in/sites/default/files/publication_reports/HCES%20FactSheet%202023-24.pdf",
+    "as_of": "2023-24",
+    "tables_used": "Statement 4 (item-group break-up of MPCE), Statements 5 and 6 (percentage composition, for lines not broken out in Statement 4), Statement 7 (MPCE by State/UT)",
+    "all_india_mpce_monthly": {
+      "rural": 4122,
+      "urban": 6996
+    },
+    "method": "annual_per_capita = HCES monthly figure x 12 x share. Shares are 1.0 wherever an HCES item group maps directly onto the business; the two cases that need a share carry a SHARE ASSUMPTION note in their basis field.",
+    "state_scaling": "state_multiplier = state MPCE / all-India MPCE, applied to the all-India figure so a catchment in Andhra Pradesh is not sized with Bihar's spending power.",
+    "caveat": "These are population averages. A venture serving a self-selecting, higher-spending segment may address more per customer than the average - but the catchment TOTAL is what this sizes, and that total is bounded by what the population actually spends.",
+    "city_to_state": "Maps a city named in the user's location to its state, so the state MPCE multiplier can be applied. A location naming a state directly is matched against state_mpce_monthly first."
+  },
+  "categories": {
+    "food_restaurant": {
+      "match": [
+        "food",
+        "beverage",
+        "cafe",
+        "restaurant",
+        "biryani",
+        "bakery",
+        "dining",
+        "tiffin",
+        "canteen",
+        "cloud kitchen",
+        "juice",
+        "tea stall"
+      ],
+      "hces_line": "beverages, refreshments, processed food",
+      "monthly_per_capita": {
+        "rural": 406,
+        "urban": 776
+      },
+      "share_of_hces_line": 1.0,
+      "annual_per_capita": {
+        "rural": 4872,
+        "urban": 9312
+      },
+      "basis": "This HCES line explicitly includes purchased cooked meals and snacks, which is exactly what an eating-out business competes for. The previous hardcoded Rs 22,000/year was close to a household's ENTIRE annual food budget (Rs 23,268 rural / Rs 33,312 urban), most of which is groceries cooked at home and not addressable by a restaurant."
+    },
+    "grocery_retail": {
+      "match": [
+        "comm",
+        "d2c",
+        "marketplace",
+        "retail",
+        "grocery",
+        "supermarket",
+        "organic",
+        "store",
+        "hyperlocal",
+        "kirana",
+        "provision"
+      ],
+      "hces_line": "food total minus beverages/processed food (i.e. at-home groceries)",
+      "monthly_per_capita": {
+        "rural": 1533,
+        "urban": 2000
+      },
+      "share_of_hces_line": 1.0,
+      "annual_per_capita": {
+        "rural": 18396,
+        "urban": 24000
+      },
+      "basis": "Total food spend less the eating-out line, since a grocery retailer addresses what households cook at home."
+    },
+    "gym_fitness": {
+      "match": [
+        "gym",
+        "fitness",
+        "crossfit",
+        "workout",
+        "wellness",
+        "yoga",
+        "zumba"
+      ],
+      "hces_line": "entertainment (includes club, gym, swimming fees & other subscriptions)",
+      "monthly_per_capita": {
+        "rural": 42,
+        "urban": 124
+      },
+      "share_of_hces_line": 1.0,
+      "annual_per_capita": {
+        "rural": 504,
+        "urban": 1488
+      },
+      "basis": "HCES has no gym line; gym and club subscriptions sit inside 'entertainment', which is 1.02% of rural and 1.77% of urban MPCE (Statements 5 and 6). This whole category also carries cinema, cable/DTH and streaming, so a gym addresses only part of it - the figure here is already the generous reading. The previous Rs 9,500/year assumed more than six times the entire entertainment budget."
+    },
+    "health_clinic": {
+      "match": [
+        "health",
+        "clinic",
+        "doctor",
+        "medical",
+        "dental",
+        "diagnos",
+        "pharmacy",
+        "physio"
+      ],
+      "hces_line": "medical (hospitalisation and non-hospitalisation)",
+      "monthly_per_capita": {
+        "rural": 282,
+        "urban": 409
+      },
+      "share_of_hces_line": 1.0,
+      "annual_per_capita": {
+        "rural": 3384,
+        "urban": 4908
+      },
+      "basis": "Covers medicine, consultation, tests and hospital charges."
+    },
+    "education_coaching": {
+      "match": [
+        "edu",
+        "school",
+        "college",
+        "coaching",
+        "learn",
+        "tutor",
+        "training",
+        "skill"
+      ],
+      "hces_line": "education",
+      "monthly_per_capita": {
+        "rural": 133,
+        "urban": 418
+      },
+      "share_of_hces_line": 1.0,
+      "annual_per_capita": {
+        "rural": 1596,
+        "urban": 5016
+      },
+      "basis": "Tuition and other fees, private tutor/coaching, books and stationery. Note the 3.1x rural-urban gap: rural households spend Rs 133/month on education against Rs 418 in urban India."
+    },
+    "salon_beauty": {
+      "match": [
+        "salon",
+        "spa",
+        "beauty",
+        "grooming",
+        "parlour",
+        "barber"
+      ],
+      "hces_line": "consumer services excluding conveyance (barber, beautician, spa share)",
+      "monthly_per_capita": {
+        "rural": 217,
+        "urban": 400
+      },
+      "share_of_hces_line": 0.25,
+      "annual_per_capita": {
+        "rural": 651,
+        "urban": 1200
+      },
+      "basis": "SHARE ASSUMPTION: 'barber, beautician, spas' is one line among roughly eighteen inside this HCES group (which also holds telephone, domestic help, tailoring, laundry and repairs). A 25% share is a planning assumption, not a published split - it is the only estimated number in this file."
+    },
+    "_default": {
+      "match": [],
+      "hces_line": "all items (total MPCE)",
+      "monthly_per_capita": {
+        "rural": 4122,
+        "urban": 6996
+      },
+      "share_of_hces_line": 0.08,
+      "annual_per_capita": {
+        "rural": 3957,
+        "urban": 6716
+      },
+      "basis": "SHARE ASSUMPTION: for a sector with no matching HCES line, 8% of total household spend is taken as addressable. A planning assumption."
+    }
+  },
+  "state_mpce_monthly": {
+    "andaman and nicobar islands": {
+      "rural": 7771,
+      "urban": 10453,
+      "rural_multiplier": 1.885,
+      "urban_multiplier": 1.494
+    },
+    "andhra pradesh": {
+      "rural": 5327,
+      "urban": 7182,
+      "rural_multiplier": 1.292,
+      "urban_multiplier": 1.027
+    },
+    "arunachal pradesh": {
+      "rural": 5995,
+      "urban": 9832,
+      "rural_multiplier": 1.454,
+      "urban_multiplier": 1.405
+    },
+    "assam": {
+      "rural": 3793,
+      "urban": 6794,
+      "rural_multiplier": 0.92,
+      "urban_multiplier": 0.971
+    },
+    "bihar": {
+      "rural": 3670,
+      "urban": 5080,
+      "rural_multiplier": 0.89,
+      "urban_multiplier": 0.726
+    },
+    "chandigarh": {
+      "rural": 8857,
+      "urban": 13425,
+      "rural_multiplier": 2.149,
+      "urban_multiplier": 1.919
+    },
+    "chhattisgarh": {
+      "rural": 2739,
+      "urban": 4927,
+      "rural_multiplier": 0.664,
+      "urban_multiplier": 0.704
+    },
+    "dadra and nagar haveli and daman and diu": {
+      "rural": 4311,
+      "urban": 6837,
+      "rural_multiplier": 1.046,
+      "urban_multiplier": 0.977
+    },
+    "delhi": {
+      "rural": 7400,
+      "urban": 8534,
+      "rural_multiplier": 1.795,
+      "urban_multiplier": 1.22
+    },
+    "goa": {
+      "rural": 8048,
+      "urban": 9726,
+      "rural_multiplier": 1.952,
+      "urban_multiplier": 1.39
+    },
+    "gujarat": {
+      "rural": 4116,
+      "urban": 7175,
+      "rural_multiplier": 0.999,
+      "urban_multiplier": 1.026
+    },
+    "haryana": {
+      "rural": 5377,
+      "urban": 8428,
+      "rural_multiplier": 1.304,
+      "urban_multiplier": 1.205
+    },
+    "himachal pradesh": {
+      "rural": 5825,
+      "urban": 9223,
+      "rural_multiplier": 1.413,
+      "urban_multiplier": 1.318
+    },
+    "jammu and kashmir": {
+      "rural": 4774,
+      "urban": 6327,
+      "rural_multiplier": 1.158,
+      "urban_multiplier": 0.904
+    },
+    "jharkhand": {
+      "rural": 2946,
+      "urban": 5393,
+      "rural_multiplier": 0.715,
+      "urban_multiplier": 0.771
+    },
+    "karnataka": {
+      "rural": 4903,
+      "urban": 8076,
+      "rural_multiplier": 1.189,
+      "urban_multiplier": 1.154
+    },
+    "kerala": {
+      "rural": 6611,
+      "urban": 7783,
+      "rural_multiplier": 1.604,
+      "urban_multiplier": 1.112
+    },
+    "ladakh": {
+      "rural": 5010,
+      "urban": 7533,
+      "rural_multiplier": 1.215,
+      "urban_multiplier": 1.077
+    },
+    "lakshadweep": {
+      "rural": 6350,
+      "urban": 6377,
+      "rural_multiplier": 1.541,
+      "urban_multiplier": 0.912
+    },
+    "madhya pradesh": {
+      "rural": 3441,
+      "urban": 5538,
+      "rural_multiplier": 0.835,
+      "urban_multiplier": 0.792
+    },
+    "maharashtra": {
+      "rural": 4145,
+      "urban": 7363,
+      "rural_multiplier": 1.006,
+      "urban_multiplier": 1.052
+    },
+    "manipur": {
+      "rural": 4531,
+      "urban": 5945,
+      "rural_multiplier": 1.099,
+      "urban_multiplier": 0.85
+    },
+    "meghalaya": {
+      "rural": 3852,
+      "urban": 7839,
+      "rural_multiplier": 0.934,
+      "urban_multiplier": 1.12
+    },
+    "mizoram": {
+      "rural": 5963,
+      "urban": 8709,
+      "rural_multiplier": 1.447,
+      "urban_multiplier": 1.245
+    },
+    "nagaland": {
+      "rural": 5155,
+      "urban": 8022,
+      "rural_multiplier": 1.251,
+      "urban_multiplier": 1.147
+    },
+    "odisha": {
+      "rural": 3357,
+      "urban": 5825,
+      "rural_multiplier": 0.814,
+      "urban_multiplier": 0.833
+    },
+    "puducherry": {
+      "rural": 7598,
+      "urban": 8637,
+      "rural_multiplier": 1.843,
+      "urban_multiplier": 1.235
+    },
+    "punjab": {
+      "rural": 5817,
+      "urban": 7359,
+      "rural_multiplier": 1.411,
+      "urban_multiplier": 1.052
+    },
+    "rajasthan": {
+      "rural": 4510,
+      "urban": 6574,
+      "rural_multiplier": 1.094,
+      "urban_multiplier": 0.94
+    },
+    "sikkim": {
+      "rural": 9377,
+      "urban": 13927,
+      "rural_multiplier": 2.275,
+      "urban_multiplier": 1.991
+    },
+    "tamil nadu": {
+      "rural": 5701,
+      "urban": 8165,
+      "rural_multiplier": 1.383,
+      "urban_multiplier": 1.167
+    },
+    "telangana": {
+      "rural": 5435,
+      "urban": 8978,
+      "rural_multiplier": 1.319,
+      "urban_multiplier": 1.283
+    },
+    "tripura": {
+      "rural": 6259,
+      "urban": 8034,
+      "rural_multiplier": 1.518,
+      "urban_multiplier": 1.148
+    },
+    "uttar pradesh": {
+      "rural": 3481,
+      "urban": 5395,
+      "rural_multiplier": 0.844,
+      "urban_multiplier": 0.771
+    },
+    "uttarakhand": {
+      "rural": 5003,
+      "urban": 7486,
+      "rural_multiplier": 1.214,
+      "urban_multiplier": 1.07
+    },
+    "west bengal": {
+      "rural": 3620,
+      "urban": 5775,
+      "rural_multiplier": 0.878,
+      "urban_multiplier": 0.825
+    }
+  },
+  "city_to_state": {
+    "vadlamudi": "andhra pradesh",
+    "guntur": "andhra pradesh",
+    "vijayawada": "andhra pradesh",
+    "visakhapatnam": "andhra pradesh",
+    "vizag": "andhra pradesh",
+    "tirupati": "andhra pradesh",
+    "bangalore": "karnataka",
+    "bengaluru": "karnataka",
+    "mysore": "karnataka",
+    "mumbai": "maharashtra",
+    "pune": "maharashtra",
+    "nagpur": "maharashtra",
+    "nashik": "maharashtra",
+    "delhi": "delhi",
+    "new delhi": "delhi",
+    "ncr": "delhi",
+    "gurgaon": "haryana",
+    "gurugram": "haryana",
+    "noida": "uttar pradesh",
+    "lucknow": "uttar pradesh",
+    "kanpur": "uttar pradesh",
+    "varanasi": "uttar pradesh",
+    "hyderabad": "telangana",
+    "warangal": "telangana",
+    "chennai": "tamil nadu",
+    "coimbatore": "tamil nadu",
+    "madurai": "tamil nadu",
+    "kolkata": "west bengal",
+    "howrah": "west bengal",
+    "ahmedabad": "gujarat",
+    "surat": "gujarat",
+    "vadodara": "gujarat",
+    "rajkot": "gujarat",
+    "jaipur": "rajasthan",
+    "jodhpur": "rajasthan",
+    "udaipur": "rajasthan",
+    "kochi": "kerala",
+    "cochin": "kerala",
+    "thiruvananthapuram": "kerala",
+    "kozhikode": "kerala",
+    "indore": "madhya pradesh",
+    "bhopal": "madhya pradesh",
+    "gwalior": "madhya pradesh",
+    "chandigarh": "chandigarh",
+    "ludhiana": "punjab",
+    "amritsar": "punjab",
+    "patna": "bihar",
+    "ranchi": "jharkhand",
+    "raipur": "chhattisgarh",
+    "bhubaneswar": "odisha",
+    "guwahati": "assam",
+    "dehradun": "uttarakhand",
+    "shimla": "himachal pradesh",
+    "goa": "goa",
+    "panaji": "goa",
+    "puducherry": "puducherry",
+    "pondicherry": "puducherry"
+  }
+}

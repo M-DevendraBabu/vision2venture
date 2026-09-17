@@ -10,6 +10,17 @@
       "source": "Publication the total is taken from.",
       "as_of": "Year the published figure describes.",
       "confidence": "high = named published figure; medium = derived from a published adjacent figure; low = planning assumption with no published India figure found."
+    },
+    "ecosystem_context": {
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "total_funding_h1_2025_usd_bn": 5.7,
+      "deals": 470,
+      "median_ticket_usd_mn": 3,
+      "seed_stage_usd_mn": 406,
+      "growth_stage_usd_bn": 2,
+      "late_stage_usd_bn": 3,
+      "tier1_share_of_funding_pct": 92.8,
+      "note": "Tier-1 cities took 92.8% of H1 2025 funding; Tier-2 and Tier-3 together took 2.5%. Relevant to any venture outside a metro that plans to raise."
     }
   },
   "ecommerce": {
@@ -26,7 +37,13 @@
     "addressable_share": 0.06,
     "source": "IBEF, India Brand Equity Foundation - E-commerce (Rs 10,82,875 crore / US$125bn)",
     "as_of": 2024,
-    "confidence": "high"
+    "confidence": "high",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 1203,
+      "deal_count": 109,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "fintech": {
     "match": [
@@ -42,7 +59,13 @@
     "addressable_share": 0.07,
     "source": "IMARC / Mordor Intelligence - India fintech market US$155.67bn (2025), converted at Rs 83.5/USD",
     "as_of": 2025,
-    "confidence": "medium"
+    "confidence": "medium",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 1592,
+      "deal_count": 68,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "healthcare": {
     "match": [
@@ -59,7 +82,13 @@
     "addressable_share": 0.03,
     "source": "IBEF - India healthcare industry projected US$650bn by 2030; 2025 interpolation converted at Rs 83.5/USD",
     "as_of": 2025,
-    "confidence": "medium"
+    "confidence": "medium",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 377,
+      "deal_count": 29,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "edtech": {
     "match": [
@@ -76,7 +105,13 @@
     "addressable_share": 1.0,
     "source": "PLANNING ASSUMPTION - no current published India EdTech total was confirmed; retained from the previous inline value and flagged rather than dressed up with a citation.",
     "as_of": null,
-    "confidence": "low"
+    "confidence": "low",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 188,
+      "deal_count": 15,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "gaming": {
     "match": [
@@ -84,11 +119,26 @@
       "esport",
       "game"
     ],
-    "total_market_inr_cr": 34000,
-    "addressable_share": 1.0,
-    "source": "PLANNING ASSUMPTION - no current published India gaming total was confirmed.",
-    "as_of": null,
-    "confidence": "low"
+    "total_market_inr_cr": 31730,
+    "addressable_share": 0.06,
+    "source": "Lumikai x Google, 'Levelling up: State of India Interactive Media & Gaming FY24' (Nov 2024) - India gaming market US$3.8bn in FY24, converted at Rs 83.5/USD",
+    "as_of": 2024,
+    "confidence": "high",
+    "detail": {
+      "gamers_mn": 591,
+      "paying_gamers_mn": 148,
+      "annual_arppu_usd": 22,
+      "five_year_cagr_pct": 20,
+      "fy29_projection_usd_bn": 9.2,
+      "note": "Only 25% of gamers pay. Paying users, not installs, are the addressable base.",
+      "segment_split_fy24_usd_bn": {
+        "real_money_gaming": 2.4,
+        "in_app_purchases": 0.7,
+        "ads": 0.6,
+        "other": 0.04,
+        "note": "Real-money gaming is 63% of the market and is a licensed, 28%-GST segment a new studio cannot simply enter. A free-to-play or premium studio addresses in-app purchases plus ads, roughly US$1.3bn (Rs 10,855 cr), not the headline US$3.8bn. Lumikai also reports RMG gross-to-net margin down 30% and user-acquisition payback doubled under the new GST regime."
+      }
+    }
   },
   "logistics": {
     "match": [
@@ -103,7 +153,13 @@
     "addressable_share": 1.0,
     "source": "PLANNING ASSUMPTION - no current published India logistics-tech total was confirmed.",
     "as_of": null,
-    "confidence": "low"
+    "confidence": "low",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 364,
+      "deal_count": null,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "cleantech": {
     "match": [
@@ -120,7 +176,13 @@
     "addressable_share": 1.0,
     "source": "PLANNING ASSUMPTION - no current published India cleantech total was confirmed.",
     "as_of": null,
-    "confidence": "low"
+    "confidence": "low",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 321,
+      "deal_count": 31,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "agritech": {
     "match": [
@@ -135,7 +197,13 @@
     "addressable_share": 1.0,
     "source": "PLANNING ASSUMPTION - no current published India agritech total was confirmed.",
     "as_of": null,
-    "confidence": "low"
+    "confidence": "low",
+    "funding_h1_2025": {
+      "usd_mn_deployed": 143,
+      "deal_count": 16,
+      "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
+      "note": "Capital deployed into Indian startups in this sector, not market size."
+    }
   },
   "cybersecurity": {
     "match": [

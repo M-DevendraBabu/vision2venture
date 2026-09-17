@@ -40,6 +40,7 @@ _tech_benchmarks = {}
 _financial_templates = {}
 _sector_market_scale = {}
 _india_market_sizes = {}
+_india_consumption = {}
 _tech_stack_model = {}
 
 
@@ -49,7 +50,7 @@ def _init_ml_models():
     global _market_scaler, _market_industry_encoder, _market_country_encoder, _fin_industry_encoder
     global _feature_meta, _industry_benchmarks, _yc_competitors, _tech_benchmarks
     global _financial_templates, _sector_market_scale, _tech_stack_model
-    global _india_market_sizes
+    global _india_market_sizes, _india_consumption
 
     def _load(filename, label):
         path = os.path.join(MODEL_DIR, filename)
@@ -97,6 +98,7 @@ def _init_ml_models():
         _financial_templates = _load_json('financial_templates.json', 'Financial Templates')
         _sector_market_scale = _load_json('sector_market_scale.json', 'Sector Market Scale')
         _india_market_sizes = _load_json('india_market_sizes.json', 'India Market Sizes')
+        _india_consumption = _load_json('india_consumption_hces.json', 'India Consumption (HCES)')
         _tech_stack_model = _load_json('tech_stack_model.json', 'Tech Stack Recommender')
 
     except Exception as e:
@@ -275,6 +277,61 @@ def _sector_scale(industry: str) -> float:
 
     values = sorted(_sector_market_scale.values())
     return float(values[len(values) // 2])
+
+
+def _hces_per_capita(industry: str, location: str, is_urban_catchment: bool):
+    """
+    Real annual per-capita spend for a local catchment, in INR, with its provenance.
+
+    Returns (annual_rupees, hces_line, state_used, multiplier).
+
+    The six numbers this replaces were written inline with no source, and every one
+    of them overstated what Indian households actually spend: education was set to
+    Rs 18,500/year against a real Rs 5,016 urban, and a gym to Rs 9,500 against an
+    entertainment budget - cinema, cable and streaming included - of Rs 1,488.
+    A catchment TAM built on those figures was several times too large before any
+    other assumption entered the calculation.
+
+    Everything here comes from the Government of India's Household Consumption
+    Expenditure Survey 2023-24, which measured 2.6 lakh households. Spend is scaled
+    by the state's own MPCE, so a catchment in Chhattisgarh (0.70x the national
+    average) is not sized with Sikkim's spending power (1.99x).
+    """
+    if not _india_consumption:
+        return 15000.0, "no HCES table loaded", None, 1.0
+
+    text = str(industry or "").lower()
+    cats = _india_consumption.get("categories", {})
+
+    best_alias, best_key = "", "_default"
+    for key, entry in cats.items():
+        if key.startswith("_"):
+            continue
+        for alias in entry.get("match", []):
+            if alias in text and len(alias) > len(best_alias):
+                best_alias, best_key = alias, key
+    cat = cats.get(best_key) or cats.get("_default", {})
+
+    sector = "urban" if is_urban_catchment else "rural"
+    base = float(cat.get("annual_per_capita", {}).get(sector, 15000.0))
+
+    # Scale to the state actually named, via the state itself or a city in it.
+    loc = str(location or "").lower()
+    states = _india_consumption.get("state_mpce_monthly", {})
+    state_used, mult = None, 1.0
+    for st in states:
+        if st in loc:
+            state_used = st
+            break
+    if state_used is None:
+        for city, st in _india_consumption.get("city_to_state", {}).items():
+            if city in loc and st in states:
+                state_used = st
+                break
+    if state_used:
+        mult = float(states[state_used].get(f"{sector}_multiplier", 1.0))
+
+    return base * mult, cat.get("hces_line", "unmapped"), state_used, mult
 
 
 def _india_market_tam(industry: str):
@@ -622,21 +679,6 @@ class MLService:
         is_metro = any(k in location_lower for k in ['bangalore', 'bengaluru', 'mumbai', 'delhi', 'ncr', 'hyderabad', 'chennai', 'kolkata', 'pune', 'gurgaon', 'noida'])
         is_tier2 = any(k in location_lower for k in ['guntur', 'vijayawada', 'jaipur', 'indore', 'chandigarh', 'kochi', 'lucknow', 'nagpur', 'surat', 'bhopal', 'vizag', 'visakhapatnam'])
 
-        # Base Per-Capita Annual Spend (in ₹) calibrated to Indian consumption & World Bank GDP per capita:
-        per_capita_spend = 15000.0
-        if any(k in ind for k in ['food', 'beverage', 'cafe', 'restaurant', 'biryani', 'bakery', 'dining']):
-            per_capita_spend = 22000.0
-        elif any(k in ind for k in ['comm', 'retail', 'grocery', 'supermarket', 'organic', 'store', 'hyperlocal']):
-            per_capita_spend = 38000.0
-        elif any(k in ind for k in ['gym', 'fitness', 'crossfit', 'workout', 'wellness']):
-            per_capita_spend = 9500.0
-        elif any(k in ind for k in ['health', 'clinic', 'doctor', 'medical', 'dental']):
-            per_capita_spend = 11000.0
-        elif any(k in ind for k in ['edu', 'school', 'college', 'coaching', 'learn']):
-            per_capita_spend = 18500.0
-        elif any(k in ind for k in ['salon', 'spa', 'beauty', 'grooming']):
-            per_capita_spend = 7500.0
-
         # A hybrid venture is only sized as a LOCAL catchment when its stated location is
         # genuinely local. Previously the guard list held 'all india' but not plain 'india',
         # so a nationwide hybrid brand was sized against a 28k-person catchment - roughly
@@ -660,6 +702,18 @@ class MLService:
             else:
                 catchment_pop = 50000   # Tier-3 / Semi-urban town catchment
                 loc_label = f"Local Town Catchment ({catchment_pop:,} population)"
+
+            # Real per-capita spend from the HCES survey, chosen by catchment type
+            # (metro and Tier-2 read the urban figure, campus and Tier-3 towns the
+            # rural one) and scaled by the state actually named.
+            is_urban_catchment = bool(is_metro or is_tier2)
+            per_capita_spend, hces_line, hces_state, hces_mult = _hces_per_capita(
+                ind, location_raw, is_urban_catchment)
+            spend_sector = 'urban' if is_urban_catchment else 'rural'
+            hces_note = (f"HCES 2023-24 '{hces_line}', {spend_sector} "
+                         f"₹{per_capita_spend:,.0f}/person/year")
+            if hces_state:
+                hces_note += f" (scaled {hces_mult:.2f}x to {hces_state.title()})"
 
             # Local Annual Market Capacity in ₹ Crores:
             local_spend_inr = catchment_pop * per_capita_spend
@@ -787,10 +841,10 @@ class MLService:
             # population and per-capita spend, not from a published total.
             'market_size_source': (
                 tam_source if not (is_offline or (is_hybrid and not is_national_scope))
-                else 'Local catchment population x per-capita category spend'),
+                else f'MoSPI HCES 2023-24 - {hces_note}'),
             'market_size_confidence': (
                 tam_conf if not (is_offline or (is_hybrid and not is_national_scope))
-                else 'derived'),
+                else 'high'),
             'growth_rate': growth_rate,
             'demand_level': demand_level,
             'opportunity_score': final_opportunity,
