@@ -661,7 +661,11 @@ def generate_financial_analysis(context: dict) -> dict:
 
     if is_food:
         c1_name = "Commercial Kitchen & Machinery Setup"
-        c1_why = "Covers commercial gas burners, heavy-duty biryani handis, commercial deep freezer, ventilation/exhaust hood, and stainless steel prep tables."
+        c1_why = (
+            "Covers commercial gas burners, heavy-duty biryani handis, commercial deep freezer, ventilation/exhaust hood, and stainless steel prep tables."
+            if 'biryani' in title.lower()
+            else "Covers commercial gas burners and cooking range, commercial deep freezer and refrigeration, ventilation/exhaust hood, and stainless steel prep tables."
+        )
         c2_name = "Dining Fit-Out & Service Counter"
         c2_why = "Covers customer order counter, dining seating/tables, LED lighting, interior painting, and exterior illuminated signboard."
         c3_name = "FSSAI Food License & Trade Permits"
@@ -773,7 +777,7 @@ def generate_financial_analysis(context: dict) -> dict:
             'item': 'Commercial Facility Rent & Maintenance' if is_offline else 'Workspace / Coworking & Remote Infrastructure',
             'cost': rent_cost,
             'percent': round((rent_cost / total_opex) * 100, 1),
-            'why': f"Covers commercial space ({'ground-floor campus/high-street location' if is_offline else 'flexible coworking/shared workspace'}) in {context.get('location', context.get('country', 'India'))} ({tier_label}).",
+            'why': f"Covers commercial space ({('ground-floor campus/high-street location' if loc_tier == 'campus_town' else 'ground-floor high-street retail space') if is_offline else 'flexible coworking/shared workspace'}) in {context.get('location', context.get('country', 'India'))} ({tier_label}).",
             'calculation': f"Market lease rate calibrated for {tier_label} real estate in 2026."
         },
         {
@@ -810,6 +814,8 @@ def generate_financial_analysis(context: dict) -> dict:
             'percent': round((marketing_cost / total_opex) * 100, 1),
             'why': (
                 'Covers Google Maps local listing promotion, Instagram/Facebook local area ads, WhatsApp group marketing in nearby hostels/colleges, and Swiggy/Zomato onboarding.'
+                if (is_food and is_offline and loc_tier == 'campus_town') else
+                'Covers Google Maps local listing promotion, Instagram/Facebook local area ads, neighbourhood WhatsApp community groups, and Swiggy/Zomato onboarding.'
                 if (is_food and is_offline) else
                 'Covers Instagram fitness content ads, Google Search ads for local gym queries, referral discount programs, and free trial membership campaigns.'
                 if (is_fitness and is_offline) else
@@ -820,13 +826,15 @@ def generate_financial_analysis(context: dict) -> dict:
             'calculation': f"Allocated to acquire ~{max(30, int(marketing_cost / max(1, cac)))} new customers monthly at an average blended CAC of ₹{cac:,.0f}."
         },
         {
-            'item': 'Raw Materials, Ingredients & Consumables' if (is_offline or raw_material_cost > 0) else 'SaaS Tools, Communication & Security',
-            'cost': raw_material_cost if (is_offline or raw_material_cost > 0) else utility_cost,
-            'percent': round(((raw_material_cost if (is_offline or raw_material_cost > 0) else utility_cost) / total_opex) * 100, 1),
+            'item': 'Raw Materials, Ingredients & Consumables',
+            'cost': raw_material_cost,
+            'percent': round((raw_material_cost / total_opex) * 100, 1) if total_opex else 0.0,
             'why': (
                 'Wholesale procurement of rice, chicken, biryani masala, fresh vegetables, ghee, packaging containers, and disposable cutlery from Hyderabad/Guntur wholesale mandis.'
                 if (is_food and is_offline and 'biryani' in title.lower()) else
-                'Wholesale procurement of certified organic coffee beans, farm-fresh dairy, organic produce, eco-friendly biodegradable takeaway packaging, and hygiene consumables.'
+                'Wholesale procurement of coffee beans, dairy, bakery inputs and fresh produce, plus takeaway packaging, disposables and hygiene consumables.'
+                if (is_food and is_offline and any(k in title.lower() or k in ind_lower for k in ['cafe', 'coffee', 'bakery', 'bistro', 'tea'])) else
+                'Wholesale procurement of core ingredients and fresh produce, plus takeaway packaging, disposables and hygiene consumables, sourced from local wholesale markets.'
                 if (is_food and is_offline) else
                 'Protein supplement inventory, gym chalk, resistance bands, foam rollers, and basic merchandise for resale (water bottles, towels).'
                 if (is_fitness and is_offline) else
@@ -853,22 +861,30 @@ def generate_financial_analysis(context: dict) -> dict:
         }
     ]
 
+    opex_breakdown = [row for row in opex_breakdown if float(row.get('cost') or 0) > 0]
+
+    # Round the first two streams, then make the third the exact remainder so the
+    # breakdown always sums to monthly_revenue rather than drifting by the rounding.
+    _rev_primary = round(monthly_revenue * 0.78, -2)
+    _rev_premium = round(monthly_revenue * 0.15, -2)
+    _rev_ancillary = round(monthly_revenue - _rev_primary - _rev_premium, 2)
+
     revenue_breakdown = [
         {
             'stream': 'Primary Product / Service Sales',
-            'amount': round(monthly_revenue * 0.78, -2),
+            'amount': _rev_primary,
             'why': f"Direct customer transactions for core {title} offerings at an average transaction ticket of ₹{aov:,.0f}.",
             'calculation': f"Generates {round(monthly_revenue * 0.78 / monthly_revenue * 100)}% of top-line monthly cash inflow."
         },
         {
             'stream': 'Premium Tier Subscriptions / Value-Add Modules',
-            'amount': round(monthly_revenue * 0.15, -2),
+            'amount': _rev_premium,
             'why': 'Repeat loyalty passes, automated monthly meal subscriptions, or enterprise advanced workflow modules.',
             'calculation': 'High-margin recurring revenue stream insulating the business against seasonal dips.'
         },
         {
             'stream': 'Ancillary Services, Partnerships & Delivery Add-Ons',
-            'amount': round(monthly_revenue * 0.07, -2),
+            'amount': _rev_ancillary,
             'why': 'B2B corporate catering, platform convenience fees, and merchandise partnerships.',
             'calculation': 'Pure contribution margin expansion with minimal marginal operational cost.'
         }

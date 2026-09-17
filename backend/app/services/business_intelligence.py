@@ -440,7 +440,7 @@ SECTOR_PROFILES = {
         "ltv_cac": "3.5x – 4.2x",
         "payback_months": "4 – 6 Months",
         "problem": "Inconsistent taste quality, long dining wait times, and high food aggregator commissions (22%+) eroding margins for food operators while delivering lukewarm food to customers across India.",
-        "solution": "High-efficiency culinary kitchen model focusing on authentic signature recipes (dum biryani / artisanal baked goods), rapid counter takeaway, and direct localized delivery for {title}.",
+        "solution": "High-efficiency culinary kitchen model focusing on authentic signature recipes, rapid counter takeaway, and direct localized delivery for {title}.",
         "customer_segments": [
             "Primary ICP: Students, young professionals, and local residents seeking authentic, hygienic meals",
             "Family Diners: Multi-generational households looking for weekend feast packs and celebratory platters",
@@ -455,7 +455,7 @@ SECTOR_PROFILES = {
             "Selective Aggregator Presence (Swiggy / Zomato) used strictly as top-of-funnel customer discovery"
         ],
         "key_partners": [
-            "Direct Farm & Spice Wholesalers for daily fresh poultry, dairy, Basmati rice & spices",
+            "Direct wholesale suppliers for daily fresh ingredients, dairy, staples and spices",
             "Packaging Manufacturers for leak-proof, heat-retentive clay pots and biodegradable boxes",
             "FSSAI Food Safety Auditors & Commercial Kitchen Equipment Maintenance Vendors",
             "Local Delivery Fleets for direct neighborhood order fulfillment"
@@ -481,7 +481,7 @@ SECTOR_PROFILES = {
         ],
         "revenue_streams": [
             "Student / Quick Meal Combo: ₹249 / meal (express counter pickup with complimentary drink)",
-            "Family Feast / Handi Pack: ₹799 / pack (clay handi dum biryani / pastry platter for 3-4 pax)",
+            "Family / Sharing Pack: ₹799 / pack (signature sharing platter for 3-4 pax)",
             "Corporate & Party Catering: ₹4,999 / event (buffet setup for 15-25 pax with chafing dishes)",
             "Beverage & Dessert Add-ons: ₹50 – ₹180 per order (sweet lassi, gulab jamun, signature pastries)"
         ],
@@ -494,8 +494,8 @@ SECTOR_PROFILES = {
         "unfair_advantage": "Proprietary slow-cooked dum recipe and spice blend delivering irreplaceable signature taste, paired with direct WhatsApp ordering that bypasses third-party platform commissions.",
         "detailed_explanation": "{title} leverages lean, high-throughput kitchen operations to drive superior gross margins. By balancing high-volume walk-in takeaway with profitable direct party catering, the venture achieves sustainable profitability within months.",
         "pricing_tiers": [
-            {"tier": "Student / Quick Meal Combo", "price": "₹249", "monthly_price": "₹249", "annual_price": "₹249", "period": "/ meal combo", "target": "Individual diners, students & commuters", "features": "Single-portion signature dum biryani or pastry box, complimentary beverage, express takeaway counter pickup, eco-friendly packaging"},
-            {"tier": "Family Feast / Handi Pack", "price": "₹799", "monthly_price": "₹799", "annual_price": "₹799", "period": "/ meal pack", "target": "Families & friend groups (3-4 pax)", "features": "Full clay handi dum biryani or artisanal dessert platter, double sides (mirchi ka salan & raita), signature dessert sampler, priority dine-in table", "popular": True},
+            {"tier": "Student / Quick Meal Combo", "price": "₹249", "monthly_price": "₹249", "annual_price": "₹249", "period": "/ meal combo", "target": "Individual diners, students & commuters", "features": "Single-portion signature item, complimentary beverage, express takeaway counter pickup, eco-friendly packaging"},
+            {"tier": "Family / Sharing Pack", "price": "₹799", "monthly_price": "₹799", "annual_price": "₹799", "period": "/ meal pack", "target": "Families & friend groups (3-4 pax)", "features": "Full signature sharing platter, two house accompaniments, dessert sampler, priority dine-in table", "popular": True},
             {"tier": "Party & Corporate Catering", "price": "₹4,999", "monthly_price": "₹4,999", "annual_price": "₹4,999", "period": "/ event booking", "target": "Office parties, birthdays & celebrations (15-25 pax)", "features": "Customized catering buffet setup, chafing dishes with live food heating, dedicated service steward, complimentary dessert counter, custom spice levels"}
         ],
         "swot": {
@@ -511,7 +511,7 @@ SECTOR_PROFILES = {
             "opportunities": [
                 {"title": "Direct D2C WhatsApp Ordering Channel", "desc": "Encouraging regular customers to order directly via WhatsApp saves 20-25% aggregator commission fees.", "impact": "Profit Protection", "action": "Offer a free beverage or 10% instant discount on direct WhatsApp pickup orders."},
                 {"title": "Late Night & Weekend Midnight Delivery", "desc": "University campuses and IT corridors experience intense late-night food cravings between 11 PM and 2 AM.", "impact": "Incremental Revenue", "action": "Extend cloud kitchen delivery hours on weekends to capture high-margin night sales."},
-                {"title": "Packaged Gourmet Spices & Sauces", "desc": "Retail sales of signature biryani masala kits or bottled artisanal sauces create an omnichannel revenue stream.", "impact": "Brand Extension", "action": "Package signature spice blends in retail jars for front-counter display sales."}
+                {"title": "Packaged Gourmet Mixes & Sauces", "desc": "Retail sales of signature spice blends, dry mixes or bottled sauces create an omnichannel revenue stream.", "impact": "Brand Extension", "action": "Package signature blends in retail jars for front-counter display sales."}
             ],
             "threats": [
                 {"title": "Aggressive Discounting from Delivery Aggregators", "desc": "Swiggy and Zomato promote deeply-discounted cloud kitchen brands that undercut storefront prices.", "impact": "Price Competition", "action": "Focus marketing on dine-in freshness, authentic clay-pot aroma, and direct customer relationships."},

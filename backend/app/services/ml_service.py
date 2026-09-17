@@ -125,18 +125,170 @@ def ensure_ml_models_loaded():
 # =====================================================================
 # HELPER FUNCTIONS
 # =====================================================================
+# Maps the free-text industry / sector / country a founder actually types onto the
+# vocabulary the trained encoders learned. The training vocabularies are capitalised
+# ("Fintech", "Health", "India") while every caller here lower-cases its input, so a
+# plain exact-match lookup missed 100% of the time and silently fed the SAME category
+# to every startup — which made market opportunity, growth and the financial model
+# effectively blind to industry. Matching is done case-insensitively, then by alias,
+# preferring the LONGEST matching alias so "fintech" resolves to Fintech rather than
+# being swallowed by the shorter "tech" alias of the software category.
+_CATEGORY_SYNONYMS = {
+    # NOTE: 'technology' is deliberately NOT an alias here — it is a suffix of many
+    # more specific industries ("Education Technology", "Financial Technology") and,
+    # being long, would win the longest-alias rule and swallow them.
+    'internet software & services': ['saas', 'software', 'cloud', 'platform', 'devtools', 'api', 'b2b software',
+                                     'enterprise software', 'tech', 'it services', 'gaming', 'game', 'esports'],
+    'software': ['saas', 'software', 'cloud', 'platform', 'devtools', 'api', 'enterprise software', 'tech'],
+    'artificial intelligence': ['ai', 'artificial intelligence', 'machine learning', 'ml', 'deep learning',
+                                'genai', 'generative ai', 'nlp', 'computer vision'],
+    'fintech': ['fintech', 'finance', 'financial', 'payments', 'payment', 'banking', 'lending', 'loan',
+                'credit', 'insurance', 'insurtech', 'wealth', 'upi', 'neobank'],
+    'finance': ['fintech', 'finance', 'financial', 'payments', 'banking', 'lending', 'credit', 'insurance'],
+    'edtech': ['edtech', 'education', 'educational', 'learning', 'school', 'coaching', 'tutoring',
+               'training', 'e-learning', 'upskilling'],
+    'education': ['edtech', 'education', 'educational', 'learning', 'school', 'coaching', 'tutoring', 'training'],
+    'health': ['health', 'healthcare', 'medical', 'medicine', 'clinic', 'dental', 'hospital', 'pharma',
+               'pharmacy', 'biotech', 'medtech', 'wellness', 'diagnostics', 'telemedicine'],
+    'e-commerce & direct-to-consumer': ['ecommerce', 'e-commerce', 'd2c', 'direct-to-consumer', 'marketplace',
+                                        'online store', 'online retail', 'dropshipping'],
+    'ecommerce': ['ecommerce', 'e-commerce', 'd2c', 'direct-to-consumer', 'marketplace', 'online store'],
+    'consumer & retail': ['retail', 'consumer', 'fmcg', 'grocery', 'supermarket', 'kirana', 'food', 'beverage',
+                          'cafe', 'coffee', 'restaurant', 'bakery', 'biryani', 'qsr', 'cloud kitchen', 'dining',
+                          'fashion', 'apparel', 'clothing', 'beauty', 'salon', 'spa', 'grooming', 'fitness',
+                          'gym', 'crossfit', 'sports', 'hospitality'],
+    'cybersecurity': ['cybersecurity', 'cyber', 'security', 'infosec', 'information security'],
+    'security': ['cybersecurity', 'cyber', 'security', 'infosec'],
+    'data management & analytics': ['data', 'analytics', 'big data', 'business intelligence', 'data science'],
+    'analytics': ['data', 'analytics', 'big data', 'business intelligence', 'data science'],
+    'supply chain, logistics, & delivery': ['logistics', 'supply chain', 'delivery', 'shipping', 'freight',
+                                            'courier', 'warehousing', 'fulfilment', 'fulfillment'],
+    'transportation': ['logistics', 'supply chain', 'delivery', 'shipping', 'freight', 'transport', 'transportation'],
+    'auto & transportation': ['auto', 'automotive', 'mobility', 'electric vehicle', 'vehicle', 'transport',
+                              'transportation', 'ride hailing', 'taxi'],
+    'automotive': ['auto', 'automotive', 'mobility', 'electric vehicle', 'vehicle'],
+    'travel': ['travel', 'tourism', 'hotel', 'booking', 'holiday', 'trip'],
+    'hospitality': ['hotel', 'hospitality', 'resort', 'lodging'],
+    'mobile & telecommunications': ['mobile', 'telecom', 'telecommunications', 'telephony'],
+    'mobile': ['mobile', 'telecom', 'telecommunications'],
+    'hardware': ['hardware', 'iot', 'robotics', 'device', 'manufacturing', 'electronics', 'semiconductor', 'drone'],
+    'cleantech': ['cleantech', 'clean energy', 'renewable', 'solar', 'sustainability', 'climate'],
+    'real_estate': ['real estate', 'property', 'proptech', 'housing'],
+    'united states': ['usa', 'us', 'u.s.', 'u.s.a.', 'america', 'united states of america'],
+    'united kingdom': ['uk', 'u.k.', 'britain', 'great britain', 'england'],
+    'united arab emirates': ['uae', 'dubai', 'abu dhabi'],
+    'south korea': ['korea'],
+}
+
+
+# Indicative sector CAGRs for the Indian market, used as the base growth rate.
+# These are BENCHMARK ESTIMATES for the sector, not a measured figure for any one
+# idea, and the UI labels them as such. They replace a regressor whose growth head
+# was trained on `12 + company_age*0.8` against a hardcoded company_age, and so
+# returned an identical constant for every startup regardless of industry.
+_SECTOR_CAGR = [
+    (['ai', 'artificial intelligence', 'machine learning', 'genai', 'deep learning'], 28.0),
+    (['saas', 'software', 'cloud', 'devtools', 'developer tools'], 22.0),
+    (['fintech', 'payments', 'lending', 'insurtech', 'neobank', 'wealth'], 20.0),
+    (['gaming', 'game', 'esports'], 20.0),
+    (['ecommerce', 'e-commerce', 'd2c', 'direct-to-consumer', 'marketplace'], 19.0),
+    (['health', 'medtech', 'telemedicine', 'diagnostics', 'pharma', 'biotech'], 18.0),
+    (['cyber', 'security', 'infosec'], 18.0),
+    (['clean', 'renewable', 'solar', 'climate', 'sustainab', 'energy'], 17.0),
+    (['edtech', 'education', 'learning', 'coaching', 'tutoring'], 16.0),
+    (['data', 'analytics', 'business intelligence'], 16.0),
+    (['travel', 'tourism', 'hotel', 'hospitality'], 14.0),
+    (['agri', 'farm', 'agritech'], 13.0),
+    (['fitness', 'gym', 'wellness', 'crossfit'], 13.0),
+    (['logist', 'supply chain', 'delivery', 'freight', 'courier'], 12.0),
+    (['real estate', 'proptech', 'property', 'housing'], 12.0),
+    (['salon', 'spa', 'beauty', 'grooming'], 12.0),
+    (['food', 'beverage', 'cafe', 'restaurant', 'bakery', 'biryani', 'qsr', 'dining'], 11.0),
+    (['retail', 'grocery', 'supermarket', 'kirana', 'fmcg'], 10.0),
+]
+_DEFAULT_CAGR = 13.0
+
+
+def _sector_cagr(industry: str, is_offline: bool = False) -> float:
+    """
+    Indicative annual growth rate for a sector. Picks the LONGEST matching keyword so
+    specific sectors beat generic ones, and damps the figure for purely physical
+    ventures, whose growth is bounded by a single catchment rather than by the
+    national sector curve.
+    """
+    ind = str(industry or '').lower()
+    best, best_len = None, 0
+    for keywords, cagr in _SECTOR_CAGR:
+        for kw in keywords:
+            if kw in ind and len(kw) > best_len:
+                best, best_len = cagr, len(kw)
+    rate = best if best is not None else _DEFAULT_CAGR
+    if is_offline:
+        rate *= 0.80  # a single physical location cannot compound at the national rate
+    return round(rate, 1)
+
+
+def _encoder_lookup(encoder):
+    """Build (once, then cache) a lowercase class-name -> encoded-index map."""
+    cache = getattr(encoder, '_v2v_lookup', None)
+    if cache is None:
+        cache = {str(c).strip().lower(): int(i) for i, c in enumerate(encoder.classes_)}
+        try:
+            encoder._v2v_lookup = cache
+        except Exception:
+            pass  # some encoders disallow attribute assignment; rebuild each call
+    return cache
+
+
 def _safe_encode(encoder, value, fallback=0):
-    """Safely encode a categorical value, returning fallback if unseen."""
+    """
+    Encode a categorical value, tolerating the casing and naming a founder actually
+    uses. Falls back to the encoder's own 'other' class where one exists, rather than
+    to class 0 (which in the unicorn-derived vocabulary is a stray investor-name string).
+    """
     if encoder is None:
         return fallback
     try:
-        return encoder.transform([str(value)])[0]
-    except (ValueError, KeyError):
-        # Use the most common class or 0
-        try:
-            return encoder.transform([encoder.classes_[0]])[0]
-        except Exception:
-            return fallback
+        lookup = _encoder_lookup(encoder)
+    except Exception:
+        return fallback
+
+    raw = str(value or '').strip().lower()
+
+    def _fallback():
+        for generic in ('other', 'others', 'unknown'):
+            if generic in lookup:
+                return lookup[generic]
+        return fallback
+
+    if not raw:
+        return _fallback()
+
+    # 1. Exact match, case-insensitive
+    if raw in lookup:
+        return lookup[raw]
+
+    # 2. Alias match. Collect every (canonical, alias) hit that the encoder actually
+    #    knows, then keep the longest alias so specific terms beat generic ones.
+    best_idx, best_len = None, 0
+    tokens = set(re.split(r'[^a-z0-9]+', raw)) - {''}
+    for canonical, aliases in _CATEGORY_SYNONYMS.items():
+        idx = lookup.get(canonical)
+        if idx is None:
+            continue
+        for alias in aliases:
+            hit = (raw == alias) or (alias in tokens) or (len(alias) > 3 and alias in raw)
+            if hit and len(alias) > best_len:
+                best_idx, best_len = idx, len(alias)
+    if best_idx is not None:
+        return best_idx
+
+    # 3. Last resort: any known class whose name shares a word with the input
+    for name, idx in lookup.items():
+        if tokens & (set(re.split(r'[^a-z0-9]+', name)) - {''}):
+            return idx
+
+    return _fallback()
 
 
 def _build_20_features(context: dict) -> np.ndarray:
@@ -324,7 +476,16 @@ class MLService:
         elif any(k in ind for k in ['salon', 'spa', 'beauty', 'grooming']):
             per_capita_spend = 7500.0
 
-        if is_offline or (is_hybrid and not any(k in location_lower for k in ['global', 'all india', 'worldwide', 'national'])):
+        # A hybrid venture is only sized as a LOCAL catchment when its stated location is
+        # genuinely local. Previously the guard list held 'all india' but not plain 'india',
+        # so a nationwide hybrid brand was sized against a 28k-person catchment - roughly
+        # three orders of magnitude too small.
+        national_scope_terms = ['global', 'all india', 'pan india', 'pan-india', 'worldwide',
+                                'national', 'nationwide', 'india', 'usa', 'united states', 'online']
+        is_national_scope = location_lower.strip() in national_scope_terms or any(
+            k in location_lower for k in ['global', 'all india', 'pan india', 'pan-india', 'worldwide', 'nationwide']
+        )
+        if is_offline or (is_hybrid and not is_national_scope):
             # Localized Catchment Population sizing:
             if is_campus:
                 catchment_pop = 28000  # ~12,000 university students, ~2,000 faculty/staff, ~14,000 local town residents
@@ -366,23 +527,32 @@ class MLService:
             else:
                 market_size_str = f"₹{tam_crores:,} Cr"
 
-        # CAGR derived dynamically from Google Trends + ML regressor
+        # CAGR: sector benchmark + live Google Trends demand signal.
+        #
+        # The market regressor's growth head is NOT used here. Its training target was
+        # `12.0 + company_age * 0.8` while inference hardcodes company_age = 4, so it
+        # emits the same constant (~16.4%) for every startup in every industry and
+        # cannot express sector differences. A published sector-CAGR benchmark is both
+        # more accurate and honestly labelled as a benchmark.
         trends = context.get('_trends_data', {})
         avg_interest = float(trends.get('avg_interest') or 60.0)
-        trends_boost = (avg_interest - 50.0) * 0.08  # -0.8% to +3.2%
-        base_growth = ml_growth if ml_growth else 14.5
-        growth_rate = round(float(np.clip(base_growth + trends_boost, 8.0, 35.0)), 1)
+        base_growth = _sector_cagr(ind, is_offline)
+        trends_boost = (avg_interest - 50.0) * 0.08  # -4.0% to +4.0%
+        growth_rate = round(float(np.clip(base_growth + trends_boost, 4.0, 35.0)), 1)
 
-        # Opportunity Score derived from ML model + demand trends + budget sufficiency
+        # Opportunity Score derived from ML model + demand trends + budget sufficiency.
+        # The floor was 65.0, which meant a one-person idea with a ₹5,000 budget and no
+        # search demand still scored 65/100 — the score could never say "this looks
+        # weak". Widened to 25.0 so the low end of the scale is actually reachable.
         demand_level = "High Velocity" if avg_interest >= 65 else ("Steady Demand" if avg_interest >= 45 else "Moderate")
-        final_opportunity = round(float(np.clip(ml_opportunity * 0.45 + (avg_interest * 0.35) + (15.0 if budget >= 100000 else 8.0), 65.0, 96.0)), 1)
+        final_opportunity = round(float(np.clip(ml_opportunity * 0.45 + (avg_interest * 0.35) + (15.0 if budget >= 100000 else 8.0), 25.0, 96.0)), 1)
 
         # Dynamic Demographics, Pain Points, Channels & Triggers
         loc_display = location_raw or context.get('country', 'India')
         title_text = title_raw or 'this venture'
 
         if is_campus:
-            primary_demo = f"University students, hostelers, faculty, and administrative staff at local campuses (such as Vignan University), plus nearby residents in {loc_display}."
+            primary_demo = f"University students, hostelers, faculty, and administrative staff at campuses in and around {loc_display}, plus nearby town residents."
             key_pain_point = f"Long dining queues during lunch/break hours, inconsistent food quality or hygiene, lack of late-night delivery to campus hostels, and high delivery fees on aggregator apps."
             acquisition_channel = f"Campus word-of-mouth, hostel WhatsApp order-ahead groups, college fest sponsorships, entrance flyer hand-outs, and UPI table QR codes."
             purchase_trigger = f"Daily lecture breaks, late-night study cravings, post-exam celebrations, and group weekend dining."
@@ -409,12 +579,13 @@ class MLService:
             f"Strong customer readiness and favorable unit economics support early beachhead traction."
         )
         market_analysis_explanation = (
-            f"Market capacity for {title_text} in {ind} is sized at {market_size_str} with an anticipated 5-year CAGR of {growth_rate}%. "
+            f"Market capacity for {title_text} in {ind} is sized at {market_size_str} with a sector benchmark CAGR of {growth_rate}%, "
+            f"adjusted for live search demand. "
             f"Demand dynamics demonstrate {demand_level.lower()} with healthy willingness to pay across {loc_display}."
         )
 
         return {
-            'data_source': 'Dynamic Market Model & Economic Indicators',
+            'data_source': 'Sector CAGR Benchmark, Google Trends & Economic Indicators',
             'market_size': market_size_str,
             'growth_rate': growth_rate,
             'demand_level': demand_level,
