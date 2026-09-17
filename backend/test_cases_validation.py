@@ -115,7 +115,9 @@ for tc in test_cases:
     print(f"  [Tech Stack Frontend]: {t_front}")
     print(f"  [Tech Stack Backend]: {t_back}")
     print(f"  [Business Value Prop]: {val_prop}...")
-    print(f"  [Financial Dev Cost]: ${d_cost:,.0f} | Monthly Ops: ${m_ops:,.0f} | ROI: {roi_val}%")
+    # The pipeline works entirely in INR; printing these with a "$" made the demo
+    # output read as US dollars.
+    print(f"  [Financial Dev Cost]: Rs {d_cost:,.0f} | Monthly Ops: Rs {m_ops:,.0f} | ROI: {roi_val}%")
     print(f"  [Risk Score]: Overall Risk {r_score}%")
 
 db.close()

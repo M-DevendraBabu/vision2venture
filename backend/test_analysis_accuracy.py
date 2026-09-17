@@ -10,6 +10,7 @@ Usage (from backend/):
     python test_analysis_accuracy.py
 """
 import os
+import re
 import sys
 import warnings
 
@@ -276,6 +277,27 @@ def test_ratings_are_never_invented():
     check("unverified AI suggestions are never rated", out_ai[0]["rating"] is None)
 
 
+def test_no_measured_outcome_claims():
+    """Guards: value propositions asserted measured results for products that do not
+    exist yet - "Boosts transaction success rates by 14.2%", "eliminates 100% of teacher
+    scheduling clashes" - and sector problems cited uncited statistics about the world."""
+    print("\n[13] No measured-outcome claims for an unbuilt product")
+    import app.services.business_intelligence as bi
+
+    src_path = bi.__file__.replace(".pyc", ".py")
+    with open(src_path, encoding="utf-8") as fh:
+        src = fh.read()
+
+    # Quantified efficacy in a value proposition, e.g. "by 60%" or "by 2.4x".
+    efficacy = re.findall(r'"value_proposition": "[^"]*(?:by [0-9]+(?:\.[0-9])?[%x]|[0-9]+% of)[^"]*"', src)
+    check("no quantified efficacy claims in value propositions", not efficacy,
+          f"found {len(efficacy)}")
+
+    # Statistics about the world asserted inside a problem statement.
+    stats = re.findall(r'"problem": "[^"]*[0-9]+(?:\.[0-9])?%[^"]*"', src)
+    check("no uncited statistics in problem statements", not stats, f"found {len(stats)}")
+
+
 def test_venture_economics():
     """Guards: budget and team_size were read in isolation, so runway was invisible."""
     print("\n[9] Runway combines capital, team size and delivery mode")
@@ -314,7 +336,8 @@ def main():
                test_financials_reconcile, test_no_cross_industry_content_leakage,
                test_hybrid_national_scope_sizing, test_zero_fabrication,
                test_no_hash_derived_statistics, test_ratings_are_never_invented,
-               test_venture_economics, test_strong_beats_weak]:
+               test_no_measured_outcome_claims, test_venture_economics,
+               test_strong_beats_weak]:
         try:
             fn()
         except Exception as e:

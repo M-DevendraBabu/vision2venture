@@ -99,7 +99,7 @@ SECTOR_PROFILES = {
             "EdTech Coaching Institutes: Multi-center test-prep academies requiring dynamic batch and faculty scheduling",
             "Decision Makers: School Principals, Academic Deans, Vice Chancellors, and Institutional Trustees"
         ],
-        "value_proposition": "Reduces institutional timetable generation time from 3 weeks to under 15 minutes, eliminates 100% of teacher scheduling clashes, and guarantees full compliance with NEP 2020 multidisciplinary guidelines.",
+        "value_proposition": "Aims to cut institutional timetable generation from weeks to minutes, resolve teacher scheduling clashes automatically, and keep timetables aligned with NEP 2020 multidisciplinary guidelines.",
         "channels": [
             "Direct Institutional Field Sales & Regional Academic Demos targeting School Associations (CBSE Sahodaya, CMA)",
             "Academic Leadership Summits & EdTech Conferences across Tier-1 & Tier-2 state capitals",
@@ -186,7 +186,7 @@ SECTOR_PROFILES = {
             "Consumer Base: Mobile-first digital shoppers utilizing UPI, RuPay credit cards, and Buy-Now-Pay-Later (BNPL)",
             "Decision Makers: Chief Financial Officers (CFOs), Head of Treasury, and E-commerce Founders"
         ],
-        "value_proposition": "Boosts transaction success rates by 14.2% via multi-bank dynamic routing, slashes payment processing fees by 35%, and delivers instant T+0 merchant settlements.",
+        "value_proposition": "Aims to lift transaction success rates through multi-bank dynamic routing, reduce payment processing fees, and settle to merchants faster than standard multi-day cycles.",
         "channels": [
             "Product-Led Integration with OpenCart, WooCommerce, and Shopify Merchant App Stores",
             "B2B FinTech Aggregator Partnerships & CA/Accountant Referral Networks across Tier-1/2 trade hubs",
@@ -273,7 +273,7 @@ SECTOR_PROFILES = {
             "Diagnostic & Pharmacy Partners: Neighborhood pathology labs and local medical stores fulfilling digital orders",
             "Decision Makers: Lead Doctors, Clinic Medical Directors, and Hospital Administrators"
         ],
-        "value_proposition": "Cuts clinic administrative overhead by 60%, automates 100% of ABDM digital record compliance in under 3 clicks, and reduces patient clinic wait times from 45 mins to under 12 mins.",
+        "value_proposition": "Aims to cut clinic administrative overhead, automate ABDM digital record compliance in a few clicks, and materially reduce patient waiting times.",
         "channels": [
             "Hyperlocal Medical Representative (MR) Outreach & Indian Medical Association (IMA) Branch Sponsorships",
             "Accredited Continuing Medical Education (CME) Workshops on ABDM Compliance & Electronic Health Records",
@@ -447,7 +447,7 @@ SECTOR_PROFILES = {
             "Corporate Offices: Tech firms and institutions requiring reliable executive lunch boxes and meeting platters",
             "Event Hosts: Local birthday parties, functions, and campus events needing bulk catering"
         ],
-        "value_proposition": "Delivers slow-cooked authentic taste with strict hygiene standards, express counter takeaway under 6 minutes, and generous family portions at honest local prices.",
+        "value_proposition": "Aims to deliver authentic slow-cooked taste with strict hygiene standards, fast counter takeaway, and generous family portions at honest local prices.",
         "channels": [
             "Direct Walk-in Counter & High-Visibility Street Frontage with Open Kitchen Display",
             "Direct WhatsApp / QR Code Table Ordering with Zero Aggregator Markups",
@@ -534,7 +534,7 @@ SECTOR_PROFILES = {
             "Career Switchers: Non-tech professionals transitioning into data, product, or software roles",
             "Institutional Buyers: College placement cells and coding bootcamps providing placement software"
         ],
-        "value_proposition": "Increases interview invitation rates by 2.4x with automated ATS-optimized resumes, creates instant developer portfolios with live demo showcases, and slashes job application prep time by 80%.",
+        "value_proposition": "Aims to improve interview invitation rates with ATS-optimised resumes, generate developer portfolios with live demo showcases, and sharply reduce application preparation time.",
         "channels": [
             "Organic LinkedIn viral growth and student placement community word-of-mouth",
             "Inbound SEO targeting 'ATS resume checker', 'developer portfolio builder', and 'free AI resume generator'",
@@ -621,7 +621,7 @@ SECTOR_PROFILES = {
             "Finance & Operations: CFOs and FinOps practitioners seeking automated departmental cost allocation",
             "Cloud Consultancies: MSPs and system integrators managing multi-tenant client cloud environments"
         ],
-        "value_proposition": "Instantly reduces multi-cloud bills by 22–35% through autonomous waste elimination, detects cost anomalies within 15 minutes, and prevents expensive infrastructure misconfigurations before deployment.",
+        "value_proposition": "Aims to reduce multi-cloud spend through autonomous waste elimination, surface cost anomalies quickly, and catch expensive infrastructure misconfigurations before deployment.",
         "channels": [
             "Product-Led Growth (PLG) via GitHub / GitLab Marketplace apps and free read-only cloud cost audits",
             "High-intent DevOps community content on 'AWS cost optimization', 'Kubernetes FinOps', and 'Terraform cost diff'",
@@ -708,7 +708,7 @@ SECTOR_PROFILES = {
             "Corporate Tech Workers: Professionals seeking zero-wait in-clinic appointments or instant video consults",
             "Local Neighborhood Residents: Walk-in patients seeking immediate qualified physician care and diagnostics"
         ],
-        "value_proposition": "Eliminates clinic waiting room delays to under 10 minutes with smart digital tokens, unifies in-person visits with 24/7 follow-up teleconsults, and delivers full ABDM digital health record compliance.",
+        "value_proposition": "Aims to cut clinic waiting room delays with smart digital tokens, unify in-person visits with round-the-clock follow-up teleconsults, and maintain ABDM digital health record compliance.",
         "channels": [
             "Hyperlocal residential apartment health screening camps and doctor wellness talks",
             "Google Business Profile localized search targeting 'clinic near me', 'pediatrician near me', and 'smart clinic'",
@@ -795,7 +795,7 @@ SECTOR_PROFILES = {
             "Daily Kitchen Shoppers: Households requiring daily morning deliveries of fresh greens, herbs, and unadulterated dairy",
             "Commercial Buyers: Local artisanal cafes and boutique bakeries seeking farm-fresh organic ingredients"
         ],
-        "value_proposition": "Delivers freshly harvested pesticide-free organic produce directly from certified farms to kitchen counters in under 30 minutes at honest, transparent farm-gate prices.",
+        "value_proposition": "Aims to deliver freshly harvested produce from partner farms to kitchen counters quickly, at transparent farm-gate prices.",
         "channels": [
             "Hyperlocal apartment resident association (RWA) morning sample tasting booths",
             "Localized Instagram and Meta video campaigns showcasing partner organic farms and harvest stories",
