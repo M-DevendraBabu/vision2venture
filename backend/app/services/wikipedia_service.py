@@ -6,6 +6,7 @@ from Wikipedia's open MediaWiki API (no API key required).
 import logging
 import requests
 from typing import Dict
+from app.services.cache_service import disk_cache
 
 logger = logging.getLogger("vision2venture.wikipedia")
 
@@ -13,6 +14,7 @@ class WikipediaService:
     BASE_URL = "https://en.wikipedia.org/w/api.php"
 
     @staticmethod
+    @disk_cache(ttl_seconds=604800, namespace="wikipedia", cache_if=lambda r: isinstance(r, dict) and r.get("found") is True)
     def get_company_info(company_name: str) -> Dict:
         """
         Query Wikipedia for a real-world company summary.

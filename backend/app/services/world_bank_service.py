@@ -6,6 +6,7 @@ GDP per capita) for India and other countries (no API key required).
 import logging
 import requests
 from typing import Dict
+from app.services.cache_service import disk_cache
 
 logger = logging.getLogger("vision2venture.worldbank")
 
@@ -13,6 +14,7 @@ class WorldBankService:
     BASE_URL = "https://api.worldbank.org/v2"
 
     @staticmethod
+    @disk_cache(ttl_seconds=604800, namespace="worldbank", cache_if=lambda r: isinstance(r, dict) and r.get("status") == "live_verified")
     def get_country_indicators(country_code: str = 'IND') -> Dict:
         """
         Get verified macro-economic indicators for market sizing and economic context.

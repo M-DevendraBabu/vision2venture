@@ -46,7 +46,9 @@ def _call_llm(prompt: str, max_tokens: int = 1200, timeout: float = 14.0) -> str
                 completion = _groq_client.chat.completions.create(
                     model="qwen/qwen3.8-27b",
                     messages=[{"role": "user", "content": prompt}],
-                    temperature=0.7,
+                    # Lower temperature for more reproducible, consistent structured
+                    # (JSON) analysis across repeated runs of the same idea.
+                    temperature=0.3,
                     max_tokens=safe_max_tokens,
                     timeout=timeout,
                 )

@@ -1,6 +1,7 @@
 import json
 from typing import List, Dict, Optional
 from app.services.location_service import LocationService
+from app.services.competitor_sources import search_offline_competitors_multi
 from app.services.online_competitor_service import OnlineCompetitorService
 from app.services.ai_service import AIService
 
@@ -40,7 +41,9 @@ class CompetitorIntelligenceService:
         if b_type in ["offline", "hybrid"]:
             search_loc = location or target_market
             if search_loc:
-                offline_res = LocationService.search_offline_competitors(
+                # Merged physical discovery: HERE + TomTom (commercial POI) + OpenStreetMap.
+                # Falls back to OpenStreetMap alone when no commercial API keys are set.
+                offline_res = search_offline_competitors_multi(
                     category=industry,
                     location_query=search_loc,
                     radius_km=radius_km,

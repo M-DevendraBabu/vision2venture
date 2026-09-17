@@ -4,7 +4,8 @@ import { FaRobot, FaChartBar, FaExclamationTriangle, FaCheckCircle } from 'react
 /**
  * SourceBadge Component
  * Maps data sources to standardized colors and badges:
- * - Green (Real): Google Trends, World Bank, Google News, Wikipedia, OpenStreetMap, DuckDuckGo, YC
+ * - Green (Real): Google Trends, World Bank, Google News, Wikipedia, OpenStreetMap,
+ *                 HERE, TomTom, DuckDuckGo, YC
  * - Blue (AI): AI-grounded analysis
  * - Yellow (Benchmark): Industry / benchmark estimate
  * - Orange (Fallback): Template / offline fallback
@@ -23,6 +24,10 @@ const getSourceCategory = (sourceStr) => {
     s.includes('openstreetmap') ||
     s.includes('osm') ||
     s.includes('overpass') ||
+    // Commercial POI providers (word-boundary on "here" so "sphere"/"where" don't match)
+    /\bhere\b/.test(s) ||
+    s.includes('tomtom') ||
+    s.includes('commercial poi') ||
     s.includes('duckduckgo') ||
     s.includes('yc') ||
     s.includes('real') ||

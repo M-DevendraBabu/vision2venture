@@ -4,13 +4,17 @@
 
 ## Features
 
-- **AI Analysis Engine** — Powered by Google Gemini for market research, competitor analysis, SWOT, financial projections, and more
-- **NLP Processing** — spaCy-powered keyword extraction, domain classification, and problem/solution parsing
-- **ML Scoring** — Risk assessment, feasibility analysis, and investor readiness scoring
+- **AI Analysis Engine** — Groq / NVIDIA LLMs (Qwen) interpret **real-world market signals** (not invented data) to produce market research, competitor analysis, SWOT, and financial projections, with a labelled template fallback when the LLM is unavailable
+- **Real-Data Grounding** — Free, no-key public sources: Google Trends (search demand), World Bank (macro indicators), Google News (headlines), Wikipedia (company profiles), OpenStreetMap/Overpass (physical competitors), and a Y Combinator dataset + web search (online competitors)
+- **NLP Processing** — Keyword extraction, domain classification, and problem/solution parsing
+- **ML Scoring** — Startup success prediction, risk, feasibility, and investor-readiness models trained on real datasets (Crunchbase, unicorns, Indian funding)
+- **Transparent Provenance** — Every output carries a `data_source` label rendered as a colour-coded badge (Real / AI-grounded / Benchmark / Fallback)
 - **9-Tab Dashboard** — Overview, Market, Competitors, Technology, Business Model, Financial, Risk, Roadmap, Report
 - **PDF Reports** — Professional multi-page downloadable business reports
 - **JWT Authentication** — Secure user registration and login
 - **Premium UI** — Dark theme, glassmorphism, smooth animations, Chart.js visualizations
+
+> **Note on accuracy:** For a *new* idea, market size, growth, and financial figures are **AI/benchmark estimates**, not measured company data — an idea-stage startup has no real financials or market share. Competitor identities, macro indicators, and news are real; the interpretive figures are estimates, and the UI is transparent about which is which. See `docs/LIMITATIONS_AND_FUTURE_WORK.md`.
 
 ## Tech Stack
 
@@ -19,7 +23,8 @@
 | **Frontend** | React 18 + Vite, React Router, Axios, Chart.js, React Icons |
 | **Backend** | FastAPI (Python), SQLAlchemy ORM, Pydantic v2 |
 | **Database** | MySQL 8.0 |
-| **AI/ML** | Google Gemini API, spaCy NLP, Scikit-learn heuristics |
+| **AI/ML** | Groq & NVIDIA LLMs (Qwen), NLP, Scikit-learn ensemble models (7 trained models) |
+| **Real-Data APIs** | Google Trends, World Bank, Google News RSS, Wikipedia, OpenStreetMap/Overpass, DuckDuckGo/Tavily/Brave |
 | **PDF** | ReportLab |
 
 ## Prerequisites
@@ -27,7 +32,7 @@
 - **Python 3.10+**
 - **Node.js 18+**
 - **MySQL 8.0+** (MySQL Workbench)
-- **Google Gemini API Key** (free at [aistudio.google.com](https://aistudio.google.com/apikey))
+- **A Groq API key** (free at [console.groq.com](https://console.groq.com)) and/or an **NVIDIA API key** for the LLM analysis engine. All real-data sources (Google Trends, World Bank, Google News, Wikipedia, OpenStreetMap) are free and need **no key**.
 
 ## Quick Start
 
@@ -59,7 +64,9 @@ DB_USER=root
 DB_PASSWORD=your_mysql_password
 DB_NAME=vision2venture
 SECRET_KEY=your-secret-key
-GEMINI_API_KEY=your-gemini-api-key
+# LLM engine (set at least one). Real-data sources need no key.
+GROQ_API_KEY=your-groq-api-key
+NVIDIA_API_KEY=your-nvidia-api-key
 ```
 
 ### 3. Backend Setup

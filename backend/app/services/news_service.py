@@ -7,11 +7,13 @@ import logging
 import requests
 import xml.etree.ElementTree as ET
 from typing import List, Dict
+from app.services.cache_service import disk_cache
 
 logger = logging.getLogger("vision2venture.news")
 
 class NewsService:
     @staticmethod
+    @disk_cache(ttl_seconds=43200, namespace="news", cache_if=lambda r: isinstance(r, list) and len(r) > 0)
     def get_industry_news(industry: str, country: str = "India", limit: int = 4) -> List[Dict]:
         """
         Fetch real-world news headlines for an industry in India.

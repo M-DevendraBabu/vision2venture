@@ -32,3 +32,7 @@ backend/reports/*.pdf
 frontend_qa/
 *.db
 *.sqlite
+
+# Real-data fetch cache (improvement #2) — safe to delete anytime
+backend/app/.cache/
+backend/evaluation_results.json

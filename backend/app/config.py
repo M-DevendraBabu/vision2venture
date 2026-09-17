@@ -44,6 +44,11 @@ class Settings(BaseSettings):
     BRAVE_API_KEY: str = ""
     SEARCH_PROVIDER: str = "auto"  # 'auto', 'tavily', 'brave', 'duckduckgo'
 
+    # Commercial POI providers for offline competitor discovery (both FREE, no credit card).
+    # Leave blank to run on OpenStreetMap alone.
+    HERE_API_KEY: str = ""
+    TOMTOM_API_KEY: str = ""
+
     class Config:
         env_file = str(_ENV_FILE)
         env_file_encoding = "utf-8"

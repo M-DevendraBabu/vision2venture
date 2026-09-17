@@ -135,7 +135,8 @@ def get_market_analysis(
             "acquisition_channel": market.acquisition_channel,
             "purchase_trigger": market.purchase_trigger,
             "opportunity_explanation": market.opportunity_explanation,
-            "data_source": getattr(market, 'data_source', None) or "Google Trends, World Bank & AI"
+            "data_source": getattr(market, 'data_source', None) or "Google Trends, World Bank & AI",
+            "estimate_note": "Market size, growth rate and opportunity score are AI/benchmark estimates grounded in real demand and macro signals — not measured figures for this specific idea."
         }
     }
 
@@ -355,7 +356,8 @@ def get_financial(
         "opex_breakdown": fi_data["opex_breakdown"],
         "revenue_breakdown": fi_data["revenue_breakdown"],
         "methodology_sources": fi_data["methodology_sources"],
-        "data_source": getattr(fin, 'data_source', None) or "Industry Benchmark & Financial Model"
+        "data_source": getattr(fin, 'data_source', None) or "Industry Benchmark & Financial Model",
+        "estimate_note": "Financial figures are projections derived from Indian sector benchmarks scaled to your budget and team size — an idea-stage startup has no actual financials. Treat as planning estimates, not verified numbers."
     }
     return {"status": "success", "data": fin_dict}
 

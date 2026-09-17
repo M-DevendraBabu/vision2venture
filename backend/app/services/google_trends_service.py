@@ -5,11 +5,13 @@ for startup keywords in India using pytrends (no API key required).
 """
 import logging
 from typing import List, Dict
+from app.services.cache_service import disk_cache
 
 logger = logging.getLogger("vision2venture.trends")
 
 class GoogleTrendsService:
     @staticmethod
+    @disk_cache(ttl_seconds=86400, namespace="trends", cache_if=lambda r: isinstance(r, dict) and r.get("status") == "success")
     def get_search_interest(keywords: List[str], geo: str = 'IN', timeframe: str = 'today 12-m') -> Dict:
         """
         Get real Google search volume trends for startup-related keywords.
