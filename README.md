@@ -15,6 +15,8 @@
 - **Premium UI** — Dark theme, glassmorphism, smooth animations, Chart.js visualizations
 
 > **Note on accuracy:** For a *new* idea, market size, growth, and financial figures are **AI/benchmark estimates**, not measured company data — an idea-stage startup has no real financials or market share. Competitor identities, macro indicators, and news are real; the interpretive figures are estimates, and the UI is transparent about which is which. See `docs/LIMITATIONS_AND_FUTURE_WORK.md`.
+>
+> Nothing unverified is presented as verified. Competitor ratings and review counts are reported as unavailable rather than estimated, AI-suggested businesses are labelled "Unverified", carry no coordinates and are never plotted on the map, and an unreachable data provider is reported as unknown rather than as a finding of zero competition. `backend/test_analysis_accuracy.py` (57 checks) guards these properties.
 
 ## Tech Stack
 

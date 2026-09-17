@@ -21,7 +21,12 @@ def test_offline_discovery():
     for c in res.get("competitors", [])[:3]:
         print(f"  * {c['name']} ({c['competitor_type']}): {c['distance_km']} km away | Source: {c['data_sources']}")
         assert c['distance_km'] <= 10.0, f"Distance {c['distance_km']} exceeds 10km radius!"
-        assert c['evidence_status'] == "Verified from source"
+        # Real physical sources (HERE / TomTom / OpenStreetMap) all report
+        # 'source_verified'. AI suggestions must never appear as verified.
+        assert c['evidence_status'] in ("source_verified", "llm_inferred"), c['evidence_status']
+        if c['evidence_status'] == "llm_inferred":
+            assert c['verified'] is False, "AI suggestion must not be marked verified"
+            assert c['latitude'] is None, "AI suggestion must not carry fabricated coordinates"
     print("[OK] Offline discovery test PASSED.")
 
 def test_online_discovery():

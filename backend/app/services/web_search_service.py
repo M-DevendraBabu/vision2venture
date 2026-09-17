@@ -564,7 +564,7 @@ Output strictly valid JSON:
                     if any(r["name"].lower() == name.lower() for r in results):
                         continue
                     url = f"https://www.{dom}/"
-                    pos_pct = int(82 + (abs(hash(name)) % 14))
+                    # Sentiment percentage was invented from hash(name); removed.
                     results.append({
                         "name": name,
                         "domain": dom,
@@ -574,7 +574,7 @@ Output strictly valid JSON:
                         "competitor_type": "direct",
                         "rating": rate,
                         "review_count": rev,
-                        "customer_sentiment": f"{pos_pct}% Positive Feedback ({rev} Reviews)",
+                        "customer_sentiment": f"Curated reference data ({rev} reviews reported); sentiment not independently measured",
                         "customer_praise": f"• Customer Praise: {praise}",
                         "customer_complaints": f"• Customer Complaints: {complaint}",
                         "pricing_model": "Freemium / Monthly SaaS" if "saas" in combined_q else "Direct Marketplace",
@@ -767,7 +767,7 @@ Output strictly valid JSON:
                 "features": f"Web-indexed features: {snippet[:120]}...",
                 "source": provider,
                 "data_sources": ["Live Web Search", provider],
-                "evidence_status": "Web-verified",
+                "evidence_status": "web_verified",  # snake_case, matching every other source
                 "verified": True,
                 "confidence_score": 92.0
             })

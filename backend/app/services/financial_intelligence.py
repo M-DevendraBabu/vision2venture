@@ -646,6 +646,39 @@ def generate_financial_analysis(context: dict) -> dict:
     y3_opex = round(y2_opex * 1.35, -3)
     y3_net = y3_revenue - y3_opex
 
+    # ---- Reconcile the benchmark projection against the founder's stated target ----
+    # The projection above is derived from sector capacity benchmarks, not from the
+    # target, so the two can disagree. Saying so is the useful part.
+    _revenue_goal = float(context.get('revenue_goal') or 0.0)
+    if _revenue_goal > 0:
+        _goal_attainment = round(min(999.0, y1_revenue / _revenue_goal * 100.0), 1)
+        _multiple = _revenue_goal / y1_revenue if y1_revenue > 0 else 0.0
+        if _goal_attainment >= 100:
+            _goal_assessment = (
+                f"Your ₹{_revenue_goal:,.0f} year-one target looks reachable: sector capacity benchmarks for this "
+                f"venture support about ₹{y1_revenue:,.0f} ({_goal_attainment:.0f}% of the target) at the modelled "
+                f"scale, so the plan has headroom."
+            )
+        elif _goal_attainment >= 60:
+            _goal_assessment = (
+                f"Your ₹{_revenue_goal:,.0f} year-one target is within reach but tight: benchmarks support about "
+                f"₹{y1_revenue:,.0f}, roughly {_goal_attainment:.0f}% of it. Closing the gap means lifting volume or "
+                f"average ticket by around {(_multiple - 1) * 100:.0f}%."
+            )
+        else:
+            _goal_assessment = (
+                f"Your ₹{_revenue_goal:,.0f} year-one target is roughly {_multiple:.1f}x what this venture's capacity "
+                f"supports — benchmarks project about ₹{y1_revenue:,.0f} ({_goal_attainment:.0f}% of the target). "
+                f"Reaching it would need materially more capacity, additional locations or channels, not just better "
+                f"conversion. The figures below model the benchmark case, not the target."
+            )
+    else:
+        _goal_attainment = None
+        _goal_assessment = (
+            f"No annual revenue target was provided, so the projection below is the benchmark case: about "
+            f"₹{y1_revenue:,.0f} in year one at the modelled scale."
+        )
+
     total_3yr_net = y1_net + y2_net + y3_net
     three_year_roi = round(((total_3yr_net - total_capex) / max(1.0, total_capex)) * 100.0, 1)
     three_year_roi = max(45.0, min(380.0, three_year_roi))
@@ -673,7 +706,7 @@ def generate_financial_analysis(context: dict) -> dict:
         c4_name = "Branding, Menu Displays & QR Collateral"
         c4_why = "Covers illuminated menu boards, takeaway packaging design, printed banners, and UPI table QR stands."
         c5_name = "Initial Raw Material Stock & Working Reserve"
-        c5_why = "Covers opening bulk inventory (premium basmati rice, spices, ghee/oils, packaging) plus operating cash reserve."
+        c5_why = "Covers opening bulk inventory (core ingredients, spices, oils, packaging) plus operating cash reserve."
     elif is_fitness:
         c1_name = "Commercial Fitness Machinery & Weights"
         c1_why = "Covers multi-gym stations, Olympic barbells, dumbbell racks, cable crossovers, and cardio machinery."
@@ -955,6 +988,7 @@ def generate_financial_analysis(context: dict) -> dict:
         'daily_customers_estimate': int(daily_customers),
         'average_order_value': float(aov),
         'monthly_revenue': float(monthly_revenue),
+        'monthly_recurring_revenue_note': _goal_assessment,
         'rent_cost': float(rent_cost),
         'staff_cost': float(staff_cost),
         'raw_material_cost': float(raw_material_cost),
@@ -991,6 +1025,10 @@ def generate_financial_analysis(context: dict) -> dict:
         'year1_opex': float(y1_opex),
         'year2_opex': float(y2_opex),
         'year3_opex': float(y3_opex),
+
+        'revenue_goal_annual': float(_revenue_goal),
+        'goal_attainment_percent': _goal_attainment,
+        'goal_assessment': _goal_assessment,
 
         'capex_breakdown': capex_breakdown,
         'opex_breakdown': opex_breakdown,

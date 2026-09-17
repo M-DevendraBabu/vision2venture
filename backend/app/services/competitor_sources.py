@@ -123,7 +123,13 @@ def merge_competitor_sources(provider_results: List[List[Dict]]) -> List[Dict]:
                 merged[key] = _merge_pair(existing, item)
 
     results = list(merged.values())
-    results.sort(key=lambda x: (float(x.get("distance_km") or 0.0), -float(x.get("relevance_score") or 50.0)))
+    # An unknown distance must sort LAST, not first: `or 0.0` would have promoted
+    # every unverified lead above genuinely nearby verified competitors.
+    results.sort(key=lambda x: (
+        x.get("distance_km") is None,
+        float(x.get("distance_km")) if x.get("distance_km") is not None else 0.0,
+        -float(x.get("relevance_score") or 50.0),
+    ))
     return results
 
 

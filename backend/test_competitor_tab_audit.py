@@ -130,9 +130,17 @@ def test_case_a_offline_bakery():
     assert len(digital) == 0, f"Offline startup should have 0 digital competitors! Got: {len(digital)}"
     assert len(physical) > 0, "Expected physical bakery competitors in Banjara Hills, Hyderabad!"
     
+    # Unverified AI suggestions may accompany the list as leads, but they are not
+    # presented as confirmed competitors and are excluded from this check.
+    physical = [c for c in physical if c.get("source_type") != "ai_inferred"]
+    assert len(physical) > 0, "Expected at least one VERIFIED physical competitor"
+
     for comp in physical:
-        assert comp.get("source_type") == "openstreetmap", f"Expected source_type='openstreetmap', got: {comp.get('source_type')}"
-        assert comp.get("source_label") == "OpenStreetMap / Overpass", f"Unexpected source_label: {comp.get('source_label')}"
+        # Physical competitors may now come from any REAL source: HERE and TomTom
+        # commercial POI as well as OpenStreetMap. Unverified AI suggestions must not
+        # appear among mapped physical competitors.
+        assert comp.get("source_type") in ("openstreetmap", "here", "tomtom"),             f"Expected a real physical source, got: {comp.get('source_type')}"
+        assert comp.get("verified") is True, f"Physical competitor not verified: {comp.get('name')}"
         assert comp.get("latitude") is not None and comp.get("longitude") is not None, "Missing coordinates!"
         print(f"    - {comp['name']} ({comp.get('distance_km')} km away) [{comp.get('source_label')}]")
         

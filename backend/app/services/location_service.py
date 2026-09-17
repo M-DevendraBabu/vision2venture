@@ -574,11 +574,25 @@ class LocationService:
             if len(discovered) >= limit:
                 break
 
-        # 5. Dual-Source Local Establishment Discovery:
-        # Augment with verified local physical businesses (guarantees coverage where OSM has gaps)
+        # 5. Last-resort AI local recall.
+        #
+        # This is an LLM recalling businesses from training data - there is no lookup
+        # behind it - so everything it returns is an UNVERIFIED SUGGESTION and is
+        # labelled as such below. It previously carried verified=True,
+        # evidence_status='source_verified', confidence 90 and "Live Local Directory
+        # Data", with ratings the prompt asked the model to invent and coordinates
+        # derived from hash(name), which put fabricated points on the competitor map.
+        #
+        # Only consulted when the real providers (HERE / TomTom / OpenStreetMap) found
+        # almost nothing, and never allowed to masquerade as verified data.
+        # When the mapping provider is unreachable the honest answer is "we could not
+        # reach our data source", not a list of AI guesses dressed up as coverage.
+        # Offering suggestions here would bury a real outage behind plausible names.
+        _skip_ai = (provider_status == "unreachable") or (len(discovered) >= 3)
+        ai_local_comps = []
         try:
             from app.services.ai_service import AIService
-            ai_local_comps = AIService.discover_local_businesses(
+            ai_local_comps = [] if _skip_ai else AIService.discover_local_businesses(
                 category=category,
                 location=display_name,
                 radius_km=radius_km,
@@ -597,13 +611,22 @@ class LocationService:
                     continue
                 seen_names.add(name_key)
 
-                c_dist = float(c.get("distance_km") or round(0.3 + (abs(hash(name)) % 15) * 0.1, 1))
-                if c_dist > radius_km:
+                # Distance came from hash(name) whenever the model gave none - an
+                # invented "0.7 km" for a business whose location is unknown. Use
+                # only what the model actually stated, capped at the search radius.
+                _raw_dist = c.get("distance_km")
+                try:
+                    c_dist = float(_raw_dist) if _raw_dist not in (None, "") else None
+                except (TypeError, ValueError):
+                    c_dist = None
+                if c_dist is not None and c_dist > radius_km:
                     c_dist = round(min(radius_km * 0.8, c_dist), 1)
 
-                c_rating = float(c.get("rating")) if c.get("rating") is not None else None
-                c_revs = int(c.get("review_count")) if c.get("review_count") is not None else (int(45 + (abs(hash(name)) % 180)) if c_rating else None)
-                sentiment_str = f"{int(c_rating * 20)}% Positive Customer Sentiment" if c_rating else None
+                # The model was asked to supply "realistic" ratings and review counts,
+                # i.e. to make them up. They are dropped rather than displayed.
+                c_rating = None
+                c_revs = None
+                sentiment_str = "Rating data not available (unverified AI suggestion)"
 
                 addr = c.get("address") or f"Near {display_name}"
                 specialty = c.get("specialty") or category
@@ -615,27 +638,23 @@ class LocationService:
                 if not weaknesses_text.startswith("•"):
                     weaknesses_text = f"• {weaknesses_text}"
 
-                prox_score = max(0.0, 45.0 * (1.0 - (c_dist / radius_km)))
-                relevance = round(min(98.0, max(65.0, prox_score + 35.0 + 10.0)), 1)
+                # Unverified leads rank below any verified competitor, and get no
+                # proximity credit when the distance is unknown.
+                prox_score = 0.0 if c_dist is None else max(0.0, 45.0 * (1.0 - (c_dist / radius_km)))
+                relevance = round(min(70.0, max(35.0, prox_score + 20.0)), 1)
 
-                # ── Compute unique approximate coordinates for map plotting ──
-                # Each competitor gets its own bearing (direction) derived
-                # deterministically from its name so repeated calls are stable.
-                # Formula: offset from startup lat/lng along bearing at c_dist km.
-                import math as _math
-                _bearing_deg = (abs(hash(name)) % 360)
-                _bearing_rad = _math.radians(_bearing_deg)
-                # 1 degree latitude ≈ 111 km; longitude degree varies with lat
-                _lat_offset  = (c_dist / 111.0) * _math.cos(_bearing_rad)
-                _lng_offset  = (c_dist / (111.0 * _math.cos(_math.radians(lat)))) * _math.sin(_bearing_rad)
-                c_lat = round(lat + _lat_offset, 6)
-                c_lng = round(lng + _lng_offset, 6)
+                # No coordinates. The real location of an AI-recalled business is
+                # unknown; the previous code invented a bearing from hash(name), which
+                # produced a precise-looking map pin pointing at nothing. Leaving these
+                # null keeps the entry out of the map rather than fabricating a position.
+                c_lat = None
+                c_lng = None
 
                 discovered.append({
                     "name": name,
                     "business_type": "offline",
                     "competitor_type": "direct",
-                    "description": f"Verified local {specialty} establishment operating {c_dist} km from {display_name}.",
+                    "description": f"Possible local {specialty} establishment near {display_name}, suggested by AI local knowledge and NOT verified against a live source.",
                     "website_url": "",
                     "app_url": "",
                     "location": addr,
@@ -657,27 +676,52 @@ class LocationService:
                     "weaknesses": weaknesses_text,
                     "competitive_gap": f"Capture market share through digital order-ahead, faster fulfillment, and superior hygiene compared to {name}.",
                     "usp": f"Modern customer experience and transparent quality standards versus traditional {name}.",
-                    "analysis_explanation": f"Verified local physical competitor discovered operating {c_dist} km from {display_name} ({c_rating}★ customer rating).",
+                    "analysis_explanation": f"Suggested by the AI model's local knowledge of {display_name}; no live source confirmed this business, its address or its distance. Treat as a lead to verify, not as a confirmed competitor.",
                     "source_urls": [],
-                    "data_sources": ["Local Business Directory", "Geographic Intelligence"],
-                    "data_freshness": "Live Local Directory Data",
-                    "confidence_score": 90.0,
-                    "evidence_status": "source_verified",
-                    "source_type": "local_business_intelligence",
-                    "source_label": "Verified Local Establishment",
-                    "verified": True,
-                    "is_selected": True
+                    "data_sources": ["AI Local Knowledge (unverified)"],
+                    "data_freshness": "AI recall - not source-verified",
+                    "confidence_score": 40.0,
+                    "evidence_status": "llm_inferred",
+                    "source_type": "ai_inferred",
+                    "source_label": "AI Suggestion (unverified)",
+                    "verified": False,
+                    "is_selected": False
                 })
         except Exception as e:
             logger.warning(f"[LocationService] Local business discovery integration error: {e}")
 
         # Status reporting
-        if len(discovered) == 0:
-            status_note = f"No physical competitors detected within {radius_km} km of {display_name}. Venture possesses zero direct local competition."
-        else:
-            status_note = f"Discovered {len(discovered)} verified physical competitors within {radius_km} km of {display_name}."
+        # The message must not overstate what was actually established:
+        #  - an unreachable provider means UNKNOWN, not "no competitors". Telling a
+        #    founder they have "zero direct local competition" because an API timed out
+        #    is the most damaging thing this module could get wrong.
+        #  - only entries from a real source may be counted as "verified".
+        _verified = [c for c in discovered if c.get("verified")]
+        _unverified = len(discovered) - len(_verified)
 
-        discovered.sort(key=lambda x: (x["distance_km"], -x["relevance_score"]))
+        if provider_status == "unreachable":
+            status_note = (
+                f"Physical competitor data is temporarily unavailable for {display_name} — the mapping "
+                f"providers could not be reached. This is NOT a finding of zero competition; the search "
+                f"could not be completed. Please retry shortly."
+            )
+        elif len(discovered) == 0:
+            status_note = f"No physical competitors detected within {radius_km} km of {display_name} across the sources searched."
+        elif not _verified:
+            status_note = (
+                f"No competitors could be verified within {radius_km} km of {display_name}. "
+                f"{_unverified} unverified AI suggestion(s) are listed as leads to check manually."
+            )
+        else:
+            status_note = f"Discovered {len(_verified)} verified physical competitors within {radius_km} km of {display_name}."
+            if _unverified:
+                status_note += f" {_unverified} additional unverified AI suggestion(s) are listed separately as leads."
+
+        discovered.sort(key=lambda x: (
+            x.get("distance_km") is None,                     # unknown distance sorts last
+            x.get("distance_km") if x.get("distance_km") is not None else 0.0,
+            -float(x.get("relevance_score") or 0.0),
+        ))
 
         logger.info(
             f"[LocationService] Searched: '{location_query}' | Resolved: '{display_name}' ({lat:.4f}, {lng:.4f}) | "

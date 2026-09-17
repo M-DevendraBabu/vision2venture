@@ -53,3 +53,37 @@ The risk, feasibility, investor-readiness, and market models are **regressors tr
 - The market, financial, and SWOT narratives are LLM interpretations of real signals (Google Trends, World Bank, Google News) and are estimates, not measured figures.
 - LLM outputs are non-deterministic (temperature 0.7); caching per idea is recommended for reproducibility.
 - Google Trends is frequently rate-limited from cloud servers; the system falls back to a labelled baseline, surfaced to the user via source badges.
+
+## Analysis accuracy audit
+
+An audit ran diverse new ideas through the pipeline and measured how each score responded
+to each input. Several scores turned out to be near-constant or to be tracking the wrong
+variable. Measured spread (max − min) over the same input sweeps, before and after:
+
+| Input varied | Opportunity | Growth | Feasibility | Investor | Risk |
+|---|---|---|---|---|---|
+| Industry (6 sectors) | 0.0 → **18.3** | 0.0 → **18.0** | 1.8 → **3.1** | 5.7 → **6.1** | 3.7 → **5.4** |
+| Budget (₹5k–₹10Cr) | 28.2 → **11.8** | 0.0 | 6.6 → **11.3** | 5.8 | 3.5 → **6.9** |
+| Search demand (5–95) | 31.5 → **33.9** | 7.2 | 0.0 → **2.4** | 0.0 → **1.6** | 0.0 |
+| Revenue goal | 0.0 | 0.0 | 0.0 → **1.5** | 0.0 → **1.0** | 0.0 → **0.9** |
+
+Opportunity previously moved 28.2 points with budget and **0.0** with industry, so a score
+labelled "Market Opportunity" was measuring the founder's capital. Growth was a literal
+constant. The founder's revenue target moved nothing at all and never reached the financial
+projection.
+
+### Strong-vs-weak discrimination
+
+| Model | Strong | Weak | Gap before | Gap now |
+|---|---|---|---|---|
+| Feasibility | 83.5 | 64.3 | 19.1 | **19.2** |
+| Investor readiness | 76.8 | 61.5 | 5.4 | **15.3** |
+| Market opportunity | 65.8 | 49.0 | 10.2 | **16.8** |
+| Risk (lower is better) | 38.8 | 54.8 | 11.8 | **16.0** |
+
+The success classifier is unchanged at **77.30%** accuracy (ROC-AUC 0.840, 5-fold CV
+75.85% ± 3.25%) — none of these changes touch it.
+
+### Regression coverage
+
+`backend/test_analysis_accuracy.py` — 57 checks, offline, guarding each defect found.

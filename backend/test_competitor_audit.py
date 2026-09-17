@@ -106,8 +106,14 @@ with patch("requests.post") as mock_post, patch("requests.get") as mock_get:
     )
     print(f"  * Empty Overpass response -> competitors count: {len(res_empty.get('competitors', []))}")
     print(f"  * Status message: '{res_empty.get('status_message')}'")
-    assert len(res_empty.get("competitors", [])) == 0, "ERROR: Competitors list must be EMPTY when Overpass returns no elements!"
-    assert "No verified physical" in res_empty.get("status_message", ""), "Status message must honestly explain 0 competitors found"
+    # The guarantee is ZERO FABRICATION, not zero rows: an AI fallback may offer
+    # unverified leads, but nothing may claim to be verified, carry invented
+    # coordinates or invented ratings when no real source returned anything.
+    _empty = res_empty.get("competitors", [])
+    assert not [c for c in _empty if c.get("verified")],         "ERROR: no competitor may be marked verified when Overpass returned nothing!"
+    assert not [c for c in _empty if c.get("latitude") is not None],         "ERROR: fabricated coordinates present for an unverified competitor!"
+    assert not [c for c in _empty if c.get("rating") is not None],         "ERROR: fabricated ratings present for an unverified competitor!"
+    assert all(c.get("evidence_status") == "llm_inferred" for c in _empty),         "ERROR: unverified fallback entries must be labelled llm_inferred"
     
     # Verify no synthetic naming patterns exist
     for comp in res_empty.get("competitors", []):
@@ -246,10 +252,15 @@ print(f"Total Discovered: {res_s1['total_found']}")
 for c in res_s1["competitors"][:4]:
     print(f"  -> Name: {c['name']} | Dist: {c['distance_km']} km | Evid: {c['evidence_status']} | Rating: {c['rating']} | Src: {c['data_sources']}")
     assert c["distance_km"] <= 5.0, f"Distance {c['distance_km']} exceeds 5km radius!"
-    assert c["evidence_status"] == "Verified from source"
+    # Real sources (HERE / TomTom / OpenStreetMap) report 'source_verified'.
+    # AI leads report 'llm_inferred' and must never claim verification.
+    assert c["evidence_status"] in ("source_verified", "llm_inferred"), c["evidence_status"]
+    if c["evidence_status"] == "llm_inferred":
+        assert c["verified"] is False and c["latitude"] is None, "unverified AI lead must not be marked verified or carry coordinates"
     assert c["rating"] is None, "Rating must be None (not fabricated)"
     assert c["review_count"] is None, "Review count must be None (not fabricated)"
-    assert "OpenStreetMap" in c["data_sources"]
+    if c["evidence_status"] == "source_verified":
+        assert any(src in c["data_sources"] for src in ("OpenStreetMap", "HERE", "TomTom")), c["data_sources"]
 
 # Scenario 2: Offline — Fitness Gym in Vijayawada, India (5 km radius)
 print("\n--- SCENARIO 2: Offline — Fitness Gym in Vijayawada (5 km) ---")
@@ -266,7 +277,11 @@ print(f"Total Discovered: {res_s2['total_found']}")
 for c in res_s2["competitors"][:4]:
     print(f"  -> Name: {c['name']} | Dist: {c['distance_km']} km | Evid: {c['evidence_status']} | Category: {c['competitor_type']}")
     assert c["distance_km"] <= 5.0, f"Distance {c['distance_km']} exceeds 5km radius!"
-    assert c["evidence_status"] == "Verified from source"
+    # Real sources (HERE / TomTom / OpenStreetMap) report 'source_verified'.
+    # AI leads report 'llm_inferred' and must never claim verification.
+    assert c["evidence_status"] in ("source_verified", "llm_inferred"), c["evidence_status"]
+    if c["evidence_status"] == "llm_inferred":
+        assert c["verified"] is False and c["latitude"] is None, "unverified AI lead must not be marked verified or carry coordinates"
     assert c["rating"] is None
 
 # Scenario 3: Online — AI Resume Builder SaaS (Target: Global)
@@ -283,7 +298,11 @@ print(f"Total Online Competitors Found: {len(res_s3)}")
 for c in res_s3[:4]:
     print(f"  -> Name: {c['name']} | Pricing: {c['pricing_model']} | Evid: {c['evidence_status']} | URL: {c['website_url']}")
     assert c["business_type"] == "online"
-    assert c["evidence_status"] in ["Publicly reported", "AI inference", "User-provided"]
+    # Canonical snake_case evidence vocabulary used across all competitor sources.
+    assert c["evidence_status"] in (
+        "web_verified", "publicly_reported", "user_provided",
+        "not_web_verified", "llm_inferred", "curated_not_live_verified",
+    ), c["evidence_status"]
     assert c["rating"] is None, "Online rating should not be fabricated"
 
 # Scenario 4: Hybrid — Agriculture Disease Detection Platform with Drone Service

@@ -6,6 +6,7 @@ v4: Updated to 20-feature vector, StackingRegressor/VotingClassifier ensemble mo
 """
 import os
 import re
+import math
 import json
 import joblib
 import numpy as np
@@ -226,6 +227,72 @@ def _sector_cagr(industry: str, is_offline: bool = False) -> float:
     if is_offline:
         rate *= 0.80  # a single physical location cannot compound at the national rate
     return round(rate, 1)
+
+
+def _venture_economics(context: dict) -> dict:
+    """
+    Operating signals derived from what the founder actually entered, shared by the
+    risk, feasibility and investor models.
+
+    These exist because a sensitivity sweep showed `revenue_goal` moved every score by
+    exactly 0.0 — the founder's revenue target was collected and then ignored — and
+    because budget and team_size were each read in isolation, so the models could not
+    see that ₹5,00,000 is comfortable for a solo founder and nearly nothing for a team
+    of twelve. Runway and the ambition ratio combine them the way an investor would.
+    """
+    budget = float(context.get('budget') or 20000)
+    team_size = max(1, int(context.get('team_size') or 1))
+    revenue_goal = float(context.get('revenue_goal') or 0.0)
+    sec = str(context.get('sector', context.get('business_type', 'online'))).lower()
+    is_offline = 'offline' in sec or 'physical' in sec
+
+    # Monthly burn. Salaries dominate an early-stage Indian venture; a physical
+    # location additionally carries rent and utilities from day one.
+    monthly_burn = team_size * 35000.0 + (45000.0 if is_offline else 12000.0)
+    runway_months = (budget / monthly_burn) if monthly_burn > 0 else 0.0
+
+    # Annual revenue target per rupee of starting capital. Very high means the plan
+    # depends on capital efficiency the team has not yet demonstrated; below 1.0 means
+    # the target does not even return the money being put in.
+    ambition = (revenue_goal / budget) if budget > 0 and revenue_goal > 0 else 0.0
+
+    return {
+        'budget': budget,
+        'team_size': team_size,
+        'revenue_goal': revenue_goal,
+        'monthly_burn': monthly_burn,
+        'runway_months': round(runway_months, 1),
+        'ambition': round(ambition, 2),
+        'is_offline': is_offline,
+    }
+
+
+def _runway_adjustment(runway_months: float) -> float:
+    """Risk points from runway. Positive = more risk."""
+    if runway_months < 3:
+        return +25.0
+    if runway_months < 6:
+        return +15.0
+    if runway_months < 12:
+        return +5.0
+    if runway_months > 30:
+        return -15.0
+    if runway_months > 18:
+        return -10.0
+    return 0.0
+
+
+def _ambition_adjustment(ambition: float) -> float:
+    """Risk points from how aggressive the revenue target is against the capital."""
+    if ambition <= 0:
+        return +3.0     # no stated target to plan against
+    if ambition > 25:
+        return +12.0
+    if ambition > 10:
+        return +6.0
+    if ambition < 1:
+        return +4.0     # target does not recover the starting capital
+    return 0.0
 
 
 def _encoder_lookup(encoder):
@@ -540,12 +607,49 @@ class MLService:
         trends_boost = (avg_interest - 50.0) * 0.08  # -4.0% to +4.0%
         growth_rate = round(float(np.clip(base_growth + trends_boost, 4.0, 35.0)), 1)
 
-        # Opportunity Score derived from ML model + demand trends + budget sufficiency.
-        # The floor was 65.0, which meant a one-person idea with a ₹5,000 budget and no
-        # search demand still scored 65/100 — the score could never say "this looks
-        # weak". Widened to 25.0 so the low end of the scale is actually reachable.
+        # Market Opportunity Score.
+        #
+        # This previously read `ml_opportunity * 0.45 + avg_interest * 0.35 + budget bonus`.
+        # Because the market regressor's opportunity head responds almost entirely to
+        # budget (a measured 0.03-point spread across all 33 industries against a 67-point
+        # spread across budgets), roughly 60% of the score was capital, and industry moved
+        # it by exactly 0.0 — a ₹5,000 AI venture and a ₹5,000 retail shop scored the same,
+        # while the same idea with a bigger budget scored 28 points higher. A score labelled
+        # "Market Opportunity" was really measuring how much money the founder had.
+        #
+        # It is now an explicit composite of four things a market opportunity actually
+        # depends on, with capital demoted to one quarter:
+        #   demand   30% — live Google Trends search interest for the idea's keywords
+        #   growth   25% — sector CAGR benchmark (see _sector_cagr)
+        #   scale    20% — addressable market size, normalised WITHIN the venture's own
+        #                  scope so a strong local business is not punished for being local
+        #   capital  25% — budget adequacy, via the regressor's budget-driven head
         demand_level = "High Velocity" if avg_interest >= 65 else ("Steady Demand" if avg_interest >= 45 else "Moderate")
-        final_opportunity = round(float(np.clip(ml_opportunity * 0.45 + (avg_interest * 0.35) + (15.0 if budget >= 100000 else 8.0), 25.0, 96.0)), 1)
+
+        demand_component = float(np.clip(avg_interest, 0.0, 100.0))
+
+        # Sector CAGR of 4% -> 0, 30% -> 100
+        growth_component = float(np.clip((growth_rate - 4.0) / 26.0 * 100.0, 0.0, 100.0))
+
+        # Market scale, normalised against peers of the SAME scope. A ₹60 Cr campus
+        # catchment and a ₹40,000 Cr national market are both scored against what is
+        # achievable at their own scale rather than against each other.
+        if is_offline or (is_hybrid and not is_national_scope):
+            scale_lo, scale_hi = 4.0, 800.0        # local catchment, ₹ Cr
+        else:
+            scale_lo, scale_hi = 15000.0, 150000.0  # national market, ₹ Cr
+        scale_component = float(np.clip(
+            (math.log10(max(tam_crores, scale_lo)) - math.log10(scale_lo))
+            / (math.log10(scale_hi) - math.log10(scale_lo)) * 100.0, 0.0, 100.0))
+
+        capital_component = float(np.clip(ml_opportunity, 0.0, 100.0))
+
+        final_opportunity = round(float(np.clip(
+            demand_component * 0.30
+            + growth_component * 0.25
+            + scale_component * 0.20
+            + capital_component * 0.25,
+            15.0, 96.0)), 1)
 
         # Dynamic Demographics, Pain Points, Channels & Triggers
         loc_display = location_raw or context.get('country', 'India')
@@ -774,6 +878,7 @@ class MLService:
         sec = str(context.get('sector', '')).lower()
         budget = float(context.get('budget') or 20000)
         team_size = int(context.get('team_size') or 2)
+        econ = _venture_economics(context)
 
         # --- 70%: ML Model Prediction ---
         ml_tech = 40.0
@@ -815,12 +920,16 @@ class MLService:
         if 'e-commerce' in ind or 'retail' in ind: comp_cal = +12
         elif 'food' in ind: comp_cal = +10
         elif 'quantum' in ind or 'deeptech' in ind: comp_cal = -12
+        # A revenue target far beyond the starting capital has to be won from incumbents.
+        comp_cal += _ambition_adjustment(econ['ambition'])
 
-        # Financial risk calibration
+        # Financial risk calibration. Runway (budget measured against the burn that
+        # this team size and delivery mode actually imply) replaces the old flat budget
+        # thresholds, which could not tell a comfortable solo founder from a team of
+        # twelve sharing the same capital.
         fin_cal = 0.0
         if sec == 'offline': fin_cal += 12
-        if budget < 30000: fin_cal += 8
-        elif budget > 100000: fin_cal -= 5
+        fin_cal += _runway_adjustment(econ['runway_months'])
         if 'hardware' in ind or 'robotics' in ind: fin_cal += 10
         elif 'saas' in ind: fin_cal -= 8
 
@@ -830,13 +939,15 @@ class MLService:
         if 'health' in ind or 'food' in ind: ops_cal += 10
         elif 'saas' in ind or 'ai' in ind: ops_cal -= 10
         if team_size > 5: ops_cal += 4
+        if econ['team_size'] == 1: ops_cal += 12   # single point of failure
+        elif econ['team_size'] == 2: ops_cal += 5
 
-        # BLEND: 70% ML + 30% calibration
-        tech_risk = round(max(12.0, min(90.0, ml_tech * 0.70 + (40 + tech_cal) * 0.30)), 1)
-        mkt_risk = round(max(12.0, min(90.0, ml_mkt * 0.70 + (42 + mkt_cal) * 0.30)), 1)
-        comp_risk = round(max(12.0, min(90.0, ml_comp * 0.70 + (45 + comp_cal) * 0.30)), 1)
-        fin_risk = round(max(12.0, min(90.0, ml_fin * 0.70 + (35 + fin_cal) * 0.30)), 1)
-        ops_risk = round(max(12.0, min(90.0, ml_ops * 0.70 + (30 + ops_cal) * 0.30)), 1)
+        # BLEND: 50% ML + 50% domain calibration (see note on dead regressor heads)
+        tech_risk = round(max(12.0, min(90.0, ml_tech * 0.50 + (40 + tech_cal) * 0.50)), 1)
+        mkt_risk = round(max(12.0, min(90.0, ml_mkt * 0.50 + (42 + mkt_cal) * 0.50)), 1)
+        comp_risk = round(max(12.0, min(90.0, ml_comp * 0.50 + (45 + comp_cal) * 0.50)), 1)
+        fin_risk = round(max(12.0, min(90.0, ml_fin * 0.50 + (35 + fin_cal) * 0.50)), 1)
+        ops_risk = round(max(12.0, min(90.0, ml_ops * 0.50 + (30 + ops_cal) * 0.50)), 1)
 
         overall_risk = round(tech_risk * 0.12 + mkt_risk * 0.23 + comp_risk * 0.15 + fin_risk * 0.25 + ops_risk * 0.25, 1)
 
@@ -914,6 +1025,11 @@ class MLService:
         elif 'quantum' in ind or 'deeptech' in ind: mkt_cal = -8
         if sec == 'online': mkt_cal += 4
         elif sec == 'offline': mkt_cal -= 3
+        # Live search demand: reaching a market people are already looking for is more
+        # feasible than creating demand from nothing. Previously demand moved
+        # feasibility by exactly 0.0.
+        _avg_interest = float((context.get('_trends_data') or {}).get('avg_interest') or 50.0)
+        mkt_cal += float(np.clip((_avg_interest - 50.0) * 0.20, -10.0, 10.0))
 
         tech_cal = 0.0
         if 'saas' in ind or 'edtech' in ind: tech_cal = +10
@@ -923,9 +1039,12 @@ class MLService:
         if team_size >= 4: tech_cal += 4
         elif team_size <= 2: tech_cal -= 3
 
+        # Financial feasibility keys off runway rather than raw budget, and off whether
+        # the stated revenue goal is reachable with the capital behind it.
+        econ = _venture_economics(context)
         fin_cal = 0.0
-        if budget > 100000: fin_cal += 10
-        elif budget < 25000: fin_cal -= 8
+        fin_cal -= _runway_adjustment(econ['runway_months'])   # more runway = more feasible
+        fin_cal -= _ambition_adjustment(econ['ambition'])
         if sec == 'online': fin_cal += 6
         elif sec == 'offline': fin_cal -= 8
         if 'saas' in ind: fin_cal += 5
@@ -938,11 +1057,11 @@ class MLService:
         elif 'food' in ind or 'cafe' in ind: inn_cal = -8
         elif 'retail' in ind or 'hospitality' in ind: inn_cal = -6
 
-        # BLEND: 70% ML + 30% calibration (raised base constants for realistic scores)
-        mkt_score = round(max(40.0, min(97.0, ml_mkt * 0.70 + (72 + mkt_cal) * 0.30)), 1)
-        tech_score = round(max(40.0, min(97.0, ml_tech * 0.70 + (76 + tech_cal) * 0.30)), 1)
-        fin_score = round(max(40.0, min(97.0, ml_fin * 0.70 + (70 + fin_cal) * 0.30)), 1)
-        inn_score = round(max(40.0, min(97.0, ml_inn * 0.70 + (66 + inn_cal) * 0.30)), 1)
+        # BLEND: 50% ML + 50% domain calibration (see note on dead regressor heads)
+        mkt_score = round(max(40.0, min(97.0, ml_mkt * 0.50 + (72 + mkt_cal) * 0.50)), 1)
+        tech_score = round(max(40.0, min(97.0, ml_tech * 0.50 + (76 + tech_cal) * 0.50)), 1)
+        fin_score = round(max(40.0, min(97.0, ml_fin * 0.50 + (70 + fin_cal) * 0.50)), 1)
+        inn_score = round(max(40.0, min(97.0, ml_inn * 0.50 + (66 + inn_cal) * 0.50)), 1)
 
         # Additional budget and team modifiers for differentiation
         if budget >= 100000: mkt_score += 5; fin_score += 8; tech_score += 3
@@ -1056,18 +1175,42 @@ class MLService:
         if 'saas' in ind or 'ai' in ind: scal_cal += 8
         elif 'food' in ind or 'cafe' in ind: scal_cal -= 10
         elif 'fintech' in ind: scal_cal += 6
+        _team = max(1, int(context.get('team_size') or 1))
+        if _team >= 8: scal_cal += 6          # enough hands to execute a scale-up
+        elif _team >= 4: scal_cal += 3
+        elif _team == 1: scal_cal -= 7        # solo founders rarely clear diligence
 
         inn_cal = 0.0
         if 'ai' in ind or 'quantum' in ind or 'deeptech' in ind: inn_cal = +15
         elif 'cleantech' in ind or 'ev' in ind or 'solar' in ind: inn_cal = +8
         elif 'food' in ind or 'retail' in ind: inn_cal = -6
 
+        # Business-model strength now reflects capital efficiency and survivability,
+        # not just a raw budget threshold: what revenue the plan targets per rupee of
+        # capital, and whether there is enough runway to reach it.
+        econ = _venture_economics(context)
         biz_cal = 0.0
         if 'saas' in ind: biz_cal += 8
         elif 'fintech' in ind: biz_cal += 6
         elif 'food' in ind: biz_cal -= 4
-        if budget > 80000: biz_cal += 4
-        elif budget < 30000: biz_cal -= 3
+        _amb = econ['ambition']
+        if 3.0 <= _amb <= 12.0: biz_cal += 8      # credible, ambitious return on capital
+        elif 1.0 <= _amb < 3.0: biz_cal += 2
+        elif _amb > 25.0: biz_cal -= 6            # target not supported by the capital
+        elif 0 < _amb < 1.0: biz_cal -= 5         # does not return the money invested
+        if econ['runway_months'] >= 18: biz_cal += 5
+        elif econ['runway_months'] < 6: biz_cal -= 8
+
+        # Absolute scale, not just ratios. The ambition ratio is scale-invariant, so a
+        # target of Rs 20,000 on Rs 5,000 of capital looked as "capital efficient" as a
+        # Rs 10 Cr target on Rs 2.5 Cr. Investor readiness has to notice that the first
+        # one is not an investable business at any ratio.
+        _goal = econ['revenue_goal']
+        if 0 < _goal < 1000000: biz_cal -= 18        # under Rs 10 lakh annual target
+        elif 1000000 <= _goal < 5000000: biz_cal -= 8
+        elif _goal >= 50000000: biz_cal += 5
+        if econ['budget'] < 50000: biz_cal -= 12     # below any institutional cheque size
+        elif econ['budget'] < 200000: biz_cal -= 5
 
         mkt_cal = 0.0
         if 'ai' in ind or 'saas' in ind: mkt_cal += 7
@@ -1075,12 +1218,17 @@ class MLService:
         elif 'food' in ind or 'hospitality' in ind: mkt_cal -= 3
         if sec == 'online': mkt_cal += 4
         elif sec == 'offline': mkt_cal -= 4
+        # Investors price the sector's growth rate and live demand, so both feed the
+        # market pillar rather than leaving it driven by industry keywords alone.
+        mkt_cal += float(np.clip((_sector_cagr(ind, sec == 'offline') - 14.0) * 0.55, -7.0, 9.0))
+        _ai = float((context.get('_trends_data') or {}).get('avg_interest') or 50.0)
+        mkt_cal += float(np.clip((_ai - 50.0) * 0.14, -7.0, 7.0))
 
-        # BLEND: 70% ML + 30% calibration
-        scalability = round(max(40.0, min(97.0, ml_scal * 0.70 + (65 + scal_cal) * 0.30)), 1)
-        innovation = round(max(40.0, min(97.0, ml_inn * 0.70 + (60 + inn_cal) * 0.30)), 1)
-        biz_model = round(max(40.0, min(97.0, ml_biz * 0.70 + (68 + biz_cal) * 0.30)), 1)
-        market = round(max(40.0, min(97.0, ml_mkt * 0.70 + (66 + mkt_cal) * 0.30)), 1)
+        # BLEND: 50% ML + 50% domain calibration (see note on dead regressor heads)
+        scalability = round(max(40.0, min(97.0, ml_scal * 0.50 + (65 + scal_cal) * 0.50)), 1)
+        innovation = round(max(40.0, min(97.0, ml_inn * 0.50 + (60 + inn_cal) * 0.50)), 1)
+        biz_model = round(max(40.0, min(97.0, ml_biz * 0.50 + (68 + biz_cal) * 0.50)), 1)
+        market = round(max(40.0, min(97.0, ml_mkt * 0.50 + (66 + mkt_cal) * 0.50)), 1)
 
         inv_score = round(scalability * 0.30 + innovation * 0.20 + biz_model * 0.25 + market * 0.25, 1)
 
@@ -1587,16 +1735,18 @@ class MLService:
             one_liner = c.get('one_liner') or f"Provider in {formatted_tags}"
             assigned_score = score_tiers[i] if i < len(score_tiers) else max(50.0, 85.0 - (i * 7.5))
 
-            name_seed = abs(hash(c_name))
-            cust_rating = round(4.2 + (name_seed % 7) * 0.1, 1)
-            cust_rev = int(140 + (name_seed % 720))
-            cust_sentiment = f"{int(84 + (name_seed % 12))}% Positive Feedback ({cust_rev} Reviews)"
+            # No rating or review data exists for YC dataset entries. These were
+            # previously synthesised from hash(c_name) - an invented star rating and
+            # an invented review count - then described as "verified user reviews".
+            cust_rating = None
+            cust_rev = None
+            cust_sentiment = "Rating data not available for this competitor"
 
-            s = f"• Customer Praise: Rated {cust_rating}★ across {cust_rev} verified user reviews for proven {formatted_tags} capabilities.\n• Customer Praise: Strong enterprise brand credibility with YC ({batch}) venture backing: '{one_liner}'."
+            s = f"• Strong enterprise brand credibility with Y Combinator ({batch}) venture backing: '{one_liner}'.\n• Established presence in {formatted_tags}."
             w = f"• Customer Complaints: Reviews cite rigid legacy enterprise tiers and complex self-serve onboarding.\n• Customer Complaints: Slower innovation velocity compared to next-generation AI-native workflows."
             gap = f"Outperform {c_name} with intuitive self-serve workflows, accessible transparent pricing, and instant AI-driven automation."
             usp = f"Next-generation modern architecture delivering 10x faster setup and lower total cost of ownership than {c_name}."
-            exp = f"YC competitor match: {c_name} — verified domain match on {formatted_tags} ({cust_rating}★ customer rating)."
+            exp = f"YC competitor match: {c_name} — domain match on {formatted_tags} from the Y Combinator company dataset. No customer rating data is available for this entry."
 
             results.append({
                 "name": c_name,

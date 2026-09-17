@@ -604,8 +604,9 @@ def _serialize_competitor(c: Competitor) -> Dict[str, Any]:
         "rating": c.rating,
         "review_count": c.review_count,
         "customer_sentiment": (
-            f"{int(84 + (abs(hash(c.name)) % 13))}% Positive Feedback ({c.review_count or 140} Reviews)"
-            if c.rating else "88% Positive Feedback"
+            getattr(c, "customer_sentiment", None)
+            or (f"Rated {c.rating} from {c.review_count} reviews" if c.rating and c.review_count
+                else (f"Rated {c.rating}" if c.rating else "Rating data not available"))
         ),
         "opening_hours": getattr(c, "opening_hours", "Not available") or "Not available",
         "pricing_model": getattr(c, "pricing_model", "Not available") or "Not available",

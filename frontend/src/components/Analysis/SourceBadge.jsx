@@ -43,6 +43,19 @@ const getSourceCategory = (sourceStr) => {
     };
   }
 
+  // Orange: explicitly unverified AI suggestions. Checked BEFORE the AI branch so an
+  // unverified local-business suggestion is never shown as ordinary AI-grounded output.
+  if (s.includes('unverified') || s.includes('llm_inferred') || s.includes('ai suggestion')) {
+    return {
+      type: 'fallback',
+      color: '#ea580c',
+      bgColor: 'rgba(249, 115, 22, 0.12)',
+      borderColor: 'rgba(249, 115, 22, 0.3)',
+      icon: <FaExclamationTriangle style={{ fontSize: '0.75rem', flexShrink: 0 }} />,
+      tag: 'Unverified'
+    };
+  }
+
   // Blue: AI Analysis
   if (
     s.includes('ai') ||

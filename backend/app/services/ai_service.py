@@ -264,7 +264,11 @@ CRITICAL RULES:
 2. For student campus areas (like Vignan University, Vadlamudi, or college campuses), identify popular spots frequented by students and faculty (e.g. Bismillah, The Heaven's Kitchen, Mubarak, Paradise Biryani, local messes, canteens).
 3. For urban hubs (Bangalore, Hyderabad, Pune, etc.), identify established physical outlets in that specific locality.
 4. Provide estimated distance in km from {location} (must be <= {radius_km} km).
-5. Provide realistic customer ratings (3.8 to 4.8) and realistic local landmark addresses.
+5. Do NOT invent ratings, review counts or addresses. Leave a field empty if you do not
+   actually know it. It is far better to return fewer businesses you are confident are
+   real than to pad the list with plausible-sounding inventions.
+6. If you do not confidently know real businesses of this category near this location,
+   return an empty "competitors" list.
 
 Return ONLY valid JSON with this exact schema:
 {{
