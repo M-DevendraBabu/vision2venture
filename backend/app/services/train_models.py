@@ -43,6 +43,56 @@ DATA_DIR = next((d for d in candidate_data_dirs if d.exists() and (d / "startup 
 SECTOR_SCALE_FILE = "sector_market_scale.json"
 
 
+def score_multioutput(name, labels, X, Y):
+    """
+    Cross-validated ROC-AUC per output, against the base rate.
+
+    These targets are now real observed outcomes, so it is possible - and necessary -
+    to ask whether the model actually predicts them. AUC 0.5 means the model knows
+    nothing beyond the base rate; above ~0.65 it is carrying genuine signal. Printing
+    this keeps anyone from claiming predictive power the numbers do not support.
+    """
+    from sklearn.model_selection import cross_val_score
+    from sklearn.ensemble import GradientBoostingClassifier
+
+    print(f"  {name} - cross-validated AUC per output (full model vs best single feature):")
+    for i, label in enumerate(labels):
+        y = Y[:, i]
+        base = y.mean()
+        yb = (y >= np.median(y)).astype(int) if set(np.unique(y)) - {0.0, 1.0} else (y >= 0.5).astype(int)
+        if len(np.unique(yb)) < 2:
+            print(f"    {label:<34} constant target, skipped")
+            continue
+        try:
+            def auc_of(mat):
+                return cross_val_score(
+                    GradientBoostingClassifier(n_estimators=100, max_depth=3, random_state=42),
+                    mat, yb, cv=5, scoring="roc_auc").mean()
+
+            auc = auc_of(X)
+            # The strongest single input. If one column alone reaches the full model's
+            # score, the "prediction" is really that column being read back, and the
+            # number must not be reported as predictive skill.
+            best_single, best_col = 0.0, -1
+            for c in range(X.shape[1]):
+                s = auc_of(X[:, [c]])
+                if s > best_single:
+                    best_single, best_col = s, c
+            lift = auc - best_single
+
+            if best_single >= 0.95:
+                verdict = f"LOOKUP - feature {best_col} alone gives {best_single:.3f}"
+            elif lift < 0.03:
+                verdict = f"no lift over feature {best_col} ({best_single:.3f})"
+            elif auc >= 0.65:
+                verdict = f"signal (+{lift:.3f} over best single feature)"
+            else:
+                verdict = "at base rate"
+            print(f"    {label:<34} AUC {auc:.3f}  (base rate {base:.1%})  {verdict}")
+        except Exception as e:
+            print(f"    {label:<34} could not score: {e}")
+
+
 def build_sector_market_scale(cb_clean) -> dict:
     """
     Real capital deployed per sector, in USD billions, from the training data itself.
@@ -166,41 +216,84 @@ def train_all_models():
     # =====================================================================
     # 2. RISK MODEL (5 outputs matching 20 features)
     # =====================================================================
-    print("\n[2/6] Training Risk Model...")
+    print("\n[2/6] Training Risk Model on observed outcomes...")
+    # Every target below is something that VERIFIABLY HAPPENED to these 923 companies,
+    # not a formula. The previous version fitted expressions like
+    #   0.65 - milestones*0.1 + (1 - has_VC)*0.2
+    # which made the regressor an expensive way to recompute arithmetic that was
+    # invented here, so the "risk score" could never be more accurate than the guess
+    # written into that line.
+    #
+    # Targets deliberately avoid any column that is already an input feature
+    # (milestones, relationships, funding_rounds, has_VC, has_angel, is_top500),
+    # because predicting a feature back from itself measures nothing.
+    closed = (cb_clean['status'] == 'closed').astype(float)
+    # Observed failure rate within each company's own sector: a real base rate.
+    sector_closure = cb_clean.groupby('category_code')['status'].transform(
+        lambda s: (s == 'closed').mean()).astype(float)
+
     y_risk = np.column_stack([
-        np.clip(0.65 - (cb_clean['milestones'] * 0.1) + (1 - cb_clean['has_VC']) * 0.2, 0.1, 0.9),
-        np.clip(0.50 + (1 - cb_clean['is_success']) * 0.3 - (cb_clean['has_angel'] * 0.1), 0.15, 0.9),
-        np.clip(0.55 + (1 - cb_clean['is_top500']) * 0.2, 0.2, 0.85),
-        np.clip(0.40 + (df_feat['burn_ratio'] / df_feat['burn_ratio'].max()) * 0.4 + (1 - cb_clean['has_VC']) * 0.2, 0.1, 0.95),
-        np.clip(0.45 - (cb_clean['relationships'] / 20.0) * 0.3, 0.1, 0.85)
-    ])
+        1.0 - cb_clean['has_roundB'].fillna(0),   # product risk: never reached Series B
+        closed,                                    # market risk: the company actually failed
+        sector_closure,                            # competition risk: real sector failure rate
+        1.0 - cb_clean['has_roundA'].fillna(0),   # financial risk: never secured a Series A
+        1.0 - cb_clean['has_roundC'].fillna(0),   # scaling risk: never reached growth stage
+    ]).astype(float)
     risk_model = MultiOutputRegressor(GradientBoostingRegressor(n_estimators=100, max_depth=3, random_state=42))
     risk_model.fit(X_scaled, y_risk)
     joblib.dump(risk_model, MODEL_DIR / "risk_model.joblib")
+    score_multioutput("Risk", ["product (no Series B)", "market (closed)", "competition (sector rate)",
+                               "financial (no Series A)", "scaling (no Series C)"], X_scaled, y_risk)
+    print(f"  Risk targets (observed base rates): "
+          f"no Series B {y_risk[:, 0].mean():.1%}, closed {y_risk[:, 1].mean():.1%}, "
+          f"sector closure {y_risk[:, 2].mean():.1%}, no Series A {y_risk[:, 3].mean():.1%}, "
+          f"no Series C {y_risk[:, 4].mean():.1%}")
 
     # =====================================================================
     # 3. FEASIBILITY & INVESTOR READINESS MODELS
     # =====================================================================
-    print("\n[3/6] Training Feasibility & Investor Models...")
+    print("\n[3/6] Training Feasibility & Investor Models on observed outcomes...")
+    # Feasibility = did this venture actually survive and execute?
+    founded = pd.to_datetime(cb_clean['founded_at'], errors='coerce')
+    closed_at = pd.to_datetime(cb_clean['closed_at'], errors='coerce')
+    lifespan_years = (closed_at - founded).dt.days / 365.25
+    # A company with no closing date did not close, so it cleared every age threshold.
+    survived_5y = ((lifespan_years >= 5) | closed_at.isna()).astype(float)
+    survived_3y = ((lifespan_years >= 3) | closed_at.isna()).astype(float)
+
     y_feas = np.column_stack([
-        np.clip(0.45 + cb_clean['is_success'] * 0.35 + cb_clean['milestones'] * 0.05, 0.2, 0.95),
-        np.clip(0.50 + (cb_clean['relationships'] / 15.0) * 0.3, 0.3, 0.95),
-        np.clip(0.40 + cb_clean['has_VC'] * 0.3 + cb_clean['has_angel'] * 0.15, 0.2, 0.95),
-        np.clip(0.55 + cb_clean['is_top500'] * 0.25, 0.3, 0.95)
-    ])
+        survived_5y,                                # still operating after 5 years
+        1.0 - closed,                               # reached a positive outcome, not shutdown
+        cb_clean['has_roundB'].fillna(0),           # execution proven enough to raise a B
+        survived_3y,                                # cleared the early-stage failure window
+    ]).astype(float)
     feas_model = MultiOutputRegressor(GradientBoostingRegressor(n_estimators=100, max_depth=3, random_state=42))
     feas_model.fit(X_scaled, y_feas)
     joblib.dump(feas_model, MODEL_DIR / "feasibility_model.joblib")
+    score_multioutput("Feasibility", ["survived 5 years", "not closed", "reached Series B",
+                                      "survived 3 years"], X_scaled, y_feas)
+    print(f"  Feasibility targets (observed): survived 5y {y_feas[:, 0].mean():.1%}, "
+          f"not closed {y_feas[:, 1].mean():.1%}, reached Series B {y_feas[:, 2].mean():.1%}, "
+          f"survived 3y {y_feas[:, 3].mean():.1%}")
+
+    # Investor readiness = did real investors actually commit capital, stage by stage?
+    late_stage = ((cb_clean['has_roundC'].fillna(0) + cb_clean['has_roundD'].fillna(0)) > 0).astype(float)
+    syndicate = (cb_clean['avg_participants'].fillna(0) >= 3).astype(float)
 
     y_inv = np.column_stack([
-        np.clip(0.40 + cb_clean['is_success'] * 0.4 + cb_clean['has_VC'] * 0.2, 0.2, 0.95),
-        np.clip(0.50 + (cb_clean['category_code'] == 'software').astype(int) * 0.25, 0.25, 0.95),
-        np.clip(0.45 + (cb_clean['milestones'] / 5.0) * 0.35, 0.2, 0.95),
-        np.clip(0.50 + cb_clean['has_VC'] * 0.25 + cb_clean['has_angel'] * 0.1, 0.25, 0.95)
-    ])
+        cb_clean['has_roundA'].fillna(0),           # cleared the institutional seed-to-A gate
+        cb_clean['has_roundB'].fillna(0),           # earned a follow-on round
+        late_stage,                                 # reached Series C or D
+        syndicate,                                  # attracted a multi-investor syndicate
+    ]).astype(float)
     inv_model = MultiOutputRegressor(GradientBoostingRegressor(n_estimators=100, max_depth=3, random_state=42))
     inv_model.fit(X_scaled, y_inv)
     joblib.dump(inv_model, MODEL_DIR / "investor_model.joblib")
+    score_multioutput("Investor readiness", ["reached Series A", "reached Series B",
+                                             "reached Series C/D", "3+ investor syndicate"], X_scaled, y_inv)
+    print(f"  Investor targets (observed): Series A {y_inv[:, 0].mean():.1%}, "
+          f"Series B {y_inv[:, 1].mean():.1%}, Series C/D {y_inv[:, 2].mean():.1%}, "
+          f"3+ investor syndicate {y_inv[:, 3].mean():.1%}")
 
     # =====================================================================
     # 4. MARKET MODEL (9 features matching ml_service.py)

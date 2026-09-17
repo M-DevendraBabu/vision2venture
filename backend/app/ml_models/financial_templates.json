@@ -1,82 +1,116 @@
 {
+  "_meta": {
+    "description": "Per-sector unit-economics benchmarks from published industry research. Replaces a generated file in which ltv_estimate was exactly 10x cac_estimate for every sector, churn was a flat 0.05 and break_even_months a flat 24 - constants that gave the appearance of sector differentiation while providing none.",
+    "compiled": "2026-09-17",
+    "fields": {
+      "churn_monthly_pct": "Median monthly customer churn, percent.",
+      "ltv_cac_ratio": "Median lifetime-value to customer-acquisition-cost ratio.",
+      "payback_months": "Median CAC payback period, months.",
+      "reference_cac_usd": "Median CAC in USD for the cited segment. Reference only - the app computes CAC from the user's own budget and does not read this field.",
+      "basis": "Which published segment the figures are taken from, and where a proxy was used because no figure is published for this sector.",
+      "source": "Publication the figures come from.",
+      "as_of": "Year the figures describe."
+    },
+    "caveat": "These are industry medians, not measurements of any specific venture. A pre-revenue startup has no observed churn or CAC; these describe what comparable companies report."
+  },
   "ai": {
-    "mrr_estimate": 43333333.333333336,
-    "cac_estimate": 2420.0,
-    "ltv_estimate": 24200.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "e-commerce": {
-    "mrr_estimate": 38833333.333333336,
-    "cac_estimate": 2467.0,
-    "ltv_estimate": 24670.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "edtech": {
-    "mrr_estimate": 39625000.0,
-    "cac_estimate": 2430.5,
-    "ltv_estimate": 24305.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "energy": {
-    "mrr_estimate": 39708333.333333336,
-    "cac_estimate": 2666.0,
-    "ltv_estimate": 26660.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "fintech": {
-    "mrr_estimate": 42416666.666666664,
-    "cac_estimate": 2485.0,
-    "ltv_estimate": 24850.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "foodtech": {
-    "mrr_estimate": 45583333.333333336,
-    "cac_estimate": 2564.0,
-    "ltv_estimate": 25640.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "gaming": {
-    "mrr_estimate": 39333333.333333336,
-    "cac_estimate": 2546.0,
-    "ltv_estimate": 25460.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "healthcare": {
-    "mrr_estimate": 41666666.666666664,
-    "cac_estimate": 2667.5,
-    "ltv_estimate": 26675.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
-  },
-  "logistics": {
-    "mrr_estimate": 42416666.666666664,
-    "cac_estimate": 2489.0,
-    "ltv_estimate": 24890.0,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
+    "churn_estimate": 0.035,
+    "ltv_cac_ratio": 3.1,
+    "roi_estimate": 3.1,
+    "break_even_months": 13,
+    "reference_cac_usd": 702,
+    "basis": "B2B SaaS, self-serve / product-led growth segment.",
+    "source": "ChartMogul + OpenView SaaS Benchmarks",
+    "as_of": 2026
   },
   "tech": {
-    "mrr_estimate": 41000000.0,
-    "cac_estimate": 2631.5,
-    "ltv_estimate": 26314.999999999996,
-    "churn_estimate": 0.05,
-    "roi_estimate": 2.5,
-    "break_even_months": 24
+    "churn_estimate": 0.035,
+    "ltv_cac_ratio": 3.1,
+    "roi_estimate": 3.1,
+    "break_even_months": 13,
+    "reference_cac_usd": 702,
+    "basis": "B2B SaaS, self-serve / product-led growth segment.",
+    "source": "ChartMogul + OpenView SaaS Benchmarks",
+    "as_of": 2026
+  },
+  "e-commerce": {
+    "churn_estimate": 0.075,
+    "ltv_cac_ratio": 3.8,
+    "roi_estimate": 3.8,
+    "break_even_months": 4,
+    "reference_cac_usd": 94,
+    "basis": "Direct-to-consumer ecommerce; churn from subscription-box DTC, which reports 7-10% monthly.",
+    "source": "Klipfolio DTC Benchmarks; Recurly churn research",
+    "as_of": 2026
+  },
+  "edtech": {
+    "churn_estimate": 0.096,
+    "ltv_cac_ratio": 3.0,
+    "roi_estimate": 3.0,
+    "break_even_months": 4,
+    "reference_cac_usd": 42,
+    "basis": "EdTech SaaS, the highest-churn vertical measured. LTV:CAC uses the 3.0 cross-industry consensus floor, as no EdTech-specific ratio is published.",
+    "source": "RetentionCheck churn benchmarks; Userpilot CAC benchmarks",
+    "as_of": 2026
+  },
+  "fintech": {
+    "churn_estimate": 0.035,
+    "ltv_cac_ratio": 3.5,
+    "roi_estimate": 3.5,
+    "break_even_months": 12,
+    "reference_cac_usd": 215,
+    "basis": "Consumer fintech. B2B fintech CAC is far higher (median USD 3,160).",
+    "source": "First Page Sage CAC benchmarks",
+    "as_of": 2026
+  },
+  "healthcare": {
+    "churn_estimate": 0.021,
+    "ltv_cac_ratio": 3.5,
+    "roi_estimate": 3.5,
+    "break_even_months": 15,
+    "reference_cac_usd": null,
+    "basis": "Regulated verticals (healthcare IT, legal tech) churn 30-50% below horizontal SaaS on high switching costs; 2.1% is the midpoint of that reduction applied to the 3.5% SaaS median. No healthcare-specific CAC is published.",
+    "source": "Recurly churn research; RetentionCheck",
+    "as_of": 2026
+  },
+  "gaming": {
+    "churn_estimate": 0.09,
+    "ltv_cac_ratio": 3.0,
+    "roi_estimate": 3.0,
+    "break_even_months": 6,
+    "reference_cac_usd": 87,
+    "basis": "Mobile gaming CAC is published; churn and LTV:CAC are not, so churn uses the consumer-app range and the ratio uses the 3.0 consensus floor. Treat both as placeholders, not measurements.",
+    "source": "Sensor Tower Mobile (CAC); 3.0 consensus floor",
+    "as_of": 2026
+  },
+  "foodtech": {
+    "churn_estimate": 0.075,
+    "ltv_cac_ratio": 3.0,
+    "roi_estimate": 3.0,
+    "break_even_months": 5,
+    "reference_cac_usd": null,
+    "basis": "PROXY: no foodtech-specific benchmark is published, so this uses direct-to-consumer ecommerce, the nearest measured category.",
+    "source": "Klipfolio DTC Benchmarks (proxy)",
+    "as_of": 2026
+  },
+  "logistics": {
+    "churn_estimate": 0.03,
+    "ltv_cac_ratio": 3.0,
+    "roi_estimate": 3.0,
+    "break_even_months": 14,
+    "reference_cac_usd": 1840,
+    "basis": "PROXY: B2B services / agency segment, the nearest measured category to logistics.",
+    "source": "First Page Sage CAC benchmarks (proxy)",
+    "as_of": 2026
+  },
+  "energy": {
+    "churn_estimate": 0.025,
+    "ltv_cac_ratio": 3.0,
+    "roi_estimate": 3.0,
+    "break_even_months": 18,
+    "reference_cac_usd": null,
+    "basis": "PROXY: no energy/cleantech unit-economics benchmark is published. Uses the 3.0 cross-industry consensus floor and a long payback reflecting capital intensity. The weakest-supported entry in this file.",
+    "source": "Cross-industry consensus floor only",
+    "as_of": 2026
   }
 }

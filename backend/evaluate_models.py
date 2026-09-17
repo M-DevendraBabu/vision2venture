@@ -205,9 +205,12 @@ WEAK_IDEA = {
 
 def evaluate_score_models():
     hr("[3/3] SCORE MODELS — BEHAVIOURAL VALIDATION (strong vs. weak idea)")
-    print("  NOTE: risk/feasibility/investor/market/financial regressors are trained on")
-    print("  formula-derived targets, so a numeric 'accuracy' is not meaningful. They are")
-    print("  validated by DISCRIMINATION: a strong idea must score better than a weak one.\n")
+    print("  NOTE: risk/feasibility/investor regressors are trained on OUTCOMES that really")
+    print("  happened to 923 Crunchbase companies (closed vs acquired, which funding rounds")
+    print("  were reached, how long the company survived). Per-output cross-validated AUC is")
+    print("  printed by the training run; this section checks DISCRIMINATION instead: a")
+    print("  strong idea must score better than a weak one. Market and financial regressors")
+    print("  remain benchmark-calibrated estimates, not measured outcomes.\n")
     try:
         from app.services.ml_service import MLService, ensure_ml_models_loaded
         ensure_ml_models_loaded()

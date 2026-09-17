@@ -39,6 +39,7 @@ _yc_competitors = []
 _tech_benchmarks = {}
 _financial_templates = {}
 _sector_market_scale = {}
+_india_market_sizes = {}
 _tech_stack_model = {}
 
 
@@ -48,6 +49,7 @@ def _init_ml_models():
     global _market_scaler, _market_industry_encoder, _market_country_encoder, _fin_industry_encoder
     global _feature_meta, _industry_benchmarks, _yc_competitors, _tech_benchmarks
     global _financial_templates, _sector_market_scale, _tech_stack_model
+    global _india_market_sizes
 
     def _load(filename, label):
         path = os.path.join(MODEL_DIR, filename)
@@ -94,6 +96,7 @@ def _init_ml_models():
         _tech_benchmarks = _load_json('tech_survey_benchmarks.json', 'Tech Survey Benchmarks')
         _financial_templates = _load_json('financial_templates.json', 'Financial Templates')
         _sector_market_scale = _load_json('sector_market_scale.json', 'Sector Market Scale')
+        _india_market_sizes = _load_json('india_market_sizes.json', 'India Market Sizes')
         _tech_stack_model = _load_json('tech_stack_model.json', 'Tech Stack Recommender')
 
     except Exception as e:
@@ -272,6 +275,39 @@ def _sector_scale(industry: str) -> float:
 
     values = sorted(_sector_market_scale.values())
     return float(values[len(values) // 2])
+
+
+def _india_market_tam(industry: str):
+    """
+    Addressable India market for a sector, in INR crore, with its provenance.
+
+    Returns (tam_crore, source, confidence). TAM is the published total for the
+    sector multiplied by an addressable share, because an early-stage venture does
+    not address a whole national market -- quoting India's entire e-commerce market
+    at a two-person startup would be the single most misleading number the app
+    could print.
+
+    Both halves are visible in india_market_sizes.json: the total carries its
+    publication, and the share is labelled a planning assumption. Sectors with no
+    published India figure carry confidence "low" and say so in `source`.
+    """
+    text = str(industry or "").lower()
+    fallback = _india_market_sizes.get("_default", {}) if _india_market_sizes else {}
+
+    best_alias, best_entry = "", None
+    for key, entry in (_india_market_sizes or {}).items():
+        if key.startswith("_"):
+            continue
+        for alias in entry.get("match", []):
+            if alias in text and len(alias) > len(best_alias):
+                best_alias, best_entry = alias, entry
+
+    entry = best_entry or fallback
+    if not entry:
+        return 35000.0, "Planning assumption; no market size table loaded.", "low"
+
+    tam = float(entry.get("total_market_inr_cr", 35000.0)) * float(entry.get("addressable_share", 1.0))
+    return tam, entry.get("source", "Planning assumption"), entry.get("confidence", "low")
 
 
 def _sector_cagr(industry: str, is_offline: bool = False) -> float:
@@ -635,16 +671,12 @@ class MLService:
             gdp_trill = float(econ.get('gdp_usd', 3.75e12)) / 1e12
             national_scale = max(0.8, min(2.0, gdp_trill / 3.5))
 
-            base_national_tam = 35000.0
-            if any(k in ind for k in ['fin', 'pay', 'bank']): base_national_tam = 95000.0
-            elif any(k in ind for k in ['comm', 'd2c', 'marketplace']): base_national_tam = 65000.0
-            elif any(k in ind for k in ['edu', 'learn']): base_national_tam = 42000.0
-            elif any(k in ind for k in ['health', 'med']): base_national_tam = 48000.0
-            elif any(k in ind for k in ['cyber', 'security']): base_national_tam = 32000.0
-            elif any(k in ind for k in ['clean', 'energy']): base_national_tam = 58000.0
-            elif any(k in ind for k in ['agri', 'farm']): base_national_tam = 30000.0
-            elif any(k in ind for k in ['game', 'gaming']): base_national_tam = 34000.0
-            elif any(k in ind for k in ['logist', 'supply']): base_national_tam = 60000.0
+            # Sector TAM now comes from india_market_sizes.json, which carries the
+            # published total and the source for each sector, instead of a chain of
+            # round numbers written inline with nothing to check them against. Sectors
+            # with no published India figure are marked confidence "low" in that file
+            # and say so rather than borrowing someone else's citation.
+            base_national_tam, tam_source, tam_conf = _india_market_tam(ind)
 
             tam_crores = round(base_national_tam * national_scale)
             if tam_crores >= 100000:
@@ -749,6 +781,16 @@ class MLService:
         return {
             'data_source': 'Sector CAGR Benchmark, Google Trends & Economic Indicators',
             'market_size': market_size_str,
+            # Where the TAM figure came from, carried with the figure so a
+            # low-confidence planning assumption can never be mistaken for a
+            # published statistic. Local catchment sizing is computed from
+            # population and per-capita spend, not from a published total.
+            'market_size_source': (
+                tam_source if not (is_offline or (is_hybrid and not is_national_scope))
+                else 'Local catchment population x per-capita category spend'),
+            'market_size_confidence': (
+                tam_conf if not (is_offline or (is_hybrid and not is_national_scope))
+                else 'derived'),
             'growth_rate': growth_rate,
             'demand_level': demand_level,
             'opportunity_score': final_opportunity,
@@ -798,21 +840,30 @@ class MLService:
                 print(f"[ML] Financial model prediction error: {e}")
 
         # --- 30%: Template scaling ---
+        # Published per-sector unit economics. Longest key wins so "edtech" is not
+        # captured by a shorter generic key, and "_meta" (the file's provenance block)
+        # is never treated as a sector.
         template = None
         if _financial_templates:
+            best_key = ""
             for k, v in _financial_templates.items():
-                if k in ind or ind in k:
-                    template = v
-                    break
+                if k.startswith("_"):
+                    continue
+                if (k in ind or ind in k) and len(k) > len(best_key):
+                    best_key, template = k, v
 
         if not template:
+            # Cross-industry medians, used when the sector is not one of the ten with
+            # published figures. Deliberately the consensus floor rather than a
+            # flattering guess.
             template = {
-                'mrr_estimate': 5000.0,
-                'cac_estimate': 150.0,
-                'ltv_estimate': 1500.0,
-                'churn_estimate': 0.05,
-                'roi_estimate': 2.5,
-                'break_even_months': 12
+                'churn_estimate': 0.035,
+                'ltv_cac_ratio': 3.0,
+                'roi_estimate': 3.0,
+                'break_even_months': 14,
+                'basis': 'Cross-industry median; no benchmark published for this sector.',
+                'source': 'Cross-industry consensus',
+                'as_of': 2026,
             }
 
         scale = budget / 20000.0 if budget > 0 else 1.0
@@ -894,6 +945,13 @@ class MLService:
             'customer_acquisition_cost': cac,
             'lifetime_value': ltv,
             'churn_rate': churn,
+            # Churn, ROI and break-even are anchored to published per-sector medians;
+            # carrying the citation with them stops a benchmark being read as a
+            # measurement of this particular venture.
+            'benchmark_source': template.get('source', 'Cross-industry consensus'),
+            'benchmark_basis': template.get('basis', ''),
+            'benchmark_as_of': template.get('as_of'),
+            'benchmark_ltv_cac_ratio': template.get('ltv_cac_ratio'),
             'daily_customers_estimate': int(20 * sec_mult),
             'average_order_value': 50.0 if sec == 'offline' else 25.0,
             'monthly_revenue': round(monthly_revenue, 2),

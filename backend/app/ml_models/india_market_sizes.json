@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "description": "Published India sector market sizes, used to anchor national/online TAM. Replaces figures that were hard-coded inline in ml_service.py with no source attached.",
+    "compiled": "2026-09-17",
+    "definition": "total_market_inr_cr is the PUBLISHED TOTAL market for the sector in India. addressable_share is the fraction an early-stage venture can realistically compete for; the app sizes TAM as total_market_inr_cr * addressable_share, so a new entrant is not shown the whole national market as if it were reachable.",
+    "addressable_share_rationale": "A single early-stage venture does not address a whole national market. The shares below are planning assumptions, not published figures, and are stated here rather than buried in code so they can be argued with.",
+    "fields": {
+      "total_market_inr_cr": "Published total India market size, INR crore.",
+      "addressable_share": "Planning assumption: fraction reachable by an early-stage entrant.",
+      "source": "Publication the total is taken from.",
+      "as_of": "Year the published figure describes.",
+      "confidence": "high = named published figure; medium = derived from a published adjacent figure; low = planning assumption with no published India figure found."
+    }
+  },
+  "ecommerce": {
+    "match": [
+      "marketplace",
+      "e-commerce",
+      "ecommerce",
+      "retail",
+      "shop",
+      "comm",
+      "d2c"
+    ],
+    "total_market_inr_cr": 1082875,
+    "addressable_share": 0.06,
+    "source": "IBEF, India Brand Equity Foundation - E-commerce (Rs 10,82,875 crore / US$125bn)",
+    "as_of": 2024,
+    "confidence": "high"
+  },
+  "fintech": {
+    "match": [
+      "fin-tech",
+      "fintech",
+      "insur",
+      "lend",
+      "bank",
+      "pay",
+      "fin"
+    ],
+    "total_market_inr_cr": 1300000,
+    "addressable_share": 0.07,
+    "source": "IMARC / Mordor Intelligence - India fintech market US$155.67bn (2025), converted at Rs 83.5/USD",
+    "as_of": 2025,
+    "confidence": "medium"
+  },
+  "healthcare": {
+    "match": [
+      "health-tech",
+      "healthtech",
+      "healthcare",
+      "diagnos",
+      "pharma",
+      "health",
+      "clinic",
+      "med"
+    ],
+    "total_market_inr_cr": 1800000,
+    "addressable_share": 0.03,
+    "source": "IBEF - India healthcare industry projected US$650bn by 2030; 2025 interpolation converted at Rs 83.5/USD",
+    "as_of": 2025,
+    "confidence": "medium"
+  },
+  "edtech": {
+    "match": [
+      "education",
+      "ed-tech",
+      "edtech",
+      "course",
+      "learn",
+      "tutor",
+      "skill",
+      "edu"
+    ],
+    "total_market_inr_cr": 42000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - no current published India EdTech total was confirmed; retained from the previous inline value and flagged rather than dressed up with a citation.",
+    "as_of": null,
+    "confidence": "low"
+  },
+  "gaming": {
+    "match": [
+      "gaming",
+      "esport",
+      "game"
+    ],
+    "total_market_inr_cr": 34000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - no current published India gaming total was confirmed.",
+    "as_of": null,
+    "confidence": "low"
+  },
+  "logistics": {
+    "match": [
+      "logistics",
+      "delivery",
+      "warehous",
+      "freight",
+      "supply",
+      "logist"
+    ],
+    "total_market_inr_cr": 60000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - no current published India logistics-tech total was confirmed.",
+    "as_of": null,
+    "confidence": "low"
+  },
+  "cleantech": {
+    "match": [
+      "renewable energy",
+      "clean-tech",
+      "renewable",
+      "cleantech",
+      "energy",
+      "solar",
+      "clean",
+      "ev"
+    ],
+    "total_market_inr_cr": 58000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - no current published India cleantech total was confirmed.",
+    "as_of": null,
+    "confidence": "low"
+  },
+  "agritech": {
+    "match": [
+      "agriculture",
+      "agri-tech",
+      "agritech",
+      "farm",
+      "crop",
+      "agri"
+    ],
+    "total_market_inr_cr": 30000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - no current published India agritech total was confirmed.",
+    "as_of": null,
+    "confidence": "low"
+  },
+  "cybersecurity": {
+    "match": [
+      "cyber-security",
+      "cybersecurity",
+      "security",
+      "infosec",
+      "cyber"
+    ],
+    "total_market_inr_cr": 32000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - no current published India cybersecurity total was confirmed.",
+    "as_of": null,
+    "confidence": "low"
+  },
+  "_default": {
+    "match": [],
+    "total_market_inr_cr": 35000,
+    "addressable_share": 1.0,
+    "source": "PLANNING ASSUMPTION - generic sector default, no published figure.",
+    "as_of": null,
+    "confidence": "low"
+  }
+}
