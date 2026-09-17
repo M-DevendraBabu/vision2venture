@@ -37,9 +37,8 @@ _feature_meta = {}
 _industry_benchmarks = {}
 _yc_competitors = []
 _tech_benchmarks = {}
-_market_benchmarks = {}
 _financial_templates = {}
-_financial_benchmarks = {}
+_sector_market_scale = {}
 _tech_stack_model = {}
 
 
@@ -48,7 +47,7 @@ def _init_ml_models():
     global _sector_encoder, _industry_encoder, _feature_scaler, _financial_scaler
     global _market_scaler, _market_industry_encoder, _market_country_encoder, _fin_industry_encoder
     global _feature_meta, _industry_benchmarks, _yc_competitors, _tech_benchmarks
-    global _market_benchmarks, _financial_templates, _financial_benchmarks, _tech_stack_model
+    global _financial_templates, _sector_market_scale, _tech_stack_model
 
     def _load(filename, label):
         path = os.path.join(MODEL_DIR, filename)
@@ -93,9 +92,8 @@ def _init_ml_models():
         _industry_benchmarks = _load_json('industry_benchmarks.json', 'Industry Benchmarks')
         _yc_competitors = _load_json('yc_competitors.json', 'YC Competitors')
         _tech_benchmarks = _load_json('tech_survey_benchmarks.json', 'Tech Survey Benchmarks')
-        _market_benchmarks = _load_json('market_benchmarks.json', 'Market Benchmarks')
         _financial_templates = _load_json('financial_templates.json', 'Financial Templates')
-        _financial_benchmarks = _load_json('financial_benchmarks.json', 'Financial Benchmarks')
+        _sector_market_scale = _load_json('sector_market_scale.json', 'Sector Market Scale')
         _tech_stack_model = _load_json('tech_stack_model.json', 'Tech Stack Recommender')
 
     except Exception as e:
@@ -208,6 +206,72 @@ _SECTOR_CAGR = [
     (['retail', 'grocery', 'supermarket', 'kirana', 'fmcg'], 10.0),
 ]
 _DEFAULT_CAGR = 13.0
+
+# Maps a user's free-text industry onto the Crunchbase `category_code` sectors that
+# sector_market_scale.json is keyed by. Longest alias wins, so "health services"
+# reaches 'health' rather than matching some shorter generic term first.
+_SECTOR_SCALE_ALIASES = {
+    'mobile': 'mobile', 'app': 'mobile', 'ios': 'mobile', 'android': 'mobile',
+    'software': 'software', 'saas': 'software', 'platform': 'software', 'devtool': 'software',
+    'web': 'web', 'website': 'web', 'internet': 'web', 'consumer internet': 'web',
+    'biotech': 'biotech', 'pharma': 'biotech', 'life science': 'biotech',
+    'enterprise': 'enterprise', 'b2b': 'enterprise',
+    'cleantech': 'cleantech', 'solar': 'cleantech', 'renewable': 'cleantech',
+    'energy': 'cleantech', 'climate': 'cleantech', 'ev': 'cleantech',
+    'semiconductor': 'semiconductor', 'chip': 'semiconductor', 'hardware': 'hardware',
+    'advertising': 'advertising', 'adtech': 'advertising', 'marketing': 'advertising',
+    'games_video': 'games_video', 'gaming': 'games_video', 'game': 'games_video',
+    'video': 'games_video', 'media': 'games_video', 'entertainment': 'games_video',
+    'network_hosting': 'network_hosting', 'cloud': 'network_hosting',
+    'hosting': 'network_hosting', 'infrastructure': 'network_hosting',
+    'security': 'security', 'cybersecurity': 'security',
+    'ecommerce': 'ecommerce', 'e-commerce': 'ecommerce', 'retail': 'ecommerce',
+    'marketplace': 'ecommerce', 'grocery': 'ecommerce', 'd2c': 'ecommerce',
+    'health': 'health', 'healthcare': 'health', 'clinic': 'health', 'medical': 'health',
+    'fintech': 'finance', 'finance': 'finance', 'payment': 'finance', 'banking': 'finance',
+    'insurance': 'finance', 'lending': 'finance',
+    'education': 'education', 'edtech': 'education', 'learning': 'education',
+    'travel': 'travel', 'tourism': 'travel', 'hospitality': 'travel',
+    'transportation': 'transportation', 'logistics': 'transportation', 'mobility': 'transportation',
+    'analytics': 'analytics', 'data': 'analytics', 'ai': 'analytics', 'machine learning': 'analytics',
+    'search': 'search', 'social': 'social', 'community': 'social',
+    'fashion': 'fashion', 'apparel': 'fashion', 'sports': 'sports', 'fitness': 'sports',
+    'gym': 'sports', 'music': 'music', 'news': 'news_search', 'real estate': 'real_estate',
+    'property': 'real_estate', 'legal': 'legal', 'consulting': 'consulting',
+    'manufacturing': 'manufacturing', 'automotive': 'automotive', 'food': 'hospitality',
+    'restaurant': 'hospitality', 'beverage': 'hospitality', 'cafe': 'hospitality',
+}
+
+
+def _sector_scale(industry: str) -> float:
+    """
+    Real capital deployed in this sector, in USD billions, as the model was trained.
+
+    sector_market_scale.json is written by train_models.py from the same Crunchbase
+    rows the models learn from, so training and inference read identical values.
+    Anything unrecognised gets the median sector rather than an invented constant.
+
+    Before this existed the lookup asked for an 'avg_valuation' key that no benchmark
+    entry has ever contained, so it always fell through to a hard-coded default and
+    fed 2.5 for every recognised industry -- a value absent from the training
+    distribution, against a feature that was itself a constant 5.0 in training.
+    """
+    if not _sector_market_scale:
+        return 5.0
+
+    text = str(industry or "").lower().strip()
+    best_alias, best_sector = "", None
+    for alias, sector in _SECTOR_SCALE_ALIASES.items():
+        if alias in text and len(alias) > len(best_alias):
+            best_alias, best_sector = alias, sector
+
+    if best_sector and best_sector in _sector_market_scale:
+        return float(_sector_market_scale[best_sector])
+    if text in _sector_market_scale:
+        return float(_sector_market_scale[text])
+
+    values = sorted(_sector_market_scale.values())
+    return float(values[len(values) // 2])
 
 
 def _sector_cagr(industry: str, is_offline: bool = False) -> float:
@@ -370,13 +434,7 @@ def _build_20_features(context: dict) -> np.ndarray:
     # Map user context to training features
     funding_rounds = 1 if budget < 50000 else (2 if budget < 100000 else (3 if budget < 200000 else 4))
     founder_exp = max(2, min(15, team_size * 2.5))
-    market_size_b = 5.0
-    for key, bench in _industry_benchmarks.items():
-        if key in ind or ind in key:
-            market_size_b = bench.get('avg_valuation', 2500000) / 1e9
-            if market_size_b < 0.01:
-                market_size_b = bench.get('avg_valuation', 2500000) / 1e6
-            break
+    market_size_b = _sector_scale(ind)
     product_traction = max(500, int(budget * 2.5))
     burn_rate = budget / 1e6 * 0.7
     revenue = budget / 1e6 * 0.4

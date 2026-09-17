@@ -38,6 +38,32 @@ candidate_data_dirs = [
 ]
 DATA_DIR = next((d for d in candidate_data_dirs if d.exists() and (d / "startup data.csv").exists()), BACKEND_DIR / "data")
 
+# Where the per-sector scale table is written so that inference can feed the model
+# exactly the values it was trained on. See build_sector_market_scale().
+SECTOR_SCALE_FILE = "sector_market_scale.json"
+
+
+def build_sector_market_scale(cb_clean) -> dict:
+    """
+    Real capital deployed per sector, in USD billions, from the training data itself.
+
+    `market_size_billion` used to be hard-coded to 5.0 for every training row, which
+    made it a constant: the model could learn nothing from it, and the three features
+    derived from it (market_capture_ratio, funding_per_round, market_per_employee)
+    collapsed into rescalings of revenue, funding_rounds and team_size.
+
+    Inference meanwhile fed 2.5 for any recognised industry, a value the model had
+    never seen — so the one feature that was supposed to carry market context was
+    actively injecting train/serve skew.
+
+    Summing real `funding_total_usd` per `category_code` gives a genuine, per-sector
+    figure (mobile 7.26B down to 0.002B) drawn from the same Crunchbase rows the
+    model trains on. The table is saved next to the models so `ml_service` can look
+    up the identical numbers at inference time.
+    """
+    totals = cb_clean.groupby("category_code")["funding_total_usd"].sum() / 1e9
+    return {str(sector): round(float(value), 4) for sector, value in totals.items()}
+
 
 def train_all_models():
     """
@@ -82,11 +108,20 @@ def train_all_models():
     cb_clean['has_VC'] = cb_clean['has_VC'].fillna(0)
     cb_clean['has_angel'] = cb_clean['has_angel'].fillna(0)
 
+    # Real capital deployed per sector, shared with inference so both sides agree.
+    sector_scale = build_sector_market_scale(cb_clean)
+    with open(MODEL_DIR / SECTOR_SCALE_FILE, "w", encoding="utf-8") as f:
+        json.dump(sector_scale, f, indent=2, sort_keys=True)
+    print(f"Sector market scale: {len(sector_scale)} sectors, "
+          f"{min(sector_scale.values()):.3f}B - {max(sector_scale.values()):.3f}B USD "
+          f"-> {SECTOR_SCALE_FILE}")
+
     df_feat = pd.DataFrame()
     df_feat['funding_rounds'] = cb_clean['funding_rounds']
     df_feat['founder_experience_years'] = np.clip(cb_clean['relationships'] * 1.5, 2, 15)
     df_feat['team_size'] = np.clip(cb_clean['relationships'] * 2.5, 2, 100)
-    df_feat['market_size_billion'] = 5.0
+    df_feat['market_size_billion'] = cb_clean['category_code'].map(sector_scale).fillna(
+        float(np.median(list(sector_scale.values()))))
     df_feat['product_traction_users'] = cb_clean['milestones'] * 2500 + 500
     df_feat['burn_rate_million'] = np.clip(cb_clean['funding_total_usd'] / (cb_clean['funding_rounds'] * 1e6 + 0.01), 0.1, 50.0)
     df_feat['revenue_million'] = np.clip(df_feat['burn_rate_million'] * 0.6, 0.05, 30.0)
