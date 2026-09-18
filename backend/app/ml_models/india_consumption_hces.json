@@ -12,7 +12,14 @@
     "method": "annual_per_capita = HCES monthly figure x 12 x share. Shares are 1.0 wherever an HCES item group maps directly onto the business; the two cases that need a share carry a SHARE ASSUMPTION note in their basis field.",
     "state_scaling": "state_multiplier = state MPCE / all-India MPCE, applied to the all-India figure so a catchment in Andhra Pradesh is not sized with Bihar's spending power.",
     "caveat": "These are population averages. A venture serving a self-selecting, higher-spending segment may address more per customer than the average - but the catchment TOTAL is what this sizes, and that total is bounded by what the population actually spends.",
-    "city_to_state": "Maps a city named in the user's location to its state, so the state MPCE multiplier can be applied. A location naming a state directly is matched against state_mpce_monthly first."
+    "city_to_state": "Maps a city named in the user's location to its state, so the state MPCE multiplier can be applied. A location naming a state directly is matched against state_mpce_monthly first.",
+    "independent_corroboration": {
+      "source": "IBEF Agriculture and Allied Industries, May 2026, slide 3",
+      "claim": "Beverages, refreshments and processed items are 9.84% (rural) and 11.09% (urban) of expenditure in 2023-24.",
+      "check": "Applied to the all-India MPCE of Rs 4,122 rural and Rs 6,996 urban, those percentages imply Rs 4,867 and Rs 9,310 per person per year. The figures derived here directly from the HCES fact sheet are Rs 4,872 and Rs 9,312 - 0.10% and 0.02% apart.",
+      "conclusion": "The food_restaurant category is confirmed against a second publication that reached it from percentages rather than from rupee tables.",
+      "caution_do_not_repeat_ibef_label": "The IBEF slide calls these percentages a share of FOOD expenditure. That label is wrong and the arithmetic proves it: 9.84% of the rural food budget would be about Rs 191/month, but 9.84% of TOTAL MPCE is Rs 406/month, which is what both sources actually agree on. HCES reports item groups as a share of total consumption expenditure. Do not 'correct' these figures to match the IBEF wording."
+    }
   },
   "categories": {
     "food_restaurant": {

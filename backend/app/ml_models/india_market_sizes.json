@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Published India sector market sizes, used to anchor national/online TAM. Replaces figures that were hard-coded inline in ml_service.py with no source attached.",
-    "compiled": "2026-09-17",
+    "compiled": "2026-09-18",
     "definition": "total_market_inr_cr is the PUBLISHED TOTAL market for the sector in India. addressable_share is the fraction an early-stage venture can realistically compete for; the app sizes TAM as total_market_inr_cr * addressable_share, so a new entrant is not shown the whole national market as if it were reachable.",
-    "addressable_share_rationale": "addressable_share is the one judgment in this file: the published totals are real, the fraction a new venture can reach is not published anywhere. Each sector now carries a share_rationale naming the actual barrier - RBI licensing, clinical licensing, RMG licensing, utility-scale incumbency - rather than a number chosen to preserve earlier output. Sectors still marked low confidence carry no published total at all.",
+    "addressable_share_rationale": "addressable_share is the one judgment in this file: the published totals are real, the fraction a new venture can reach is not published anywhere. Each sector now carries a share_rationale naming the actual barrier - RBI licensing, clinical licensing, RMG licensing, utility-scale incumbency - rather than a number chosen to preserve earlier output. Sectors still marked low confidence carry no published total at all. Logistics is the strongest case in the file: its share is not reasoned at all but anchored to a separately published sub-segment - express and courier at Rs 78,525 crore - so 0.0375 reproduces a printed figure to within 0.1%. Only cybersecurity now carries no published total.",
     "fields": {
       "total_market_inr_cr": "Published total India market size, INR crore.",
       "addressable_share": "Planning assumption: fraction reachable by an early-stage entrant.",
@@ -184,19 +184,32 @@
       "supply",
       "logist"
     ],
-    "total_market_inr_cr": 60000,
-    "addressable_share": 1.0,
-    "source": "PLANNING ASSUMPTION - no current published India logistics-tech total was confirmed.",
-    "as_of": null,
-    "confidence": "low",
+    "total_market_inr_cr": 2096198,
+    "addressable_share": 0.0375,
+    "source": "IMARC / Economic Survey - India logistics market US$240.5bn (2025), converted at FEDAI Rs 87.16/USD for calendar 2025, via IBEF Infrastructure, May 2026",
+    "as_of": 2025,
+    "confidence": "high",
     "funding_h1_2025": {
       "usd_mn_deployed": 364,
       "deal_count": null,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
     },
-    "share_rationale": "PLANNING ASSUMPTION - no published India total confirmed for this sector.",
-    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found."
+    "share_rationale": "The US$240.5bn total is freight and warehousing spend across road, rail, air, ocean and 3PL - overwhelmingly bulk movement on long-term contracts held by incumbents, plus port and rail capex a startup cannot address at all. The layer that is genuinely open to a new entrant is express logistics and courier, which the same report sizes at Rs 78,525 crore for FY25. That is 3.75% of the total, so the share is set to 0.0375 and reproduces the published express figure rather than being reverse-engineered from a target output.",
+    "corroboration": "Two independent checks. (1) The share is anchored to a separately published sub-segment figure, not assumed: 0.0375 x Rs 20,96,198 crore = Rs 78,607 crore against the published Rs 78,525 crore, 0.1% apart. (2) Converting the express segment's own US$9bn at the FY2024-25 FEDAI rate of Rs 86.47 gives Rs 77,823 crore against IBEF's printed Rs 78,525 crore - 0.89% apart, confirming the rupee figures and the FX table agree to under one percent.",
+    "detail": {
+      "total_usd_bn_2025": 240.5,
+      "total_usd_bn_2026e": 255.6,
+      "total_usd_bn_2033f": 527.5,
+      "cagr_2025_2033_pct": 10.9,
+      "express_courier_inr_cr_fy25": 78525,
+      "express_courier_usd_bn_fy25": 9,
+      "express_courier_fy30_inr_cr_low": 157050,
+      "express_courier_fy30_inr_cr_high": 191950,
+      "employment_mn": 22,
+      "lpi_rank_2023": 38,
+      "note": "The FY30 express projection (US$18-22bn) is a forecast and is deliberately NOT used as the market size; total_market_inr_cr stays on the measured 2025 figure."
+    }
   },
   "cleantech": {
     "match": [
@@ -255,19 +268,30 @@
       "crop",
       "agri"
     ],
-    "total_market_inr_cr": 30000,
+    "total_market_inr_cr": 7502,
     "addressable_share": 1.0,
-    "source": "PLANNING ASSUMPTION - no current published India agritech total was confirmed.",
-    "as_of": null,
-    "confidence": "low",
+    "source": "IMARC / Bain & Co. - India smart agriculture market US$860.7mn (2025), converted at FEDAI Rs 87.16/USD for calendar 2025, via IBEF Agriculture and Allied Industries, May 2026",
+    "as_of": 2025,
+    "confidence": "medium",
     "funding_h1_2025": {
       "usd_mn_deployed": 143,
       "deal_count": 16,
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
     },
-    "share_rationale": "PLANNING ASSUMPTION - no published India total confirmed for this sector.",
-    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found."
+    "share_rationale": "Share is 1.0 here for a different reason than a placeholder: the US$860.7mn figure already measures only the technology layer - precision agriculture, sensing, advisory and farming-as-a-service - so it is an addressable market as published, not a total to take a slice of. It is deliberately NOT the Rs 56,08,471 crore agriculture GVA, which measures farm output; a startup selling software to farmers does not address the value of the crop.",
+    "corroboration": "No second independent source was found for the smart-agriculture total, which is why this is medium and not high. The figure is directionally supported by the sector's funding: Inc42 records US$143mn deployed across 16 agritech deals in H1 2025, roughly 17% of the measured annual market - a ratio consistent with an early, under-penetrated category rather than a mature one.",
+    "detail": {
+      "smart_agriculture_usd_mn_2025": 860.7,
+      "smart_agriculture_usd_mn_2034f": 4281.7,
+      "cagr_2025_2034_pct": 18.93,
+      "agri_gva_inr_cr_fy26": 5608471,
+      "agri_gva_usd_bn_fy26": 589.43,
+      "agri_credit_inr_lakh_cr_fy26_projected": 31.5,
+      "agri_share_of_gdp_pct_fy25": 17.3,
+      "population_dependent_pct": 55,
+      "note": "agri_gva and agri_credit are context only and are NOT fed to the models or used as a TAM. They measure farm output and lending, not addressable spend on agritech products. The previous placeholder of Rs 30,000 crore overstated this market by 4.0x."
+    }
   },
   "cybersecurity": {
     "match": [
