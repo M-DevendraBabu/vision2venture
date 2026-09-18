@@ -1,12 +1,26 @@
 """
 financial_intelligence.py
-Comprehensive 25-Domain Financial Intelligence, Realistic Indian Unit Economics & Break-Even Modeling Engine.
-Strictly adheres to Indian Rupees (₹) and actual Indian market benchmarks:
-- DPIIT Indian Startup Database
-- NASSCOM Indian Tech Startups Report
-- SaaSBoomi B2B SaaS Benchmarks
-- NRAI (National Restaurant Association of India) Food Services Report
-- RBI Payment System Telemetry & Merchant Benchmarks
+
+Indian unit-economics and break-even modelling, in rupees, per business domain.
+
+On where the numbers come from. This header used to list DPIIT, NASSCOM,
+SaaSBoomi, NRAI and RBI as though every figure below traced to one of them.
+That is not the case and the file should not imply it. Of the sixteen benchmark
+blocks, seven carry per-field citations - the food service, pet clinic, fitness,
+grocery, campus QSR and hybrid clinic blocks, which do cite NRAI, FICCI, IBEF
+and NHA - and nine carry no citation at all, among them several of the most
+commonly matched sectors: fintech, edtech, e-commerce, logistics, b2b_saas.
+
+Those nine are not necessarily wrong. They are plausible and internally
+consistent. But nothing here shows where they came from, so nobody can check
+them, and that is recorded per sector in BENCHMARK_PROVENANCE and returned with
+every analysis rather than left for a reader to discover.
+
+One correction came out of writing that down. Where a block's uncited
+target_ltv_mult overlapped with a cited LTV:CAC ratio in financial_templates.json,
+the two disagreed in the same direction almost every time: the uncited figure ran
+about 26% higher across seven of the eight overlapping sectors. The cited figure
+now wins, and the override is reported.
 """
 
 import math
@@ -440,6 +454,111 @@ FINANCIAL_DOMAIN_BENCHMARKS = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Where each benchmark block's numbers come from.
+#
+# The module docstring lists DPIIT, NASSCOM, SaaSBoomi, NRAI and RBI, but that
+# is a blanket claim: seven of the sixteen blocks carry per-field citations and
+# nine carry none at all. Recording that honestly per sector is more useful than
+# a header implying every number is sourced. 'assumption' below does not mean a
+# figure is wrong - most are plausible - it means nothing in the repo shows where
+# it came from, so it cannot be checked.
+# ---------------------------------------------------------------------------
+BENCHMARK_PROVENANCE = {
+    'tiffin_streetfood':  {'confidence': 'medium', 'source': 'NRAI Small Food Service Report 2023, plus a local Hyderabad/Guntur market survey'},
+    'pet_clinic':         {'confidence': 'medium', 'source': 'Indian Veterinary Association practice benchmarks'},
+    'fitness_wellness':   {'confidence': 'medium', 'source': 'FICCI Wellness 2023 benchmarks'},
+    'grocery_hyperlocal': {'confidence': 'medium', 'source': 'IBEF retail and quick-commerce darkstore benchmarks'},
+    'campus_qsr':         {'confidence': 'medium', 'source': 'NRAI QSR campus-format benchmarks'},
+    'career_saas':        {'confidence': 'low',    'source': 'Indian B2C SaaS market observations; roughly a third of fields carry a citation'},
+    'healthtech_hybrid':  {'confidence': 'low',    'source': 'NHA telemedicine and physical hybrid clinic references; most fields uncited'},
+    'food & beverage':    {'confidence': 'low',    'source': None},
+    'b2b_saas':           {'confidence': 'low',    'source': None},
+    'fintech':            {'confidence': 'low',    'source': None},
+    'edtech':             {'confidence': 'low',    'source': None},
+    'healthtech':         {'confidence': 'low',    'source': None},
+    'cleantech':          {'confidence': 'low',    'source': None},
+    'e-commerce':         {'confidence': 'low',    'source': None},
+    'logistics':          {'confidence': 'low',    'source': None},
+    'proptech':           {'confidence': 'low',    'source': None},
+}
+
+_NO_SOURCE_NOTE = ('PLANNING ASSUMPTION - no published source is recorded for these figures. '
+                   'They are internally consistent and plausible for the Indian market, but '
+                   'nothing in this repository shows where they came from.')
+
+# The sourced LTV:CAC ratios in financial_templates.json cover several of the same
+# sectors as the blocks above. Where both exist they disagreed, and always in the
+# same direction: the uncited target_ltv_mult here ran about 26% higher than the
+# cited ratio, across seven of the eight overlapping sectors - edtech 4.1 against a
+# published 3.0, b2b_saas 4.2 against 3.1, fintech 4.5 against 3.5. Only e-commerce
+# agreed. A number nobody sourced flattering the business is the pattern worth
+# distrusting, so where a cited figure exists it wins, and the override is recorded.
+_TEMPLATE_SECTOR_MAP = {
+    'food & beverage': 'foodtech',
+    'b2b_saas': 'tech',
+    'fintech': 'fintech',
+    'edtech': 'edtech',
+    'healthtech': 'healthcare',
+    'healthtech_hybrid': 'healthcare',
+    'cleantech': 'energy',
+    'e-commerce': 'e-commerce',
+    'logistics': 'logistics',
+}
+
+_LTV_OVERRIDES = {}
+
+
+def _reconcile_ltv_against_published():
+    """Replace uncited LTV multiples with the cited ratio for the same sector."""
+    import json
+    import os
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                        'ml_models', 'financial_templates.json')
+    try:
+        with open(path, encoding='utf-8') as handle:
+            templates = json.load(handle)
+    except (OSError, ValueError):
+        return  # keep the existing values rather than fail the import
+
+    for sector, template_key in _TEMPLATE_SECTOR_MAP.items():
+        block = FINANCIAL_DOMAIN_BENCHMARKS.get(sector)
+        published = (templates.get(template_key) or {}).get('ltv_cac_ratio')
+        if not block or not published:
+            continue
+        previous = block.get('target_ltv_mult')
+        if previous is None or abs(float(previous) - float(published)) < 0.01:
+            continue
+        block['target_ltv_mult'] = float(published)
+        _LTV_OVERRIDES[sector] = {
+            'was': float(previous),
+            'now': float(published),
+            'source': (templates.get(template_key) or {}).get('source'),
+            'basis': (templates.get(template_key) or {}).get('basis'),
+        }
+
+
+_reconcile_ltv_against_published()
+
+
+def benchmark_provenance(sector: str) -> dict:
+    """Provenance for one benchmark block, safe to put straight into an API response."""
+    entry = BENCHMARK_PROVENANCE.get(sector, {'confidence': 'low', 'source': None})
+    override = _LTV_OVERRIDES.get(sector)
+    return {
+        'sector': sector,
+        'confidence': entry.get('confidence', 'low'),
+        'source': entry.get('source') or _NO_SOURCE_NOTE,
+        'is_planning_assumption': entry.get('source') is None,
+        'ltv_multiple_reconciled': bool(override),
+        'ltv_multiple_detail': (
+            'Uncited multiple of %.1f replaced with the published LTV:CAC of %.1f (%s).'
+            % (override['was'], override['now'], override['source'])
+            if override else ''
+        ),
+    }
+
+
 def detect_location_tier(location: str, title: str = "", description: str = "") -> str:
     """Classifies location into commercial cost tiers: campus_town, tier_3_town, tier_2_city, or tier_1_metro."""
     combined = f"{location} {title} {description}".lower()
@@ -680,8 +799,18 @@ def generate_financial_analysis(context: dict) -> dict:
         )
 
     total_3yr_net = y1_net + y2_net + y3_net
-    three_year_roi = round(((total_3yr_net - total_capex) / max(1.0, total_capex)) * 100.0, 1)
-    three_year_roi = max(45.0, min(380.0, three_year_roi))
+
+    # Return is measured against the capital actually committed, which is the stated
+    # budget, not the fit-out capex alone. Dividing by capex was the reason this metric
+    # was useless: capex here is a few lakh while three-year net runs into crores, so the
+    # raw ratio came out between 1,700% and 3,300% and the 380% ceiling caught every
+    # single case. Every user saw exactly 380%, which is a constant, not a measurement.
+    _invested_capital = max(float(total_capex), float(effective_budget or 0.0), 1.0)
+    _roi_uncapped = round(((total_3yr_net - _invested_capital) / _invested_capital) * 100.0, 1)
+    three_year_roi = max(45.0, min(380.0, _roi_uncapped))
+    # The clamp keeps the headline plausible, but a clamped number is a bound, not a
+    # result, and presenting the two identically hides which one a reader is looking at.
+    _roi_was_clamped = abs(_roi_uncapped - three_year_roi) > 0.05
 
     # -------------------------------------------------------------
     # 6. ITEMISED "WHY IT COSTS THIS MUCH" DESCRIPTIONS
@@ -1029,6 +1158,26 @@ def generate_financial_analysis(context: dict) -> dict:
         'revenue_goal_annual': float(_revenue_goal),
         'goal_attainment_percent': _goal_attainment,
         'goal_assessment': _goal_assessment,
+
+        # Where this analysis's unit economics came from. Carried in the response so a
+        # reader can tell a figure traced to NRAI or ChartMogul from one that is a
+        # plausible internal assumption - nine of the sixteen benchmark blocks are the
+        # latter, and the difference is not visible in the numbers themselves.
+        'benchmark_provenance': benchmark_provenance(category),
+
+        # 'roi' above is three-year CUMULATIVE return on the initial capex, not an annual
+        # rate. The distinction matters: read annually, 380% is an extraordinary claim;
+        # read over three years on a small capex base, it is ordinary. Stated here so the
+        # number cannot be quoted as the wrong thing.
+        'roi_basis': 'three_year_cumulative_on_committed_capital',
+        'roi_invested_capital': float(_invested_capital),
+        'roi_uncapped': float(_roi_uncapped),
+        'roi_was_capped': bool(_roi_was_clamped),
+        'roi_cap_note': (
+            'Displayed ROI is held to the 45-380%% band; the uncapped model output was %.1f%%. '
+            'The shown figure is that bound, not a computed result.' % _roi_uncapped
+            if _roi_was_clamped else ''
+        ),
 
         'capex_breakdown': capex_breakdown,
         'opex_breakdown': opex_breakdown,
