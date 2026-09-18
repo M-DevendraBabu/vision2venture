@@ -1,335 +1,415 @@
 {
-  "automobile": {
-    "avg_funding_usd": 54666666.666666664,
-    "median_funding_usd": 51000000.0,
-    "avg_funding_inr_cr": 475.6,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Jaipur",
-      "Gurgaon"
+  "_meta": {
+    "description": "Indian startup funding benchmarks by canonical sector, rebuilt from the deal-level records rather than from raw vertical strings.",
+    "source": "Indian Startup Funding dataset (startup_funding.csv), deal-level records",
+    "rebuilt_by": "backend/rebuild_industry_benchmarks.py",
+    "records_total": 3044,
+    "records_used": 1740,
+    "years_covered": [
+      2015,
+      2020
+    ],
+    "vintage_warning": "These deals closed between 2015 and 2020. They describe the funding market of that period and are NOT current. Anything displaying these figures must show the year range with them.",
+    "currency": "Each deal is converted at the FEDAI rate for its own calendar year. The previous build used a flat Rs 87/USD, a 2025 rate applied to deals up to a decade older, which overstated rupee figures by 17-36%.",
+    "fx_source": "Foreign Exchange Dealers' Association of India (FEDAI), reproduced in IBEF sector reports, May 2026",
+    "grouping": "799 raw vertical spellings normalised to 12 canonical sectors. Previously the same sector was split across up to five keys, with up to a 36x spread between their averages.",
+    "min_deals": 5,
+    "prefer": "median_funding_usd. The mean is retained for comparison but is unreliable on skewed samples; check skew_note and deal_count before using it.",
+    "dropped_below_min": [
+      {
+        "sector": "agritech",
+        "deal_count": 3
+      }
+    ],
+    "sector_aliases": {
+      "edtech": [
+        "edtech",
+        "ed-tech",
+        "ed tech",
+        "education",
+        "e-learning",
+        "elearning",
+        "learning",
+        "tutor",
+        "coaching",
+        "school",
+        "university",
+        "skill"
+      ],
+      "fintech": [
+        "fintech",
+        "fin-tech",
+        "fin tech",
+        "finance",
+        "financial",
+        "payment",
+        "lending",
+        "insurance",
+        "insurtech",
+        "banking",
+        "wealth",
+        "credit"
+      ],
+      "healthcare": [
+        "healthcare",
+        "health care",
+        "health and wellness",
+        "healthtech",
+        "health-tech",
+        "health",
+        "medical",
+        "pharma",
+        "diagnostic",
+        "wellness",
+        "fitness",
+        "hospital"
+      ],
+      "food": [
+        "food",
+        "beverage",
+        "restaurant",
+        "grocery",
+        "dining",
+        "kitchen",
+        "nutrition"
+      ],
+      "logistics": [
+        "logistic",
+        "delivery",
+        "courier",
+        "freight",
+        "shipping",
+        "supply chain",
+        "warehous",
+        "transport",
+        "mobility",
+        "automobile",
+        "automotive",
+        "cab",
+        "taxi",
+        "fleet"
+      ],
+      "ecommerce": [
+        "ecommerce",
+        "e-commerce",
+        "e commerce",
+        "marketplace",
+        "retail",
+        "online store",
+        "d2c",
+        "commerce"
+      ],
+      "realestate": [
+        "real estate",
+        "realestate",
+        "proptech",
+        "property",
+        "housing",
+        "construction",
+        "co-working",
+        "coworking"
+      ],
+      "travel": [
+        "travel",
+        "tourism",
+        "hotel",
+        "hospitality",
+        "booking"
+      ],
+      "media": [
+        "media",
+        "entertainment",
+        "gaming",
+        "game",
+        "music",
+        "video",
+        "content",
+        "news",
+        "publishing",
+        "advertis",
+        "marketing"
+      ],
+      "saas": [
+        "saas",
+        "b2b software",
+        "enterprise software",
+        "crm",
+        "erp",
+        "hr tech",
+        "hrtech",
+        "analytics platform",
+        "big data"
+      ],
+      "technology": [
+        "technology",
+        "information technology",
+        "it services",
+        "software",
+        "artificial intelligence",
+        "machine learning",
+        "iot",
+        "blockchain",
+        "cloud",
+        "cyber",
+        "tech",
+        "it",
+        "ai"
+      ],
+      "consumer_internet": [
+        "consumer internet",
+        "consumer",
+        "social",
+        "classified",
+        "dating",
+        "community",
+        "lifestyle",
+        "services"
+      ]
+    },
+    "word_only_aliases": [
+      "ai",
+      "it",
+      "tech"
     ]
   },
-  "big data & analytics platform": {
-    "avg_funding_usd": 14333333.333333334,
-    "median_funding_usd": 11000000.0,
-    "avg_funding_inr_cr": 124.7,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Mumbai / Global",
-      "India / US",
-      "Bangalore"
-    ]
-  },
-  "consumer internet": {
-    "avg_funding_usd": 10616441.842105264,
+  "consumer_internet": {
+    "deal_count": 619,
     "median_funding_usd": 1000000.0,
-    "avg_funding_inr_cr": 92.36,
-    "deal_count": 589,
+    "mean_funding_usd": 10687567.44,
+    "p25_funding_usd": 340000.0,
+    "p75_funding_usd": 5925000.0,
+    "median_funding_inr_cr": 6.72,
+    "mean_funding_inr_cr": 71.14,
+    "years_covered": [
+      2015,
+      2019
+    ],
     "top_hub_cities": [
       "Bangalore",
       "Mumbai",
       "New Delhi"
-    ]
-  },
-  "e-commerce": {
-    "avg_funding_usd": 9321627.5,
-    "median_funding_usd": 7250000.0,
-    "avg_funding_inr_cr": 81.1,
-    "deal_count": 8,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Bhopal",
-      "Mumbai"
-    ]
-  },
-  "ecommerce": {
-    "avg_funding_usd": 39702642.85714286,
-    "median_funding_usd": 2000000.0,
-    "avg_funding_inr_cr": 345.41,
-    "deal_count": 126,
-    "top_hub_cities": [
-      "Bangalore",
-      "Mumbai",
-      "New Delhi"
-    ]
-  },
-  "ed-tech": {
-    "avg_funding_usd": 2795720.0,
-    "median_funding_usd": 636250.0,
-    "avg_funding_inr_cr": 24.32,
-    "deal_count": 12,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Delhi",
-      "Mumbai"
-    ]
-  },
-  "edtech": {
-    "avg_funding_usd": 50439868.333333336,
-    "median_funding_usd": 1000000.0,
-    "avg_funding_inr_cr": 438.83,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Noida",
-      "Bengaluru",
-      "Chembur"
-    ]
-  },
-  "education": {
-    "avg_funding_usd": 15849631.578947369,
-    "median_funding_usd": 1500000.0,
-    "avg_funding_inr_cr": 137.89,
-    "deal_count": 19,
-    "top_hub_cities": [
-      "Mumbai",
-      "Bangalore",
-      "Gurgaon"
-    ]
-  },
-  "fin-tech": {
-    "avg_funding_usd": 23450000.0,
-    "median_funding_usd": 4600000.0,
-    "avg_funding_inr_cr": 204.01,
-    "deal_count": 6,
-    "top_hub_cities": [
-      "Mumbai",
-      "Bengaluru",
-      "Hyderabad"
-    ]
-  },
-  "fintech": {
-    "avg_funding_usd": 135634585.0,
-    "median_funding_usd": 15500000.0,
-    "avg_funding_inr_cr": 1180.02,
-    "deal_count": 9,
-    "top_hub_cities": [
-      "Gurgaon",
-      "New Delhi",
-      "Noida"
-    ]
-  },
-  "finance": {
-    "avg_funding_usd": 34586631.578947365,
-    "median_funding_usd": 6240000.0,
-    "avg_funding_inr_cr": 300.9,
-    "deal_count": 57,
-    "top_hub_cities": [
-      "Mumbai",
-      "Bengaluru",
-      "Gurugram"
-    ]
-  },
-  "food": {
-    "avg_funding_usd": 3500000.0,
-    "median_funding_usd": 1300000.0,
-    "avg_funding_inr_cr": 30.45,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Jaipur",
-      "New Delhi",
-      "Mumbai"
-    ]
-  },
-  "food & beverage": {
-    "avg_funding_usd": 2815733.3333333335,
-    "median_funding_usd": 1500000.0,
-    "avg_funding_inr_cr": 24.5,
-    "deal_count": 15,
-    "top_hub_cities": [
-      "New Delhi",
-      "Mumbai",
-      "Coimbatore"
-    ]
-  },
-  "food and beverage": {
-    "avg_funding_usd": 4565799.0,
-    "median_funding_usd": 5600000.0,
-    "avg_funding_inr_cr": 39.72,
-    "deal_count": 5,
-    "top_hub_cities": [
-      "New Delhi",
-      "Bengaluru"
-    ]
-  },
-  "food and beverages": {
-    "avg_funding_usd": 100103733.33333333,
-    "median_funding_usd": 100000000.0,
-    "avg_funding_inr_cr": 870.9,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Gurugram",
-      "Bengaluru",
-      "Mumbai"
-    ]
-  },
-  "health and wellness": {
-    "avg_funding_usd": 98040000.0,
-    "median_funding_usd": 12000000.0,
-    "avg_funding_inr_cr": 852.95,
-    "deal_count": 5,
-    "top_hub_cities": [
-      "Gurgaon",
-      "Menlo Park",
-      "Gurugram"
-    ]
-  },
-  "healthcare": {
-    "avg_funding_usd": 8664045.454545455,
-    "median_funding_usd": 2550000.0,
-    "avg_funding_inr_cr": 75.38,
-    "deal_count": 44,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Mumbai",
-      "Bangalore"
-    ]
-  },
-  "hyperlocal handyman services": {
-    "avg_funding_usd": 883333.3333333334,
-    "median_funding_usd": 400000.0,
-    "avg_funding_inr_cr": 7.68,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Mumbai"
-    ]
-  },
-  "it": {
-    "avg_funding_usd": 4235000.0,
-    "median_funding_usd": 2100000.0,
-    "avg_funding_inr_cr": 36.84,
-    "deal_count": 8,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Pune",
-      "Gurugram"
-    ]
-  },
-  "information technology": {
-    "avg_funding_usd": 13860000.0,
-    "median_funding_usd": 2500000.0,
-    "avg_funding_inr_cr": 120.58,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Noida",
-      "Singapore"
-    ]
-  },
-  "logistics": {
-    "avg_funding_usd": 10558478.260869564,
-    "median_funding_usd": 6000000.0,
-    "avg_funding_inr_cr": 91.86,
-    "deal_count": 23,
-    "top_hub_cities": [
-      "Mumbai",
-      "Bangalore",
-      "New Delhi"
-    ]
-  },
-  "logistics tech": {
-    "avg_funding_usd": 8170000.0,
-    "median_funding_usd": 8750000.0,
-    "avg_funding_inr_cr": 71.08,
-    "deal_count": 4,
-    "top_hub_cities": [
-      "Bengaluru",
-      "Mumbai"
-    ]
-  },
-  "online education platform": {
-    "avg_funding_usd": 5666666.666666667,
-    "median_funding_usd": 5000000.0,
-    "avg_funding_inr_cr": 49.3,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Mumbai",
-      "Bangalore"
-    ]
-  },
-  "online food delivery": {
-    "avg_funding_usd": 24300000.0,
-    "median_funding_usd": 3500000.0,
-    "avg_funding_inr_cr": 211.41,
-    "deal_count": 5,
-    "top_hub_cities": [
-      "Bangalore",
-      "Gurgaon",
-      "Mumbai"
-    ]
-  },
-  "others": {
-    "avg_funding_usd": 4797000.0,
-    "median_funding_usd": 1574000.0,
-    "avg_funding_inr_cr": 41.73,
-    "deal_count": 4,
-    "top_hub_cities": [
-      "Mumbai",
-      "New Delhi"
-    ]
-  },
-  "real estate": {
-    "avg_funding_usd": 9833333.333333334,
-    "median_funding_usd": 4000000.0,
-    "avg_funding_inr_cr": 85.55,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "New Delhi",
-      "Mumbai",
-      "Bangalore"
-    ]
-  },
-  "saas": {
-    "avg_funding_usd": 55333333.333333336,
-    "median_funding_usd": 26000000.0,
-    "avg_funding_inr_cr": 481.4,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "San Jose,",
-      "Hyderabad",
-      "Mumbai"
-    ]
-  },
-  "social media": {
-    "avg_funding_usd": 1997125.0,
-    "median_funding_usd": 1700000.0,
-    "avg_funding_inr_cr": 17.37,
-    "deal_count": 3,
-    "top_hub_cities": [
-      "Delhi",
-      "New Delhi"
-    ]
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
   },
   "technology": {
-    "avg_funding_usd": 7192606.225806451,
-    "median_funding_usd": 1500000.0,
-    "avg_funding_inr_cr": 62.58,
-    "deal_count": 310,
+    "deal_count": 344,
+    "median_funding_usd": 2000000.0,
+    "mean_funding_usd": 7990982.35,
+    "p25_funding_usd": 500000.0,
+    "p75_funding_usd": 6700000.0,
+    "median_funding_inr_cr": 13.02,
+    "mean_funding_inr_cr": 53.4,
+    "years_covered": [
+      2015,
+      2019
+    ],
     "top_hub_cities": [
       "Bangalore",
       "Mumbai",
       "Bengaluru"
-    ]
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
   },
-  "transport": {
-    "avg_funding_usd": 50666666.666666664,
-    "median_funding_usd": 1000000.0,
-    "avg_funding_inr_cr": 440.8,
-    "deal_count": 3,
+  "ecommerce": {
+    "deal_count": 271,
+    "median_funding_usd": 3100000.0,
+    "mean_funding_usd": 41822814.36,
+    "p25_funding_usd": 650000.0,
+    "p75_funding_usd": 12150000.0,
+    "median_funding_inr_cr": 20.97,
+    "mean_funding_inr_cr": 274.31,
+    "years_covered": [
+      2015,
+      2020
+    ],
     "top_hub_cities": [
-      "Bengaluru",
-      "Kormangala"
-    ]
+      "Bangalore",
+      "Mumbai",
+      "New Delhi"
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
   },
-  "transportation": {
-    "avg_funding_usd": 979158098.5,
-    "median_funding_usd": 6524197.0,
-    "avg_funding_inr_cr": 8518.68,
-    "deal_count": 4,
+  "fintech": {
+    "deal_count": 100,
+    "median_funding_usd": 6000000.0,
+    "mean_funding_usd": 35835492.65,
+    "p25_funding_usd": 2000000.0,
+    "p75_funding_usd": 21625000.0,
+    "median_funding_inr_cr": 40.78,
+    "mean_funding_inr_cr": 244.48,
+    "years_covered": [
+      2015,
+      2020
+    ],
+    "top_hub_cities": [
+      "Mumbai",
+      "Bengaluru",
+      "Chennai"
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "healthcare": {
+    "deal_count": 89,
+    "median_funding_usd": 2000000.0,
+    "mean_funding_usd": 15136348.31,
+    "p25_funding_usd": 486000.0,
+    "p75_funding_usd": 10000000.0,
+    "median_funding_inr_cr": 12.99,
+    "mean_funding_inr_cr": 103.95,
+    "years_covered": [
+      2015,
+      2020
+    ],
+    "top_hub_cities": [
+      "Mumbai",
+      "Bangalore",
+      "Gurgaon"
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "food": {
+    "deal_count": 86,
+    "median_funding_usd": 1550000.0,
+    "mean_funding_usd": 11640327.85,
+    "p25_funding_usd": 500000.0,
+    "p75_funding_usd": 6517500.0,
+    "median_funding_inr_cr": 10.17,
+    "mean_funding_inr_cr": 76.55,
+    "years_covered": [
+      2015,
+      2019
+    ],
     "top_hub_cities": [
       "Gurgaon",
-      "Bengaluru",
-      "Karnataka"
-    ]
+      "Mumbai",
+      "New Delhi"
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "logistics": {
+    "deal_count": 79,
+    "median_funding_usd": 5600000.0,
+    "mean_funding_usd": 74946739.16,
+    "p25_funding_usd": 1000000.0,
+    "p75_funding_usd": 14790000.0,
+    "median_funding_inr_cr": 35.92,
+    "mean_funding_inr_cr": 514.59,
+    "years_covered": [
+      2015,
+      2020
+    ],
+    "top_hub_cities": [
+      "Bangalore",
+      "Gurgaon",
+      "Mumbai"
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "edtech": {
+    "deal_count": 63,
+    "median_funding_usd": 1000000.0,
+    "mean_funding_usd": 9188874.05,
+    "p25_funding_usd": 313302.5,
+    "p75_funding_usd": 4500000.0,
+    "median_funding_inr_cr": 6.99,
+    "mean_funding_inr_cr": 62.93,
+    "years_covered": [
+      2015,
+      2019
+    ],
+    "top_hub_cities": [
+      "Mumbai",
+      "Bangalore",
+      "New Delhi"
+    ],
+    "reliability": "good",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "media": {
+    "deal_count": 35,
+    "median_funding_usd": 1000000.0,
+    "mean_funding_usd": 9667316.43,
+    "p25_funding_usd": 500000.0,
+    "p75_funding_usd": 3795687.5,
+    "median_funding_inr_cr": 6.42,
+    "mean_funding_inr_cr": 63.85,
+    "years_covered": [
+      2015,
+      2019
+    ],
+    "top_hub_cities": [
+      "New Delhi",
+      "Bangalore",
+      "Bengaluru"
+    ],
+    "reliability": "moderate",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "travel": {
+    "deal_count": 21,
+    "median_funding_usd": 2200000.0,
+    "mean_funding_usd": 18450000.0,
+    "p25_funding_usd": 800000.0,
+    "p75_funding_usd": 15000000.0,
+    "median_funding_inr_cr": 14.11,
+    "mean_funding_inr_cr": 118.37,
+    "years_covered": [
+      2015,
+      2018
+    ],
+    "top_hub_cities": [
+      "New Delhi",
+      "Bangalore",
+      "Mumbai"
+    ],
+    "reliability": "moderate",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "saas": {
+    "deal_count": 20,
+    "median_funding_usd": 5000000.0,
+    "mean_funding_usd": 17220000.0,
+    "p25_funding_usd": 1750000.0,
+    "p75_funding_usd": 17750000.0,
+    "median_funding_inr_cr": 33.51,
+    "mean_funding_inr_cr": 116.67,
+    "years_covered": [
+      2015,
+      2019
+    ],
+    "top_hub_cities": [
+      "Mumbai",
+      "Bangalore",
+      "Hyderabad"
+    ],
+    "reliability": "moderate",
+    "skew_note": "Mean is more than 3x the median - the average is pulled by a few large rounds, so prefer the median."
+  },
+  "realestate": {
+    "deal_count": 10,
+    "median_funding_usd": 2975000.0,
+    "mean_funding_usd": 4858500.0,
+    "p25_funding_usd": 1375000.0,
+    "p75_funding_usd": 4750000.0,
+    "median_funding_inr_cr": 19.08,
+    "mean_funding_inr_cr": 31.64,
+    "years_covered": [
+      2015,
+      2018
+    ],
+    "top_hub_cities": [
+      "New Delhi",
+      "Mumbai",
+      "Gurgaon"
+    ],
+    "reliability": "thin",
+    "skew_note": ""
   }
 }

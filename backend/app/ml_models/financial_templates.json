@@ -1,23 +1,27 @@
 {
   "_meta": {
     "description": "Per-sector unit-economics benchmarks from published industry research. Replaces a generated file in which ltv_estimate was exactly 10x cac_estimate for every sector, churn was a flat 0.05 and break_even_months a flat 24 - constants that gave the appearance of sector differentiation while providing none.",
-    "compiled": "2026-09-17",
+    "compiled": "2026-09-18",
     "fields": {
-      "churn_monthly_pct": "Median monthly customer churn, percent.",
+      "churn_estimate": "Median monthly customer churn, as a fraction (0.096 = 9.6% per month).",
       "ltv_cac_ratio": "Median lifetime-value to customer-acquisition-cost ratio.",
-      "payback_months": "Median CAC payback period, months.",
-      "reference_cac_usd": "Median CAC in USD for the cited segment. Reference only - the app computes CAC from the user's own budget and does not read this field.",
-      "basis": "Which published segment the figures are taken from, and where a proxy was used because no figure is published for this sector.",
+      "cac_payback_months": "Median months to recover the acquisition cost of ONE customer. This is NOT the point at which the business becomes profitable.",
+      "reference_cac_usd": "Median CAC in USD for the cited segment. Reference only - the app computes CAC from the budget and does not read this field.",
+      "basis": "Which published segment the figures are taken from, and where a proxy was used.",
       "source": "Publication the figures come from.",
       "as_of": "Year the figures describe."
     },
-    "caveat": "These are industry medians, not measurements of any specific venture. A pre-revenue startup has no observed churn or CAC; these describe what comparable companies report."
+    "caveat": "These are industry medians, not measurements of any specific venture. A pre-revenue startup has no observed churn or CAC; these describe what comparable companies report. CAC payback and business break-even are different things and are reported separately; neither is a measurement of any specific venture.",
+    "corrections_2026_09_18": {
+      "roi_estimate_removed": "Every sector carried roi_estimate identical to its ltv_cac_ratio, and the app multiplied it by 100 and blended it into ROI - so an LTV:CAC of 3.0 was reported as a 300% return. Those are different quantities: LTV:CAC compares one customer's lifetime value to the cost of acquiring them, while ROI is a return on the whole invested capital. The field was a mislabelled duplicate and is removed; ltv_cac_ratio is now surfaced as itself.",
+      "break_even_renamed": "break_even_months held what the cited sources publish, which is CAC payback, and the app blended it with a model prediction of business break-even. Averaging a 4-month payback with a 15-month break-even produced a number that measured neither. Renamed to cac_payback_months and reported in its own right; business break-even now comes from the model alone.",
+      "fields_block_was_wrong": "The previous fields block documented churn_monthly_pct and payback_months, neither of which existed in the data, and omitted the two fields that did."
+    }
   },
   "ai": {
     "churn_estimate": 0.035,
     "ltv_cac_ratio": 3.1,
-    "roi_estimate": 3.1,
-    "break_even_months": 13,
+    "cac_payback_months": 13,
     "reference_cac_usd": 702,
     "basis": "B2B SaaS, self-serve / product-led growth segment.",
     "source": "ChartMogul + OpenView SaaS Benchmarks",
@@ -26,8 +30,7 @@
   "tech": {
     "churn_estimate": 0.035,
     "ltv_cac_ratio": 3.1,
-    "roi_estimate": 3.1,
-    "break_even_months": 13,
+    "cac_payback_months": 13,
     "reference_cac_usd": 702,
     "basis": "B2B SaaS, self-serve / product-led growth segment.",
     "source": "ChartMogul + OpenView SaaS Benchmarks",
@@ -36,8 +39,7 @@
   "e-commerce": {
     "churn_estimate": 0.075,
     "ltv_cac_ratio": 3.8,
-    "roi_estimate": 3.8,
-    "break_even_months": 4,
+    "cac_payback_months": 4,
     "reference_cac_usd": 94,
     "basis": "Direct-to-consumer ecommerce; churn from subscription-box DTC, which reports 7-10% monthly.",
     "source": "Klipfolio DTC Benchmarks; Recurly churn research",
@@ -46,8 +48,7 @@
   "edtech": {
     "churn_estimate": 0.096,
     "ltv_cac_ratio": 3.0,
-    "roi_estimate": 3.0,
-    "break_even_months": 4,
+    "cac_payback_months": 4,
     "reference_cac_usd": 42,
     "basis": "EdTech SaaS, the highest-churn vertical measured. LTV:CAC uses the 3.0 cross-industry consensus floor, as no EdTech-specific ratio is published.",
     "source": "RetentionCheck churn benchmarks; Userpilot CAC benchmarks",
@@ -56,8 +57,7 @@
   "fintech": {
     "churn_estimate": 0.035,
     "ltv_cac_ratio": 3.5,
-    "roi_estimate": 3.5,
-    "break_even_months": 12,
+    "cac_payback_months": 12,
     "reference_cac_usd": 215,
     "basis": "Consumer fintech. B2B fintech CAC is far higher (median USD 3,160).",
     "source": "First Page Sage CAC benchmarks",
@@ -66,8 +66,7 @@
   "healthcare": {
     "churn_estimate": 0.021,
     "ltv_cac_ratio": 3.5,
-    "roi_estimate": 3.5,
-    "break_even_months": 15,
+    "cac_payback_months": 15,
     "reference_cac_usd": null,
     "basis": "Regulated verticals (healthcare IT, legal tech) churn 30-50% below horizontal SaaS on high switching costs; 2.1% is the midpoint of that reduction applied to the 3.5% SaaS median. No healthcare-specific CAC is published.",
     "source": "Recurly churn research; RetentionCheck",
@@ -76,8 +75,7 @@
   "gaming": {
     "churn_estimate": 0.09,
     "ltv_cac_ratio": 3.0,
-    "roi_estimate": 3.0,
-    "break_even_months": 6,
+    "cac_payback_months": 6,
     "reference_cac_usd": 87,
     "basis": "Mobile gaming CAC is published; churn and LTV:CAC are not, so churn uses the consumer-app range and the ratio uses the 3.0 consensus floor. Treat both as placeholders, not measurements.",
     "source": "Sensor Tower Mobile (CAC); 3.0 consensus floor",
@@ -86,8 +84,7 @@
   "foodtech": {
     "churn_estimate": 0.075,
     "ltv_cac_ratio": 3.0,
-    "roi_estimate": 3.0,
-    "break_even_months": 5,
+    "cac_payback_months": 5,
     "reference_cac_usd": null,
     "basis": "PROXY: no foodtech-specific benchmark is published, so this uses direct-to-consumer ecommerce, the nearest measured category.",
     "source": "Klipfolio DTC Benchmarks (proxy)",
@@ -96,8 +93,7 @@
   "logistics": {
     "churn_estimate": 0.03,
     "ltv_cac_ratio": 3.0,
-    "roi_estimate": 3.0,
-    "break_even_months": 14,
+    "cac_payback_months": 14,
     "reference_cac_usd": 1840,
     "basis": "PROXY: B2B services / agency segment, the nearest measured category to logistics.",
     "source": "First Page Sage CAC benchmarks (proxy)",
@@ -106,8 +102,7 @@
   "energy": {
     "churn_estimate": 0.025,
     "ltv_cac_ratio": 3.0,
-    "roi_estimate": 3.0,
-    "break_even_months": 18,
+    "cac_payback_months": 18,
     "reference_cac_usd": null,
     "basis": "PROXY: no energy/cleantech unit-economics benchmark is published. Uses the 3.0 cross-industry consensus floor and a long payback reflecting capital intensity. The weakest-supported entry in this file.",
     "source": "Cross-industry consensus floor only",

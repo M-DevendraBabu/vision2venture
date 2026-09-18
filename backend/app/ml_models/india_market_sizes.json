@@ -24,20 +24,29 @@
     },
     "fx_inr_per_usd": {
       "rates": {
-        "2022-23": 78.6,
-        "2023-24": 82.8,
-        "2024-25": 86.47,
-        "2025-26": 88.37,
-        "2026-27": 94.38,
+        "2015": 64.15,
+        "2016": 67.21,
+        "2017": 65.12,
+        "2018": 68.36,
+        "2019": 69.89,
+        "2020": 74.18,
+        "2021": 73.93,
         "2022": 79.82,
         "2023": 82.61,
         "2024": 84.49,
         "2025": 87.16,
-        "2026": 92.66
+        "2026": 92.66,
+        "2022-23": 78.6,
+        "2023-24": 82.8,
+        "2024-25": 86.47,
+        "2025-26": 88.37,
+        "2026-27": 94.38
       },
       "source": "Foreign Exchange Dealers' Association of India (FEDAI), reproduced in IBEF sector reports, May 2026",
-      "note": "Every USD figure is converted at the rate for the year that figure describes, not a single flat rate. A flat Rs 83.5/USD was previously used throughout and was wrong by up to 4.2% against the 2025 rate of Rs 87.16."
-    }
+      "note": "Every USD figure is converted at the rate for the year that figure describes, not a single flat rate. A flat Rs 83.5/USD was previously used throughout and was wrong by up to 4.2% against the 2025 rate of Rs 87.16.",
+      "coverage": "Calendar years 2015-2026 and fiscal years 2022-23 to 2026-27. The 2015-2021 calendar rates were added because the Indian startup funding dataset spans 2015-2020 and was previously converted at a flat Rs 87/USD - a rate from 2025 applied to deals up to a decade older, overstating the rupee figures by 17-36%."
+    },
+    "known_inconsistency_share_basis": "Two different bases are in use and they are not equivalent. Most sectors set addressable_share as a CAPTURE FRACTION - roughly what one early-stage venture could compete for, which is what the definition above describes. Logistics instead sets it as SEGMENT ADDRESSABILITY: express and courier is 3.75% of the logistics total, so 0.0375 is the size of the layer a startup can operate in, not the slice one startup would win. The logistics figure is the better-evidenced of the two because it reproduces a published number, but it answers a different question. Gaming could be put on the same segment basis today - its detail block already carries the FY24 split showing a free-to-play studio addresses roughly US$1.3bn of US$3.8bn, about 0.34 against the 0.06 currently set - which would raise its TAM around 5.7x. That change is NOT made here because switching one more sector to the segment basis without switching all of them would deepen the inconsistency rather than fix it. Resolving this means choosing one basis for the whole file and restating the definition to match."
   },
   "ecommerce": {
     "match": [

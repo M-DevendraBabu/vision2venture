@@ -911,8 +911,7 @@ class MLService:
             template = {
                 'churn_estimate': 0.035,
                 'ltv_cac_ratio': 3.0,
-                'roi_estimate': 3.0,
-                'break_even_months': 14,
+                'cac_payback_months': 14,
                 'basis': 'Cross-industry median; no benchmark published for this sector.',
                 'source': 'Cross-industry consensus',
                 'as_of': 2026,
@@ -972,7 +971,12 @@ class MLService:
         ltv = max(ltv, cac * 1.5)  # Floor: LTV should be at least 1.5x CAC
 
         churn = round(template.get('churn_estimate', 0.05) * 100 if template.get('churn_estimate', 0.05) < 1 else template.get('churn_estimate', 5.0), 1)
-        roi = round((ml_roi + roi_cal) * 0.70 + template.get('roi_estimate', 2.5) * 100 * 0.30, 1)
+        # ROI comes from the model alone. It used to blend in the sector's LTV:CAC ratio
+        # multiplied by 100, which treated a 3.0 ratio as a 300% return and pulled every
+        # sector's ROI up towards 300. LTV:CAC answers a different question - what one
+        # customer returns against the cost of winning them - and is reported separately
+        # below, unmultiplied.
+        roi = round(ml_roi + roi_cal, 1)
         # Industry-realistic ROI caps
         if 'food' in ind or 'restaurant' in ind or 'cafe' in ind: roi = min(roi, 60)
         elif 'retail' in ind or 'hospitality' in ind: roi = min(roi, 80)
@@ -980,7 +984,12 @@ class MLService:
         elif 'cleantech' in ind or 'ev' in ind: roi = min(roi, 150)
         elif 'edtech' in ind: roi = min(roi, 200)
         margins = round((ml_margin + margin_cal) * 0.70 + template.get('profit_margins', 50.0 if 'profit_margins' in template else 50.0) * 0.30, 1)
-        break_even_months = int((ml_break_even + be_cal) * 0.70 + template.get('break_even_months', 12) * 0.30)
+        # Business break-even comes from the model alone. The published figure that used
+        # to be blended in here is CAC payback - months to recover the cost of acquiring
+        # one customer - which is not the point the business turns profitable. Averaging a
+        # 4-month payback with a 15-month break-even produced a number measuring neither.
+        break_even_months = int(ml_break_even + be_cal)
+        cac_payback_months = template.get('cac_payback_months')
 
         # Realistic initial CapEx development cost (upfront MVP platform architecture & pre-launch setup)
         if budget <= 50000:
@@ -1024,6 +1033,73 @@ class MLService:
             ),
             'roi': min(350.0, max(10.0, roi)),
             'profit_margins': min(85.0, max(5.0, margins)),
+            # A projection for a business that does not exist yet cannot be measured, so
+            # the two independent estimates behind each headline number are reported
+            # instead of hiding them inside the blend. 'model' is what the trained
+            # regressor predicts from comparable ventures; 'published' is the benchmark
+            # median for the sector. A wide gap is the honest signal that the figure is
+            # uncertain, and it is now visible rather than averaged away.
+            'projection_ranges': {
+                'roi_pct': {
+                    'model': round(ml_roi + roi_cal, 1),
+                    'published': None,
+                    'reported': round(min(350.0, max(10.0, roi)), 1),
+                    'note': 'No published per-sector ROI figure exists; this is the model only.',
+                },
+                'profit_margin_pct': {
+                    'model': round(ml_margin + margin_cal, 1),
+                    'published': round(float(template.get('profit_margins', 50.0)), 1),
+                    'reported': round(min(85.0, max(5.0, margins)), 1),
+                },
+                'break_even_months': {
+                    'model': int(ml_break_even + be_cal),
+                    'published': None,
+                    'reported': int(break_even_months),
+                    'note': ('Model only. The sector benchmark publishes CAC payback, which is a '
+                             'different quantity and is reported as cac_payback_months.'),
+                },
+                'basis': ('model = trained regressor. published = sector benchmark median, blended '
+                          'at 30% where a comparable published figure exists. reported is what is '
+                          'shown. Where published is null, no comparable figure is published and '
+                          'the number rests on the model alone.'),
+            },
+            # Published unit economics, reported as themselves rather than folded into ROI.
+            'ltv_cac_ratio_benchmark': template.get('ltv_cac_ratio'),
+            'cac_payback_months': cac_payback_months,
+            'cac_payback_note': ('Months to recover the acquisition cost of one customer. This is '
+                                 'not the point at which the business becomes profitable - see '
+                                 'break_even_months for that.'),
+            # Real funding outcomes for this sector, carried with sample size and vintage.
+            # Empty when the dataset has no bucket for the sector, rather than invented.
+            'sector_funding_benchmark': (lambda b: {
+                'sector': b.get('sector'),
+                'deal_count': b.get('deal_count'),
+                'median_funding_usd': b.get('median_funding_usd'),
+                'p25_funding_usd': b.get('p25_funding_usd'),
+                'p75_funding_usd': b.get('p75_funding_usd'),
+                'median_funding_inr_cr': b.get('median_funding_inr_cr'),
+                'years_covered': b.get('years_covered'),
+                'reliability': b.get('reliability'),
+                'source': b.get('source'),
+                'caveat': b.get('vintage_warning') or b.get('note') or '',
+            })(MLService.get_industry_benchmark(ind)),
+            # Every constant this projection rests on, stated rather than buried. If a
+            # number below is wrong the projection is wrong, and a reader can now see
+            # which one to argue with.
+            'assumptions': {
+                'monthly_arpu_inr': round(monthly_arpu, 2),
+                'estimated_customers': int(est_customers),
+                'assumed_customer_lifetime_months': avg_lifetime_months,
+                'marketing_share_of_budget': 0.10,
+                'sector_multiplier_offline': sec_mult,
+                'roi_calibration_pct': roi_cal,
+                'margin_calibration_pct': margin_cal,
+                'break_even_calibration_months': be_cal,
+                'note': ('Calibrations are editorial sector adjustments applied on top of the '
+                         'model output, not measurements. Operating-cost lines (rent, staff, '
+                         'utilities, raw material) are planning placeholders scaled by team size '
+                         'and sector, not quoted local prices.'),
+            },
             'detailed_explanation': (
                 f"Financial Methodology: These projections are generated using capital efficiency patterns trained on 55,000+ startup financial records, calibrated with {ind} industry benchmarks. "
                 f"Core Indicators — Revenue ratio: {ml_revenue_ratio:.2f}x, ROI: {ml_roi:.1f}%, Profit margin: {ml_margin:.1f}%, Break-even: {ml_break_even} months. "
@@ -1473,11 +1549,51 @@ class MLService:
     # 7. TECH STACK RECOMMENDATION — ML model + survey benchmarks
     # -----------------------------------------------------------------
     # -----------------------------------------------------------------
-    # 7. TECH STACK RECOMMENDATION — ML model + survey benchmarks
+    # 7. TECH STACK RECOMMENDATION — hand-written blueprints + survey reference
     # -----------------------------------------------------------------
     @staticmethod
     def recommend_tech_stack(context: dict) -> dict:
-        """ML-driven tech stack recommendation tailored to industry, sector, scale, and operational requirements."""
+        """
+        Pick a stack blueprint and attach what it is, so opinion is not read as finding.
+
+        The recommendation itself is editorial. What the Stack Overflow Developer Survey
+        actually measures - how many working developers report using each technology - is
+        attached separately as popularity_reference. Those counts had been loaded at
+        startup and never read by anything; a recommendation is more useful next to real
+        adoption numbers than on its own, and the two must not be confused for each other.
+        """
+        stack = dict(MLService._tech_stack_blueprint(context) or {})
+        stack['basis'] = ('Hand-written per-sector architecture blueprint, selected by matching the '
+                          'industry and title text. This is an engineering recommendation, not a '
+                          'measurement or a model output.')
+        survey = _tech_benchmarks or {}
+        if survey:
+            stack['popularity_reference'] = {
+                'top_web_frameworks': survey.get('top_web_frameworks', [])[:5],
+                'top_databases': survey.get('top_databases', [])[:5],
+                'top_languages': survey.get('top_languages', [])[:5],
+                'top_platforms': survey.get('top_platforms', [])[:5],
+                'source': 'Stack Overflow Developer Survey - respondent counts per technology',
+                'note': ('Adoption among surveyed developers worldwide. Included so the blueprint '
+                         'above can be weighed against what practitioners actually use; it is not '
+                         'an endorsement of the blueprint.'),
+            }
+        return stack
+
+    @staticmethod
+    def _tech_stack_blueprint(context: dict) -> dict:
+        """
+        Tech stack recommendation, selected from hand-written per-sector blueprints.
+
+        This is engineering opinion, not a measurement, and the returned payload says so.
+        The docstring used to call it "ML-driven"; nothing here is a model. The blueprints
+        below were written by hand and chosen by matching the industry text.
+
+        Kept honest in two ways. The output carries basis and popularity_reference so a
+        reader can tell an opinion from a survey figure. And specific numeric promises
+        that had no source behind them - a monthly hosting bill, a latency figure - were
+        removed rather than left to look like findings.
+        """
         ind = str(context.get('industry', '')).lower()
         title = str(context.get('title', '')).lower()
         sec = str(context.get('sector', 'online')).lower()
@@ -1491,7 +1607,7 @@ class MLService:
                 "cloud_platform": "AWS ECS Fargate (Mumbai ap-south-1) + CloudFront CDN",
                 "ai_framework": "Google OR-Tools Constraint Solver + Groq LLaMA-3 (Curriculum & Doubts Engine)",
                 "deployment": "Docker Multi-Stage Containers + GitHub Actions CI/CD to AWS ECS",
-                "reasoning": "Optimized for combinatorial NP-hard timetable scheduling. Python FastAPI with Google OR-Tools CP-SAT solver computes conflict-free academic schedules across thousands of teacher-student constraints in seconds. Next.js delivers sub-second client interactivity with low memory footprint, keeping cloud costs below ₹2,500/month on AWS Free Tier."
+                "reasoning": "Optimized for combinatorial NP-hard timetable scheduling. Python FastAPI with Google OR-Tools CP-SAT solver computes conflict-free academic schedules across thousands of teacher-student constraints in seconds. Next.js delivers sub-second client interactivity with low memory footprint, Hosting cost depends on enrolment and usage and is not estimated here."
             },
             "food & beverage": {
                 "frontend": "Flutter (Cross-Platform Mobile App) + Sunmi POS Android Terminal UI + Dynamic QR Web PWA",
@@ -1500,7 +1616,7 @@ class MLService:
                 "cloud_platform": "Google Cloud Run (Serverless Auto-Scaling Microservices) + Firebase Cloud Messaging",
                 "ai_framework": "Time-Series ARIMA / Prophet (Perishable Ingredient Wastage & Restock Prediction)",
                 "deployment": "Cloud Run Automated CI/CD + ESC/POS Network Thermal Receipt Printer Integration",
-                "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets with sub-100ms latency. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, with the goal of shortening table turnover time."
+                "reasoning": "Built for high-velocity restaurant operations. Contactless QR ordering feeds directly into a real-time Kitchen Display System (KDS) via Socket.io web sockets, which push order updates to the kitchen without polling. Seamlessly integrates with Sunmi Android POS terminals, ESC/POS kitchen printers, and UPI AutoPay, with the goal of shortening table turnover time."
             },
             "e-commerce": {
                 "frontend": "Next.js PWA (Instant 0.8s Storefront) + React Native (Dark-Store Picker & Rider Navigation App)",
@@ -1626,7 +1742,7 @@ class MLService:
                 "cloud_platform": "AWS ECS Fargate (Mumbai ap-south-1) / Vercel Pro + CloudFront CDN",
                 "ai_framework": "Groq LLaMA-3 (Intelligent Workflow Automation & AI Assistant)",
                 "deployment": "Docker Multi-Stage Containers + GitHub Actions Blue-Green Deployments",
-                "reasoning": "Enterprise B2B SaaS architecture with strict multi-tenant data isolation. PostgreSQL Row-Level Security (RLS) ensures complete tenant data segregation at the database layer, while FastAPI provides high-throughput async APIs, keeping infrastructure cost under ₹3,000/mo on AWS Free Tier."
+                "reasoning": "Enterprise B2B SaaS architecture with strict multi-tenant data isolation. PostgreSQL Row-Level Security (RLS) ensures complete tenant data segregation at the database layer, while FastAPI provides high-throughput async APIs, Infrastructure cost depends on tenant count and query volume and is not estimated here."
             },
             "d2c_brand": {
                 "frontend": "Next.js 14 (Headless Storefront PWA) + Tailwind CSS + Framer Motion (Sub-Second Catalog)",
@@ -1941,17 +2057,56 @@ class MLService:
     # -----------------------------------------------------------------
     @staticmethod
     def get_industry_benchmark(industry: str) -> dict:
+        """
+        Funding benchmarks for the sector an idea belongs to, with their provenance.
+
+        Resolution runs through the alias map published inside the data file, which is
+        the same map that grouped the deals in the first place. That matters: the old
+        lookup compared the incoming text against raw vertical spellings and returned
+        whichever matched first in dict order, so 'edtech', 'ed-tech', 'education' and
+        'online education platform' were four different answers for one sector - and
+        the one an edtech idea usually landed on was an average of three deals, fifty
+        times the real median.
+
+        The returned row always carries deal_count, the year range and a reliability
+        label, because a funding figure without its sample size and its vintage is not
+        a benchmark, it is a number.
+        """
         ind_clean = str(industry).lower().strip()
-        if ind_clean in _industry_benchmarks:
-            return _industry_benchmarks[ind_clean]
-        for k, v in _industry_benchmarks.items():
-            if k in ind_clean or ind_clean in k:
-                return v
+        meta = _industry_benchmarks.get('_meta', {}) if _industry_benchmarks else {}
+
+        def _sector_row(name):
+            row = dict(_industry_benchmarks.get(name) or {})
+            if row:
+                row['sector'] = name
+                row['source'] = meta.get('source', 'Indian Startup Funding dataset')
+                row['years_covered'] = row.get('years_covered') or meta.get('years_covered')
+                row['vintage_warning'] = meta.get('vintage_warning', '')
+            return row
+
+        if ind_clean in _industry_benchmarks and not ind_clean.startswith('_'):
+            return _sector_row(ind_clean)
+
+        # Same rules, same order, as the rebuild - specific sectors before broad ones.
+        padded = ' ' + ind_clean + ' '
+        word_only = set(meta.get('word_only_aliases') or ())
+        for sector, keys in (meta.get('sector_aliases') or {}).items():
+            for key in keys:
+                hit = (' ' + key + ' ') in padded if key in word_only else key in padded
+                if hit:
+                    return _sector_row(sector)
+
+        # No sector matched. Return an explicitly empty result rather than an invented
+        # one: a made-up "average funding" is worse than admitting there is no figure.
         return {
-            "avg_funding": 500000.0,
-            "avg_revenue": 250000.0,
-            "avg_valuation": 2500000.0,
-            "avg_team_size": 8
+            'sector': None,
+            'deal_count': 0,
+            'median_funding_usd': None,
+            'mean_funding_usd': None,
+            'source': meta.get('source', 'Indian Startup Funding dataset'),
+            'years_covered': meta.get('years_covered'),
+            'reliability': 'none',
+            'note': 'No funding benchmark published for this sector in the dataset.',
         }
 
     @staticmethod
