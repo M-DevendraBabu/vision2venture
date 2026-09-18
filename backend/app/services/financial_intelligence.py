@@ -31,12 +31,22 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
     text = f"{industry} {title} {sector}".lower()
 
     def matches(keywords):
+        """
+        Keyword match that tolerates plurals.
+
+        Single words were matched on a strict word boundary, so 'clinic' did not match
+        "CarePoint Clinics" and the idea fell through every clinical rule to the generic
+        hybrid bucket - which is why a primary-care clinic was sized with no published
+        benchmark and given a B2B SaaS roadmap. A trailing s or es is now accepted.
+        Compound forms like "healthtech" still need their own keyword, because widening
+        this to a prefix match would make 'pet' match "petrol".
+        """
         for kw in keywords:
             if ' ' in kw or '-' in kw:
                 if kw in text:
                     return True
             else:
-                if re.search(r'\b' + re.escape(kw) + r'\b', text):
+                if re.search(r'\b' + re.escape(kw) + r'(?:es|s)?\b', text):
                     return True
         return False
 
@@ -74,7 +84,8 @@ def resolve_financial_sector(industry: str = '', title: str = '', sector: str = 
     # Omnichannel / hybrid clinic → healthtech_hybrid sub-sector (lower margin, realistic CAC)
     if matches(['omnichannel', 'smart clinic', 'phygital clinic', 'hybrid clinic', 'teleconsult', 'telemedicine']):
         return 'healthtech_hybrid'
-    if matches(['health', 'healthcare', 'doctor', 'patient', 'clinic', 'hospital', 'diagnostic', 'pharmacy', 'telehealth']):
+    if matches(['health', 'healthcare', 'healthtech', 'medtech', 'medical', 'doctor', 'patient',
+                'clinic', 'hospital', 'diagnostic', 'pharmacy', 'telehealth', 'primary care']):
         return 'healthtech'
     if matches(['fintech', 'finance', 'payment', 'payments', 'bank', 'banking', 'wealth', 'invest', 'crypto', 'lending', 'upi', 'neobank', 'credit', 'insurance']):
         return 'fintech'

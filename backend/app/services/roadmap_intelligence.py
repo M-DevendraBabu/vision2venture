@@ -1242,6 +1242,38 @@ ROADMAP_DOMAIN_TEMPLATES = {
 }
 
 
+# The financial engine resolves sixteen sectors; this module has eleven roadmap
+# templates, and the two sets were never reconciled. Nine financial sectors had no
+# template at all and fell to a hardcoded B2B SaaS fallback, so a thirty-seat tiffin
+# centre in Vadlamudi was handed a roadmap about RBAC, SAML/SSO, SOC2 Type 1 audits,
+# a Product Hunt launch and a Rs 1,499/month enterprise subscription tier.
+#
+# Each entry below routes a financial sector to the closest template that already
+# exists, rather than inventing new roadmap content. A tiffin centre and a campus QSR
+# both want the food template - incorporation, FSSAI licensing, kitchen fit-out. A
+# veterinary clinic wants the clinical one, which opens with Clinical Establishment
+# Act registration. Software sectors keep the SaaS template, which is right for them.
+_ROADMAP_FOR_SECTOR = {
+    'tiffin_streetfood':    'food & beverage',
+    'campus_qsr':           'food & beverage',
+    'grocery_hyperlocal':   'food & beverage',
+    'marketplace_ondemand': 'food & beverage',
+    'pet_clinic':           'healthtech',
+    'healthtech_hybrid':    'healthtech',
+    'biotech':              'healthtech',
+    'career_saas':          'career_tech',
+    'ev_mobility':          'cleantech',
+    'edtech':               'b2b_saas',
+    'e-commerce':           'b2b_saas',
+    'd2c_ecommerce':        'b2b_saas',
+    'proptech':             'b2b_saas',
+    'legaltech':            'b2b_saas',
+    'offline_general':      'food & beverage',
+    'hybrid_general':       'food & beverage',
+    'online_saas':          'b2b_saas',
+}
+
+
 def generate_roadmap_analysis(idea_dict: dict, fin_data: dict = None) -> dict:
     """
     Generates a structured, domain-tailored 5-phase execution roadmap
@@ -1290,7 +1322,14 @@ def generate_roadmap_analysis(idea_dict: dict, fin_data: dict = None) -> dict:
         category = resolve_financial_sector(industry, title, sector)
         template = ROADMAP_DOMAIN_TEMPLATES.get(category)
         if not template:
-            template = ROADMAP_DOMAIN_TEMPLATES.get('b2b_saas')
+            template = ROADMAP_DOMAIN_TEMPLATES.get(_ROADMAP_FOR_SECTOR.get(category, ''))
+        if not template:
+            # Last resort, chosen by how the business is delivered rather than always
+            # reaching for B2B SaaS. A physical business needs a lease, a licence and
+            # footfall; handing it a roadmap about SOC2 and multi-tenant isolation is
+            # worse than useless, because it reads as though it were meant.
+            fallback = 'b2b_saas' if sector == 'online' else 'food & beverage'
+            template = ROADMAP_DOMAIN_TEMPLATES.get(fallback)
 
     # Phase Cost Allocations strictly tied to Financial Tab
     # Phase 1: Foundation & Licensing (Licensing CapEx + 60% of Branding)
