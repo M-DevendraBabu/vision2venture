@@ -296,7 +296,10 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
 
         stale_prefixes = ("neurallogistics", "solargrid", "propmatch", "vaultpay", "skillcraft", "greenbite")
         has_stale = any(i.title.lower().startswith(stale_prefixes) for i in current_ideas)
-        is_exact_match = (current_titles == PROD_TITLES)
+        # The seed is in place if all ten seed titles are present. Requiring the sets to
+        # be equal meant a user's own idea counted as the seed being wrong, so the sync
+        # ran and deleted it. Extra titles are the user's work, not a discrepancy.
+        is_exact_match = PROD_TITLES.issubset(current_titles)
 
         seed_path = os.path.join(os.path.dirname(__file__), "production_seed_data.json")
         if not os.path.exists(seed_path):
@@ -390,9 +393,27 @@ def sync_production_seed_if_needed(db, force=False, target_user=None):
                     table_cols_cache[tbl_name] = None
             return table_cols_cache[tbl_name]
 
-        for idea in current_ideas:
+        # Replace the seed ideas and nothing else.
+        #
+        # This used to delete every idea the admin owned before re-inserting the ten seed
+        # rows, which meant any idea the admin created themselves was destroyed on the
+        # next restart. Render restarts on every deploy, so an idea entered through the
+        # app could not survive one. The count check above made it worse rather than
+        # safer: adding a single idea took the total to eleven, which is not ten, which
+        # forced exactly the full re-sync that deleted it.
+        #
+        # The seed still gets replaced wholesale, so the demo state is still guaranteed.
+        # Anything the user wrote is now left alone.
+        stale = tuple(stale_prefixes)
+        removable = [i for i in current_ideas
+                     if i.title.strip() in PROD_TITLES or i.title.lower().startswith(stale)]
+        preserved = len(current_ideas) - len(removable)
+        for idea in removable:
             db.delete(idea)
         db.flush()
+        if preserved:
+            print(f"[SeedSync] Replacing {len(removable)} seed ideas; "
+                  f"leaving {preserved} user-created idea(s) untouched.")
 
         for item in seed_items:
             idea_dict = item.get("idea") or {}

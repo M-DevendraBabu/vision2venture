@@ -89,10 +89,18 @@ def startup_tasks():
             from app.database.migration_helper import sync_production_seed_if_needed, PROD_TITLES
             from app.models.startup_idea import StartupIdea
             # Force sync if DB count doesn't match expected production count
-            db_count = db.query(StartupIdea).filter(StartupIdea.user_id == admin_user.id).count() if admin_user else 0
-            force_sync = (db_count != len(PROD_TITLES))
+            # Count only the seed ideas. Counting everything the admin owned meant that
+            # creating a single idea through the app made the total differ from ten and
+            # forced a full re-sync on the next restart, which deleted it. The question
+            # this is meant to answer is "are the ten seed ideas present and correct",
+            # and a user's own ideas are not evidence either way.
+            seed_count = db.query(StartupIdea).filter(
+                StartupIdea.user_id == admin_user.id,
+                StartupIdea.title.in_(PROD_TITLES)
+            ).count() if admin_user else 0
+            force_sync = (seed_count != len(PROD_TITLES))
             if force_sync:
-                print(f"[SeedSync] DB has {db_count} ideas, expected {len(PROD_TITLES)} — forcing full re-sync.")
+                print(f"[SeedSync] DB has {seed_count} of {len(PROD_TITLES)} seed ideas — forcing re-sync.")
             sync_production_seed_if_needed(db, force=force_sync)
         except Exception as e:
             print(f"[Startup] Production seed sync notice: {e}")
