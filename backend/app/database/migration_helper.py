@@ -203,6 +203,15 @@ def ensure_competitor_tables_and_columns():
                     ("year1_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
                     ("year2_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
                     ("year3_revenue",        "DECIMAL(18,2) NULL DEFAULT NULL"),
+                    # Provenance for the figures above. Nullable so existing rows, which
+                    # were written before any of this was recorded, stay valid and simply
+                    # show nothing rather than claiming a source they never had.
+                    ("benchmark_source",       "VARCHAR(500) NULL DEFAULT NULL"),
+                    ("benchmark_confidence",   "VARCHAR(20) NULL DEFAULT NULL"),
+                    ("roi_basis",              "VARCHAR(60) NULL DEFAULT NULL"),
+                    ("roi_was_capped",         "TINYINT(1) NULL DEFAULT NULL"),
+                    ("volume_constraint",      "VARCHAR(20) NULL DEFAULT NULL"),
+                    ("growth_assumption_note", "VARCHAR(500) NULL DEFAULT NULL"),
                 ]
                 for col_name, col_type in new_fa_cols:
                     if col_name not in fa_cols and fa_cols:

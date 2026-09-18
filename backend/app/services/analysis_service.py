@@ -455,7 +455,22 @@ class AnalysisService:
                 year2_revenue=safe_float(fi_fin.get('year2_revenue'), None),
                 year3_revenue=safe_float(fi_fin.get('year3_revenue'), None),
                 detailed_explanation=str(fi_fin.get('detailed_explanation') or f'Financial projections for {idea.title}.'),
-                data_source="Industry Benchmark & Financial Model"
+                data_source="Industry Benchmark & Financial Model",
+                # Provenance travels with the numbers. The engine already works all of
+                # this out and it was being dropped here, so a reader had no way to tell
+                # a figure anchored to NRAI or ChartMogul from one resting on an internal
+                # assumption, or a ROI that was computed from one that hit its clamp.
+                benchmark_source=(str((fi_fin.get('benchmark_provenance') or {}).get('source'))[:500]
+                                  if (fi_fin.get('benchmark_provenance') or {}).get('source') else None),
+                benchmark_confidence=(str((fi_fin.get('benchmark_provenance') or {}).get('confidence'))[:20]
+                                      if (fi_fin.get('benchmark_provenance') or {}).get('confidence') else None),
+                roi_basis=(str(fi_fin.get('roi_basis'))[:60] if fi_fin.get('roi_basis') else None),
+                roi_was_capped=(bool(fi_fin.get('roi_was_capped'))
+                                if fi_fin.get('roi_was_capped') is not None else None),
+                volume_constraint=(str((fi_fin.get('volume_model') or {}).get('constraint'))[:20]
+                                   if (fi_fin.get('volume_model') or {}).get('constraint') else None),
+                growth_assumption_note=(str((fi_fin.get('growth_assumptions') or {}).get('basis'))[:500]
+                                        if (fi_fin.get('growth_assumptions') or {}).get('basis') else None),
             ))
             db.commit()
         except Exception as e:

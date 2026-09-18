@@ -172,6 +172,17 @@ class FinancialAnalysis(Base):
     year3_revenue = Column(DECIMAL(18, 2), nullable=True, default=None)
     detailed_explanation = Column(Text, nullable=False)
     data_source = Column(String(100), nullable=True)
+    # Provenance. Without these the projection is a set of numbers a reader has to take
+    # on trust: nine of the sixteen benchmark blocks behind them are internal assumptions
+    # rather than published figures, the growth multiples are assumptions too, and the
+    # ROI is sometimes a clamp rather than a computed result. All of that is knowable at
+    # the point the analysis runs and was being discarded before it reached the response.
+    benchmark_source = Column(String(500), nullable=True)
+    benchmark_confidence = Column(String(20), nullable=True)
+    roi_basis = Column(String(60), nullable=True)
+    roi_was_capped = Column(Boolean, nullable=True, default=None)
+    volume_constraint = Column(String(20), nullable=True)
+    growth_assumption_note = Column(String(500), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class RiskAnalysis(Base):

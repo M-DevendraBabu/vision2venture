@@ -33,7 +33,6 @@ _market_industry_encoder = None
 _market_country_encoder = None
 _fin_industry_encoder = None
 
-_feature_meta = {}
 _industry_benchmarks = {}
 _yc_competitors = []
 _tech_benchmarks = {}
@@ -47,7 +46,7 @@ def _init_ml_models():
     global _success_model, _financial_model, _risk_model, _feasibility_model, _investor_model, _market_model
     global _sector_encoder, _industry_encoder, _feature_scaler, _financial_scaler
     global _market_scaler, _market_industry_encoder, _market_country_encoder, _fin_industry_encoder
-    global _feature_meta, _industry_benchmarks, _yc_competitors, _tech_benchmarks
+    global _industry_benchmarks, _yc_competitors, _tech_benchmarks
     global _financial_templates, _sector_market_scale
     global _india_market_sizes, _india_consumption
 
@@ -90,7 +89,6 @@ def _init_ml_models():
         _fin_industry_encoder = _load('fin_industry_encoder.joblib', 'Financial Industry Encoder')
 
         # --- JSON Data Files ---
-        _feature_meta = _load_json('feature_metadata.json', 'Feature Metadata')
         _industry_benchmarks = _load_json('industry_benchmarks.json', 'Industry Benchmarks')
         _yc_competitors = _load_json('yc_competitors.json', 'YC Competitors')
         _tech_benchmarks = _load_json('tech_survey_benchmarks.json', 'Tech Survey Benchmarks')

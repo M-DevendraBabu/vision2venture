@@ -85,7 +85,15 @@ class FinancialAnalysisResponse(BaseModel):
     roi: Decimal
     break_even_months: int
     data_source: Optional[str] = None
-    
+    # Provenance for the figures above. All optional: rows written before this existed
+    # return null and the UI shows nothing, rather than implying a source they lack.
+    benchmark_source: Optional[str] = None
+    benchmark_confidence: Optional[str] = None
+    roi_basis: Optional[str] = None
+    roi_was_capped: Optional[bool] = None
+    volume_constraint: Optional[str] = None
+    growth_assumption_note: Optional[str] = None
+
     class Config: from_attributes = True
 
 class RiskAnalysisResponse(BaseModel):

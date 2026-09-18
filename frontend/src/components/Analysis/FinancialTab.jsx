@@ -392,6 +392,51 @@ const FinancialTab = ({ data, idea }) => {
       </div>
 
       {/* ============================================================ */}
+      {/* 1b. WHERE THESE NUMBERS COME FROM                            */}
+      {/* Nine of the sixteen sector benchmark blocks behind this tab  */}
+      {/* are internal assumptions rather than published figures, and  */}
+      {/* the growth curve is an assumption in every case. None of     */}
+      {/* that was visible, so a planning estimate read exactly like a */}
+      {/* sourced statistic. Amber when the basis is an assumption.    */}
+      {/* ============================================================ */}
+      {(data?.benchmark_provenance || data?.growth_assumptions) && (
+        <div
+          style={{
+            margin: '0 0 14px',
+            padding: '10px 14px',
+            borderRadius: '10px',
+            border: `1px solid ${data?.benchmark_provenance?.is_planning_assumption ? '#fcd34d' : '#e2e8f0'}`,
+            background: data?.benchmark_provenance?.is_planning_assumption ? '#fffbeb' : '#f8fafc',
+            fontSize: '0.72rem',
+            lineHeight: 1.5,
+            color: '#475569'
+          }}
+        >
+          <strong style={{ color: data?.benchmark_provenance?.is_planning_assumption ? '#b45309' : '#334155' }}>
+            {data?.benchmark_provenance?.is_planning_assumption
+              ? 'Planning assumption — unit economics for this sector are not from a published source'
+              : `Unit economics source: ${data?.benchmark_provenance?.source}`}
+          </strong>
+          <div style={{ marginTop: '4px' }}>
+            {data?.volume_model?.constraint && (
+              <>Volume is limited by {data.volume_model.constraint === 'capacity'
+                ? 'what the setup capital can serve'
+                : 'what the marketing spend can win at this sector’s acquisition cost'}
+                {typeof data?.volume_model?.assumed_customer_lifetime_months === 'number'
+                  ? `, assuming customers stay ${data.volume_model.assumed_customer_lifetime_months} months`
+                  : ''}. </>
+            )}
+            {data?.growth_assumptions && (
+              <>Revenue is assumed to grow{' '}
+                <strong>{data.growth_assumptions.year2_revenue_multiple}×</strong> in year two and{' '}
+                <strong>{data.growth_assumptions.year3_revenue_multiple}×</strong> in year three, funded from
+                retained profit — these multiples are assumptions, not published figures.</>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
       {/* 2. SUB-TAB NAVIGATION BAR (HORIZONTAL SCROLL WITH ARROWS)    */}
       {/* ============================================================ */}
       <div className="fin-subtab-container">
@@ -977,13 +1022,29 @@ const FinancialTab = ({ data, idea }) => {
                 <span className="fin-card-title">3-Year Cumulative ROI</span>
                 <span className="fin-card-percent-pill" style={{ background: '#ECFDF5', color: '#059669' }}>Venture Return</span>
               </div>
-              <div className="fin-card-amount" style={{ color: '#7c3aed' }}>{roiPct}%</div>
-              <div className="fin-why-box" style={{ borderLeftColor: '#10b981' }}>
-                <div className="fin-why-label" style={{ color: '#7c3aed' }}>Capital Multiplication:</div>
+              <div className="fin-card-amount" style={{ color: roiPct < 0 ? '#dc2626' : '#7c3aed' }}>{roiPct}%</div>
+              <div className="fin-why-box" style={{ borderLeftColor: roiPct < 0 ? '#dc2626' : '#10b981' }}>
+                <div className="fin-why-label" style={{ color: roiPct < 0 ? '#dc2626' : '#7c3aed' }}>Capital Multiplication:</div>
                 <p className="fin-why-text">
-                  Projected net return on total setup capital ({formatCurrency(totalCapEx)}) over a 36-month operational horizon, factoring in Year 2 and Year 3 scaling economics.
+                  Projected cumulative net return over 36 months on the capital committed
+                  ({formatCurrency(data?.roi_invested_capital || totalCapEx)}), after Year 2 and Year 3 scaling.
                 </p>
-                <div className="fin-calc-text">Strong risk-adjusted returns for founders and angel investors.</div>
+                {/* The verdict follows the number rather than preceding it. This line used to
+                    read "strong risk-adjusted returns" whatever the projection said, including
+                    when it said the venture loses money. */}
+                <div className="fin-calc-text">
+                  {roiPct < 0
+                    ? 'Projected to lose capital over the three-year horizon on these assumptions.'
+                    : roiPct < 50
+                      ? 'Modest return — thin margin over the cost of capital.'
+                      : 'Strong risk-adjusted returns for founders and angel investors.'}
+                </div>
+                {data?.roi_was_capped && (
+                  <div className="fin-calc-text" style={{ color: '#b45309', marginTop: '4px' }}>
+                    Displayed figure is the model&apos;s bound, not a computed result
+                    {typeof data?.roi_uncapped === 'number' ? ` (uncapped: ${data.roi_uncapped}%)` : ''}.
+                  </div>
+                )}
               </div>
             </div>
 
@@ -993,9 +1054,15 @@ const FinancialTab = ({ data, idea }) => {
           <div className="fin-advisory-box">
             <FaAward className="fin-advisory-icon" style={{ color: '#d97706' }} />
             <div className="fin-advisory-content">
-              <h5>Investor Viability Assessment: {ltvCacRatio >= 3.5 ? 'Tier-1 Venture Scale' : 'Viable Growth Model'}</h5>
+              <h5>Investor Viability Assessment: {ltvCacRatio >= 3.5 ? 'Tier-1 Venture Scale' : ltvCacRatio >= 3.0 ? 'Viable Growth Model' : 'Below Venture Hurdle'}</h5>
+              {/* The 3.0x hurdle is either cleared or it is not. This paragraph previously
+                  said "comfortably exceed" in both cases. */}
               <p>
-                With an LTV:CAC of <strong>{ltvCacRatio}x</strong>, your unit economics comfortably exceed the minimum 3.0x venture hurdle rate required by Indian seed funds (e.g. Peak XV, Blume Ventures, India Quotient). A CAC payback period of <strong>{cacPaybackMonths} months</strong> ensures rapid capital recycling into new acquisition channels.
+                With an LTV:CAC of <strong>{ltvCacRatio}x</strong>, your unit economics{' '}
+                {ltvCacRatio >= 3.0
+                  ? 'meet the minimum 3.0x venture hurdle rate Indian seed funds look for (e.g. Peak XV, Blume Ventures, India Quotient).'
+                  : 'fall short of the 3.0x hurdle rate Indian seed funds look for (e.g. Peak XV, Blume Ventures, India Quotient) — either acquisition cost has to come down or retention has to improve before this is fundable.'}{' '}
+                CAC payback is <strong>{cacPaybackMonths} months</strong>, which is how long each customer takes to repay what was spent winning them — not the point the business turns profitable.
               </p>
             </div>
           </div>

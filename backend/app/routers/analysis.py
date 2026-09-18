@@ -336,6 +336,15 @@ def get_financial(
         "branding_design_cost": fi_data["branding_design_cost"],
         "inventory_staging_cost": fi_data["inventory_staging_cost"],
 
+        # Provenance, so the figures below can be checked rather than just believed.
+        "benchmark_provenance": fi_data.get("benchmark_provenance"),
+        "roi_basis": fi_data.get("roi_basis"),
+        "roi_uncapped": fi_data.get("roi_uncapped"),
+        "roi_was_capped": fi_data.get("roi_was_capped"),
+        "roi_cap_note": fi_data.get("roi_cap_note"),
+        "volume_model": fi_data.get("volume_model"),
+        "growth_assumptions": fi_data.get("growth_assumptions"),
+
         "monthly_sales_volume": fi_data["monthly_sales_volume"],
         "gross_margin_percent": fi_data["gross_margin_percent"],
         "ltv_cac_ratio": fi_data["ltv_cac_ratio"],

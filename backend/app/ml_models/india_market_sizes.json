@@ -2,7 +2,7 @@
   "_meta": {
     "description": "Published India sector market sizes, used to anchor national/online TAM. Replaces figures that were hard-coded inline in ml_service.py with no source attached.",
     "compiled": "2026-09-18",
-    "definition": "total_market_inr_cr is the PUBLISHED TOTAL market for the sector in India. addressable_share is the fraction an early-stage venture can realistically compete for; the app sizes TAM as total_market_inr_cr * addressable_share, so a new entrant is not shown the whole national market as if it were reachable.",
+    "definition": "total_market_inr_cr is the PUBLISHED TOTAL market for the sector in India. addressable_share is the fraction of that total a new entrant can actually serve, and the app sizes TAM as the product, so a new venture is never shown the whole national market as if it were reachable. Every row carries share_basis saying how its share was arrived at.",
     "addressable_share_rationale": "addressable_share is the one judgment in this file: the published totals are real, the fraction a new venture can reach is not published anywhere. Each sector now carries a share_rationale naming the actual barrier - RBI licensing, clinical licensing, RMG licensing, utility-scale incumbency - rather than a number chosen to preserve earlier output. Sectors still marked low confidence carry no published total at all. Logistics is the strongest case in the file: its share is not reasoned at all but anchored to a separately published sub-segment - express and courier at Rs 78,525 crore - so 0.0375 reproduces a printed figure to within 0.1%. Only cybersecurity now carries no published total.",
     "fields": {
       "total_market_inr_cr": "Published total India market size, INR crore.",
@@ -46,7 +46,12 @@
       "note": "Every USD figure is converted at the rate for the year that figure describes, not a single flat rate. A flat Rs 83.5/USD was previously used throughout and was wrong by up to 4.2% against the 2025 rate of Rs 87.16.",
       "coverage": "Calendar years 2015-2026 and fiscal years 2022-23 to 2026-27. The 2015-2021 calendar rates were added because the Indian startup funding dataset spans 2015-2020 and was previously converted at a flat Rs 87/USD - a rate from 2025 applied to deals up to a decade older, overstating the rupee figures by 17-36%."
     },
-    "known_inconsistency_share_basis": "Two different bases are in use and they are not equivalent. Most sectors set addressable_share as a CAPTURE FRACTION - roughly what one early-stage venture could compete for, which is what the definition above describes. Logistics instead sets it as SEGMENT ADDRESSABILITY: express and courier is 3.75% of the logistics total, so 0.0375 is the size of the layer a startup can operate in, not the slice one startup would win. The logistics figure is the better-evidenced of the two because it reproduces a published number, but it answers a different question. Gaming could be put on the same segment basis today - its detail block already carries the FY24 split showing a free-to-play studio addresses roughly US$1.3bn of US$3.8bn, about 0.34 against the 0.06 currently set - which would raise its TAM around 5.7x. That change is NOT made here because switching one more sector to the segment basis without switching all of them would deepen the inconsistency rather than fix it. Resolving this means choosing one basis for the whole file and restating the definition to match."
+    "share_basis_values": {
+      "segment_addressability_anchored": "The share reproduces a separately published sub-segment figure. Strongest basis in the file - the number is not reasoned, it is read off a source and checked. Logistics and gaming.",
+      "capture_fraction_pending_segment_data": "The share is a reasoned estimate of what an early entrant can compete for, because no published sub-segment breakdown was found for this sector. share_rationale names the actual barrier. These should move to the anchored basis as sources are found.",
+      "published_figure_is_already_addressable": "total_market_inr_cr is itself an addressable-layer figure, so the share is 1.0 and there is nothing to take a fraction of."
+    },
+    "share_basis_resolution_2026_09_18": "The file previously mixed two bases without saying so. Gaming has been moved to the anchored basis, which raised its TAM from Rs 1,888 crore to Rs 10,855 crore and removed a contradiction: the detail block already said the addressable segment was Rs 10,855 crore while the computed TAM said Rs 1,888 crore. The four capture-fraction sectors are now labelled as such per row instead of the mismatch being described only in a file-level note."
   },
   "ecommerce": {
     "match": [
@@ -56,7 +61,9 @@
       "retail",
       "shop",
       "comm",
-      "d2c"
+      "d2c",
+      "quick commerce",
+      "q-commerce"
     ],
     "total_market_inr_cr": 1082875,
     "addressable_share": 0.06,
@@ -69,7 +76,8 @@
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
     },
-    "share_rationale": "Highly fragmented with low regulatory barrier; a niche or category entrant can take a real slice."
+    "share_rationale": "Highly fragmented with low regulatory barrier; a niche or category entrant can take a real slice.",
+    "share_basis": "capture_fraction_pending_segment_data"
   },
   "fintech": {
     "match": [
@@ -79,7 +87,12 @@
       "lend",
       "bank",
       "pay",
-      "fin"
+      "fin",
+      "payments",
+      "lending",
+      "insurtech",
+      "neobank",
+      "upi"
     ],
     "total_market_inr_cr": 1356820,
     "addressable_share": 0.07,
@@ -92,7 +105,8 @@
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
     },
-    "share_rationale": "RBI licensing (payment-aggregator authorisation, KYC, capital adequacy) is a hard gate. Most of this market is closed to an unlicensed entrant."
+    "share_rationale": "RBI licensing (payment-aggregator authorisation, KYC, capital adequacy) is a hard gate. Most of this market is closed to an unlicensed entrant.",
+    "share_basis": "capture_fraction_pending_segment_data"
   },
   "healthcare": {
     "match": [
@@ -103,7 +117,9 @@
       "pharma",
       "health",
       "clinic",
-      "med"
+      "med",
+      "telemedicine",
+      "diagnostic"
     ],
     "total_market_inr_cr": 2832700,
     "addressable_share": 0.03,
@@ -116,7 +132,8 @@
       "source": "Inc42 Datalabs, Indian Tech Startup Funding Report H1 2025",
       "note": "Capital deployed into Indian startups in this sector, not market size."
     },
-    "share_rationale": "Clinical licensing and capital intensity restrict entry; most spend goes to established hospitals and pharmacy chains."
+    "share_rationale": "Clinical licensing and capital intensity restrict entry; most spend goes to established hospitals and pharmacy chains.",
+    "share_basis": "capture_fraction_pending_segment_data"
   },
   "edtech": {
     "match": [
@@ -127,7 +144,10 @@
       "learn",
       "tutor",
       "skill",
-      "edu"
+      "edu",
+      "coaching",
+      "e-learning",
+      "elearning"
     ],
     "total_market_inr_cr": 64875,
     "addressable_share": 0.05,
@@ -154,16 +174,19 @@
       "h1_2025_funding_inr_cr": 1071,
       "h1_2025_deals": 11,
       "note": "The Rs 58,088 crore coaching industry is the relevant figure for a physical coaching centre; the Rs 64,875 crore edtech figure is for an online product. They are different markets."
-    }
+    },
+    "share_basis": "capture_fraction_pending_segment_data"
   },
   "gaming": {
     "match": [
       "gaming",
       "esport",
-      "game"
+      "game",
+      "esports",
+      "studio"
     ],
     "total_market_inr_cr": 31464,
-    "addressable_share": 0.06,
+    "addressable_share": 0.345,
     "source": "Lumikai x Google, 'Levelling up: State of India Interactive Media & Gaming FY24' (Nov 2024) - US$3.8bn in FY24, converted at the FY2023-24 FEDAI rate of Rs 82.80/USD",
     "as_of": 2024,
     "confidence": "high",
@@ -182,7 +205,9 @@
         "note": "Real-money gaming is 63% of the market and is a licensed, 28%-GST segment a new studio cannot simply enter. A free-to-play or premium studio addresses in-app purchases plus ads, roughly US$1.3bn (Rs 10,855 cr), not the headline US$3.8bn. Lumikai also reports RMG gross-to-net margin down 30% and user-acquisition payback doubled under the new GST regime."
       }
     },
-    "share_rationale": "Real-money gaming is 63% of the market, licensed and taxed at 28% GST. A free-to-play studio addresses in-app purchases plus ads only."
+    "share_rationale": "Anchored to the published FY24 segment split rather than reasoned. In-app purchases plus ads are Rs 10,855 crore of the Rs 31,464 crore total, so the share is 0.345 and reproduces that figure. The file previously set 0.06, giving a TAM of Rs 1,888 crore while its own detail block stated the addressable segment was Rs 10,855 crore - the file contradicted itself, and the reasoned number was the wrong one.",
+    "share_basis": "segment_addressability_anchored",
+    "share_anchor": "In-app purchases plus advertising, published at roughly US$1.3bn (Rs 10,855 crore) for FY24. Real-money gaming is excluded: it is 63% of the market, licensed, and carries 28% GST, so a new free-to-play studio cannot address it."
   },
   "logistics": {
     "match": [
@@ -191,7 +216,16 @@
       "warehous",
       "freight",
       "supply",
-      "logist"
+      "logist",
+      "courier",
+      "last-mile",
+      "last mile",
+      "shipping",
+      "3pl",
+      "fulfil",
+      "fulfill",
+      "trucking",
+      "transport"
     ],
     "total_market_inr_cr": 2096198,
     "addressable_share": 0.0375,
@@ -218,7 +252,9 @@
       "employment_mn": 22,
       "lpi_rank_2023": 38,
       "note": "The FY30 express projection (US$18-22bn) is a forecast and is deliberately NOT used as the market size; total_market_inr_cr stays on the measured 2025 figure."
-    }
+    },
+    "share_basis": "segment_addressability_anchored",
+    "share_anchor": "Express logistics and courier, published at Rs 78,525 crore for FY25."
   },
   "cleantech": {
     "match": [
@@ -229,7 +265,9 @@
       "energy",
       "solar",
       "clean",
-      "ev"
+      "ev",
+      "ev charging",
+      "battery"
     ],
     "total_market_inr_cr": 390595,
     "addressable_share": 0.02,
@@ -266,7 +304,8 @@
         "subsidy_disbursed_inr_cr": 17967.53,
         "note": "PM Surya Ghar rooftop solar is the segment a small cleantech venture can realistically serve: 40 lakh households reached against a one-crore target, so roughly 60 lakh households remain. Utility-scale is not addressable by a startup."
       }
-    }
+    },
+    "share_basis": "capture_fraction_pending_segment_data"
   },
   "agritech": {
     "match": [
@@ -275,7 +314,9 @@
       "agritech",
       "farm",
       "crop",
-      "agri"
+      "agri",
+      "precision agriculture",
+      "farming"
     ],
     "total_market_inr_cr": 7502,
     "addressable_share": 1.0,
@@ -300,7 +341,8 @@
       "agri_share_of_gdp_pct_fy25": 17.3,
       "population_dependent_pct": 55,
       "note": "agri_gva and agri_credit are context only and are NOT fed to the models or used as a TAM. They measure farm output and lending, not addressable spend on agritech products. The previous placeholder of Rs 30,000 crore overstated this market by 4.0x."
-    }
+    },
+    "share_basis": "published_figure_is_already_addressable"
   },
   "cybersecurity": {
     "match": [
@@ -308,7 +350,9 @@
       "cybersecurity",
       "security",
       "infosec",
-      "cyber"
+      "cyber",
+      "cyber security",
+      "security saas"
     ],
     "total_market_inr_cr": 32000,
     "addressable_share": 1.0,
@@ -316,7 +360,8 @@
     "as_of": null,
     "confidence": "low",
     "share_rationale": "PLANNING ASSUMPTION - no published India total confirmed for this sector.",
-    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found."
+    "addressable_share_note": "share is 1.0 because total_market_inr_cr here is NOT a published market total - it is a directly-assumed addressable figure carried over from the old inline code. There is no real total to take a share of. Replace both together when a published India figure is found.",
+    "share_basis": "published_figure_is_already_addressable"
   },
   "_default": {
     "match": [],
