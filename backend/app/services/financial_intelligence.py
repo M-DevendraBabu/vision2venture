@@ -515,6 +515,20 @@ _TEMPLATE_SECTOR_MAP = {
     'cleantech': 'energy',
     'e-commerce': 'e-commerce',
     'logistics': 'logistics',
+    # The sub-sectors were missed the first time, and they held the most optimistic
+    # figures in the file: a campus QSR and a veterinary clinic both claimed an LTV:CAC
+    # of 6.0, against published ratios of 3.0 for food and 3.5 for healthcare. Every one
+    # of these is a proxy - there is no published ratio for a tiffin centre specifically
+    # - but a cited ratio from the nearest measured segment beats an uncited one chosen
+    # in-house, and the direction of the error was consistent enough to be a pattern
+    # rather than a coincidence.
+    'tiffin_streetfood': 'foodtech',
+    'campus_qsr': 'foodtech',
+    'grocery_hyperlocal': 'e-commerce',
+    'career_saas': 'tech',
+    'proptech': 'tech',
+    'pet_clinic': 'healthcare',
+    'fitness_wellness': 'healthcare',
 }
 
 _LTV_OVERRIDES = {}

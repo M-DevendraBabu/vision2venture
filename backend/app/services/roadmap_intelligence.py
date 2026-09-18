@@ -4,6 +4,8 @@ Domain-specific, realistic, 25-industry Implementation Roadmap & Execution Intel
 Strictly calibrated in Indian Rupees (₹) and mathematically synchronized with the Financial Analysis model.
 """
 
+import re
+
 from app.services.financial_intelligence import resolve_financial_sector, generate_financial_analysis
 
 ROADMAP_DOMAIN_TEMPLATES = {
@@ -1351,8 +1353,31 @@ def generate_roadmap_analysis(idea_dict: dict, fin_data: dict = None) -> dict:
     # Phase 5: Self-Sustaining / Scale Budget (Funded via net operating cashflow)
     phase_5_cost = round(mrr * 0.35, -2)
 
+    # Some template lines state a gross margin or an LTV:CAC ratio as a fixed number,
+    # written per template rather than read from the analysis. They contradicted the
+    # Financial tab for the same business: the SaaS template promised a gross margin
+    # above 82% and an LTV:CAC above 4.2x while the financial engine had computed 48%
+    # and 3.0 for a tiffin centre. Two tabs disagreeing about the same venture is worse
+    # than either being wrong alone, because it tells the reader one of them is invented
+    # without saying which. These now carry the figures actually computed.
+    _real_gm = fin_data.get('gross_margin_percent')
+    _real_ltv_cac = fin_data.get('ltv_cac_ratio')
+
+    def _reconcile(line):
+        text = str(line)
+        if _real_gm is not None:
+            text = re.sub(r'([Gg]ross margin sustained above)\s*[\d.]+%',
+                          lambda m: f"{m.group(1)} {float(_real_gm):.0f}%", text)
+        if _real_ltv_cac is not None:
+            text = re.sub(r'(LTV\s*(?::|to)\s*CAC ratio exceeding)\s*[\d.]+x',
+                          lambda m: f"{m.group(1)} {float(_real_ltv_cac):.1f}x", text)
+        return text
+
     def build_phase(key, cost, cost_rationale, fin_tie):
         base = template[key].copy()
+        for field in ('milestones', 'success_metrics', 'tasks'):
+            if isinstance(base.get(field), list):
+                base[field] = [_reconcile(v) for v in base[field]]
         base['estimated_cost'] = f"₹{cost:,.0f}"
         base['cost_numeric'] = cost
         base['cost_rationale'] = cost_rationale
