@@ -268,12 +268,34 @@ class AnalysisService:
         market_source = "Google Trends, World Bank & AI"
         try:
             print(f"[Analysis] 3/9 Running Market Analysis (Grounded in Real Data)...")
-            market_data = AIService.run_market_analysis(context) or {}
-            if market_data and market_data.get('data_source'):
-                market_source = market_data['data_source']
-            if not market_data.get('market_size') or 'unavailable' in str(market_data.get('market_size', '')).lower():
-                market_data = MLService.calculate_market_analysis(context) or {}
-                market_source = market_data.get('data_source') or "Industry benchmark estimate"
+            # The language model writes the narrative; the sourced tables supply the
+            # numbers. It used to be the other way round - the model ran first and its
+            # market size was kept whenever it produced one, so the sourced pipeline only
+            # ever ran as a fallback. For a 30-seat tiffin centre in Vadlamudi that meant
+            # a displayed market of "Rs 45,000 Cr (Andhra Pradesh & Telangana Regional
+            # Tiffin/Cafeteria Market)" with no source and no confidence, against the
+            # Rs 26.8 Cr catchment the HCES tables actually support for the 28,000 people
+            # within reach. The model was inventing a figure roughly 1,680x too large and
+            # it was overwriting a real one.
+            #
+            # A language model is good at describing a market and bad at sizing one. It
+            # keeps the qualitative fields, where it is grounded in Google Trends, World
+            # Bank indicators, live headlines and the competitors actually discovered.
+            # Every number below now comes from MLService, with its provenance attached.
+            llm_data = AIService.run_market_analysis(context) or {}
+            ml_data = MLService.calculate_market_analysis(context) or {}
+
+            market_data = dict(llm_data)
+            if ml_data.get('market_size'):
+                for field in ('market_size', 'market_size_source', 'market_size_confidence',
+                              'growth_rate', 'opportunity_score'):
+                    if ml_data.get(field) is not None:
+                        market_data[field] = ml_data[field]
+                market_source = 'Sourced market tables + AI narrative'
+            elif llm_data.get('data_source'):
+                market_source = llm_data['data_source']
+            else:
+                market_source = "Industry benchmark estimate"
 
             m_analysis = MarketAnalysis(
                 idea_id=idea.id,
