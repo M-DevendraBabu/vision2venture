@@ -6,8 +6,10 @@ Retrain all ML models using genuine real-world datasets:
 """
 import os
 import re
+import sys
 import json
 import logging
+from datetime import datetime
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -429,6 +431,37 @@ def train_all_models():
         print(f"Saved {len(ind_benchmarks)} Indian benchmarks.")
     else:
         print(f"[Train] Warning: {ind_file} not found, skipping benchmarks generation.")
+
+    # Record the library versions these pickles were fitted against.
+    #
+    # A joblib pickle stores an estimator's internal attributes, not a portable
+    # description of it, so loading one under a different scikit-learn reconstructs an
+    # object that version's code may no longer agree with - which can mean different
+    # predictions rather than an error. Production surfaced this as an
+    # InconsistentVersionWarning on every boot, and nothing in the repo recorded what
+    # the models had actually been trained on, so there was no way to tell whether the
+    # gap was a harmless patch bump or something worse. Now there is.
+    try:
+        import sklearn
+        import numpy as _np
+        import scipy as _sp
+        env = {
+            "trained_at": datetime.now().isoformat(timespec="seconds"),
+            "python": sys.version.split()[0],
+            "scikit_learn": sklearn.__version__,
+            "numpy": _np.__version__,
+            "scipy": _sp.__version__,
+            "joblib": joblib.__version__,
+            "note": ("Serving under a different scikit-learn minor version can change "
+                     "predictions silently. requirements.txt is bounded to this minor "
+                     "series; retrain and raise the bound together."),
+        }
+        with open(MODEL_DIR / "training_environment.json", "w", encoding="utf-8") as f:
+            json.dump(env, f, indent=2)
+        print(f"Recorded training environment: scikit-learn {sklearn.__version__}, "
+              f"numpy {_np.__version__}, Python {env['python']}")
+    except Exception as e:
+        print(f"[Train] Could not record training environment: {e}")
 
     print("\n" + "=" * 60)
     print("TRAINING PIPELINE COMPLETE: 100% REAL DATA MODELS SAVED")

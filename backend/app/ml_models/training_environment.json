@@ -1,0 +1,10 @@
+{
+  "recorded_at": "2026-09-18",
+  "recorded_by": "observed from the running environment; the production InconsistentVersionWarning independently confirms the pickles were written by scikit-learn 1.9.0",
+  "python": "3.13.1",
+  "scikit_learn": "1.9.0",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "joblib": "1.5.3",
+  "note": "Serving under a different scikit-learn minor version can change predictions silently rather than raising. requirements.txt is bounded to this minor series; retrain and raise the bound together. Regenerated automatically by train_models.py on every training run."
+}
