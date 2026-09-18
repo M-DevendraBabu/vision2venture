@@ -13,6 +13,34 @@ import {
 } from 'react-icons/fa';
 import SourceBadge from './SourceBadge';
 
+/**
+ * Coerce investor suggestions into a list of strings, whatever shape they arrive in.
+ *
+ * The API returns this field as an array for some rows and a single string for others,
+ * and a JSON-encoded array as text for a third case. A string passes a `.length > 0`
+ * check and then throws on `.map`, which is how one inconsistent column took down the
+ * entire Risk tab. Splitting on sentence boundaries keeps a paragraph readable as a
+ * list instead of rendering it as one wall of text.
+ */
+const normaliseSuggestions = (raw) => {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw.filter(Boolean).map(String);
+  if (typeof raw === 'string') {
+    const text = raw.trim();
+    if (!text) return [];
+    if (text.startsWith('[')) {
+      try {
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) return parsed.filter(Boolean).map(String);
+      } catch {
+        // Fall through and treat it as prose.
+      }
+    }
+    return text.split(/(?<=\.)\s+(?=[A-Z])/).map(s => s.trim()).filter(s => s.length > 1);
+  }
+  return [];
+};
+
 const RiskTab = ({ data, idea }) => {
   const [activeSubTab, setActiveSubTab] = useState('heatmap');
 
@@ -598,8 +626,14 @@ const RiskTab = ({ data, idea }) => {
             <div className="glass-card p-xl">
               <h3 className="section-heading mb-md"><FaCheckCircle /> Strategic Recommendations for Pitching Investors</h3>
               <ul className="user-list">
-                {investorData.suggestions && investorData.suggestions.length > 0 ? (
-                  investorData.suggestions.map((s, i) => (
+                {/* suggestions is not always an array. Older rows hold a single string, and a
+                    string has .length, so the previous guard passed and .map threw - taking the
+                    whole tab down with "Unable to display Risk analysis" rather than degrading
+                    to one missing list. Every row in the database is currently that shape, so
+                    this crashed for every idea. Normalised here rather than only at the source
+                    because the existing rows still have to render. */}
+                {normaliseSuggestions(investorData.suggestions).length > 0 ? (
+                  normaliseSuggestions(investorData.suggestions).map((s, i) => (
                     <li key={i} className="text-sm py-xs leading-relaxed" style={{ color: '#334155' }}>{s}</li>
                   ))
                 ) : (

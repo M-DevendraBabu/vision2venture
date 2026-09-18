@@ -35,6 +35,28 @@ def safe_int(val, default=0):
     sf = safe_float(val, default)
     return int(sf) if sf is not None else default
 
+
+def _as_suggestion_list(val):
+    """
+    Coerce investor suggestions to a list of strings.
+
+    The column is JSON, so whatever shape arrives is what gets stored, and the AI path
+    sometimes returns one string where the model path returns a list. A string survives
+    the write, then breaks the Risk tab on render because a string has .length but no
+    .map. Prose is split on sentence boundaries so it still reads as a list.
+    """
+    if not val:
+        return ['Build MVP for early traction',
+                'Focus on customer retention and repeat purchase rate']
+    if isinstance(val, (list, tuple)):
+        items = [str(v).strip() for v in val if v and str(v).strip()]
+    elif isinstance(val, str):
+        items = [s.strip() for s in re.split(r'(?<=\.)\s+(?=[A-Z])', val.strip()) if len(s.strip()) > 1]
+    else:
+        items = [str(val).strip()]
+    return items or ['Build MVP for early traction',
+                     'Focus on customer retention and repeat purchase rate']
+
 class AnalysisService:
     @staticmethod
     def run_full_analysis(idea_id: str, db: Session):
@@ -542,7 +564,11 @@ class AnalysisService:
                 market=safe_float(inv_data.get('market'), 82.0),
                 investor_score=safe_float(inv_data.get('investor_score'), 78.5),
                 explanation=str(inv_data.get('explanation') or 'Investor readiness grounded in market demand and unit margins.'),
-                suggestions=inv_data.get('suggestions') or ['Build MVP for early traction', 'Focus on customer retention and repeat purchase rate']
+                # Always a list. When the AI path supplies this it is sometimes a single
+                # string, and the column is JSON, so the string was stored as-is and the
+                # Risk tab crashed on .map - every row currently in the database is that
+                # shape. Normalising at the point of write stops new rows repeating it.
+                suggestions=_as_suggestion_list(inv_data.get('suggestions'))
             ))
             db.commit()
         except Exception as e:
