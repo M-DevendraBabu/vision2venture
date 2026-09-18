@@ -19,7 +19,8 @@
       "check": "Applied to the all-India MPCE of Rs 4,122 rural and Rs 6,996 urban, those percentages imply Rs 4,867 and Rs 9,310 per person per year. The figures derived here directly from the HCES fact sheet are Rs 4,872 and Rs 9,312 - 0.10% and 0.02% apart.",
       "conclusion": "The food_restaurant category is confirmed against a second publication that reached it from percentages rather than from rupee tables.",
       "caution_do_not_repeat_ibef_label": "The IBEF slide calls these percentages a share of FOOD expenditure. That label is wrong and the arithmetic proves it: 9.84% of the rural food budget would be about Rs 191/month, but 9.84% of TOTAL MPCE is Rs 406/month, which is what both sources actually agree on. HCES reports item groups as a share of total consumption expenditure. Do not 'correct' these figures to match the IBEF wording."
-    }
+    },
+    "alias_coverage_note": "Aliases were widened so that a business whose customers' spending the survey does measure is routed to that line instead of the _default share assumption. Before this, half of a sample of thirty-two common Indian local businesses fell to _default, including tuition classes and opticians, whose spend HCES reports explicitly - the education line covers tuition fees and stationery, the medical line covers spectacles. Businesses genuinely absent from the survey, such as a veterinary clinic or a mobile repair shop, still fall to _default, and should: HCES does not measure what households spend on them."
   },
   "categories": {
     "food_restaurant": {
@@ -35,7 +36,23 @@
         "canteen",
         "cloud kitchen",
         "juice",
-        "tea stall"
+        "tea stall",
+        "sweet",
+        "mithai",
+        "ice cream",
+        "snack",
+        "chaat",
+        "dhaba",
+        "mess",
+        "fast food",
+        "street food",
+        "dosa",
+        "idli",
+        "thali",
+        "catering",
+        "confection",
+        "namkeen",
+        "coffee"
       ],
       "hces_line": "beverages, refreshments, processed food",
       "monthly_per_capita": {
@@ -51,17 +68,27 @@
     },
     "grocery_retail": {
       "match": [
-        "comm",
-        "d2c",
-        "marketplace",
-        "retail",
         "grocery",
         "supermarket",
         "organic",
-        "store",
         "hyperlocal",
         "kirana",
-        "provision"
+        "provision",
+        "dairy",
+        "milk booth",
+        "vegetable",
+        "fruit",
+        "general store",
+        "departmental",
+        "mart",
+        "bazaar",
+        "wholesale",
+        "grocery store",
+        "kirana store",
+        "provision store",
+        "hypermarket",
+        "grocery delivery",
+        "food retail"
       ],
       "hces_line": "food total minus beverages/processed food (i.e. at-home groceries)",
       "monthly_per_capita": {
@@ -73,7 +100,8 @@
         "rural": 18396,
         "urban": 24000
       },
-      "basis": "Total food spend less the eating-out line, since a grocery retailer addresses what households cook at home."
+      "basis": "Total food spend less the eating-out line, since a grocery retailer addresses what households cook at home.",
+      "alias_note": "Aliases name grocery specifically. They previously included 'store', 'retail' and 'comm', which matched any shop and any e-commerce business, so non-food retailers were sized with the household food budget - roughly 3.6x the default - purely because the word 'store' appeared in their description."
     },
     "gym_fitness": {
       "match": [
@@ -83,7 +111,13 @@
         "workout",
         "wellness",
         "yoga",
-        "zumba"
+        "zumba",
+        "sports club",
+        "swimming",
+        "aerobics",
+        "martial art",
+        "dance class",
+        "gymnasium"
       ],
       "hces_line": "entertainment (includes club, gym, swimming fees & other subscriptions)",
       "monthly_per_capita": {
@@ -106,7 +140,19 @@
         "dental",
         "diagnos",
         "pharmacy",
-        "physio"
+        "physio",
+        "optical",
+        "eyewear",
+        "spectacle",
+        "lab",
+        "pathology",
+        "nursing",
+        "ayurved",
+        "homeopath",
+        "chemist",
+        "druggist",
+        "scan",
+        "x-ray"
       ],
       "hces_line": "medical (hospitalisation and non-hospitalisation)",
       "monthly_per_capita": {
@@ -129,7 +175,21 @@
         "learn",
         "tutor",
         "training",
-        "skill"
+        "skill",
+        "tuition",
+        "classes",
+        "institute",
+        "academy",
+        "stationery",
+        "preschool",
+        "play school",
+        "playschool",
+        "creche",
+        "day care",
+        "daycare",
+        "library",
+        "exam prep",
+        "test prep"
       ],
       "hces_line": "education",
       "monthly_per_capita": {
