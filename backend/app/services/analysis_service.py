@@ -386,7 +386,12 @@ class AnalysisService:
             return str(val)
 
         # Save Business Model
-        bm_source = "AI-grounded analysis" if (bm_data and not bm_data.get('_is_fallback')) else "Industry benchmark estimate"
+        # "AI-grounded analysis" overstated this. The model is grounded in real signals
+        # for its reasoning, but the rupee figures it writes into the canvas - pricing
+        # tiers, cost lines - are proposals, not researched values, and nothing else
+        # says so. The label now distinguishes a suggestion from a measurement.
+        bm_source = ("AI-proposed - figures illustrative, not researched"
+                     if (bm_data and not bm_data.get('_is_fallback')) else "Industry benchmark estimate")
         try:
             db.add(BusinessModel(
                 idea_id=idea.id,
@@ -412,7 +417,8 @@ class AnalysisService:
             swot_data = generate_swot_analysis(context)
 
         # Save SWOT Analysis
-        swot_source = "AI-grounded analysis" if (swot_data and not swot_data.get('_is_fallback')) else "Industry benchmark estimate"
+        swot_source = ("AI-generated from real market signals"
+                       if (swot_data and not swot_data.get('_is_fallback')) else "Industry benchmark estimate")
         try:
             db.add(SwotAnalysis(
                 idea_id=idea.id,
