@@ -508,6 +508,12 @@ _TEMPLATE_SECTOR_MAP = {
 
 _LTV_OVERRIDES = {}
 
+# Published monthly churn per sector, cached from the same file. Used to turn
+# acquisition spend into a customer base: a customer retained for 1/churn months
+# keeps buying for that long, so spend at a known CAC implies a knowable steady
+# state. Sourced churn is the only non-invented way to get customer lifetime.
+_PUBLISHED_CHURN = {}
+
 
 def _reconcile_ltv_against_published():
     """Replace uncited LTV multiples with the cited ratio for the same sector."""
@@ -523,7 +529,11 @@ def _reconcile_ltv_against_published():
 
     for sector, template_key in _TEMPLATE_SECTOR_MAP.items():
         block = FINANCIAL_DOMAIN_BENCHMARKS.get(sector)
-        published = (templates.get(template_key) or {}).get('ltv_cac_ratio')
+        entry = templates.get(template_key) or {}
+        churn = entry.get('churn_estimate')
+        if churn:
+            _PUBLISHED_CHURN[sector] = float(churn)
+        published = entry.get('ltv_cac_ratio')
         if not block or not published:
             continue
         previous = block.get('target_ltv_mult')
@@ -642,10 +652,17 @@ def generate_financial_analysis(context: dict) -> dict:
     if 1000.0 <= user_budget <= 95000.0:
         effective_budget = user_budget * 83.5
 
-    if effective_budget >= 100000.0:
-        total_capex = round(max(default_base_capex * 0.65, min(default_base_capex * 1.5, effective_budget * 0.85)), -3)
-    elif effective_budget > 0:
-        total_capex = round(max(default_base_capex * 0.65, effective_budget * 0.85), -3)
+    # How much of the committed capital goes into setup rather than being held as
+    # runway. A restaurant spends most of it on the premises before opening; a software
+    # product spends comparatively little and keeps the rest to pay salaries while it
+    # finds customers. The previous rule put 85% into capex regardless of mode and then
+    # capped the result at 1.5x the sector default, so capex saturated: every budget
+    # above about Rs 5 lakh produced the same Rs 4.2 lakh, and a Rs 1.2 crore venture was
+    # shown the same fit-out as a Rs 5 lakh one. The cap is gone; the share is by mode.
+    capex_share = 0.55 if is_offline else (0.45 if is_hybrid else 0.30)
+
+    if effective_budget > 0:
+        total_capex = round(max(default_base_capex * 0.65, effective_budget * capex_share), -3)
     else:
         total_capex = default_base_capex
 
@@ -688,16 +705,55 @@ def generate_financial_analysis(context: dict) -> dict:
     aov = bm['aov']
     gross_margin = bm['gross_margin']
 
-    # Target monthly customer volume calibrated for healthy unit economics
-    target_monthly_orders = bm['monthly_orders_per_table_or_unit']
-    if user_budget > 800000.0:
-        target_monthly_orders = int(target_monthly_orders * 1.35)
+    # Monthly volume is the lesser of what the venture can serve and what it can sell.
+    #
+    # This used to be a flat benchmark constant with one 1.35x step above Rs 8 lakh, so
+    # three-year revenue came out identical - Rs 3,62,82,400 - for budgets of Rs 10 lakh,
+    # Rs 30 lakh, Rs 1 crore and Rs 3 crore. A founder committing thirty times more money
+    # was modelled to earn exactly the same. Both sides of the business now respond to the
+    # capital actually committed.
+    #
+    # Capacity: the benchmark describes one standard setup at the sector's default capex.
+    # Spending twice that buys roughly twice the seats, vehicles or servers.
+    #
+    # Demand: marketing spend at the sector's CAC wins a knowable number of customers each
+    # month, and they stay for 1/churn months using the published churn figure. Orders per
+    # customer per month is not invented - it is calibrated so that at the reference setup
+    # this model reproduces the benchmark's own order count exactly, then moves from there.
+    reference_capex = max(default_base_capex, 1.0)
+    reference_marketing = max(15000.0, reference_capex * 0.04)
+    reference_orders = float(bm['monthly_orders_per_table_or_unit'])
+
+    # CAC is computed here rather than after the revenue block, because the number of
+    # customers the venture can win is what the demand side depends on. It was previously
+    # derived below and the volume model never saw it.
+    budget_scaling = max(0.8, min(1.4, (user_budget / 50000.0) ** 0.2)) if user_budget > 0 else 1.0
+    cac = max(round(bm['cac'] * budget_scaling, -1), 1.0)
+
+    capacity_multiple = min(12.0, max(0.35, total_capex / reference_capex))
+    capacity_orders = reference_orders * capacity_multiple
+
+    churn_monthly = _PUBLISHED_CHURN.get(category, 0.05)
+    lifetime_months = min(60.0, max(3.0, 1.0 / max(churn_monthly, 1e-6)))
+
+    reference_base = (reference_marketing / cac) * lifetime_months
+    orders_per_customer_month = reference_orders / max(reference_base, 1e-6)
+    demand_orders = (marketing_cost / cac) * lifetime_months * orders_per_customer_month
+
+    target_monthly_orders = max(1, int(min(capacity_orders, demand_orders)))
+    _volume_constraint = 'capacity' if capacity_orders <= demand_orders else 'demand'
 
     monthly_revenue = round(target_monthly_orders * aov, -2)
     daily_customers = max(5, int(target_monthly_orders / 30))
 
     # Raw material / COGS cost based on gross margin
-    raw_material_cost = round(monthly_revenue * (1.0 - gross_margin), -2) if (is_offline or is_hybrid or bm['raw_material_ratio'] > 0) else 0.0
+    # Cost of revenue is charged for every business, not only ones that buy physical
+    # stock. Software sectors declared a gross margin of 72-82% and were then charged
+    # nothing against it, so 18-28% of revenue in hosting, payment processing, support
+    # and third-party API cost simply vanished and net margin came out above gross
+    # margin - fintech showed 74.6% net against a 72% gross, which cannot happen. The
+    # gross_margin figure states what the cost is; it is now actually deducted.
+    raw_material_cost = round(monthly_revenue * (1.0 - gross_margin), -2)
 
     # Total Monthly OpEx
     total_opex = staff_cost + rent_cost + cloud_cost + utility_cost + marketing_cost + raw_material_cost
@@ -711,9 +767,7 @@ def generate_financial_analysis(context: dict) -> dict:
     mrr = monthly_revenue
     arr = mrr * 12.0
 
-    # Scale CAC dynamically using user budget & acquisition intensity, bounded by domain benchmark
-    budget_scaling = max(0.8, min(1.4, (user_budget / 50000.0) ** 0.2)) if user_budget > 0 else 1.0
-    cac = round(bm['cac'] * budget_scaling, -1)
+    # CAC was computed with the volume model above, which needs it.
     target_ltv_mult = bm.get('target_ltv_mult', 3.8 if is_offline else 4.2)
     ltv = round(cac * target_ltv_mult, -1)
     ltv_cac_ratio = round(ltv / max(1.0, cac), 1)
@@ -753,16 +807,62 @@ def generate_financial_analysis(context: dict) -> dict:
         break_even_months = sector_typical_be
 
     # 3-Year Return on Invested Capital (ROI %)
+    # Costs are split into the part that moves with sales and the part that does not.
+    #
+    # Previously every cost line grew at a flat 45% then 35% while revenue grew 95% then
+    # 75%. That treats raw material and marketing as nearly fixed, which they are not: a
+    # restaurant selling twice the biryani buys twice the chicken. The effect was to
+    # manufacture margin - by year three the model showed a net margin above 60% for a
+    # food business whose own benchmark puts raw material alone at 42% of revenue. Net
+    # margin cannot exceed what the gross margin allows, and it did.
+    #
+    # Variable costs now track revenue one for one. Fixed costs - rent, salaries, cloud,
+    # utilities - grow in steps as the operation is staffed up, not with every extra sale.
+    _variable_opex_m = raw_material_cost + marketing_cost
+    _fixed_opex_m = max(0.0, total_opex - _variable_opex_m)
+
+    _growth_y2, _growth_y3 = 1.95, 1.75      # revenue multiples, assumption - see below
+
+    # Fixed costs step up in proportion to the growth actually achieved, at roughly 40%
+    # of it - the operating leverage that makes margins improve with scale. They used to
+    # step up by a flat 1.35x and 1.25x no matter what revenue did, which was harmless
+    # while revenue always grew 95%, but once growth became capped by funded capacity it
+    # meant a business that could not expand still had its rent and salaries inflated 35%.
+    # That turned flat-but-viable ventures into projected losses.
+    _OPERATING_LEVERAGE = 0.40
+
     y1_revenue = arr
     y1_opex = total_opex * 12.0
     y1_net = y1_revenue - y1_opex
 
-    y2_revenue = round(y1_revenue * 1.95, -3)
-    y2_opex = round(y1_opex * 1.45, -3)
+    # Growth has to be paid for. The model assumed revenue multiplying 6.4x over three
+    # years while capex was spent once, in year one - the extra seats, vehicles or
+    # servers needed to serve six times the customers were never bought. Expansion is
+    # now funded out of retained profit at the same capex share as the initial build,
+    # and revenue cannot exceed what that expanded capacity can serve. A business with
+    # no profit to reinvest does not triple.
+    _reinvest_y2 = max(0.0, y1_net) * capex_share
+    _capacity_orders_y2 = reference_orders * min(
+        12.0, max(0.35, (total_capex + _reinvest_y2) / reference_capex))
+    _ceiling_y2 = _capacity_orders_y2 * aov * 12.0
+    _growth_y2 = min(_growth_y2, max(1.0, _ceiling_y2 / max(y1_revenue, 1.0)))
+
+    _fixed_step_y2 = 1.0 + (_growth_y2 - 1.0) * _OPERATING_LEVERAGE
+    y2_revenue = round(y1_revenue * _growth_y2, -3)
+    y2_opex = round((_variable_opex_m * 12.0 * _growth_y2) +
+                    (_fixed_opex_m * 12.0 * _fixed_step_y2), -3)
     y2_net = y2_revenue - y2_opex
 
-    y3_revenue = round(y2_revenue * 1.75, -3)
-    y3_opex = round(y2_opex * 1.35, -3)
+    _reinvest_y3 = _reinvest_y2 + max(0.0, y2_net) * capex_share
+    _capacity_orders_y3 = reference_orders * min(
+        12.0, max(0.35, (total_capex + _reinvest_y3) / reference_capex))
+    _ceiling_y3 = _capacity_orders_y3 * aov * 12.0
+    _growth_y3 = min(_growth_y3, max(1.0, _ceiling_y3 / max(y2_revenue, 1.0)))
+
+    _fixed_step_y3 = 1.0 + (_growth_y3 - 1.0) * _OPERATING_LEVERAGE
+    y3_revenue = round(y2_revenue * _growth_y3, -3)
+    y3_opex = round((_variable_opex_m * 12.0 * _growth_y2 * _growth_y3) +
+                    (_fixed_opex_m * 12.0 * _fixed_step_y2 * _fixed_step_y3), -3)
     y3_net = y3_revenue - y3_opex
 
     # ---- Reconcile the benchmark projection against the founder's stated target ----
@@ -807,7 +907,11 @@ def generate_financial_analysis(context: dict) -> dict:
     # single case. Every user saw exactly 380%, which is a constant, not a measurement.
     _invested_capital = max(float(total_capex), float(effective_budget or 0.0), 1.0)
     _roi_uncapped = round(((total_3yr_net - _invested_capital) / _invested_capital) * 100.0, 1)
-    three_year_roi = max(45.0, min(380.0, _roi_uncapped))
+    # The floor used to be +45%, so a venture projected to lose money still reported a
+    # healthy return - a d2c case running a -29% net margin in year three was shown as
+    # +45% ROI. An analysis that cannot report a loss is not an analysis. The lower bound
+    # is now -100%, which is the real one: you cannot lose more than you put in.
+    three_year_roi = max(-100.0, min(380.0, _roi_uncapped))
     # The clamp keeps the headline plausible, but a clamped number is a bound, not a
     # result, and presenting the two identically hides which one a reader is looking at.
     _roi_was_clamped = abs(_roi_uncapped - three_year_roi) > 0.05
@@ -1171,6 +1275,34 @@ def generate_financial_analysis(context: dict) -> dict:
         # number cannot be quoted as the wrong thing.
         'roi_basis': 'three_year_cumulative_on_committed_capital',
         'roi_invested_capital': float(_invested_capital),
+
+        # What drives the volume, and what the growth curve assumes. Stated because these
+        # are the levers the whole projection turns on, and a reader disagreeing with the
+        # projection is really disagreeing with one of these.
+        'volume_model': {
+            'constraint': _volume_constraint,
+            'capacity_multiple_vs_reference': round(capacity_multiple, 2),
+            'assumed_customer_lifetime_months': round(lifetime_months, 1),
+            'monthly_churn_used': round(churn_monthly, 4),
+            'churn_source': ('financial_templates.json, published per sector'
+                             if category in _PUBLISHED_CHURN else
+                             'cross-sector default of 5% - no published churn for this sector'),
+            'note': ('Monthly volume is the lesser of what the capex can serve and what the '
+                     'marketing spend can win at the sector CAC. Orders per customer per '
+                     'month is calibrated so the reference setup reproduces the benchmark '
+                     'volume exactly, rather than being chosen.'),
+        },
+        'growth_assumptions': {
+            'year2_revenue_multiple': round(_growth_y2, 2),
+            'year3_revenue_multiple': round(_growth_y3, 2),
+            'year2_fixed_cost_multiple': round(_fixed_step_y2, 2),
+            'year3_fixed_cost_multiple': round(_fixed_step_y3, 2),
+            'expansion_funded_from': 'retained profit, reinvested at the same capex share',
+            'basis': ('ASSUMPTION. Growth multiples of 1.95 and 1.75 are not published '
+                      'figures; they are capped by the capacity that reinvested profit can '
+                      'buy, so a venture with no profit does not grow. Variable costs track '
+                      'revenue one for one; fixed costs step up more slowly.'),
+        },
         'roi_uncapped': float(_roi_uncapped),
         'roi_was_capped': bool(_roi_was_clamped),
         'roi_cap_note': (
