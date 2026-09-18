@@ -36,3 +36,7 @@ frontend_qa/
 # Real-data fetch cache (improvement #2) — safe to delete anytime
 backend/app/.cache/
 backend/evaluation_results.json
+
+# Source reference PDFs — see docs/sources/README.md for what they are and
+# where each figure lands. Not committed: large, and not ours to redistribute.
+docs/sources/*.pdf
