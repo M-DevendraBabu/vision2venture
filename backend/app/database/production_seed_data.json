@@ -4555,7 +4555,10 @@
       "innovation": 65.0,
       "business_model": 58.0,
       "scalability": 70.0,
-      "suggestions": "Focus on achieving Rs50L monthly GMV in one locality before raising seed. Key metric: repeat purchase rate above 40%.",
+      "suggestions": [
+        "Focus on achieving Rs50L monthly GMV in one locality before raising seed.",
+        "Key metric: repeat purchase rate above 40%."
+      ],
       "explanation": "Attractive market with 22% CAGR but thin grocery margins require high volume. Differentiate on organic certification and farm traceability. Blinkit/Swiggy partnership as growth lever.",
       "id": "b28a2a16-d2e7-4b06-a1af-536a287fdce7",
       "idea_id": "25b3727c-d61e-4900-8fcf-7a70ed7ad676"
@@ -7065,7 +7068,9 @@
       "innovation": 65.0,
       "business_model": 68.0,
       "scalability": 78.0,
-      "suggestions": "Demonstrate clear placement success rate metrics and CAC:LTV ratio to attract EdTech investors.",
+      "suggestions": [
+        "Demonstrate clear placement success rate metrics and CAC:LTV ratio to attract EdTech investors."
+      ],
       "explanation": "Solid scalable SaaS model with high gross margins. Key risk is market saturation from BYJU's/Unacademy. Differentiate on Tier-2/3 focus and placement success rate."
     },
     "implementation_roadmap": {
@@ -7462,7 +7467,11 @@
       "innovation": 30.0,
       "business_model": 55.0,
       "scalability": 40.0,
-      "suggestions": "Not suitable for VC investment. Bootstrap with personal savings or small business loan. Focus on achieving daily 100+ covers before any expansion.",
+      "suggestions": [
+        "Not suitable for VC investment.",
+        "Bootstrap with personal savings or small business loan.",
+        "Focus on achieving daily 100+ covers before any expansion."
+      ],
       "explanation": "Strong unit economics for a bootstrapped F&B business but low investor appeal due to limited scalability. Self-fund with Rs3.5L investment and target break-even in 12 months."
     },
     "implementation_roadmap": {
@@ -7859,7 +7868,9 @@
       "innovation": 45.0,
       "business_model": 58.0,
       "scalability": 50.0,
-      "suggestions": "Build patient database of 200+ active clients before approaching angel investors for multi-clinic expansion.",
+      "suggestions": [
+        "Build patient database of 200+ active clients before approaching angel investors for multi-clinic expansion."
+      ],
       "explanation": "India pet care market growing 22% CAGR. Strong unit economics once past 22-month break-even. Consider VetCo franchise model for faster scaling."
     },
     "implementation_roadmap": {
